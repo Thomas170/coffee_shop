@@ -20,17 +20,17 @@ public class PlayerMovement : MonoBehaviour
     {
         _controls = new PlayerControls();
 
-        _controls.Movements.Avancer.performed += _ => _verticalInput = 1f;
-        _controls.Movements.Avancer.canceled += _ => { if (Mathf.Approximately(_verticalInput, 1f)) _verticalInput = 0f; };
+        _controls.Movements.Toward.performed += _ => _verticalInput = 1f;
+        _controls.Movements.Toward.canceled += _ => { if (Mathf.Approximately(_verticalInput, 1f)) _verticalInput = 0f; };
 
-        _controls.Movements.Reculer.performed += _ => _verticalInput = -1f;
-        _controls.Movements.Reculer.canceled += _ => { if (Mathf.Approximately(_verticalInput, -1f)) _verticalInput = 0f; };
+        _controls.Movements.Back.performed += _ => _verticalInput = -1f;
+        _controls.Movements.Back.canceled += _ => { if (Mathf.Approximately(_verticalInput, -1f)) _verticalInput = 0f; };
 
-        _controls.Movements.Droite.performed += _ => _horizontalInput = 1f;
-        _controls.Movements.Droite.canceled += _ => { if (Mathf.Approximately(_horizontalInput, 1f)) _horizontalInput = 0f; };
+        _controls.Movements.Right.performed += _ => _horizontalInput = 1f;
+        _controls.Movements.Right.canceled += _ => { if (Mathf.Approximately(_horizontalInput, 1f)) _horizontalInput = 0f; };
 
-        _controls.Movements.Gauche.performed += _ => _horizontalInput = -1f;
-        _controls.Movements.Gauche.canceled += _ => { if (Mathf.Approximately(_horizontalInput, -1f)) _horizontalInput = 0f; };
+        _controls.Movements.Left.performed += _ => _horizontalInput = -1f;
+        _controls.Movements.Left.canceled += _ => { if (Mathf.Approximately(_horizontalInput, -1f)) _horizontalInput = 0f; };
 
         _controls.Movements.Enable();
     }

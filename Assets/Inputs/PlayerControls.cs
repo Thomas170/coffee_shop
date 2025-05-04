@@ -28,7 +28,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""b33330cd-2a7c-48cf-abd8-f73e91cee20e"",
             ""actions"": [
                 {
-                    ""name"": ""Avancer"",
+                    ""name"": ""Toward"",
                     ""type"": ""Button"",
                     ""id"": ""b7861c23-c0b0-4110-ad0d-6b75fe166f27"",
                     ""expectedControlType"": ""Button"",
@@ -37,7 +37,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Reculer"",
+                    ""name"": ""Back"",
                     ""type"": ""Button"",
                     ""id"": ""82c36864-08c6-481d-b5cd-afd16c2b2967"",
                     ""expectedControlType"": ""Button"",
@@ -46,7 +46,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Gauche"",
+                    ""name"": ""Left"",
                     ""type"": ""Button"",
                     ""id"": ""4101fe40-ba1b-4ded-90c1-1683db4ee615"",
                     ""expectedControlType"": ""Button"",
@@ -55,7 +55,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Droite"",
+                    ""name"": ""Right"",
                     ""type"": ""Button"",
                     ""id"": ""26f894de-7572-4b13-aedd-e913fdbd872a"",
                     ""expectedControlType"": ""Button"",
@@ -72,7 +72,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Avancer"",
+                    ""action"": ""Toward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -83,7 +83,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Avancer"",
+                    ""action"": ""Toward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -94,7 +94,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Reculer"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -105,7 +105,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Reculer"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -116,7 +116,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Gauche"",
+                    ""action"": ""Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -127,7 +127,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Gauche"",
+                    ""action"": ""Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -138,7 +138,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Droite"",
+                    ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -149,7 +149,77 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Droite"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Interactions"",
+            ""id"": ""a774bacf-97eb-46d5-b9b2-34c5c0bc1268"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""290dee24-bdd6-4985-bce8-daf7fbfd9871"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Collect"",
+                    ""type"": ""Button"",
+                    ""id"": ""bafe1f98-dedc-4035-987e-0a73a0eac46b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""bc8c2040-f8f6-48f4-8089-4a20a111b8cb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30a0c415-1dc3-44e5-a279-ca33950a2bea"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8dc6d495-9fc6-462c-b2e8-d01081274f7d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Collect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6263caa-72af-4054-abb3-3623456c30f2"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Collect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -160,10 +230,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
 }");
         // Movements
         m_Movements = asset.FindActionMap("Movements", throwIfNotFound: true);
-        m_Movements_Avancer = m_Movements.FindAction("Avancer", throwIfNotFound: true);
-        m_Movements_Reculer = m_Movements.FindAction("Reculer", throwIfNotFound: true);
-        m_Movements_Gauche = m_Movements.FindAction("Gauche", throwIfNotFound: true);
-        m_Movements_Droite = m_Movements.FindAction("Droite", throwIfNotFound: true);
+        m_Movements_Toward = m_Movements.FindAction("Toward", throwIfNotFound: true);
+        m_Movements_Back = m_Movements.FindAction("Back", throwIfNotFound: true);
+        m_Movements_Left = m_Movements.FindAction("Left", throwIfNotFound: true);
+        m_Movements_Right = m_Movements.FindAction("Right", throwIfNotFound: true);
+        // Interactions
+        m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
+        m_Interactions_Interact = m_Interactions.FindAction("Interact", throwIfNotFound: true);
+        m_Interactions_Collect = m_Interactions.FindAction("Collect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -225,18 +299,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // Movements
     private readonly InputActionMap m_Movements;
     private List<IMovementsActions> m_MovementsActionsCallbackInterfaces = new List<IMovementsActions>();
-    private readonly InputAction m_Movements_Avancer;
-    private readonly InputAction m_Movements_Reculer;
-    private readonly InputAction m_Movements_Gauche;
-    private readonly InputAction m_Movements_Droite;
+    private readonly InputAction m_Movements_Toward;
+    private readonly InputAction m_Movements_Back;
+    private readonly InputAction m_Movements_Left;
+    private readonly InputAction m_Movements_Right;
     public struct MovementsActions
     {
         private @PlayerControls m_Wrapper;
         public MovementsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Avancer => m_Wrapper.m_Movements_Avancer;
-        public InputAction @Reculer => m_Wrapper.m_Movements_Reculer;
-        public InputAction @Gauche => m_Wrapper.m_Movements_Gauche;
-        public InputAction @Droite => m_Wrapper.m_Movements_Droite;
+        public InputAction @Toward => m_Wrapper.m_Movements_Toward;
+        public InputAction @Back => m_Wrapper.m_Movements_Back;
+        public InputAction @Left => m_Wrapper.m_Movements_Left;
+        public InputAction @Right => m_Wrapper.m_Movements_Right;
         public InputActionMap Get() { return m_Wrapper.m_Movements; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -246,34 +320,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MovementsActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MovementsActionsCallbackInterfaces.Add(instance);
-            @Avancer.started += instance.OnAvancer;
-            @Avancer.performed += instance.OnAvancer;
-            @Avancer.canceled += instance.OnAvancer;
-            @Reculer.started += instance.OnReculer;
-            @Reculer.performed += instance.OnReculer;
-            @Reculer.canceled += instance.OnReculer;
-            @Gauche.started += instance.OnGauche;
-            @Gauche.performed += instance.OnGauche;
-            @Gauche.canceled += instance.OnGauche;
-            @Droite.started += instance.OnDroite;
-            @Droite.performed += instance.OnDroite;
-            @Droite.canceled += instance.OnDroite;
+            @Toward.started += instance.OnToward;
+            @Toward.performed += instance.OnToward;
+            @Toward.canceled += instance.OnToward;
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
         }
 
         private void UnregisterCallbacks(IMovementsActions instance)
         {
-            @Avancer.started -= instance.OnAvancer;
-            @Avancer.performed -= instance.OnAvancer;
-            @Avancer.canceled -= instance.OnAvancer;
-            @Reculer.started -= instance.OnReculer;
-            @Reculer.performed -= instance.OnReculer;
-            @Reculer.canceled -= instance.OnReculer;
-            @Gauche.started -= instance.OnGauche;
-            @Gauche.performed -= instance.OnGauche;
-            @Gauche.canceled -= instance.OnGauche;
-            @Droite.started -= instance.OnDroite;
-            @Droite.performed -= instance.OnDroite;
-            @Droite.canceled -= instance.OnDroite;
+            @Toward.started -= instance.OnToward;
+            @Toward.performed -= instance.OnToward;
+            @Toward.canceled -= instance.OnToward;
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
         }
 
         public void RemoveCallbacks(IMovementsActions instance)
@@ -291,11 +365,70 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public MovementsActions @Movements => new MovementsActions(this);
+
+    // Interactions
+    private readonly InputActionMap m_Interactions;
+    private List<IInteractionsActions> m_InteractionsActionsCallbackInterfaces = new List<IInteractionsActions>();
+    private readonly InputAction m_Interactions_Interact;
+    private readonly InputAction m_Interactions_Collect;
+    public struct InteractionsActions
+    {
+        private @PlayerControls m_Wrapper;
+        public InteractionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Interact => m_Wrapper.m_Interactions_Interact;
+        public InputAction @Collect => m_Wrapper.m_Interactions_Collect;
+        public InputActionMap Get() { return m_Wrapper.m_Interactions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InteractionsActions set) { return set.Get(); }
+        public void AddCallbacks(IInteractionsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InteractionsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InteractionsActionsCallbackInterfaces.Add(instance);
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @Collect.started += instance.OnCollect;
+            @Collect.performed += instance.OnCollect;
+            @Collect.canceled += instance.OnCollect;
+        }
+
+        private void UnregisterCallbacks(IInteractionsActions instance)
+        {
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @Collect.started -= instance.OnCollect;
+            @Collect.performed -= instance.OnCollect;
+            @Collect.canceled -= instance.OnCollect;
+        }
+
+        public void RemoveCallbacks(IInteractionsActions instance)
+        {
+            if (m_Wrapper.m_InteractionsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInteractionsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InteractionsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InteractionsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InteractionsActions @Interactions => new InteractionsActions(this);
     public interface IMovementsActions
     {
-        void OnAvancer(InputAction.CallbackContext context);
-        void OnReculer(InputAction.CallbackContext context);
-        void OnGauche(InputAction.CallbackContext context);
-        void OnDroite(InputAction.CallbackContext context);
+        void OnToward(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+    }
+    public interface IInteractionsActions
+    {
+        void OnInteract(InputAction.CallbackContext context);
+        void OnCollect(InputAction.CallbackContext context);
     }
 }

@@ -1,0 +1,24 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class InputReader : MonoBehaviour
+{
+    public static InputReader Instance { get; private set; }
+
+    public PlayerControls Controls { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject); return;
+        }
+        
+        Instance = this;
+        Controls = new PlayerControls();
+        Controls.Enable();
+    }
+
+    public InputAction InteractAction => Controls.Interactions.Interact;
+    public InputAction CollectAction => Controls.Interactions.Collect;
+}
