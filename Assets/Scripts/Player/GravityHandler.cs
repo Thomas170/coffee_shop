@@ -12,8 +12,6 @@ public class GravityHandler : MonoBehaviour
     private Vector3 _velocity;
     private bool _isGrounded;
 
-    public Vector3 Velocity => _velocity;
-
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -21,12 +19,11 @@ public class GravityHandler : MonoBehaviour
 
     private void Update()
     {
-        // Check au sol
         _isGrounded = Physics.CheckSphere(groundCheck.position, groundedCheckRadius, groundMask);
 
         if (_isGrounded && _velocity.y < 0f)
         {
-            _velocity.y = -2f; // Colle au sol
+            _velocity.y = -2f;
         }
         else
         {

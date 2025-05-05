@@ -176,6 +176,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""12c4ad29-f24e-4b15-abc4-449b9f1501f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -222,6 +231,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Collect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e772cab6-222e-42db-914d-0636d8c4a839"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a261ca8d-2d99-4bcc-97d2-e2b1becf7034"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -238,6 +269,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
         m_Interactions_Interact = m_Interactions.FindAction("Interact", throwIfNotFound: true);
         m_Interactions_Collect = m_Interactions.FindAction("Collect", throwIfNotFound: true);
+        m_Interactions_Drop = m_Interactions.FindAction("Drop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -371,12 +403,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IInteractionsActions> m_InteractionsActionsCallbackInterfaces = new List<IInteractionsActions>();
     private readonly InputAction m_Interactions_Interact;
     private readonly InputAction m_Interactions_Collect;
+    private readonly InputAction m_Interactions_Drop;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
         public InteractionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Interact => m_Wrapper.m_Interactions_Interact;
         public InputAction @Collect => m_Wrapper.m_Interactions_Collect;
+        public InputAction @Drop => m_Wrapper.m_Interactions_Drop;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -392,6 +426,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Collect.started += instance.OnCollect;
             @Collect.performed += instance.OnCollect;
             @Collect.canceled += instance.OnCollect;
+            @Drop.started += instance.OnDrop;
+            @Drop.performed += instance.OnDrop;
+            @Drop.canceled += instance.OnDrop;
         }
 
         private void UnregisterCallbacks(IInteractionsActions instance)
@@ -402,6 +439,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Collect.started -= instance.OnCollect;
             @Collect.performed -= instance.OnCollect;
             @Collect.canceled -= instance.OnCollect;
+            @Drop.started -= instance.OnDrop;
+            @Drop.performed -= instance.OnDrop;
+            @Drop.canceled -= instance.OnDrop;
         }
 
         public void RemoveCallbacks(IInteractionsActions instance)
@@ -430,5 +470,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnInteract(InputAction.CallbackContext context);
         void OnCollect(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
     }
 }

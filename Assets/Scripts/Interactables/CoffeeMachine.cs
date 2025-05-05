@@ -3,36 +3,53 @@ using System.Collections;
 
 public class CoffeeMachine : MonoBehaviour, IInteractable
 {
+    [SerializeField] private Transform cupPlacementPoint;
+    private Cup _placedCup;
     private bool _isBrewing;
-    private bool _coffeeReady;
 
     public void Interact()
     {
-        if (!_isBrewing && !_coffeeReady)
-        {
-            Debug.Log("Préparation du café...");
-            StartCoroutine(BrewCoffee());
+        if (_isBrewing || _placedCup != null) return;
+
+        GameObject player = GameObject.FindWithTag("Player");
+        PlayerCarry carry = player.GetComponentInChildren<PlayerCarry>();
+
+        if (!carry.IsCarrying) {
+            Debug.Log("Il faut une tasse vide !");
+            return;
         }
-        else if (_coffeeReady)
-        {
-            Debug.Log("Café déjà prêt, récupérez-le.");
+
+        GameObject carried = carry.GetCarriedObject();
+        Cup cup = carried.GetComponent<Cup>();
+
+        if (cup == null || cup.State != CupState.Empty) {
+            Debug.Log("Ce n'est pas une tasse vide !");
+            return;
         }
-        else
-        {
-            Debug.Log("Déjà en préparation...");
-        }
+
+        carry.RemoveCarried(); // supprime la tasse dans la main
+        _placedCup = Instantiate(cup.gameObject, cupPlacementPoint.position, Quaternion.identity).GetComponent<Cup>();
+        StartCoroutine(BrewCoffee());
+        Debug.Log("Préparation du café...");
     }
 
     public void Collect()
     {
-        if (_coffeeReady)
+        if (_placedCup != null && _placedCup.State == CupState.Full)
         {
-            _coffeeReady = false;
-            Debug.Log("Café récupéré !");
-        }
-        else
-        {
-            Debug.Log("Aucun café à récupérer.");
+            GameObject player = GameObject.FindWithTag("Player");
+            var carry = player.GetComponent<PlayerCarry>();
+
+            if (!carry.IsCarrying)
+            {
+                carry.PickUp(_placedCup.gameObject);
+                _placedCup = null;
+                Debug.Log("Café récupéré !");
+            }
+            else
+            {
+                Debug.Log("Pose ton objet avant !");
+            }
         }
     }
 
@@ -40,8 +57,8 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
     {
         _isBrewing = true;
         yield return new WaitForSeconds(5f);
+        _placedCup.Fill();
         _isBrewing = false;
-        _coffeeReady = true;
         Debug.Log("Café prêt !");
     }
 }

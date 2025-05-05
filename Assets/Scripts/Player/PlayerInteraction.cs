@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerInteraction : MonoBehaviour
 {
     private IInteractable _currentInteractable;
+    private GameObject _currentPickable;
 
     private void Start()
     {
@@ -11,6 +12,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             InputReader.Instance.InteractAction.performed += OnInteract;
             InputReader.Instance.CollectAction.performed += OnCollect;
+            InputReader.Instance.DropAction.performed += OnDrop;
         }
         else
         {
@@ -24,6 +26,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             InputReader.Instance.InteractAction.performed -= OnInteract;
             InputReader.Instance.CollectAction.performed -= OnCollect;
+            InputReader.Instance.DropAction.performed -= OnDrop;
         }
     }
 
@@ -34,7 +37,23 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnCollect(InputAction.CallbackContext ctx)
     {
-        _currentInteractable?.Collect();
+        PlayerCarry carry = GetComponent<PlayerCarry>();
+
+        if (_currentInteractable != null)
+        {
+            _currentInteractable.Collect();
+        }
+        else if (_currentPickable != null && !carry.IsCarrying)
+        {
+            carry.PickUp(_currentPickable);
+            _currentPickable = null;
+        }
+    }
+    
+    private void OnDrop(InputAction.CallbackContext ctx)
+    {
+        var carry = GetComponent<PlayerCarry>();
+        carry.DropInFront();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,6 +62,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             _currentInteractable = interactable;
         }
+        else if (other.CompareTag("Pickable"))
+        {
+            _currentPickable = other.gameObject;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -50,6 +73,10 @@ public class PlayerInteraction : MonoBehaviour
         if (other.TryGetComponent(out IInteractable interactable) && interactable == _currentInteractable)
         {
             _currentInteractable = null;
+        }
+        else if (other.CompareTag("Pickable") && other.gameObject == _currentPickable)
+        {
+            _currentPickable = null;
         }
     }
 }
