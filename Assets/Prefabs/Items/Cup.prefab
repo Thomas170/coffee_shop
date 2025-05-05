@@ -175,9 +175,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4892117637905243106}
-  - component: {fileID: 6480606949960947358}
   - component: {fileID: 4505010187796854305}
   - component: {fileID: 2725276635314055895}
+  - component: {fileID: 6480606949960947358}
+  - component: {fileID: 8627902273415941203}
   m_Layer: 0
   m_Name: Cup
   m_TagString: Pickable
@@ -202,20 +203,6 @@ Transform:
   - {fileID: 6804517291723938991}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6480606949960947358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5466415565261755054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1847f5336ea4a4aa6ef7dd5e0124d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emptyVisual: {fileID: 902123986336361029}
-  fullVisual: {fileID: 2486205109177081640}
 --- !u!136 &4505010187796854305
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -266,3 +253,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6480606949960947358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466415565261755054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1847f5336ea4a4aa6ef7dd5e0124d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emptyVisual: {fileID: 902123986336361029}
+  fullVisual: {fileID: 2486205109177081640}
+--- !u!114 &8627902273415941203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466415565261755054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef30f430712a624992afffc30336aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  followRotation: 0
+  smoothSpeed: 20

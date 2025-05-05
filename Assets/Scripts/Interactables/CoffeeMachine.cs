@@ -15,7 +15,7 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         PlayerCarry carry = player.GetComponentInChildren<PlayerCarry>();
 
         if (!carry.IsCarrying) {
-            Debug.Log("Il faut une tasse vide !");
+            Debug.LogWarning("Il faut une tasse vide !");
             return;
         }
 
@@ -23,12 +23,15 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         Cup cup = carried.GetComponent<Cup>();
 
         if (cup == null || cup.State != CupState.Empty) {
-            Debug.Log("Ce n'est pas une tasse vide !");
+            Debug.LogWarning("Ce n'est pas une tasse vide !");
             return;
         }
 
-        carry.RemoveCarried(); // supprime la tasse dans la main
-        _placedCup = Instantiate(cup.gameObject, cupPlacementPoint.position, Quaternion.identity).GetComponent<Cup>();
+        carry.RemoveCarried();
+        _placedCup = cup;
+        _placedCup.GetComponent<FollowTarget>().SetTarget(cupPlacementPoint);
+        _placedCup.Lock();
+        
         StartCoroutine(BrewCoffee());
         Debug.Log("Préparation du café...");
     }
@@ -48,7 +51,7 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
             }
             else
             {
-                Debug.Log("Pose ton objet avant !");
+                Debug.LogWarning("Pose ton objet avant !");
             }
         }
     }
@@ -58,6 +61,7 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         _isBrewing = true;
         yield return new WaitForSeconds(5f);
         _placedCup.Fill();
+        _placedCup.Unlock();
         _isBrewing = false;
         Debug.Log("Café prêt !");
     }

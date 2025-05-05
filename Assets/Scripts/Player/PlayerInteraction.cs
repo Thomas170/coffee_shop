@@ -45,6 +45,13 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (_currentPickable != null && !carry.IsCarrying)
         {
+            Cup cup = _currentPickable.GetComponent<Cup>();
+            if (cup != null && cup.IsLocked)
+            {
+                Debug.Log("Tu ne peux pas récupérer cette objet maintenant.");
+                return;
+            }
+
             carry.PickUp(_currentPickable);
             _currentPickable = null;
         }

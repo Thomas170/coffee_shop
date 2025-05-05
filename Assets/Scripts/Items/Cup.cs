@@ -6,6 +6,13 @@ public class Cup : MonoBehaviour
 
     [SerializeField] private GameObject emptyVisual;
     [SerializeField] private GameObject fullVisual;
+    
+    public bool IsFull => State == CupState.Full;
+    public bool IsLocked { get; private set; }
+
+    public void Lock() => IsLocked = true;
+    public void Unlock() => IsLocked = false;
+
 
     private void Start()
     {
@@ -15,6 +22,12 @@ public class Cup : MonoBehaviour
     public void Fill()
     {
         State = CupState.Full;
+        UpdateVisuals();
+    }
+    
+    public void Empty()
+    {
+        State = CupState.Empty;
         UpdateVisuals();
     }
 
