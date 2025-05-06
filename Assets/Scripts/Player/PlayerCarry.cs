@@ -32,6 +32,7 @@ public class PlayerCarry : MonoBehaviour
         if (_carriedObject != null)
         {
             _carriedObject.GetComponent<Cup>().Unlock();
+            _carriedObject.GetComponent<FollowTarget>().ClearTarget();
             Vector3 dropPosition = carryPoint.position + transform.forward * 1f;
             _carriedObject.transform.position = dropPosition;
             _carriedObject = null;

@@ -85,6 +85,7 @@ public class ClientCommands : MonoBehaviour, IInteractable
         Cup heldCupScript = _heldCup.GetComponent<Cup>();
         heldCupScript.Empty();
         heldCupScript.Unlock();
+        _heldCup.GetComponent<FollowTarget>().ClearTarget();
         
         LeaveCoffeeShop();
     }

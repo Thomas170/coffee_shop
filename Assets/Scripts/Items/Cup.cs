@@ -9,13 +9,12 @@ public class Cup : MonoBehaviour
     
     public bool IsFull => State == CupState.Full;
     public bool IsLocked { get; private set; }
-    public GameObject cupSpot = null;
+    public GameObject cupSpot;
 
     public void Lock() => IsLocked = true;
     public void Unlock()
     {
         IsLocked = false;
-        gameObject.GetComponent<FollowTarget>().ClearTarget();
     }
 
     public void OnSpot(GameObject commandSpot)
