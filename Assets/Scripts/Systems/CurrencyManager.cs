@@ -12,7 +12,7 @@ public class CurrencyManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
-
+    
     public void AddCoins(int amount)
     {
         coins += amount;
