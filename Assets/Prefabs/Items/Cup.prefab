@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4672169817553920595}
   - component: {fileID: 5391373353981687965}
   - component: {fileID: 6393158428608652809}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Empty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 6804517291723938991}
   - component: {fileID: 7900380170293211371}
   - component: {fileID: 187594810090687652}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: WithCoffee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 2725276635314055895}
   - component: {fileID: 6480606949960947358}
   - component: {fileID: 8627902273415941203}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cup
   m_TagString: Pickable
   m_Icon: {fileID: 0}
@@ -267,6 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emptyVisual: {fileID: 902123986336361029}
   fullVisual: {fileID: 2486205109177081640}
+  cupSpot: {fileID: 0}
 --- !u!114 &8627902273415941203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,4 +283,3 @@ MonoBehaviour:
   target: {fileID: 0}
   positionOffset: {x: 0, y: 0, z: 0}
   followRotation: 0
-  smoothSpeed: 20

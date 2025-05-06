@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8474277385519074961}
   - component: {fileID: 1480542634612049318}
   - component: {fileID: 3645101094261524964}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: OrderIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,14 +58,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3915094, g: 0.63462806, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f92f29f419f6fcf4ba44114d9d56b279, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8515212272042449155}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: HandPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 5999042519131277328}
   - component: {fileID: 8137678269464672987}
   - component: {fileID: 5331133910889543845}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,13 +232,13 @@ GameObject:
   - component: {fileID: 1796784901707160537}
   - component: {fileID: 1872532982189150026}
   - component: {fileID: 7109139405507585920}
-  - component: {fileID: 6995661259455232942}
   - component: {fileID: 8440142818639658735}
+  - component: {fileID: 3770139461622060854}
   - component: {fileID: 1693444816314540503}
   - component: {fileID: 4460690199350288766}
   - component: {fileID: 5565741242514282347}
   - component: {fileID: 3704860196501996656}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Client
   m_TagString: Client
   m_Icon: {fileID: 0}
@@ -312,29 +312,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6995661259455232942
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7510789237618404378}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 4
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &8440142818639658735
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -362,6 +339,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!136 &3770139461622060854
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7510789237618404378}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &1693444816314540503
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -371,7 +371,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7510789237618404378}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -438,7 +438,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7377120251630201791}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: CommandAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
