@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Pickable
   - Client
+  - GameManager
+  - CupSpot
   layers:
   - Default
   - TransparentFX

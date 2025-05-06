@@ -41,6 +41,8 @@ public class FollowTarget : MonoBehaviour
         {
             col.enabled = false;
         }
+        
+        gameObject.GetComponent<Cup>().Lock();
     }
 
     public void ClearTarget()

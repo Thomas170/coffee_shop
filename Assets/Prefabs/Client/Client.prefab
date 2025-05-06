@@ -44,6 +44,9 @@ GameObject:
   - component: {fileID: 7109139405507585920}
   - component: {fileID: 6995661259455232942}
   - component: {fileID: 8440142818639658735}
+  - component: {fileID: 1693444816314540503}
+  - component: {fileID: 4460690199350288766}
+  - component: {fileID: 5565741242514282347}
   - component: {fileID: 3704860196501996656}
   m_Layer: 0
   m_Name: Client
@@ -168,6 +171,56 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!195 &1693444816314540503
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7510789237618404378}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &4460690199350288766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7510789237618404378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1119642f02a7f947a84b6a74714de50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patienceTime: 300
+  movement: {fileID: 5565741242514282347}
+  commands: {fileID: 3704860196501996656}
+  clientSpawner: {fileID: 0}
+--- !u!114 &5565741242514282347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7510789237618404378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467bdbcf9ba7afd49b5e73e85b6d35c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3704860196501996656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,4 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52281b27f84f9d142a979ac65c1fc4fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clientController: {fileID: 4460690199350288766}
   handPoint: {fileID: 8515212272042449155}
+  patienceTime: 300
+  commandSpot: {fileID: 0}

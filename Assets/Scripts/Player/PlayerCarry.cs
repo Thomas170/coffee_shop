@@ -13,6 +13,13 @@ public class PlayerCarry : MonoBehaviour
     {
         _carriedObject = item;
         _carriedObject.GetComponent<FollowTarget>().SetTarget(carryPoint);
+
+        Cup cupScript = _carriedObject.GetComponent<Cup>();
+        if (cupScript.cupSpot != null)
+        {
+            ClientBarSpotManager.Instance.ReleaseSpot(cupScript.cupSpot);
+            cupScript.OutSpot();
+        }
     }
 
     public void RemoveCarried()
@@ -24,7 +31,7 @@ public class PlayerCarry : MonoBehaviour
     {
         if (_carriedObject != null)
         {
-            _carriedObject.GetComponent<FollowTarget>().ClearTarget();
+            _carriedObject.GetComponent<Cup>().Unlock();
             Vector3 dropPosition = carryPoint.position + transform.forward * 1f;
             _carriedObject.transform.position = dropPosition;
             _carriedObject = null;

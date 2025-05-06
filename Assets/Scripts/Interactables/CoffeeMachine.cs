@@ -30,7 +30,6 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         carry.RemoveCarried();
         _placedCup = cup;
         _placedCup.GetComponent<FollowTarget>().SetTarget(cupPlacementPoint);
-        _placedCup.Lock();
         
         StartCoroutine(BrewCoffee());
         Debug.Log("Préparation du café...");
