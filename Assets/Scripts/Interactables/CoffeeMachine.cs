@@ -4,6 +4,7 @@ using System.Collections;
 public class CoffeeMachine : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform cupPlacementPoint;
+    [SerializeField] private CoffeeGaugeUI gaugeUI;
     private Cup _placedCup;
     private bool _isBrewing;
 
@@ -58,7 +59,11 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
     private IEnumerator BrewCoffee()
     {
         _isBrewing = true;
+        
+        gaugeUI.StartFilling(5f);
         yield return new WaitForSeconds(5f);
+        gaugeUI.Hide();
+        
         _placedCup.Fill();
         _placedCup.Unlock();
         _isBrewing = false;

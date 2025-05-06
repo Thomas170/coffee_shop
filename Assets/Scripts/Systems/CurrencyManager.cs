@@ -1,7 +1,9 @@
+using TMPro;
 using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI coinsText;
     public static CurrencyManager Instance;
     public int coins;
 
@@ -14,6 +16,7 @@ public class CurrencyManager : MonoBehaviour
     public void AddCoins(int amount)
     {
         coins += amount;
+        coinsText.text = coins.ToString();
         Debug.Log($"+{amount} coins! Total: {coins}");
     }
 }

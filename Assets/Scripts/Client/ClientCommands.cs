@@ -5,13 +5,19 @@ public class ClientCommands : MonoBehaviour, IInteractable
 {
     public ClientController clientController;
     [SerializeField] private Transform handPoint;
+    [SerializeField] private GameObject orderIcon;
     public float patienceTime = 300f;
     public GameObject commandSpot;
     
     private GameObject _heldCup;
     private bool _canInteract;
     private Coroutine _patienceCoroutine;
-    
+
+    private void Start()
+    {
+         orderIcon.SetActive(false);
+    }
+
     public void Interact()
     {
         if (!_canInteract)
@@ -60,6 +66,7 @@ public class ClientCommands : MonoBehaviour, IInteractable
     public void StartOrder()
     {
         _canInteract = true;
+        orderIcon?.SetActive(true);
         _patienceCoroutine = StartCoroutine(PatienceTimer());
         Debug.Log("Un client veut un café !");
     }
@@ -67,6 +74,7 @@ public class ClientCommands : MonoBehaviour, IInteractable
     private void ReceiveCommand(GameObject commandObj)
     {
         StopCoroutine(_patienceCoroutine);
+        orderIcon?.SetActive(false);
         
         _heldCup = commandObj;
         Transform cupSpot = ClientBarSpotManager.Instance.GetCupSpot(commandSpot.gameObject);
