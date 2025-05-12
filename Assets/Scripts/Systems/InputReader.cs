@@ -17,9 +17,13 @@ public class InputReader : MonoBehaviour
         Instance = this;
         Controls = new PlayerControls();
         Controls.Enable();
+        Controls.UI.Enable();
     }
 
     public InputAction InteractAction => Controls.Interactions.Interact;
     public InputAction CollectAction => Controls.Interactions.Collect;
     public InputAction DropAction => Controls.Interactions.Drop;
+    public InputAction NavigateAction => Controls.UI.Navigate;
+    public InputAction SubmitAction => Controls.UI.Submit;
+
 }
