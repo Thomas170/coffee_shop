@@ -21,9 +21,11 @@ public class InputReader : MonoBehaviour
     }
 
     public InputAction InteractAction => Controls.Interactions.Interact;
+    public InputAction ManageAction => Controls.Interactions.Manage;
     public InputAction CollectAction => Controls.Interactions.Collect;
     public InputAction DropAction => Controls.Interactions.Drop;
     public InputAction NavigateAction => Controls.UI.Navigate;
     public InputAction SubmitAction => Controls.UI.Submit;
+    public InputAction PauseAction => Controls.UI.Pause;
 
 }

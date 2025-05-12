@@ -5,18 +5,18 @@ using UnityEngine.UI;
 public class UIButtonHighlight : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] private Image background;
-    [SerializeField] private MainMenuController menuController;
+    private MenuController _menuController;
     private int _myIndex;
 
-    public void Init(MainMenuController controller, int index)
+    public void Init(MenuController controller, int index)
     {
-        menuController = controller;
+        _menuController = controller;
         _myIndex = index;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (menuController != null)
-            menuController.SelectButton(_myIndex);
+        if (_menuController != null)
+            _menuController.SelectButton(_myIndex);
     }
 }

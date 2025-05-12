@@ -19,6 +19,14 @@ MonoBehaviour:
     m_Key: coins_title
     m_Metadata:
       m_Items: []
+  - m_Id: 2132286851354624
+    m_Key: interact_control
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2132329914273792
+    m_Key: manage_control
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

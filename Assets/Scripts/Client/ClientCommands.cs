@@ -4,14 +4,15 @@ using System.Collections;
 public class ClientCommands : MonoBehaviour, IInteractable
 {
     public ClientController clientController;
-    [SerializeField] private Transform handPoint;
-    [SerializeField] private GameObject orderIcon;
-    public float patienceTime = 300f;
     public GameObject commandSpot;
     
+    [SerializeField] private Transform handPoint;
+    [SerializeField] private GameObject orderIcon;
+    [SerializeField] private SmoothGaugeUI waitingGauge;
+    
+    private readonly float _patienceTime = 40f;
     private GameObject _heldCup;
     private bool _canInteract;
-    private Coroutine _patienceCoroutine;
 
     private void Start()
     {
@@ -67,13 +68,18 @@ public class ClientCommands : MonoBehaviour, IInteractable
     {
         _canInteract = true;
         orderIcon?.SetActive(true);
-        _patienceCoroutine = StartCoroutine(PatienceTimer());
+        
+        if (waitingGauge != null)
+        {
+            waitingGauge.StartGauge(_patienceTime);
+            waitingGauge.OnEmpty = OnPatienceExpired;
+        }
+        
         Debug.Log("Un client veut un café !");
     }
 
     private void ReceiveCommand(GameObject commandObj)
     {
-        StopCoroutine(_patienceCoroutine);
         orderIcon?.SetActive(false);
         
         _heldCup = commandObj;
@@ -97,11 +103,12 @@ public class ClientCommands : MonoBehaviour, IInteractable
         
         LeaveCoffeeShop();
     }
-    
-    public IEnumerator PatienceTimer()
+
+    private void OnPatienceExpired()
     {
-        yield return new WaitForSeconds(patienceTime);
         Debug.Log("Client impatient, il part.");
+        orderIcon?.SetActive(false);
+        
         ClientBarSpotManager.Instance.ReleaseSpot(commandSpot);
         Transform exit = clientController.clientSpawner.GetRandomExit();
         clientController.movement.MoveTo(exit);
@@ -109,6 +116,7 @@ public class ClientCommands : MonoBehaviour, IInteractable
 
     public void LeaveCoffeeShop()
     {
+        orderIcon?.SetActive(false);
         Transform exit = clientController.clientSpawner.GetRandomExit();
         clientController.movement.MoveTo(exit);
     }

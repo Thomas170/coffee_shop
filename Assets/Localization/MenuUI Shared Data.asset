@@ -39,6 +39,18 @@ MonoBehaviour:
     m_Key: select_control
     m_Metadata:
       m_Items: []
+  - m_Id: 110844794212352
+    m_Key: continue_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110920186826752
+    m_Key: controls_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110961458778112
+    m_Key: pause_title
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

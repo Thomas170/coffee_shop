@@ -1773,7 +1773,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 0}
-  menuController: {fileID: 0}
 --- !u!1 &1327179888
 GameObject:
   m_ObjectHideFlags: 0
@@ -2302,7 +2301,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 0}
-  menuController: {fileID: 0}
 --- !u!1 &1562546777
 GameObject:
   m_ObjectHideFlags: 0
@@ -2666,7 +2664,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 0}
-  menuController: {fileID: 0}
 --- !u!1 &1677493241
 GameObject:
   m_ObjectHideFlags: 0
@@ -3226,7 +3223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 0}
-  menuController: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

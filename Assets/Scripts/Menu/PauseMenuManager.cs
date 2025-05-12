@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
-public class MainMenuController : MonoBehaviour, MenuController
+public class PauseMenuController : MonoBehaviour, MenuController
 {
     [System.Serializable]
     public class MenuEntry
@@ -14,6 +14,7 @@ public class MainMenuController : MonoBehaviour, MenuController
     }
 
     public MenuEntry[] menuButtons;
+    public GameObject menu;
 
     private int _selectedIndex;
     private readonly float _moveCooldown = 0.2f;
@@ -21,11 +22,15 @@ public class MainMenuController : MonoBehaviour, MenuController
 
     private InputAction _navigateAction;
     private InputAction _submitAction;
+    private InputAction _pauseAction;
+    
+    private bool _isMenuOpen;
 
     private void Start()
     {
         _navigateAction = InputReader.Instance.NavigateAction;
         _submitAction = InputReader.Instance.SubmitAction;
+        _pauseAction = InputReader.Instance.PauseAction;
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
@@ -40,11 +45,13 @@ public class MainMenuController : MonoBehaviour, MenuController
         }
         
         SelectButton(0);
+        _pauseAction.performed += _ => TogglePauseMenu();
         _submitAction.performed += _ => OnSubmit();
     }
 
     private void OnDestroy()
     {
+        _pauseAction.performed -= _ => TogglePauseMenu();
         _submitAction.performed -= _ => OnSubmit();
     }
 
@@ -85,15 +92,11 @@ public class MainMenuController : MonoBehaviour, MenuController
 
         switch (entry.button.name)
         {
-            case "Play":
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+            case "Continue": 
+                TogglePauseMenu();
                 break;
             case "Leave":
-                #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-                #else
-                    Application.Quit();
-                #endif
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
                 break;
         }
     }
@@ -108,5 +111,20 @@ public class MainMenuController : MonoBehaviour, MenuController
         }
 
         EventSystem.current.SetSelectedGameObject(menuButtons[_selectedIndex].button.gameObject);
+    }
+    
+    private void TogglePauseMenu()
+    {
+        _isMenuOpen = !_isMenuOpen;
+        menu.SetActive(_isMenuOpen);
+
+        if (_isMenuOpen)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 }
