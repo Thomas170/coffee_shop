@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,24 +19,31 @@ public class ControlsUIManager : MonoBehaviour
     }
 
     public InputActionAsset inputActions;
-    public PlayerInput playerInput;
     public Transform bindingsContainer;
     public GameObject bindingUIPrefab;
     public ActionBindingDisplay[] actionDisplays;
 
-    private bool _usingGamepad;
     private Dictionary<string, GameObject> _activeBindings = new();
 
     private void Start()
     {
-        _usingGamepad = playerInput.currentControlScheme == "Gamepad";
-        playerInput.onControlsChanged += OnControlsChanged;
         LocalizationSettings.SelectedLocaleChanged += OnLanguageChanged;
-
+        InputDeviceTracker.Instance.OnDeviceChanged += RefreshIcons;
+        
         AddBindingUI("Interact");
         AddBindingUI("Manage");
         AddBindingUI("Collect");
         AddBindingUI("Drop");
+        
+        RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
+    }
+
+    private void OnDestroy()
+    {
+        if (InputDeviceTracker.Instance != null)
+            InputDeviceTracker.Instance.OnDeviceChanged -= RefreshIcons;
+
+        LocalizationSettings.SelectedLocaleChanged -= OnLanguageChanged;
     }
 
     public void AddBindingUI(string actionName)
@@ -43,7 +51,7 @@ public class ControlsUIManager : MonoBehaviour
         if (_activeBindings.ContainsKey(actionName))
             return;
 
-        var display = System.Array.Find(actionDisplays, d => d.actionName == actionName);
+        var display = Array.Find(actionDisplays, d => d.actionName == actionName);
         if (display == null)
         {
             Debug.LogWarning($"Display config not found for action '{actionName}'");
@@ -65,7 +73,9 @@ public class ControlsUIManager : MonoBehaviour
             text.text = display.localizedActionLabel.GetLocalizedString();
 
         if (image != null)
-            image.sprite = _usingGamepad ? display.gamepadSprite : display.keyboardSprite;
+            image.sprite = InputDeviceTracker.Instance.IsUsingGamepad
+                ? display.gamepadSprite
+                : display.keyboardSprite;
 
         _activeBindings[actionName] = uiElement;
     }
@@ -79,18 +89,14 @@ public class ControlsUIManager : MonoBehaviour
         }
     }
 
-    private void OnControlsChanged(PlayerInput input)
+    private void RefreshIcons(bool isGamepad)
     {
-        bool isGamepad = input.currentControlScheme == "Gamepad";
-        if (_usingGamepad == isGamepad) return;
-
-        _usingGamepad = isGamepad;
         foreach (var kvp in _activeBindings)
         {
-            var display = System.Array.Find(actionDisplays, d => d.actionName == kvp.Key);
+            var display = Array.Find(actionDisplays, d => d.actionName == kvp.Key);
             var image = kvp.Value.transform.Find("KeyIcon")?.GetComponent<Image>();
             if (image != null)
-                image.sprite = _usingGamepad ? display.gamepadSprite : display.keyboardSprite;
+                image.sprite = isGamepad ? display.gamepadSprite : display.keyboardSprite;
         }
     }
 
@@ -98,7 +104,7 @@ public class ControlsUIManager : MonoBehaviour
     {
         foreach (var kvp in _activeBindings)
         {
-            var display = System.Array.Find(actionDisplays, d => d.actionName == kvp.Key);
+            var display = Array.Find(actionDisplays, d => d.actionName == kvp.Key);
             var text = kvp.Value.GetComponentInChildren<TextMeshProUGUI>();
             if (text != null)
                 text.text = display.localizedActionLabel.GetLocalizedString();

@@ -273,6 +273,8 @@ GameObject:
   - component: {fileID: 86644396605019101}
   - component: {fileID: 4931628919939516790}
   - component: {fileID: 1935834116526465263}
+  - component: {fileID: 3280389153802484829}
+  - component: {fileID: 5237411583008263734}
   m_Layer: 12
   m_Name: PlayerModel
   m_TagString: Player
@@ -479,6 +481,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carryPoint: {fileID: 8079524428251938336}
+--- !u!114 &3280389153802484829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5934373536191012530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9a127081a227e948b26d3c6f08ebbc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5237411583008263734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5934373536191012530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a602a29d8b746548a4758600f5e53c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7275879839022377355
 GameObject:
   m_ObjectHideFlags: 0

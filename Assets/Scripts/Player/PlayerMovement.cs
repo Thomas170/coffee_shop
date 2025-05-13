@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private PlayerController playerController;
 
     private CharacterController _controller;
     private PlayerControls _controls;
@@ -13,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        playerController = transform.GetComponent<PlayerController>();
+        _controller = transform.GetComponent<CharacterController>();
     }
 
     private void OnEnable()
@@ -42,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!playerController.CanMove) return;
+            
         Vector3 move = new Vector3(_horizontalInput, 0, _verticalInput).normalized;
 
         _controller.Move(move * (moveSpeed * Time.deltaTime));

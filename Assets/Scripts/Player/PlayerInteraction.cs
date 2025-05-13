@@ -3,11 +3,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    [SerializeField] private PlayerController playerController;
+    
     private IInteractable _currentInteractable;
     private GameObject _currentPickable;
 
     private void Start()
     {
+        playerController = transform.GetComponent<PlayerController>();
+        
         if (InputReader.Instance != null)
         {
             InputReader.Instance.InteractAction.performed += OnInteract;
@@ -32,11 +36,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext ctx)
     {
+        if (!playerController.CanInteract) return;
         _currentInteractable?.Interact();
     }
 
     private void OnCollect(InputAction.CallbackContext ctx)
     {
+        if (!playerController.CanInteract) return;
+        
         PlayerCarry carry = GetComponent<PlayerCarry>();
 
         if (_currentInteractable != null)
@@ -59,6 +66,8 @@ public class PlayerInteraction : MonoBehaviour
     
     private void OnDrop(InputAction.CallbackContext ctx)
     {
+        if (!playerController.CanInteract) return;
+        
         var carry = GetComponent<PlayerCarry>();
         carry.DropInFront();
     }
