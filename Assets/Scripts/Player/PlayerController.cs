@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerUI.OnMenuStateChanged += HandleMenuStateChanged;
-        InputDeviceTracker.Instance.OnDeviceChanged += UpdateCursorState;
+        InputDeviceTracker.Instance.OnDeviceChanged += DeviceChange;
         
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         playerUI.OnMenuStateChanged -= HandleMenuStateChanged;
         
         if (InputDeviceTracker.Instance != null)
-            InputDeviceTracker.Instance.OnDeviceChanged -= UpdateCursorState;
+            InputDeviceTracker.Instance.OnDeviceChanged -= DeviceChange;
     }
     
     private void HandleMenuStateChanged(bool isOpen)
@@ -47,30 +47,11 @@ public class PlayerController : MonoBehaviour
         CanInteract = !isOpen;
         CanOpenMenu = !isOpen;
 
-        UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad);
-    }
-    
-    private void UpdateCursorState(bool isGamepad)
-    {
-        if (HasMenuOpen && !isGamepad)
-        {
-            ActiveCursor();
-        }
-        else
-        {
-            InactiveCursor();
-        }
+        CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, HasMenuOpen);
     }
 
-    public void ActiveCursor()
+    private void DeviceChange(bool isGamepad)
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
-    public void InactiveCursor()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorManager.Instance.UpdateCursorState(isGamepad, HasMenuOpen);
     }
 }

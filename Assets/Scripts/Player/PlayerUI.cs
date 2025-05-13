@@ -8,7 +8,6 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuObject;
     [SerializeField] private PauseMenuController pauseMenuController;
-    [SerializeField] private PlayerController playerController;
 
     private InputAction _pauseAction;
     private bool _menuOpen;
@@ -19,7 +18,6 @@ public class PlayerUI : MonoBehaviour
     {
         pauseMenuObject.SetActive(false);
         pauseMenuController.enabled = false;
-        playerController = transform.GetComponent<PlayerController>();
     }
 
     private void Start()
@@ -47,11 +45,11 @@ public class PlayerUI : MonoBehaviour
 
         if (_menuOpen)
         {
-            playerController.ActiveCursor();
+            CursorManager.Instance.ActiveCursor();
         }
         else
         {
-            playerController.InactiveCursor();
+            CursorManager.Instance.InactiveCursor();
         }
 
         OnMenuStateChanged?.Invoke(_menuOpen);
