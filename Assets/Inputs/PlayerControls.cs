@@ -62,6 +62,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveGamepad"",
+                    ""type"": ""Value"",
+                    ""id"": ""448dadd8-ae51-4128-8148-1d7b36c7064a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -69,17 +78,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""8f4a4ce4-2ec0-4a7e-ab18-494089eb88bc"",
                     ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toward"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2e5a7740-9c47-44ba-90c5-e5e4b1d6b68c"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -100,30 +98,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""017cf057-9b3a-4dc5-9d71-b1db620590f6"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Back"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""b21d88ec-4575-4931-a7c5-0e4a4764bce9"",
                     ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8d141d1c-e512-4a3d-9e18-605420079521"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -144,12 +120,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d89d120b-658c-4df3-b1b8-0e685a1186ec"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""id"": ""51459851-740e-45c3-88b5-6a04b57db0c5"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Right"",
+                    ""action"": ""MoveGamepad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -414,6 +390,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Movements_Back = m_Movements.FindAction("Back", throwIfNotFound: true);
         m_Movements_Left = m_Movements.FindAction("Left", throwIfNotFound: true);
         m_Movements_Right = m_Movements.FindAction("Right", throwIfNotFound: true);
+        m_Movements_MoveGamepad = m_Movements.FindAction("MoveGamepad", throwIfNotFound: true);
         // Interactions
         m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
         m_Interactions_Interact = m_Interactions.FindAction("Interact", throwIfNotFound: true);
@@ -490,6 +467,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movements_Back;
     private readonly InputAction m_Movements_Left;
     private readonly InputAction m_Movements_Right;
+    private readonly InputAction m_Movements_MoveGamepad;
     public struct MovementsActions
     {
         private @PlayerControls m_Wrapper;
@@ -498,6 +476,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Back => m_Wrapper.m_Movements_Back;
         public InputAction @Left => m_Wrapper.m_Movements_Left;
         public InputAction @Right => m_Wrapper.m_Movements_Right;
+        public InputAction @MoveGamepad => m_Wrapper.m_Movements_MoveGamepad;
         public InputActionMap Get() { return m_Wrapper.m_Movements; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -519,6 +498,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Right.started += instance.OnRight;
             @Right.performed += instance.OnRight;
             @Right.canceled += instance.OnRight;
+            @MoveGamepad.started += instance.OnMoveGamepad;
+            @MoveGamepad.performed += instance.OnMoveGamepad;
+            @MoveGamepad.canceled += instance.OnMoveGamepad;
         }
 
         private void UnregisterCallbacks(IMovementsActions instance)
@@ -535,6 +517,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Right.started -= instance.OnRight;
             @Right.performed -= instance.OnRight;
             @Right.canceled -= instance.OnRight;
+            @MoveGamepad.started -= instance.OnMoveGamepad;
+            @MoveGamepad.performed -= instance.OnMoveGamepad;
+            @MoveGamepad.canceled -= instance.OnMoveGamepad;
         }
 
         public void RemoveCallbacks(IMovementsActions instance)
@@ -708,6 +693,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnBack(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+        void OnMoveGamepad(InputAction.CallbackContext context);
     }
     public interface IInteractionsActions
     {

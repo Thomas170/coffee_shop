@@ -9,30 +9,33 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _controller;
     private PlayerControls _controls;
 
-    private float _verticalInput;
-    private float _horizontalInput;
+    private Vector2 _keyboardInput;
+    private Vector2 _gamepadInput;
 
     private void Awake()
     {
-        playerController = transform.GetComponent<PlayerController>();
-        _controller = transform.GetComponent<CharacterController>();
+        playerController = GetComponent<PlayerController>();
+        _controller = GetComponent<CharacterController>();
     }
 
     private void OnEnable()
     {
         _controls = new PlayerControls();
 
-        _controls.Movements.Toward.performed += _ => _verticalInput = 1f;
-        _controls.Movements.Toward.canceled += _ => { if (Mathf.Approximately(_verticalInput, 1f)) _verticalInput = 0f; };
+        _controls.Movements.Toward.performed += _ => _keyboardInput.y = 1f;
+        _controls.Movements.Toward.canceled += _ => { if (_keyboardInput.y > 0f) _keyboardInput.y = 0f; };
 
-        _controls.Movements.Back.performed += _ => _verticalInput = -1f;
-        _controls.Movements.Back.canceled += _ => { if (Mathf.Approximately(_verticalInput, -1f)) _verticalInput = 0f; };
+        _controls.Movements.Back.performed += _ => _keyboardInput.y = -1f;
+        _controls.Movements.Back.canceled += _ => { if (_keyboardInput.y < 0f) _keyboardInput.y = 0f; };
 
-        _controls.Movements.Right.performed += _ => _horizontalInput = 1f;
-        _controls.Movements.Right.canceled += _ => { if (Mathf.Approximately(_horizontalInput, 1f)) _horizontalInput = 0f; };
+        _controls.Movements.Right.performed += _ => _keyboardInput.x = 1f;
+        _controls.Movements.Right.canceled += _ => { if (_keyboardInput.x > 0f) _keyboardInput.x = 0f; };
 
-        _controls.Movements.Left.performed += _ => _horizontalInput = -1f;
-        _controls.Movements.Left.canceled += _ => { if (Mathf.Approximately(_horizontalInput, -1f)) _horizontalInput = 0f; };
+        _controls.Movements.Left.performed += _ => _keyboardInput.x = -1f;
+        _controls.Movements.Left.canceled += _ => { if (_keyboardInput.x < 0f) _keyboardInput.x = 0f; };
+
+        _controls.Movements.MoveGamepad.performed += ctx => _gamepadInput = ctx.ReadValue<Vector2>();
+        _controls.Movements.MoveGamepad.canceled += _ => _gamepadInput = Vector2.zero;
 
         _controls.Movements.Enable();
     }
@@ -45,14 +48,14 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         if (!playerController.CanMove) return;
-            
-        Vector3 move = new Vector3(_horizontalInput, 0, _verticalInput).normalized;
 
-        _controller.Move(move * (moveSpeed * Time.deltaTime));
+        Vector2 input = _keyboardInput + _gamepadInput;
+        Vector3 move = new Vector3(input.x, 0, input.y);
 
-        if (move != Vector3.zero)
+        if (move.sqrMagnitude > 0.01f)
         {
-            transform.forward = move;
+            _controller.Move(move.normalized * (moveSpeed * Time.deltaTime));
+            transform.forward = move.normalized;
         }
     }
 }
