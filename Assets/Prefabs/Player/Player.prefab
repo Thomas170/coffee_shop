@@ -88,50 +88,6 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
---- !u!1 &340464588253946020
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6841766570340242855}
-  - component: {fileID: 369729240107267592}
-  m_Layer: 12
-  m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6841766570340242855
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340464588253946020}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7846962033894390644}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &369729240107267592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340464588253946020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b811b9d77f7f4a646b383160831934ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &894647917732161253
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +100,7 @@ GameObject:
   - component: {fileID: 1408308013180378359}
   m_Layer: 12
   m_Name: PlayerCamera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -234,7 +190,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6841766570340242855}
   - {fileID: 6619773877743678096}
   - {fileID: 6526770282205671512}
   m_Father: {fileID: 0}
@@ -456,6 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  playerController: {fileID: 0}
 --- !u!114 &4931628919939516790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb628357207723408479bf6e85d5015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
 --- !u!114 &1935834116526465263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,6 +450,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9a127081a227e948b26d3c6f08ebbc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravityHandler: {fileID: 0}
+  playerCarry: {fileID: 0}
+  playerInteraction: {fileID: 0}
+  playerMovement: {fileID: 0}
+  playerUI: {fileID: 0}
 --- !u!114 &5237411583008263734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,6 +467,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a602a29d8b746548a4758600f5e53c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenuObject: {fileID: 0}
+  pauseMenuController: {fileID: 0}
+  playerController: {fileID: 0}
 --- !u!1 &7275879839022377355
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -21,11 +22,21 @@ public class MainMenuController : MonoBehaviour, MenuController
 
     private InputAction _navigateAction;
     private InputAction _submitAction;
+    private Action<InputAction.CallbackContext> _submitCallback;
 
     private void Start()
     {
         _navigateAction = InputReader.Instance.NavigateAction;
         _submitAction = InputReader.Instance.SubmitAction;
+        
+        _submitCallback = _ => OnSubmit();
+        _submitAction.performed += _submitCallback;
+        
+        if (gameObject.activeInHierarchy)
+        {
+            _navigateAction.Enable();
+            _submitAction.Enable();
+        }
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
@@ -40,14 +51,13 @@ public class MainMenuController : MonoBehaviour, MenuController
         }
         
         SelectButton(0);
-        _submitAction.performed += _ => OnSubmit();
     }
 
     private void OnDestroy()
     {
-        if (_submitAction != null)
+        if (_submitAction != null && _submitCallback != null)
         {
-            _submitAction.performed -= _ => OnSubmit();
+            _submitAction.performed -= _submitCallback;
         }
     }
 

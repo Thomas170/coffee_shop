@@ -12,6 +12,8 @@ public class PlayerUI : MonoBehaviour
 
     private InputAction _pauseAction;
     private bool _menuOpen;
+    
+    private Action<InputAction.CallbackContext> _pauseCallback;
 
     private void Awake()
     {
@@ -23,12 +25,16 @@ public class PlayerUI : MonoBehaviour
     private void Start()
     {
         _pauseAction = InputReader.Instance.PauseAction;
-        _pauseAction.performed += _ => TogglePauseMenu();
+        _pauseCallback = _ => TogglePauseMenu();
+        _pauseAction.performed += _pauseCallback;
     }
 
     private void OnDestroy()
     {
-        _pauseAction.performed -= _ => TogglePauseMenu();
+        if (_pauseAction != null && _pauseCallback != null)
+        {
+            _pauseAction.performed -= _pauseCallback;
+        }
     }
 
     private void TogglePauseMenu()

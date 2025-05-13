@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -22,10 +23,21 @@ public class PauseMenuController : MonoBehaviour, MenuController
     private InputAction _submitAction;
     private InputAction _pauseAction;
     
+    private Action<InputAction.CallbackContext> _submitCallback;
+    
     private void Start()
     {
         _navigateAction = InputReader.Instance.NavigateAction;
         _submitAction = InputReader.Instance.SubmitAction;
+        
+        _submitCallback = _ => OnSubmit();
+        _submitAction.performed += _submitCallback;
+        
+        if (gameObject.activeInHierarchy)
+        {
+            _navigateAction.Enable();
+            _submitAction.Enable();
+        }
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
@@ -39,14 +51,13 @@ public class PauseMenuController : MonoBehaviour, MenuController
         }
         
         SelectButton(0);
-        _submitAction.performed += _ => OnSubmit();
     }
 
     private void OnDestroy()
     {
-        if (_submitAction != null)
+        if (_submitAction != null && _submitCallback != null)
         {
-            _submitAction.performed -= _ => OnSubmit();
+            _submitAction.performed -= _submitCallback;
         }
     }
 
@@ -85,7 +96,7 @@ public class PauseMenuController : MonoBehaviour, MenuController
         var entry = menuButtons[_selectedIndex];
         if (!entry.isClickable) return;
 
-        switch (entry.button.name)
+        switch (entry.button?.name)
         {
             case "Continue":
                 FindObjectOfType<PlayerUI>().SendMessage("TogglePauseMenu");
