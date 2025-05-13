@@ -69,7 +69,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             _currentInteractable = interactable;
         }
-        else if (other.CompareTag("Pickable"))
+        else if (other.CompareTag("Pickable") && !GetComponent<PlayerCarry>().IsCarrying)
         {
             _currentPickable = other.gameObject;
         }

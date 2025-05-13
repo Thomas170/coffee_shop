@@ -21,90 +21,87 @@ public class ControlsUIManager : MonoBehaviour
     public PlayerInput playerInput;
     public Transform bindingsContainer;
     public GameObject bindingUIPrefab;
-
     public ActionBindingDisplay[] actionDisplays;
 
     private bool _usingGamepad;
-    private List<(Image image, TextMeshProUGUI actionText, ActionBindingDisplay display)> _createdElements = new();
+    private Dictionary<string, GameObject> _activeBindings = new();
 
     private void Start()
     {
-        if (playerInput == null)
+        _usingGamepad = playerInput.currentControlScheme == "Gamepad";
+        playerInput.onControlsChanged += OnControlsChanged;
+        LocalizationSettings.SelectedLocaleChanged += OnLanguageChanged;
+
+        AddBindingUI("Interact");
+        AddBindingUI("Manage");
+        AddBindingUI("Collect");
+        AddBindingUI("Drop");
+    }
+
+    public void AddBindingUI(string actionName)
+    {
+        if (_activeBindings.ContainsKey(actionName))
+            return;
+
+        var display = System.Array.Find(actionDisplays, d => d.actionName == actionName);
+        if (display == null)
         {
-            Debug.LogError("PlayerInput n'est pas assigné dans l'inspecteur !");
+            Debug.LogWarning($"Display config not found for action '{actionName}'");
             return;
         }
 
-        _usingGamepad = playerInput.currentControlScheme == "Gamepad";
-        playerInput.onControlsChanged += OnControlsChanged;
-        
-        LocalizationSettings.SelectedLocaleChanged += OnLanguageChanged;
+        var action = inputActions.FindAction(actionName);
+        if (action == null)
+        {
+            Debug.LogWarning($"Action '{actionName}' not found in InputActions.");
+            return;
+        }
 
-        GenerateBindingsUI();
+        var uiElement = Instantiate(bindingUIPrefab, bindingsContainer);
+        var text = uiElement.GetComponentInChildren<TextMeshProUGUI>();
+        var image = uiElement.transform.Find("KeyIcon")?.GetComponent<Image>();
+
+        if (text != null)
+            text.text = display.localizedActionLabel.GetLocalizedString();
+
+        if (image != null)
+            image.sprite = _usingGamepad ? display.gamepadSprite : display.keyboardSprite;
+
+        _activeBindings[actionName] = uiElement;
     }
 
-    private void OnDestroy()
+    public void RemoveBindingUI(string actionName)
     {
-        if (playerInput != null)
-            playerInput.onControlsChanged -= OnControlsChanged;
-        
-        LocalizationSettings.SelectedLocaleChanged -= OnLanguageChanged;
+        if (_activeBindings.TryGetValue(actionName, out var uiElement))
+        {
+            Destroy(uiElement);
+            _activeBindings.Remove(actionName);
+        }
     }
 
     private void OnControlsChanged(PlayerInput input)
     {
         bool isGamepad = input.currentControlScheme == "Gamepad";
+        if (_usingGamepad == isGamepad) return;
 
-        if (_usingGamepad != isGamepad)
+        _usingGamepad = isGamepad;
+        foreach (var kvp in _activeBindings)
         {
-            _usingGamepad = isGamepad;
-            UpdateInputDisplayIcons();
+            var display = System.Array.Find(actionDisplays, d => d.actionName == kvp.Key);
+            var image = kvp.Value.transform.Find("KeyIcon")?.GetComponent<Image>();
+            if (image != null)
+                image.sprite = _usingGamepad ? display.gamepadSprite : display.keyboardSprite;
         }
     }
-    
+
     private void OnLanguageChanged(Locale newLocale)
     {
-        UpdateLocalizedText();
-    }
-
-    private void GenerateBindingsUI()
-    {
-        foreach (var display in actionDisplays)
+        foreach (var kvp in _activeBindings)
         {
-            var action = inputActions.FindAction(display.actionName);
-            if (action == null)
-            {
-                Debug.LogWarning($"Action {display.actionName} not found.");
-                continue;
-            }
-
-            GameObject uiElement = Instantiate(bindingUIPrefab, bindingsContainer);
-
-            TextMeshProUGUI actionText = uiElement.GetComponentInChildren<TextMeshProUGUI>();
-            actionText.text = display.localizedActionLabel.GetLocalizedString();
-
-            Image image = uiElement.transform.Find("KeyIcon")?.GetComponent<Image>();
-            if (image != null)
-            {
-                image.sprite = _usingGamepad ? display.gamepadSprite : display.keyboardSprite;
-                _createdElements.Add((image, actionText, display));
-            }
-        }
-    }
-
-    private void UpdateInputDisplayIcons()
-    {
-        foreach (var (image, _, display) in _createdElements)
-        {
-            image.sprite = _usingGamepad ? display.gamepadSprite : display.keyboardSprite;
-        }
-    }
-    
-    private void UpdateLocalizedText()
-    {
-        foreach (var (_, actionText, display) in _createdElements)
-        {
-            actionText.text = display.localizedActionLabel.GetLocalizedString();
+            var display = System.Array.Find(actionDisplays, d => d.actionName == kvp.Key);
+            var text = kvp.Value.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null)
+                text.text = display.localizedActionLabel.GetLocalizedString();
         }
     }
 }

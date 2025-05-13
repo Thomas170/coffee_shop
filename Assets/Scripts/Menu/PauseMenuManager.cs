@@ -51,13 +51,19 @@ public class PauseMenuController : MonoBehaviour, MenuController
 
     private void OnDestroy()
     {
-        _pauseAction.performed -= _ => TogglePauseMenu();
-        _submitAction.performed -= _ => OnSubmit();
+        if (_pauseAction != null && _submitAction != null)
+        {
+            _pauseAction.performed -= _ => TogglePauseMenu();
+            _submitAction.performed -= _ => OnSubmit();
+        }
     }
 
     private void Update()
     {
-        HandleNavigation();
+        if (_isMenuOpen)
+        {
+            HandleNavigation();
+        }
     }
 
     private void HandleNavigation()
@@ -87,6 +93,8 @@ public class PauseMenuController : MonoBehaviour, MenuController
 
     public void OnSubmit()
     {
+        if (!_isMenuOpen) return;
+        
         var entry = menuButtons[_selectedIndex];
         if (!entry.isClickable) return;
 
@@ -97,14 +105,16 @@ public class PauseMenuController : MonoBehaviour, MenuController
                 break;
             case "Leave":
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+                Time.timeScale = 1f;
                 break;
         }
     }
 
     public void SelectButton(int index)
     {
+        if (!_isMenuOpen) return;
+        
         _selectedIndex = index;
-
         for (int i = 0; i < menuButtons.Length; i++)
         {
             menuButtons[i].backgroundImage.enabled = (i == _selectedIndex);

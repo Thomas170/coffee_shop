@@ -45,7 +45,10 @@ public class MainMenuController : MonoBehaviour, MenuController
 
     private void OnDestroy()
     {
-        _submitAction.performed -= _ => OnSubmit();
+        if (_submitAction != null)
+        {
+            _submitAction.performed -= _ => OnSubmit();
+        }
     }
 
     private void Update()

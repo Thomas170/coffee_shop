@@ -30,6 +30,14 @@ MonoBehaviour:
     m_Localized: "G\xE9rer"
     m_Metadata:
       m_Items: []
+  - m_Id: 2410120803094528
+    m_Localized: Jeter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2410085029875712
+    m_Localized: Ramasser
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
