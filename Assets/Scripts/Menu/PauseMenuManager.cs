@@ -2,14 +2,6 @@ using UnityEngine.EventSystems;
 
 public class PauseMenuController : BaseMenuController<MenuEntry>, IMenuEntryActionHandler
 {
-    protected override void OnSubmit()
-    {
-        var entry = menuButtons[SelectedIndex];
-        if (!entry.isClickable) return;
-
-        ExecuteMenuAction(entry.button.name);
-    }
-
     public void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)

@@ -1,13 +1,5 @@
 public class MainMenuController : BaseMenuController<MenuEntry>, IMenuEntryActionHandler
 {
-    protected override void OnSubmit()
-    {
-        var entry = menuButtons[SelectedIndex];
-        if (!entry.isClickable) return;
-
-        ExecuteMenuAction(entry.button.name);
-    }
-
     public void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
@@ -21,7 +13,7 @@ public class MainMenuController : BaseMenuController<MenuEntry>, IMenuEntryActio
         }
     }
 
-    private void CloseApplication()
+    private static void CloseApplication()
     {
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

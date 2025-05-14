@@ -110,5 +110,18 @@ public abstract class BaseMenuController<T> : MonoBehaviour where T : MenuEntry
         EventSystem.current.SetSelectedGameObject(menuButtons[SelectedIndex].button.gameObject);
     }
 
-    protected abstract void OnSubmit();
+    protected virtual void OnSubmit()
+    {
+        var entry = menuButtons[SelectedIndex];
+        if (!entry.isClickable) return;
+
+        if (this is IMenuEntryActionHandler actionHandler)
+        {
+            actionHandler.ExecuteMenuAction(entry.button.name);
+        }
+        else
+        {
+            Debug.LogWarning($"No IMenuEntryActionHandler found on {gameObject.name}");
+        }
+    }
 }
