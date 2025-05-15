@@ -51,6 +51,18 @@ MonoBehaviour:
     m_Key: pause_title
     m_Metadata:
       m_Items: []
+  - m_Id: 1178385591406592
+    m_Key: settings_general
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1178441908326400
+    m_Key: settings_controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1178471293620224
+    m_Key: settings_back
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

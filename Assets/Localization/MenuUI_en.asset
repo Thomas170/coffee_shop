@@ -54,6 +54,18 @@ MonoBehaviour:
     m_Localized: Pause
     m_Metadata:
       m_Items: []
+  - m_Id: 1178385591406592
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1178441908326400
+    m_Localized: Controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1178471293620224
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
