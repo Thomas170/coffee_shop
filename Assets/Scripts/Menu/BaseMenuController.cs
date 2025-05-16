@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -13,7 +14,7 @@ public abstract class BaseMenuController : MonoBehaviour
     public Color selectedColor = Color.red;
     public bool isOpen;
 
-    protected int SelectedIndex;
+    public int SelectedIndex;
     protected readonly float MoveCooldown = 0.2f;
     protected float MoveTimer;
 
@@ -26,15 +27,7 @@ public abstract class BaseMenuController : MonoBehaviour
     {
         NavigateAction = InputReader.Instance.NavigateAction;
         SubmitAction = InputReader.Instance.SubmitAction;
-
         SubmitCallback = _ => OnSubmit();
-        SubmitAction.performed += SubmitCallback;
-
-        if (gameObject.activeInHierarchy)
-        {
-            NavigateAction.Enable();
-            SubmitAction.Enable();
-        }
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
@@ -122,6 +115,7 @@ public abstract class BaseMenuController : MonoBehaviour
     public virtual void OnSubmit()
     {
         if (!isOpen) return;
+
         var entry = menuButtons[SelectedIndex];
 
         if (this is IMenuEntryActionHandler actionHandler)
@@ -139,10 +133,13 @@ public abstract class BaseMenuController : MonoBehaviour
         if (isOpen) return;
         menuObject.SetActive(true);
         isOpen = true;
-        SelectedIndex = 0;
-        SelectButton(0);
+        EventSystem.current.SetSelectedGameObject(null);
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, true);
         MenuManager.Instance.OpenMenu();
+        
+        NavigateAction.Enable();
+        SubmitAction.Enable();
+        SubmitAction.performed += SubmitCallback;
     }
     
     public virtual void CloseMenu()
@@ -153,5 +150,9 @@ public abstract class BaseMenuController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
         MenuManager.Instance.CloseMenu();
+        
+        NavigateAction.Disable();
+        SubmitAction.Disable();
+        SubmitAction.performed -= SubmitCallback;
     }
 }
