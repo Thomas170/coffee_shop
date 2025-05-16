@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 64618860544
-    m_Localized: "Param\xE8tres"
+    m_Localized: Options
     m_Metadata:
       m_Items: []
   - m_Id: 284828209152
@@ -44,10 +44,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 110844794212352
     m_Localized: Reprendre
-    m_Metadata:
-      m_Items: []
-  - m_Id: 110920186826752
-    m_Localized: Commandes
     m_Metadata:
       m_Items: []
   - m_Id: 110961458778112

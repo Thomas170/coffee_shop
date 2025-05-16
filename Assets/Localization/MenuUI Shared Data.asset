@@ -43,10 +43,6 @@ MonoBehaviour:
     m_Key: continue_button
     m_Metadata:
       m_Items: []
-  - m_Id: 110920186826752
-    m_Key: controls_button
-    m_Metadata:
-      m_Items: []
   - m_Id: 110961458778112
     m_Key: pause_title
     m_Metadata:
@@ -61,6 +57,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1178471293620224
     m_Key: settings_back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1197218112835584
+    m_Key: 
     m_Metadata:
       m_Items: []
   m_Metadata:

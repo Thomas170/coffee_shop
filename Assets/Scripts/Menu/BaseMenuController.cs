@@ -4,17 +4,14 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public abstract class BaseMenuController<T> : MonoBehaviour where T : MenuEntry
+public abstract class BaseMenuController : MonoBehaviour
 {
-    [Serializable]
-    public class MenuEntry
-    {
-        public Button button;
-        public bool isClickable = true;
-        [HideInInspector] public Image backgroundImage;
-    }
-
-    public T[] menuButtons;
+    public GameObject menuObject;
+    public MenuEntry[] menuButtons;
+    public HighlightMode highlightMode = HighlightMode.SelectionOnly;
+    public Color notSelectedColor = Color.yellow;
+    public Color selectedColor = Color.red;
+    public bool isOpen;
 
     protected int SelectedIndex;
     protected readonly float MoveCooldown = 0.2f;
@@ -25,12 +22,7 @@ public abstract class BaseMenuController<T> : MonoBehaviour where T : MenuEntry
 
     protected Action<InputAction.CallbackContext> SubmitCallback;
 
-    protected virtual void Awake()
-    {
-        // Optional: subclass override
-    }
-
-    protected virtual void Start()
+    protected void Start()
     {
         NavigateAction = InputReader.Instance.NavigateAction;
         SubmitAction = InputReader.Instance.SubmitAction;
@@ -57,11 +49,15 @@ public abstract class BaseMenuController<T> : MonoBehaviour where T : MenuEntry
         }
 
         SelectButton(0);
+        menuObject.SetActive(isOpen);
     }
 
     protected virtual void Update()
     {
-        HandleNavigation();
+        if (isOpen)
+        {
+            HandleNavigation();
+        }
     }
 
     protected virtual void OnDestroy()
@@ -74,6 +70,8 @@ public abstract class BaseMenuController<T> : MonoBehaviour where T : MenuEntry
 
     protected virtual void HandleNavigation()
     {
+        if (!isOpen) return;
+        
         if (MoveTimer > 0)
         {
             MoveTimer -= Time.unscaledDeltaTime;
@@ -96,24 +94,35 @@ public abstract class BaseMenuController<T> : MonoBehaviour where T : MenuEntry
             MoveTimer = MoveCooldown;
         }
     }
-
+    
     public virtual void SelectButton(int index)
     {
+        if (!isOpen) return;
         SelectedIndex = index;
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
-            if (menuButtons[i].backgroundImage != null)
-                menuButtons[i].backgroundImage.enabled = (i == SelectedIndex);
+            var image = menuButtons[i].backgroundImage;
+            if (!image) continue;
+
+            if (highlightMode == HighlightMode.SelectionOnly)
+            {
+                image.enabled = (i == SelectedIndex);
+            }
+            else if (highlightMode == HighlightMode.AlwaysVisible)
+            {
+                image.enabled = true;
+                image.color = (i == SelectedIndex) ? selectedColor : notSelectedColor;
+            }
         }
 
         EventSystem.current.SetSelectedGameObject(menuButtons[SelectedIndex].button.gameObject);
     }
 
-    protected virtual void OnSubmit()
+    public virtual void OnSubmit()
     {
+        if (!isOpen) return;
         var entry = menuButtons[SelectedIndex];
-        if (!entry.isClickable) return;
 
         if (this is IMenuEntryActionHandler actionHandler)
         {
@@ -123,5 +132,26 @@ public abstract class BaseMenuController<T> : MonoBehaviour where T : MenuEntry
         {
             Debug.LogWarning($"No IMenuEntryActionHandler found on {gameObject.name}");
         }
+    }
+    
+    public virtual void OpenMenu()
+    {
+        if (isOpen) return;
+        menuObject.SetActive(true);
+        isOpen = true;
+        SelectedIndex = 0;
+        SelectButton(0);
+        CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, true);
+        MenuManager.Instance.OpenMenu();
+    }
+    
+    public virtual void CloseMenu()
+    {
+        if (!isOpen) return;
+        menuObject.SetActive(false);
+        isOpen = false;
+        EventSystem.current.SetSelectedGameObject(null);
+        CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
+        MenuManager.Instance.CloseMenu();
     }
 }

@@ -46,10 +46,6 @@ MonoBehaviour:
     m_Localized: Continue
     m_Metadata:
       m_Items: []
-  - m_Id: 110920186826752
-    m_Localized: Controls
-    m_Metadata:
-      m_Items: []
   - m_Id: 110961458778112
     m_Localized: Pause
     m_Metadata:

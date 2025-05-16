@@ -4,26 +4,15 @@ using System;
 
 public class PlayerUI : MonoBehaviour
 {
-    public event Action<bool> OnMenuStateChanged;
-
-    [SerializeField] private GameObject pauseMenuObject;
     [SerializeField] private PauseMenuController pauseMenuController;
 
     private InputAction _pauseAction;
-    private bool _menuOpen;
-    
     private Action<InputAction.CallbackContext> _pauseCallback;
-
-    private void Awake()
-    {
-        pauseMenuObject.SetActive(false);
-        pauseMenuController.enabled = false;
-    }
 
     private void Start()
     {
         _pauseAction = InputReader.Instance.PauseAction;
-        _pauseCallback = _ => TogglePauseMenu();
+        _pauseCallback = _ => pauseMenuController.OpenMenu();
         _pauseAction.performed += _pauseCallback;
     }
 
@@ -33,25 +22,5 @@ public class PlayerUI : MonoBehaviour
         {
             _pauseAction.performed -= _pauseCallback;
         }
-    }
-
-    private void TogglePauseMenu()
-    {
-        _menuOpen = !_menuOpen;
-
-        pauseMenuObject.SetActive(_menuOpen);
-        pauseMenuController.enabled = _menuOpen;
-        pauseMenuController.SetMenuState(_menuOpen);
-
-        if (_menuOpen)
-        {
-            CursorManager.Instance.ActiveCursor();
-        }
-        else
-        {
-            CursorManager.Instance.InactiveCursor();
-        }
-
-        OnMenuStateChanged?.Invoke(_menuOpen);
     }
 }

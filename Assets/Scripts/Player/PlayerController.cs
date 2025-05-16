@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     
     private void Start()
     {
-        playerUI.OnMenuStateChanged += HandleMenuStateChanged;
+        MenuManager.OnMenuStateChanged += HandleMenuStateChanged;
         InputDeviceTracker.Instance.OnDeviceChanged += DeviceChange;
         
         Cursor.lockState = CursorLockMode.Locked;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDestroy()
     {
-        playerUI.OnMenuStateChanged -= HandleMenuStateChanged;
+        MenuManager.OnMenuStateChanged -= HandleMenuStateChanged;
         
         if (InputDeviceTracker.Instance != null)
             InputDeviceTracker.Instance.OnDeviceChanged -= DeviceChange;
@@ -46,8 +46,6 @@ public class PlayerController : MonoBehaviour
         CanMove = !isOpen;
         CanInteract = !isOpen;
         CanOpenMenu = !isOpen;
-
-        CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, HasMenuOpen);
     }
 
     private void DeviceChange(bool isGamepad)
