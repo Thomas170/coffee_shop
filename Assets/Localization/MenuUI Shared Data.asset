@@ -63,6 +63,70 @@ MonoBehaviour:
     m_Key: 
     m_Metadata:
       m_Items: []
+  - m_Id: 1754676489195520
+    m_Key: general_settings_language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1754908543258624
+    m_Key: general_settings_volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755066001625088
+    m_Key: general_settings_screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755232586797056
+    m_Key: general_settings_language_english
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755416456695808
+    m_Key: general_settings_language_french
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755603405213696
+    m_Key: general_settings_screen_full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755826340859904
+    m_Key: general_settings_screen_windowed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756175197900800
+    m_Key: controls_settings_forward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756530803576832
+    m_Key: controls_settings_back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756651477897216
+    m_Key: controls_settings_right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756778355593216
+    m_Key: controls_settings_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756947314741248
+    m_Key: controls_settings_interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1757091900788736
+    m_Key: controls_settings_pickup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1757400442179584
+    m_Key: controls_settings_drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1757781033324544
+    m_Key: controls_settings_manage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1757913086791680
+    m_Key: controls_settings_dro
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

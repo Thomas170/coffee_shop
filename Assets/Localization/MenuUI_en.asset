@@ -62,6 +62,66 @@ MonoBehaviour:
     m_Localized: Back
     m_Metadata:
       m_Items: []
+  - m_Id: 1754676489195520
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1754908543258624
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755066001625088
+    m_Localized: Screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755232586797056
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755416456695808
+    m_Localized: French
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755603405213696
+    m_Localized: Fullscreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1755826340859904
+    m_Localized: Windowed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756175197900800
+    m_Localized: Forward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756530803576832
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756651477897216
+    m_Localized: Right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756778355593216
+    m_Localized: Left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756947314741248
+    m_Localized: Interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1757091900788736
+    m_Localized: Pick up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1757400442179584
+    m_Localized: Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1757781033324544
+    m_Localized: Manage
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
