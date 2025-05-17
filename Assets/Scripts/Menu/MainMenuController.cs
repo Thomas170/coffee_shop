@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class MainMenuController : BaseMenuController, IMenuEntryActionHandler
 {
     public SettingsMenuController settingsMenuController;
@@ -23,8 +25,8 @@ public class MainMenuController : BaseMenuController, IMenuEntryActionHandler
     {
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
         #endif
+        
+        Application.Quit();
     }
 }
