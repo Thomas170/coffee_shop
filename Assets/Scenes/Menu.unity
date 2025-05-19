@@ -3352,7 +3352,7 @@ MonoBehaviour:
     backgroundImage: {fileID: 0}
     defaultImage: {fileID: 0}
     selectedImage: {fileID: 0}
-  highlightMode: 0
+  highlightMode: 2
   notSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
   isHorizontal: 1
@@ -3360,6 +3360,7 @@ MonoBehaviour:
   isOpen: 0
   backMenuController: {fileID: 290753306}
   confirmPopup: {fileID: 290753310}
+  gameSetupMenuController: {fileID: 290753309}
 --- !u!114 &290753308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3386,7 +3387,7 @@ MonoBehaviour:
     backgroundImage: {fileID: 0}
     defaultImage: {fileID: 0}
     selectedImage: {fileID: 0}
-  highlightMode: 0
+  highlightMode: 2
   notSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
   isHorizontal: 1

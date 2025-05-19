@@ -42,9 +42,15 @@ public abstract class BaseMenuController : MonoBehaviour
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
-            entry.backgroundImage = entry.button.GetComponent<Image>();
-            entry.defaultImage = entry.button.transform.Find("Default")?.GetComponent<Image>();
-            entry.selectedImage = entry.button.transform.Find("Selected")?.GetComponent<Image>();
+            if (highlightMode == HighlightMode.UsingImages)
+            {
+                entry.defaultImage = entry.button.transform.Find("Default")?.GetComponent<Image>();
+                entry.selectedImage = entry.button.transform.Find("Selected")?.GetComponent<Image>();
+            }
+            else
+            {
+                entry.backgroundImage = entry.button.GetComponent<Image>();
+            }
 
             var highlight = entry.button.GetComponent<UIButtonHighlight>();
             highlight?.Init(this, i);
@@ -114,7 +120,7 @@ public abstract class BaseMenuController : MonoBehaviour
             var entry = menuButtons[i];
             bool isSelected = (i == SelectedIndex);
 
-            if (entry.defaultImage && entry.selectedImage)
+            if (highlightMode == HighlightMode.UsingImages)
             {
                 entry.defaultImage.gameObject.SetActive(!isSelected);
                 entry.selectedImage.gameObject.SetActive(isSelected);

@@ -13,5 +13,6 @@ public class MenuEntry
 public enum HighlightMode
 {
     SelectionOnly,
-    AlwaysVisible
+    AlwaysVisible,
+    UsingImages,
 }

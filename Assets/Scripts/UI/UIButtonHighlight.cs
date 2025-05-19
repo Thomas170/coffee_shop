@@ -17,6 +17,8 @@ public class UIButtonHighlight : MonoBehaviour, IPointerEnterHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_baseMenuController != null)
+        {
             _baseMenuController.SelectButton(_myIndex);
+        }
     }
 }
