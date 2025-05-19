@@ -3438,8 +3438,8 @@ MonoBehaviour:
     defaultImage: {fileID: 0}
     selectedImage: {fileID: 0}
   highlightMode: 1
-  notSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  selectedColor: {r: 1, g: 0, b: 0, a: 1}
+  notSelectedColor: {r: 1, g: 0.84313726, b: 0.5254902, a: 1}
+  selectedColor: {r: 1, g: 0.7137255, b: 0.39215687, a: 1}
   isHorizontal: 1
   moveCooldown: 0.2
   isOpen: 0
@@ -3764,8 +3764,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281306075
-  m_fontColor: {r: 0.85882354, g: 0.54509807, b: 0.18431373, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5983,7 +5983,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 290753306}
+      - m_Target: {fileID: 290753310}
         m_TargetAssemblyTypeName: BaseMenuController, Assembly-CSharp
         m_MethodName: OnSubmit
         m_Mode: 1
@@ -6981,7 +6981,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 290753306}
+      - m_Target: {fileID: 290753310}
         m_TargetAssemblyTypeName: BaseMenuController, Assembly-CSharp
         m_MethodName: OnSubmit
         m_Mode: 1

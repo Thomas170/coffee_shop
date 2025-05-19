@@ -3,6 +3,7 @@ using TMPro;
 public class NewGameMenuController : BaseMenuController
 {
     public NewGameConfirmMenuController confirmPopup;
+    public GameSetupMenuController gameSetupMenuController;
 
     private SaveSlotData[] _slots = new SaveSlotData[3]
     {
@@ -47,7 +48,14 @@ public class NewGameMenuController : BaseMenuController
                 int index = SelectedIndex;
                 MenuManager.Instance.CurrentGameIndex = index;
                 CloseMenu();
-                confirmPopup.OpenMenu();
+                if (_slots[index].HasData)
+                {
+                    confirmPopup.OpenMenu();
+                }
+                else
+                {
+                    gameSetupMenuController.OpenMenu();
+                }
                 break;
         }
     }
