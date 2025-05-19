@@ -1,7 +1,5 @@
 public class LoadSaveMenuController : BaseMenuController, IMenuEntryActionHandler
 {
-    public BaseMenuController backMenuController;
-
     public void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
@@ -12,11 +10,5 @@ public class LoadSaveMenuController : BaseMenuController, IMenuEntryActionHandle
                 HandleBack();
                 break;
         }
-    }
-    
-    private void HandleBack()
-    {
-        CloseMenu();
-        backMenuController.OpenMenu();
     }
 }

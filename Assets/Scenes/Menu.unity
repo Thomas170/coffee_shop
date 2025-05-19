@@ -2899,9 +2899,9 @@ MonoBehaviour:
   menuButtons:
   - button: {fileID: 1252743323}
     backgroundImage: {fileID: 0}
-  - button: {fileID: 1892391491}
-    backgroundImage: {fileID: 0}
   - button: {fileID: 1513524657}
+    backgroundImage: {fileID: 0}
+  - button: {fileID: 1892391491}
     backgroundImage: {fileID: 0}
   - button: {fileID: 1614109721}
     backgroundImage: {fileID: 0}
@@ -2909,6 +2909,7 @@ MonoBehaviour:
   notSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
   isOpen: 1
+  backMenuController: {fileID: 0}
   settingsMenuController: {fileID: 45686}
   loadGameMenuController: {fileID: 290753306}
 --- !u!4 &290753305
@@ -2952,8 +2953,10 @@ MonoBehaviour:
   notSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
   isOpen: 0
-  newGameMenuController: {fileID: 290753307}
   backMenuController: {fileID: 290753304}
+  newGameMenuController: {fileID: 290753307}
+  loadSaveMenuController: {fileID: 290753308}
+  gameSetupMenuController: {fileID: 290753309}
 --- !u!114 &290753307
 MonoBehaviour:
   m_ObjectHideFlags: 0

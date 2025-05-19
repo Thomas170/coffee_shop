@@ -2,8 +2,6 @@ using UnityEngine.SceneManagement;
 
 public class GameSetupMenuController : BaseMenuController, IMenuEntryActionHandler
 {
-    public BaseMenuController backMenuController;
-
     public void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
@@ -15,11 +13,5 @@ public class GameSetupMenuController : BaseMenuController, IMenuEntryActionHandl
                 HandleBack();
                 break;
         }
-    }
-    
-    private void HandleBack()
-    {
-        CloseMenu();
-        backMenuController.OpenMenu();
     }
 }

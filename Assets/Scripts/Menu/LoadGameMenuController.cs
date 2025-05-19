@@ -1,7 +1,8 @@
 public class LoadGameMenuController : BaseMenuController, IMenuEntryActionHandler
 {
     public NewGameMenuController newGameMenuController;
-    public BaseMenuController backMenuController;
+    public LoadSaveMenuController loadSaveMenuController;
+    public GameSetupMenuController gameSetupMenuController;
 
     public void ExecuteMenuAction(string buttonName)
     {
@@ -12,18 +13,16 @@ public class LoadGameMenuController : BaseMenuController, IMenuEntryActionHandle
                 newGameMenuController.OpenMenu();
                 break;
             case "Continue":
+                CloseMenu();
+                gameSetupMenuController.OpenMenu();
                 break;
             case "Load":
+                CloseMenu();
+                loadSaveMenuController.OpenMenu();
                 break;
             case "Back":
                 HandleBack();
                 break;
         }
-    }
-    
-    private void HandleBack()
-    {
-        CloseMenu();
-        backMenuController.OpenMenu();
     }
 }

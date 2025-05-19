@@ -12,6 +12,7 @@ public abstract class BaseMenuController : MonoBehaviour
     public Color notSelectedColor = Color.yellow;
     public Color selectedColor = Color.red;
     public bool isOpen;
+    public BaseMenuController backMenuController;
 
     protected int SelectedIndex;
     protected readonly float MoveCooldown = 0.2f;
@@ -19,14 +20,18 @@ public abstract class BaseMenuController : MonoBehaviour
 
     protected InputAction NavigateAction;
     protected InputAction SubmitAction;
+    protected InputAction BackAction;
 
     protected Action<InputAction.CallbackContext> SubmitCallback;
+    protected Action<InputAction.CallbackContext> BackCallback;
 
     protected void Start()
     {
         NavigateAction = InputReader.Instance.NavigateAction;
         SubmitAction = InputReader.Instance.SubmitAction;
         SubmitCallback = _ => OnSubmit();
+        BackAction = InputReader.Instance.BackAction;
+        BackCallback = _ => HandleBack();
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
@@ -57,6 +62,10 @@ public abstract class BaseMenuController : MonoBehaviour
         if (SubmitAction != null && SubmitCallback != null)
         {
             SubmitAction.performed -= SubmitCallback;
+        }
+        if (BackAction != null && BackCallback != null)
+        {
+            BackAction.performed -= BackCallback;
         }
     }
 
@@ -126,6 +135,15 @@ public abstract class BaseMenuController : MonoBehaviour
             Debug.LogWarning($"No IMenuEntryActionHandler found on {gameObject.name}");
         }
     }
+
+    public virtual void HandleBack()
+    {
+        if (backMenuController != null)
+        {
+            CloseMenu();
+            backMenuController.OpenMenu();
+        }
+    }
     
     public virtual void OpenMenu()
     {
@@ -139,6 +157,7 @@ public abstract class BaseMenuController : MonoBehaviour
         NavigateAction.Enable();
         SubmitAction.Enable();
         SubmitAction.performed += SubmitCallback;
+        BackAction.performed += BackCallback;
     }
     
     public virtual void CloseMenu()
@@ -153,5 +172,6 @@ public abstract class BaseMenuController : MonoBehaviour
         NavigateAction.Disable();
         SubmitAction.Disable();
         SubmitAction.performed -= SubmitCallback;
+        BackAction.performed -= BackCallback;
     }
 }

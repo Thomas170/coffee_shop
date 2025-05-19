@@ -6,8 +6,6 @@ public class SettingsMenuController : BaseMenuController, IMenuEntryActionHandle
     public GameObject generalPanel;
     public GameObject controlsPanel;
     
-    public BaseMenuController backMenuController;
-    
     private new void Start()
     {
         ShowCategory("General");
@@ -43,11 +41,5 @@ public class SettingsMenuController : BaseMenuController, IMenuEntryActionHandle
                 controlsPanel?.SetActive(true);
                 break;
         }
-    }
-    
-    private void HandleBack()
-    {
-        CloseMenu();
-        backMenuController.OpenMenu();
     }
 }
