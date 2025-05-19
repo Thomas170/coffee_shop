@@ -1,13 +1,53 @@
-public class NewGameMenuController : BaseMenuController, IMenuEntryActionHandler
+using TMPro;
+
+public class NewGameMenuController : BaseMenuController
 {
-    public void ExecuteMenuAction(string buttonName)
+    public NewGameConfirmMenuController confirmPopup;
+
+    private SaveSlotData[] _slots = new SaveSlotData[3]
+    {
+        new SaveSlotData(true, 5),
+        new SaveSlotData(true, 12),
+        new SaveSlotData(false),
+    };
+
+    protected override void Start()
+    {
+        base.Start();
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            var entry = menuButtons[i];
+            if (!_slots[i].HasData)
+            {
+                entry.button.transform.Find("Empty").gameObject.SetActive(true);
+                entry.button.transform.Find("Info").gameObject.SetActive(false);
+                entry.button.interactable = true;
+            }
+            else
+            {
+                entry.button.transform.Find("Empty").gameObject.SetActive(false);
+                var info = entry.button.transform.Find("Info");
+                info.gameObject.SetActive(true);
+                
+                var lvlTxt = info.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
+                lvlTxt.text = $"{_slots[i].Level}";
+            }
+        }
+    }
+
+    public override void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
         {
-            case "":
-                break;
             case "Back":
                 HandleBack();
+                break;
+            default:
+                int index = SelectedIndex;
+                MenuManager.Instance.CurrentGameIndex = index;
+                CloseMenu();
+                confirmPopup.OpenMenu();
                 break;
         }
     }

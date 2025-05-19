@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SettingsMenuController : BaseMenuController, IMenuEntryActionHandler
+public class SettingsMenuController : BaseMenuController
 {
     [Header("Category Panels")]
     public GameObject generalPanel;
@@ -8,10 +8,11 @@ public class SettingsMenuController : BaseMenuController, IMenuEntryActionHandle
     
     private new void Start()
     {
+        base.Start();
         ShowCategory("General");
     }
     
-    public void ExecuteMenuAction(string buttonName)
+    public override void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
         {

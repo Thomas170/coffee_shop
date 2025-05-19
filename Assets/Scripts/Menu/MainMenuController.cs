@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class MainMenuController : BaseMenuController, IMenuEntryActionHandler
+public class MainMenuController : BaseMenuController
 {
     public SettingsMenuController settingsMenuController;
     public LoadGameMenuController loadGameMenuController;
     
-    public void ExecuteMenuAction(string buttonName)
+    public override void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
         {

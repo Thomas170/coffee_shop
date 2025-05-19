@@ -1,8 +1,8 @@
 using UnityEngine.SceneManagement;
 
-public class GameSetupMenuController : BaseMenuController, IMenuEntryActionHandler
+public class GameSetupMenuController : BaseMenuController
 {
-    public void ExecuteMenuAction(string buttonName)
+    public override void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
         {

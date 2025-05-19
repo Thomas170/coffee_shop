@@ -1,10 +1,10 @@
-public class LoadGameMenuController : BaseMenuController, IMenuEntryActionHandler
+public class LoadGameMenuController : BaseMenuController
 {
     public NewGameMenuController newGameMenuController;
     public LoadSaveMenuController loadSaveMenuController;
     public GameSetupMenuController gameSetupMenuController;
 
-    public void ExecuteMenuAction(string buttonName)
+    public override void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
         {

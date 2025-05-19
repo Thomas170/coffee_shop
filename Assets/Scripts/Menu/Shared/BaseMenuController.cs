@@ -6,73 +6,70 @@ using UnityEngine.EventSystems;
 
 public abstract class BaseMenuController : MonoBehaviour
 {
+    [Header("Menu UI")]
     public GameObject menuObject;
     public MenuEntry[] menuButtons;
     public HighlightMode highlightMode = HighlightMode.SelectionOnly;
     public Color notSelectedColor = Color.yellow;
     public Color selectedColor = Color.red;
+
+    [Header("Navigation")]
+    public bool isHorizontal;
+    public float moveCooldown = 0.2f;
+
     public bool isOpen;
     public BaseMenuController backMenuController;
 
     protected int SelectedIndex;
-    protected readonly float MoveCooldown = 0.2f;
     protected float MoveTimer;
 
     protected InputAction NavigateAction;
     protected InputAction SubmitAction;
     protected InputAction BackAction;
 
-    protected Action<InputAction.CallbackContext> SubmitCallback;
-    protected Action<InputAction.CallbackContext> BackCallback;
+    private Action<InputAction.CallbackContext> _submitCallback;
+    private Action<InputAction.CallbackContext> _backCallback;
 
-    protected void Start()
+    protected virtual void Start()
     {
         NavigateAction = InputReader.Instance.NavigateAction;
-        SubmitAction = InputReader.Instance.SubmitAction;
-        SubmitCallback = _ => OnSubmit();
-        BackAction = InputReader.Instance.BackAction;
-        BackCallback = _ => HandleBack();
+        SubmitAction   = InputReader.Instance.SubmitAction;
+        BackAction     = InputReader.Instance.BackAction;
+
+        _submitCallback = _ => OnSubmit();
+        _backCallback   = _ => HandleBack();
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
             entry.backgroundImage = entry.button.GetComponent<Image>();
+            entry.defaultImage = entry.button.transform.Find("Default")?.GetComponent<Image>();
+            entry.selectedImage = entry.button.transform.Find("Selected")?.GetComponent<Image>();
 
             var highlight = entry.button.GetComponent<UIButtonHighlight>();
-            if (highlight != null)
-            {
-                highlight.Init(this as IMenuEntryActionHandler, i);
-            }
+            highlight?.Init(this, i);
         }
 
-        SelectButton(0);
+        SelectButton(0, true);
         menuObject.SetActive(isOpen);
     }
 
     protected virtual void Update()
     {
-        if (isOpen)
-        {
-            HandleNavigation();
-        }
+        if (!isOpen) return;
+        HandleNavigation();
     }
 
     protected virtual void OnDestroy()
     {
-        if (SubmitAction != null && SubmitCallback != null)
-        {
-            SubmitAction.performed -= SubmitCallback;
-        }
-        if (BackAction != null && BackCallback != null)
-        {
-            BackAction.performed -= BackCallback;
-        }
+        if (SubmitAction != null)
+            SubmitAction.performed -= _submitCallback;
+        if (BackAction != null)
+            BackAction.performed -= _backCallback;
     }
 
     protected virtual void HandleNavigation()
     {
-        if (!isOpen) return;
-        
         if (MoveTimer > 0)
         {
             MoveTimer -= Time.unscaledDeltaTime;
@@ -80,40 +77,62 @@ public abstract class BaseMenuController : MonoBehaviour
         }
 
         Vector2 move = NavigateAction.ReadValue<Vector2>();
+        float axis = isHorizontal ? move.x : move.y;
 
-        if (Mathf.Abs(move.y) > 0.5f)
+        if (Mathf.Abs(axis) > 0.5f)
         {
-            int direction = move.y < 0 ? 1 : -1;
+            int direction;
+            if (isHorizontal)
+            {
+                direction = axis < 0 ? -1 : 1;
+            }
+            else
+            {
+                direction = axis < 0 ? 1 : -1;
+            }
+            
             int newIndex = SelectedIndex;
 
             do
             {
                 newIndex = (newIndex + direction + menuButtons.Length) % menuButtons.Length;
-            } while (!menuButtons[newIndex].button.interactable);
+            }
+            while (!menuButtons[newIndex].button.interactable);
 
             SelectButton(newIndex);
-            MoveTimer = MoveCooldown;
+            MoveTimer = moveCooldown;
         }
     }
-    
-    public virtual void SelectButton(int index)
+
+    public virtual void SelectButton(int index, bool isStart = false)
     {
-        if (!isOpen) return;
+        if ((!isStart && !isOpen) || menuButtons.Length == 0) return;
         SelectedIndex = index;
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
-            var image = menuButtons[i].backgroundImage;
-            if (!image) continue;
+            var entry = menuButtons[i];
+            bool isSelected = (i == SelectedIndex);
 
-            if (highlightMode == HighlightMode.SelectionOnly)
+            if (entry.defaultImage && entry.selectedImage)
             {
-                image.enabled = (i == SelectedIndex);
+                entry.defaultImage.gameObject.SetActive(!isSelected);
+                entry.selectedImage.gameObject.SetActive(isSelected);
             }
-            else if (highlightMode == HighlightMode.AlwaysVisible)
+            else
             {
-                image.enabled = true;
-                image.color = (i == SelectedIndex) ? selectedColor : notSelectedColor;
+                var background = entry.backgroundImage;
+                if (!background) continue;
+
+                if (highlightMode == HighlightMode.SelectionOnly)
+                {
+                    background.enabled = isSelected;
+                }
+                else
+                {
+                    background.enabled = true;
+                    background.color = isSelected ? selectedColor : notSelectedColor;
+                }
             }
         }
 
@@ -123,17 +142,7 @@ public abstract class BaseMenuController : MonoBehaviour
     public virtual void OnSubmit()
     {
         if (!isOpen) return;
-
-        var entry = menuButtons[SelectedIndex];
-
-        if (this is IMenuEntryActionHandler actionHandler)
-        {
-            actionHandler.ExecuteMenuAction(entry.button.name);
-        }
-        else
-        {
-            Debug.LogWarning($"No IMenuEntryActionHandler found on {gameObject.name}");
-        }
+        ExecuteMenuAction(menuButtons[SelectedIndex].button.name);
     }
 
     public virtual void HandleBack()
@@ -144,7 +153,9 @@ public abstract class BaseMenuController : MonoBehaviour
             backMenuController.OpenMenu();
         }
     }
-    
+
+    public abstract void ExecuteMenuAction(string name);
+
     public virtual void OpenMenu()
     {
         if (isOpen) return;
@@ -153,13 +164,15 @@ public abstract class BaseMenuController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, true);
         MenuManager.Instance.OpenMenu();
-        
+
         NavigateAction.Enable();
         SubmitAction.Enable();
-        SubmitAction.performed += SubmitCallback;
-        BackAction.performed += BackCallback;
+        BackAction.Enable();
+
+        SubmitAction.performed += _submitCallback;
+        BackAction.performed   += _backCallback;
     }
-    
+
     public virtual void CloseMenu()
     {
         if (!isOpen) return;
@@ -168,10 +181,12 @@ public abstract class BaseMenuController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
         MenuManager.Instance.CloseMenu();
-        
+
         NavigateAction.Disable();
         SubmitAction.Disable();
-        SubmitAction.performed -= SubmitCallback;
-        BackAction.performed -= BackCallback;
+        BackAction.Disable();
+
+        SubmitAction.performed -= _submitCallback;
+        BackAction.performed   -= _backCallback;
     }
 }

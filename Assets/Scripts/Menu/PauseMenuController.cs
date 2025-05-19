@@ -1,8 +1,8 @@
-public class PauseMenuController : BaseMenuController, IMenuEntryActionHandler
+public class PauseMenuController : BaseMenuController
 {
     public SettingsMenuController settingsMenuController;
     
-    public void ExecuteMenuAction(string buttonName)
+    public override void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
         {

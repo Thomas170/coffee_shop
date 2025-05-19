@@ -4,9 +4,10 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
-    public static bool HasMenuOpen;
     
     public static event Action<bool> OnMenuStateChanged;
+    
+    public int CurrentGameIndex { get; set; }
     
     private void Awake()
     {
@@ -22,13 +23,11 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu()
     {
-        HasMenuOpen = true;
         OnMenuStateChanged?.Invoke(true);
     }
 
     public void CloseMenu()
     {
-        HasMenuOpen = false;
         OnMenuStateChanged?.Invoke(false);
     }
 }
