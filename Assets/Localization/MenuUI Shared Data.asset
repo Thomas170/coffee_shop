@@ -127,6 +127,38 @@ MonoBehaviour:
     m_Key: controls_settings_dro
     m_Metadata:
       m_Items: []
+  - m_Id: 2510405563158528
+    m_Key: join_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2511292167720960
+    m_Key: new_game_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2511839465672704
+    m_Key: load_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2523894524514304
+    m_Key: game_slot_empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2564291112046592
+    m_Key: new_game_confirmation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2564533974831104
+    m_Key: load_game_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2571158097858560
+    m_Key: cancel_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2571244567629824
+    m_Key: confirm_button
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -122,6 +122,40 @@ MonoBehaviour:
     m_Localized: "G\xE9rer"
     m_Metadata:
       m_Items: []
+  - m_Id: 2510405563158528
+    m_Localized: Rejoindre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2511292167720960
+    m_Localized: Nouvelle partie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2511839465672704
+    m_Localized: Charger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2523894524514304
+    m_Localized: Vide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2564291112046592
+    m_Localized: "Etes-vous s\xFBr de vouloir \xE9craser votre pr\xE9c\xE9dente sauvegarde
+      pour cr\xE9er une nouvelle partie ? Toutes les donn\xE9es seront d\xE9finitivement
+      perdues."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2564533974831104
+    m_Localized: Charger une partie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2571158097858560
+    m_Localized: Annuler
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2571244567629824
+    m_Localized: Confirmer
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

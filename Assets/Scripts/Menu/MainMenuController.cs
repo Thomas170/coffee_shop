@@ -3,13 +3,15 @@ using UnityEngine;
 public class MainMenuController : BaseMenuController, IMenuEntryActionHandler
 {
     public SettingsMenuController settingsMenuController;
+    public LoadGameMenuController loadGameMenuController;
     
     public void ExecuteMenuAction(string buttonName)
     {
         switch (buttonName)
         {
             case "Play":
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+                CloseMenu();
+                loadGameMenuController.OpenMenu();
                 break;
             case "Options":
                 CloseMenu();

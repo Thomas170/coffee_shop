@@ -5,11 +5,11 @@ public class SettingsMenuController : BaseMenuController, IMenuEntryActionHandle
     [Header("Category Panels")]
     public GameObject generalPanel;
     public GameObject controlsPanel;
+    
     public BaseMenuController backMenuController;
     
     private new void Start()
     {
-        base.Start();
         ShowCategory("General");
     }
     

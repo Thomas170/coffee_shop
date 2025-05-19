@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -14,7 +13,7 @@ public abstract class BaseMenuController : MonoBehaviour
     public Color selectedColor = Color.red;
     public bool isOpen;
 
-    public int SelectedIndex;
+    protected int SelectedIndex;
     protected readonly float MoveCooldown = 0.2f;
     protected float MoveTimer;
 

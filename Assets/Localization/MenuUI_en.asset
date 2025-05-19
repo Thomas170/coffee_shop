@@ -122,6 +122,39 @@ MonoBehaviour:
     m_Localized: Manage
     m_Metadata:
       m_Items: []
+  - m_Id: 2510405563158528
+    m_Localized: Join
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2511292167720960
+    m_Localized: New game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2511839465672704
+    m_Localized: Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2523894524514304
+    m_Localized: Empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2564291112046592
+    m_Localized: Are you sure you want to overwrite your previous save to create
+      a new game? All data will be permanently lost.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2564533974831104
+    m_Localized: Load game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2571158097858560
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2571244567629824
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
