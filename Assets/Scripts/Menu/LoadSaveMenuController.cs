@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEngine;
 
 public class LoadSaveMenuController : BaseMenuController
 {
@@ -14,8 +13,6 @@ public class LoadSaveMenuController : BaseMenuController
 
     protected override void Start()
     {
-        base.Start();
-
         for (int i = 0; i < _slots.Length; i++)
         {
             var entry = menuButtons[i];
@@ -23,7 +20,7 @@ public class LoadSaveMenuController : BaseMenuController
             {
                 entry.button.transform.Find("Empty").gameObject.SetActive(true);
                 entry.button.transform.Find("Info").gameObject.SetActive(false);
-                entry.button.interactable = true;
+                entry.button.interactable = false;
             }
             else
             {
@@ -33,8 +30,12 @@ public class LoadSaveMenuController : BaseMenuController
                 
                 var lvlTxt = info.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
                 lvlTxt.text = $"{_slots[i].Level}";
+                
+                entry.button.interactable = true;
             }
         }
+        
+        base.Start();
     }
 
     public override void ExecuteMenuAction(string buttonName)

@@ -33,6 +33,8 @@ public class NewGameMenuController : BaseMenuController
                 
                 var lvlTxt = info.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
                 lvlTxt.text = $"{_slots[i].Level}";
+                
+                entry.button.interactable = true;
             }
         }
     }

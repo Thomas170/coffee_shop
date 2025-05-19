@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -165,34 +166,46 @@ public abstract class BaseMenuController : MonoBehaviour
     public virtual void OpenMenu()
     {
         if (isOpen) return;
+        
         menuObject.SetActive(true);
-        isOpen = true;
         EventSystem.current.SetSelectedGameObject(null);
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, true);
         MenuManager.Instance.OpenMenu();
 
         NavigateAction.Enable();
-        SubmitAction.Enable();
         BackAction.Enable();
+        BackAction.performed += _backCallback;
+        
+        StartCoroutine(SubscribeSubmitNextFrame());
+    }
+    
+    private IEnumerator SubscribeSubmitNextFrame()
+    {
+        yield return null; 
 
+        SubmitAction.Enable();
         SubmitAction.performed += _submitCallback;
-        BackAction.performed   += _backCallback;
+        
+        isOpen = true;
+        SelectedIndex = 0;
+        SelectButton(0);
     }
 
     public virtual void CloseMenu()
     {
         if (!isOpen) return;
+
+        SubmitAction.performed -= _submitCallback;
+        BackAction.performed   -= _backCallback;
+        
+        NavigateAction.Disable();
+        SubmitAction.Disable();
+        BackAction.Disable();
+        
         menuObject.SetActive(false);
         isOpen = false;
         EventSystem.current.SetSelectedGameObject(null);
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
         MenuManager.Instance.CloseMenu();
-
-        NavigateAction.Disable();
-        SubmitAction.Disable();
-        BackAction.Disable();
-
-        SubmitAction.performed -= _submitCallback;
-        BackAction.performed   -= _backCallback;
     }
 }
