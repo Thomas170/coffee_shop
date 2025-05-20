@@ -9,13 +9,21 @@ public class NewGameConfirmMenuController : BaseMenuController
         switch (buttonName)
         {
             case "Confirm":
-                Debug.Log($"[NewGame] Wiping slot #{MenuManager.Instance.CurrentGameIndex}");
-                CloseMenu();
-                gameSetupMenuController.OpenMenu();
+                CreateSave();
                 break;
             case "Cancel":
                 HandleBack();
                 break;
         }
+    }
+
+    private void CreateSave()
+    {
+        int index = MenuManager.Instance.CurrentGameIndex;
+        Debug.Log($"[NewGame] Wiping slot #{index}");
+
+        SaveManager.SaveToSlot(index, new SaveData());
+        CloseMenu();
+        gameSetupMenuController.OpenMenu();
     }
 }

@@ -2218,6 +2218,8 @@ MonoBehaviour:
   newGameMenuController: {fileID: 290753307}
   loadSaveMenuController: {fileID: 290753308}
   gameSetupMenuController: {fileID: 290753309}
+  continueButton: {fileID: 146419766}
+  loadButton: {fileID: 1903564851}
 --- !u!114 &290753307
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -920,8 +920,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BaseMenuController, Assembly-CSharp
+      - m_Target: {fileID: 8343100267677614672}
+        m_TargetAssemblyTypeName: SettingsMenuController, Assembly-CSharp
         m_MethodName: OnSubmit
         m_Mode: 1
         m_Arguments:
@@ -1866,8 +1866,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BaseMenuController, Assembly-CSharp
+      - m_Target: {fileID: 8343100267677614672}
+        m_TargetAssemblyTypeName: SettingsMenuController, Assembly-CSharp
         m_MethodName: OnSubmit
         m_Mode: 1
         m_Arguments:
@@ -4755,7 +4755,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:75383388633585c4db869c1b6af24b6b
     m_TableEntryReference:
-      m_KeyId: 110961458778112
+      m_KeyId: 64618860544
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -6238,8 +6238,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BaseMenuController, Assembly-CSharp
+      - m_Target: {fileID: 8343100267677614672}
+        m_TargetAssemblyTypeName: SettingsMenuController, Assembly-CSharp
         m_MethodName: OnSubmit
         m_Mode: 1
         m_Arguments:

@@ -14,9 +14,6 @@ public class GameSetupMenuController : BaseMenuController
     [Header("Copy Code")]
     [SerializeField] private TextMeshProUGUI codeToCopy;
 
-    private readonly int _level = 3;
-    private readonly int _coins = 150;
-
     private void OnEnable()
     {
         UpdateTopRightInfo();
@@ -25,8 +22,18 @@ public class GameSetupMenuController : BaseMenuController
 
     private void UpdateTopRightInfo()
     {
-        levelText.text = $"Niveau {_level}";
-        coinsText.text = $"{_coins} pièces";
+        int slotIndex = MenuManager.Instance.CurrentGameIndex;
+        
+        if (!SaveManager.SlotHasData(slotIndex))
+        {
+            levelText.text = "Niveau ?";
+            coinsText.text = "? pièces";
+            return;
+        }
+        
+        SaveData data = SaveManager.LoadFromSlot(slotIndex);
+        levelText.text = $"Niveau {data.level}";
+        coinsText.text = $"{data.coins} pièces";
     }
 
     private void UpdatePlayerSlots()
@@ -37,7 +44,7 @@ public class GameSetupMenuController : BaseMenuController
             GameObject inviteObject = playerSlots[i].transform.Find("Invite").gameObject;
             if (i == 0)
             {
-                pseudoText.text = "Player";
+                pseudoText.text = "PlayerName";
                 pseudoText.gameObject.SetActive(true);
                 inviteObject.SetActive(false);
             }

@@ -1,41 +1,40 @@
 using TMPro;
+using UnityEngine;
 
 public class NewGameMenuController : BaseMenuController
 {
     public NewGameConfirmMenuController confirmPopup;
     public GameSetupMenuController gameSetupMenuController;
 
-    private SaveSlotData[] _slots = new SaveSlotData[3]
-    {
-        new SaveSlotData(true, 5),
-        new SaveSlotData(true, 12),
-        new SaveSlotData(false),
-    };
-
     protected override void Start()
     {
         base.Start();
-
-        for (int i = 0; i < _slots.Length; i++)
+        InitSave();
+    }
+    
+    private void InitSave()
+    {
+        for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
-            if (!_slots[i].HasData)
+            if (!SaveManager.SlotHasData(i))
             {
                 entry.button.transform.Find("Empty").gameObject.SetActive(true);
                 entry.button.transform.Find("Info").gameObject.SetActive(false);
-                entry.button.interactable = true;
             }
             else
             {
+                SaveData save = SaveManager.LoadFromSlot(i);
+                
                 entry.button.transform.Find("Empty").gameObject.SetActive(false);
-                var info = entry.button.transform.Find("Info");
-                info.gameObject.SetActive(true);
+                GameObject info = entry.button.transform.Find("Info").gameObject;
+                info.SetActive(true);
                 
-                var lvlTxt = info.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
-                lvlTxt.text = $"{_slots[i].Level}";
-                
-                entry.button.interactable = true;
+                TextMeshProUGUI lvlTxt = info.transform.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
+                lvlTxt.text = $"{save.level}";
             }
+            
+            entry.button.interactable = true;
         }
     }
 
@@ -47,18 +46,31 @@ public class NewGameMenuController : BaseMenuController
                 HandleBack();
                 break;
             default:
-                int index = SelectedIndex;
-                MenuManager.Instance.CurrentGameIndex = index;
-                CloseMenu();
-                if (_slots[index].HasData)
-                {
-                    confirmPopup.OpenMenu();
-                }
-                else
-                {
-                    gameSetupMenuController.OpenMenu();
-                }
+                SelectSlot();
                 break;
         }
+    }
+
+    private void SelectSlot()
+    {
+        int index = SelectedIndex;
+        MenuManager.Instance.CurrentGameIndex = index;
+        CloseMenu();
+
+        if (SaveManager.SlotHasData(index))
+        {
+            confirmPopup.OpenMenu();
+        }
+        else
+        {
+            SaveManager.SaveToSlot(index, new SaveData());
+            gameSetupMenuController.OpenMenu();
+        }
+    }
+    
+    public override void OpenMenu()
+    {
+        InitSave();
+        base.OpenMenu();
     }
 }

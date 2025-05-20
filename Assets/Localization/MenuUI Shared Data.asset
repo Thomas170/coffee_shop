@@ -187,10 +187,6 @@ MonoBehaviour:
     m_Key: join_title
     m_Metadata:
       m_Items: []
-  - m_Id: 2871938612826112
-    m_Key: join_butto
-    m_Metadata:
-      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
