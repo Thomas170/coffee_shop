@@ -159,6 +159,30 @@ MonoBehaviour:
     m_Key: confirm_button
     m_Metadata:
       m_Items: []
+  - m_Id: 2858043001114624
+    m_Key: setup_game_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2860930485817344
+    m_Key: setup_game_invite_friends
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2861528513875968
+    m_Key: setup_game_join
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2864905373192192
+    m_Key: invite_waiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2869049169383424
+    m_Key: setup_game_level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2869185568149504
+    m_Key: setup_game_coins
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -156,6 +156,30 @@ MonoBehaviour:
     m_Localized: Confirmer
     m_Metadata:
       m_Items: []
+  - m_Id: 2858043001114624
+    m_Localized: "Pr\xE9paration de la partie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2860930485817344
+    m_Localized: Invite tes amis !
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2861528513875968
+    m_Localized: 'Rejoindre :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2864905373192192
+    m_Localized: Inviter...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2869049169383424
+    m_Localized: 'Niveau :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2869185568149504
+    m_Localized: "Pi\xE8ces :"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

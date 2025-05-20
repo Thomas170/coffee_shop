@@ -155,6 +155,30 @@ MonoBehaviour:
     m_Localized: Confirm
     m_Metadata:
       m_Items: []
+  - m_Id: 2858043001114624
+    m_Localized: Game setup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2860930485817344
+    m_Localized: Invite your friends !
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2861528513875968
+    m_Localized: 'Join :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2864905373192192
+    m_Localized: Invite...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2869049169383424
+    m_Localized: 'Level :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2869185568149504
+    m_Localized: 'Coins :'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
