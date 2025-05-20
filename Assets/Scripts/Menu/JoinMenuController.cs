@@ -5,7 +5,6 @@ public class JoinMenuController : BaseMenuController
 {
     [Header("Join Settings")] [SerializeField]
     private TMP_InputField codeInputField;
-
     [SerializeField] private GameObject errorMessageObject;
 
     public GameSetupMenuController gameSetupMenuController;

@@ -54,7 +54,6 @@ public class GameSetupMenuController : BaseMenuController
         if (codeToCopy != null)
         {
             GUIUtility.systemCopyBuffer = codeToCopy.text;
-            Debug.Log($"Copied to clipboard: {codeToCopy.text}");
         }
     }
 

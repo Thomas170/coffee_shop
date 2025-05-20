@@ -208,4 +208,9 @@ public abstract class BaseMenuController : MonoBehaviour
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
         MenuManager.Instance.CloseMenu();
     }
+
+    public GameObject GetCurrentButton()
+    {
+        return menuButtons[SelectedIndex].button.gameObject;
+    }
 }
