@@ -63,7 +63,7 @@ public abstract class BaseMenuController : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (!isOpen) return;
+        if (!isOpen || MenuManager.Instance.IsLocked) return;
         HandleNavigation();
     }
 
@@ -113,7 +113,7 @@ public abstract class BaseMenuController : MonoBehaviour
 
     public virtual void SelectButton(int index, bool isStart = false)
     {
-        if ((!isStart && !isOpen) || menuButtons.Length == 0) return;
+        if ((!isStart && !isOpen) || menuButtons.Length == 0 || MenuManager.Instance.IsLocked) return;
         SelectedIndex = index;
 
         for (int i = 0; i < menuButtons.Length; i++)
@@ -148,13 +148,13 @@ public abstract class BaseMenuController : MonoBehaviour
 
     public virtual void OnSubmit()
     {
-        if (!isOpen) return;
+        if (!isOpen || MenuManager.Instance.IsLocked) return;
         ExecuteMenuAction(menuButtons[SelectedIndex].button.name);
     }
 
     public virtual void HandleBack()
     {
-        if (backMenuController != null)
+        if (backMenuController)
         {
             CloseMenu();
             backMenuController.OpenMenu();
@@ -165,7 +165,7 @@ public abstract class BaseMenuController : MonoBehaviour
 
     public virtual void OpenMenu()
     {
-        if (isOpen) return;
+        if (isOpen || MenuManager.Instance.IsLocked) return;
         
         menuObject.SetActive(true);
         EventSystem.current.SetSelectedGameObject(null);
@@ -193,7 +193,7 @@ public abstract class BaseMenuController : MonoBehaviour
 
     public virtual void CloseMenu()
     {
-        if (!isOpen) return;
+        if (!isOpen || MenuManager.Instance.IsLocked) return;
 
         SubmitAction.performed -= _submitCallback;
         BackAction.performed   -= _backCallback;

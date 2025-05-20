@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -42,6 +43,7 @@ public class GameSetupMenuController : BaseMenuController
         {
             TextMeshProUGUI pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
             GameObject inviteObject = playerSlots[i].transform.Find("Invite").gameObject;
+            
             if (i == 0)
             {
                 pseudoText.text = "PlayerName";
@@ -63,6 +65,30 @@ public class GameSetupMenuController : BaseMenuController
             GUIUtility.systemCopyBuffer = codeToCopy.text;
         }
     }
+    
+    private async Task SetupMultiplayerSessionAsync()
+    {
+        if (MultiplayerManager.IsHostActive)
+            return;
+
+        codeToCopy.text = "";
+        MenuManager.Instance.SetLoadingScreenActive(true);
+
+        try
+        {
+            string joinCode = await MultiplayerManager.CreateSessionAsync();
+            codeToCopy.text = joinCode;
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"[Multiplayer] Erreur lors de la création de la session : {ex.Message}");
+            codeToCopy.text = "Erreur";
+        }
+        finally
+        {
+            MenuManager.Instance.SetLoadingScreenActive(false);
+        }
+    }
 
     public override void ExecuteMenuAction(string buttonName)
     {
@@ -76,4 +102,32 @@ public class GameSetupMenuController : BaseMenuController
                 break;
         }
     }
+
+    public override async void OpenMenu()
+    {
+        base.OpenMenu();
+        await SetupMultiplayerSessionAsync();
+    }
+    
+    public override async void HandleBack()
+    {
+        base.CloseMenu();
+        MenuManager.Instance.SetLoadingScreenActive(true);
+
+        try
+        {
+            await MultiplayerManager.LeaveSessionAsync();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"[Multiplayer] Erreur en quittant la session : {ex.Message}");
+        }
+        finally
+        {
+            MenuManager.Instance.SetLoadingScreenActive(false);
+        }
+
+        backMenuController?.OpenMenu();
+    }
+
 }

@@ -1,10 +1,11 @@
 using UnityEngine;
 using TMPro;
+using System.Threading.Tasks;
 
 public class JoinMenuController : BaseMenuController
 {
-    [Header("Join Settings")] [SerializeField]
-    private TMP_InputField codeInputField;
+    [Header("Join Settings")]
+    [SerializeField] private TMP_InputField codeInputField;
     [SerializeField] private GameObject errorMessageObject;
 
     public GameSetupMenuController gameSetupMenuController;
@@ -14,7 +15,7 @@ public class JoinMenuController : BaseMenuController
         switch (buttonName)
         {
             case "Join":
-                TryJoin();
+                _ = TryJoinAsync();
                 break;
             case "Back":
                 HandleBack();
@@ -22,19 +23,41 @@ public class JoinMenuController : BaseMenuController
         }
     }
 
-    private void TryJoin()
+    private async Task TryJoinAsync()
     {
         string code = codeInputField.text.Trim();
 
         if (string.IsNullOrEmpty(code))
         {
             errorMessageObject.SetActive(true);
+            return;
         }
-        else
+
+        errorMessageObject.SetActive(false);
+        MenuManager.Instance.SetLoadingScreenActive(true);
+
+        try
         {
-            errorMessageObject.SetActive(false);
-            CloseMenu();
-            gameSetupMenuController.OpenMenu();
+            bool success = await MultiplayerManager.JoinSessionAsync(code);
+
+            if (success)
+            {
+                CloseMenu();
+                gameSetupMenuController.OpenMenu();
+            }
+            else
+            {
+                errorMessageObject.SetActive(true);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"[JoinMenu] Échec de la connexion à la session : {ex.Message}");
+            errorMessageObject.SetActive(true);
+        }
+        finally
+        {
+            MenuManager.Instance.SetLoadingScreenActive(false);
         }
     }
 
@@ -42,7 +65,7 @@ public class JoinMenuController : BaseMenuController
     {
         codeInputField.text = "";
         errorMessageObject.SetActive(false);
-        
+
         base.OpenMenu();
     }
 }
