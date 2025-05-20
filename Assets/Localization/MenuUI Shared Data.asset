@@ -183,6 +183,14 @@ MonoBehaviour:
     m_Key: setup_game_coins
     m_Metadata:
       m_Items: []
+  - m_Id: 2871623230525440
+    m_Key: join_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2871938612826112
+    m_Key: join_butto
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

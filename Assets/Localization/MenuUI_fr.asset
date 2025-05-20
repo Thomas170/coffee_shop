@@ -180,6 +180,10 @@ MonoBehaviour:
     m_Localized: "Pi\xE8ces :"
     m_Metadata:
       m_Items: []
+  - m_Id: 2871623230525440
+    m_Localized: Rejoindre une partie
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

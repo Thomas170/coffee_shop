@@ -179,6 +179,10 @@ MonoBehaviour:
     m_Localized: 'Coins :'
     m_Metadata:
       m_Items: []
+  - m_Id: 2871623230525440
+    m_Localized: Join a game
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

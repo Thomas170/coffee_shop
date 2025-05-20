@@ -3,6 +3,7 @@ using UnityEngine;
 public class MainMenuController : BaseMenuController
 {
     public SettingsMenuController settingsMenuController;
+    public JoinMenuController joinMenuController;
     public LoadGameMenuController loadGameMenuController;
     
     public override void ExecuteMenuAction(string buttonName)
@@ -12,6 +13,10 @@ public class MainMenuController : BaseMenuController
             case "Play":
                 CloseMenu();
                 loadGameMenuController.OpenMenu();
+                break;
+            case "Join":
+                CloseMenu();
+                joinMenuController.OpenMenu();
                 break;
             case "Options":
                 CloseMenu();
