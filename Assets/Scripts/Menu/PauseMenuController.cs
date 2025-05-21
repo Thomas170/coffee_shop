@@ -7,7 +7,7 @@ public class PauseMenuController : BaseMenuController
         switch (buttonName)
         {
             case "Continue":
-                CloseMenu();
+                HandleBack();
                 break;
             case "Settings":
                 CloseMenu();
@@ -17,5 +17,10 @@ public class PauseMenuController : BaseMenuController
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
                 break;
         }
+    }
+    
+    public override void HandleBack()
+    {
+        CloseMenu();
     }
 }

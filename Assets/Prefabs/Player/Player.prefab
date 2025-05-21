@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 7846962033894390644}
   - component: {fileID: 2721868388483779899}
   - component: {fileID: 5246275239938511511}
+  - component: {fileID: 4629270966192239099}
   m_Layer: 12
   m_Name: Player
   m_TagString: Untagged
@@ -223,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2215753705
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -232,6 +233,19 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &4629270966192239099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144480234650336366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b913f1ee3ede1bf45b24e3ba93e90dde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerModel: {fileID: 5934373536191012530}
 --- !u!1 &5934373536191012530
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6526770282205671512
 Transform:
   m_ObjectHideFlags: 0
@@ -488,6 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuController: {fileID: 0}
+  playerController: {fileID: 3280389153802484829}
 --- !u!1 &7275879839022377355
 GameObject:
   m_ObjectHideFlags: 0
