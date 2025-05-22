@@ -246,6 +246,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 5934373536191012530}
+  scriptsToKeepActive:
+  - {fileID: 6219216145737119817}
 --- !u!1 &5934373536191012530
 GameObject:
   m_ObjectHideFlags: 0

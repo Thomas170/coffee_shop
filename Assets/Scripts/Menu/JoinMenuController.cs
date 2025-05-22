@@ -40,12 +40,7 @@ public class JoinMenuController : BaseMenuController
         {
             bool success = await MultiplayerManager.JoinSessionAsync(code);
 
-            if (success)
-            {
-                CloseMenu();
-                gameSetupMenuController.OpenMenu();
-            }
-            else
+            if (!success)
             {
                 errorMessageObject.SetActive(true);
             }
@@ -58,6 +53,8 @@ public class JoinMenuController : BaseMenuController
         finally
         {
             MenuManager.Instance.SetLoadingScreenActive(false);
+            CloseMenu();
+            gameSetupMenuController.OpenMenuWithSkip(true, code);
         }
     }
 

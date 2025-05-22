@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.Netcode;
 
 public class GameSetupMenuController : BaseMenuController
 {
@@ -14,6 +15,10 @@ public class GameSetupMenuController : BaseMenuController
     
     [Header("Copy Code")]
     [SerializeField] private TextMeshProUGUI codeToCopy;
+    
+    [SerializeField] private GameObject startButton;
+    
+    private bool _skipSetup;
 
     private void OnEnable()
     {
@@ -68,7 +73,7 @@ public class GameSetupMenuController : BaseMenuController
     
     private async Task SetupMultiplayerSessionAsync()
     {
-        if (MultiplayerManager.IsHostActive)
+        if (MultiplayerManager.IsHostActive || MultiplayerManager.IsInSession)
             return;
 
         codeToCopy.text = "";
@@ -95,7 +100,10 @@ public class GameSetupMenuController : BaseMenuController
         switch (buttonName)
         {
             case "Play":
-                SceneManager.LoadScene("Game");
+                if (NetworkManager.Singleton.IsHost)
+                {
+                    NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+                }
                 break;
             case "Back":
                 HandleBack();
@@ -130,4 +138,25 @@ public class GameSetupMenuController : BaseMenuController
         backMenuController?.OpenMenu();
     }
 
+    public override void CloseMenu()
+    {
+        _skipSetup = false;
+        base.CloseMenu();
+    }
+
+    public async void OpenMenuWithSkip(bool skipSetup, string joinCode)
+    {
+        _skipSetup = skipSetup;
+        base.OpenMenu();
+
+        if (!_skipSetup)
+        {
+            await SetupMultiplayerSessionAsync();
+        }
+        else
+        {
+            startButton.SetActive(false);
+            codeToCopy.text = joinCode;
+        }
+    }
 }

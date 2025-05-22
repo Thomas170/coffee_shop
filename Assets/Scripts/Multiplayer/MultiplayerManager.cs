@@ -21,6 +21,7 @@ public static class MultiplayerManager
     public static bool IsServer => NetworkManager.Singleton.IsServer;
     
     public static bool IsHostActive => NetworkManager.Singleton.IsServer && NetworkManager.Singleton.IsListening;
+    public static bool IsInSession => NetworkManager.Singleton.IsConnectedClient || NetworkManager.Singleton.IsServer;
 
 
     public static async Task InitializeUnityServicesAsync()

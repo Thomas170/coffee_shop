@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using Unity.Netcode;
 
-public class PlayerListManager : MonoBehaviour
+public class PlayerListManager : NetworkBehaviour
 {
     public static PlayerListManager Instance { get; private set; }
 
@@ -32,6 +33,32 @@ public class PlayerListManager : MonoBehaviour
         if (players.Contains(player))
         {
             players.Remove(player);
+        }
+    }
+    
+    public void ActivateAllPlayerModelsFromHost()
+    {
+        if (!NetworkManager.Singleton.IsHost) return;
+
+        foreach (var player in players)
+        {
+            player.ActivateVisual();
+        }
+
+        var ids = players.Select(p => p.NetworkObjectId).ToArray();
+        NotifyClientsToActivateModelsClientRpc(ids);
+    }
+
+    [ClientRpc]
+    private void NotifyClientsToActivateModelsClientRpc(ulong[] playerIds)
+    {
+        foreach (var id in playerIds)
+        {
+            if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(id, out var obj))
+            {
+                var player = obj.GetComponent<NetworkPlayer>();
+                player?.ActivateVisual();
+            }
         }
     }
 }

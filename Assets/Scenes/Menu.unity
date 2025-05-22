@@ -979,6 +979,103 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &133226850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 133226853}
+  - component: {fileID: 133226852}
+  - component: {fileID: 133226851}
+  m_Layer: 0
+  m_Name: NetworkManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &133226851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133226850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ProtocolType: 0
+  m_MaxPacketQueueSize: 128
+  m_MaxPayloadSize: 6144
+  m_HeartbeatTimeoutMS: 500
+  m_ConnectTimeoutMS: 1000
+  m_MaxConnectAttempts: 60
+  m_DisconnectTimeoutMS: 30000
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
+    ServerListenAddress: 127.0.0.1
+  DebugSimulator:
+    PacketDelayMS: 0
+    PacketJitterMS: 0
+    PacketDropRate: 0
+--- !u!114 &133226852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133226850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkConfig:
+    ProtocolVersion: 0
+    NetworkTransport: {fileID: 133226851}
+    PlayerPrefab: {fileID: 4144480234650336366, guid: 292e812a68ee9cd478bf73327f214097, type: 3}
+    Prefabs:
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: a7916f248cc75ea429cd7d8fedfe2fd1, type: 2}
+    TickRate: 30
+    ClientConnectionBufferTimeout: 10
+    ConnectionApproval: 0
+    ConnectionData: 
+    EnableTimeResync: 0
+    TimeResyncInterval: 30
+    EnsureNetworkVariableLengthSafety: 0
+    EnableSceneManagement: 1
+    ForceSamePrefabs: 1
+    RecycleNetworkIds: 1
+    NetworkIdRecycleDelay: 120
+    RpcHashSize: 0
+    LoadSceneTimeOut: 120
+    SpawnTimeout: 10
+    EnableNetworkLogs: 1
+    OldPrefabList: []
+  RunInBackground: 1
+  LogLevel: 1
+--- !u!4 &133226853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133226850}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -33.507774, y: 1.0799994, z: 17.511538}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &146419763
 GameObject:
   m_ObjectHideFlags: 0
@@ -2322,6 +2419,7 @@ MonoBehaviour:
   - {fileID: 656214277}
   - {fileID: 294252283}
   codeToCopy: {fileID: 1544760639}
+  startButton: {fileID: 1057808906}
 --- !u!114 &290753310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3866,6 +3964,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2988393441914629297, guid: b10e811645751fc4f9648661249775af, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3870692518
+      objectReference: {fileID: 0}
+    - target: {fileID: 2988393441914629297, guid: b10e811645751fc4f9648661249775af, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2043298612
+      objectReference: {fileID: 0}
     - target: {fileID: 3947579172602924189, guid: b10e811645751fc4f9648661249775af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.4207706
@@ -3921,7 +4027,7 @@ PrefabInstance:
     - target: {fileID: 5447597060064631548, guid: b10e811645751fc4f9648661249775af, type: 3}
       propertyPath: NetworkConfig.NetworkTransport
       value: 
-      objectReference: {fileID: 2114384745}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16536,17 +16642,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082342964}
   m_CullTransparentMesh: 1
---- !u!114 &2114384745 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3935530013596585601, guid: b10e811645751fc4f9648661249775af, type: 3}
-  m_PrefabInstance: {fileID: 453225111}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5003464486522680821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16958,3 +17053,4 @@ SceneRoots:
   - {fileID: 1597483454}
   - {fileID: 290753305}
   - {fileID: 453225111}
+  - {fileID: 133226853}
