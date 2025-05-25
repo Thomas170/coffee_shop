@@ -61,4 +61,10 @@ public class PlayerListManager : NetworkBehaviour
             }
         }
     }
+    
+    public PlayerCarry GetPlayerCarry(ulong clientId)
+    {
+        var player = players.FirstOrDefault(p => p.OwnerClientId == clientId);
+        return player != null ? player.GetComponent<PlayerCarry>() : null;
+    }
 }

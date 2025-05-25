@@ -12,6 +12,7 @@ public abstract class ItemBase : NetworkBehaviour
 
     public NetworkVariable<bool> isLocked = new();
     public float itemMass = 100f;
+    public ulong? CurrentHolderClientId = null;
 
     private Transform _itemsParent;
 

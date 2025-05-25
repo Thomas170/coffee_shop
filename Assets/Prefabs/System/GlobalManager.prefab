@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 850157950429995110}
   - component: {fileID: 4672960527357387254}
   - component: {fileID: 2988393441914629297}
-  - component: {fileID: 5315026536916512789}
+  - component: {fileID: 3574293414476250387}
   m_Layer: 0
   m_Name: GlobalManager
   m_TagString: Untagged
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3457405568
+  GlobalObjectIdHash: 4123609956
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -152,7 +152,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &5315026536916512789
+--- !u!114 &3574293414476250387
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
