@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using Unity.Collections;
 using UnityEngine;
@@ -61,6 +62,8 @@ public abstract class ItemBase : NetworkBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one;
+        
+        StartCoroutine(ResetLocalTransformNextFrame());
     }
 
     public virtual void Detach()
@@ -85,6 +88,15 @@ public abstract class ItemBase : NetworkBehaviour
         {
             Destroy(rb);
         }
+    }
+    
+    private IEnumerator ResetLocalTransformNextFrame()
+    {
+        yield return new WaitForEndOfFrame();
+
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
     }
 
     public abstract void UpdateVisuals();
