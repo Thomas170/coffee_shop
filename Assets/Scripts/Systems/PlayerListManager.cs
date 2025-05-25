@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
+using UnityEngine;
 
 public class PlayerListManager : NetworkBehaviour
 {
@@ -60,11 +61,5 @@ public class PlayerListManager : NetworkBehaviour
                 player?.ActivateVisual();
             }
         }
-    }
-    
-    public PlayerCarry GetPlayerCarry(ulong clientId)
-    {
-        var player = players.FirstOrDefault(p => p.OwnerClientId == clientId);
-        return player != null ? player.GetComponent<PlayerCarry>() : null;
     }
 }

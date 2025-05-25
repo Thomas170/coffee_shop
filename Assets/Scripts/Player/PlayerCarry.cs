@@ -31,13 +31,7 @@ public class PlayerCarry : NetworkBehaviour
         if (_carriedItem == item)
         {
             _carriedItem = null;
-            item.Detach();
-            item.CurrentHolderClientId = null;
-
-            if (IsOwner)
-            {
-                UpdateItemClientRpc(item.NetworkObject, false);
-            }
+            UpdateItemClientRpc(item.NetworkObject, false);
         }
     }
 
@@ -51,13 +45,17 @@ public class PlayerCarry : NetworkBehaviour
 
         if (item.CurrentHolderClientId.HasValue && item.CurrentHolderClientId.Value != newHolder)
         {
-            var previousCarry = PlayerListManager.Instance.GetPlayerCarry(item.CurrentHolderClientId.Value);
-            previousCarry?.ForceDrop(item);
+            var previousCarry = FindObjectsOfType<PlayerCarry>()
+                .FirstOrDefault(c => c.OwnerClientId == item.CurrentHolderClientId.Value);
+
+            if (previousCarry)
+            {
+                previousCarry.ForceDrop(item);
+            }
         }
 
-        item.CurrentHolderClientId = rpcParams.Receive.SenderClientId;
-        item.NetworkObject.ChangeOwnership(rpcParams.Receive.SenderClientId);
-        item.AttachTo(carryPoint);
+        item.CurrentHolderClientId = newHolder;
+        item.NetworkObject.ChangeOwnership(newHolder);
 
         _carriedItem = item;
         UpdateItemClientRpc(itemRef, true);
@@ -76,41 +74,20 @@ public class PlayerCarry : NetworkBehaviour
         item.Detach();
         UpdateItemClientRpc(itemRef, false);
     }
-
-    /*[ClientRpc]
-    private void UpdateItemClientRpc(NetworkObjectReference itemRef, bool attach)
-    {
-        if (!itemRef.TryGet(out var itemObj)) return;
-        var item = itemObj.GetComponent<ItemBase>();
-
-        var localClientId = NetworkManager.Singleton.LocalClientId;
-        var allCarries = FindObjectsOfType<PlayerCarry>();
-
-        foreach (var carry in allCarries)
-        {
-            if (carry.OwnerClientId == localClientId)
-            {
-                if (attach)
-                {
-                    carry._carriedItem = item;
-                    item.AttachTo(carry.carryPoint);
-                }
-                else if (carry._carriedItem == item)
-                {
-                    carry._carriedItem = null;
-                    item.Detach();
-                }
-
-                break;
-            }
-        }
-    }*/
     
     [ClientRpc]
     private void UpdateItemClientRpc(NetworkObjectReference itemRef, bool attach)
     {
-        if (!itemRef.TryGet(out var itemObj)) return;
+        if (!itemRef.TryGet(out var itemObj))
+        {
+            return;
+        }
+
         var item = itemObj.GetComponent<ItemBase>();
+        if (item == null)
+        {
+            return;
+        }
 
         var localClientId = NetworkManager.Singleton.LocalClientId;
 
@@ -119,7 +96,10 @@ public class PlayerCarry : NetworkBehaviour
             var carry = FindObjectsOfType<PlayerCarry>()
                 .FirstOrDefault(c => c.OwnerClientId == localClientId);
 
-            if (carry == null) return;
+            if (carry == null)
+            {
+                return;
+            }
 
             if (attach)
             {
@@ -132,12 +112,5 @@ public class PlayerCarry : NetworkBehaviour
                 item.Detach();
             }
         }
-        else
-        {
-            // Pour les autres clients, on peut juste mettre à jour la référence sans toucher à la hiérarchie,
-            // ou même ne rien faire car ils ne doivent pas contrôler l'objet dans la scène.
-            // Optionnel : item.Detach(); si besoin
-        }
     }
-
 }
