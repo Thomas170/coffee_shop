@@ -32,6 +32,19 @@ public class NetworkPlayer : NetworkBehaviour
         Invoke(nameof(EnablePhysicsSafely), 1f);
         transform.position = new Vector3(0, -100f, 0);
         playerModel.SetActive(false);
+        
+        if (IsOwner)
+        {
+            MenuManager.NotifyLocalPlayerSpawned();
+        }
+    }
+    
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer)
+        {
+            PlayerListManager.Instance.RemovePlayer(this);
+        }
     }
     
     [ClientRpc]

@@ -108,19 +108,4 @@ public static class MultiplayerManager
 
         await Task.Yield();
     }
-
-
-    public static string GenerateRandomJoinCode(int length = 6)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var code = new StringBuilder(length);
-        var random = new System.Random();
-
-        for (int i = 0; i < length; i++)
-        {
-            code.Append(chars[random.Next(chars.Length)]);
-        }
-
-        return code.ToString();
-    }
 }

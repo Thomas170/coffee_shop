@@ -50,4 +50,12 @@ public class MenuManager : MonoBehaviour
             Debug.LogWarning("[MenuManager] No loadingScreen assigned.");
         }
     }
+    
+    public static event Action OnLocalPlayerSpawned;
+
+    public static void NotifyLocalPlayerSpawned()
+    {
+        OnLocalPlayerSpawned?.Invoke();
+    }
+
 }

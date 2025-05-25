@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,7 +24,13 @@ public class GameSetupMenuController : BaseMenuController
     private void OnEnable()
     {
         UpdateTopRightInfo();
-        UpdatePlayerSlots();
+        //UpdatePlayerSlots();
+        PlayerListManager.OnPlayerListChanged += UpdatePlayerSlots;
+    }
+    
+    private void OnDisable()
+    {
+        PlayerListManager.OnPlayerListChanged -= UpdatePlayerSlots;
     }
 
     private void UpdateTopRightInfo()
@@ -41,17 +48,20 @@ public class GameSetupMenuController : BaseMenuController
         levelText.text = $"{data.level}";
         coinsText.text = $"{data.coins}";
     }
-
+    
     private void UpdatePlayerSlots()
     {
+        var players = PlayerListManager.Instance?.GetConnectedPlayerIds();
+        if (players == null) return;
+
         for (int i = 0; i < playerSlots.Length; i++)
         {
-            TextMeshProUGUI pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
-            GameObject inviteObject = playerSlots[i].transform.Find("Invite").gameObject;
-            
-            if (i == 0)
+            var pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
+            var inviteObject = playerSlots[i].transform.Find("Invite").gameObject;
+
+            if (i < players.Count)
             {
-                pseudoText.text = "PlayerName";
+                pseudoText.text = $"Player {players[i]}";
                 pseudoText.gameObject.SetActive(true);
                 inviteObject.SetActive(false);
             }
@@ -84,7 +94,7 @@ public class GameSetupMenuController : BaseMenuController
             string joinCode = await MultiplayerManager.CreateSessionAsync();
             codeToCopy.text = joinCode;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError($"[Multiplayer] Erreur lors de la création de la session : {ex.Message}");
             codeToCopy.text = "Erreur";
@@ -92,6 +102,12 @@ public class GameSetupMenuController : BaseMenuController
         finally
         {
             MenuManager.Instance.SetLoadingScreenActive(false);
+            
+            if (NetworkManager.Singleton.IsHost)
+            {
+                UpdatePlayerSlots();
+            }
+
         }
     }
 
@@ -126,7 +142,7 @@ public class GameSetupMenuController : BaseMenuController
         {
             await MultiplayerManager.LeaveSessionAsync();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError($"[Multiplayer] Erreur en quittant la session : {ex.Message}");
         }
@@ -144,19 +160,34 @@ public class GameSetupMenuController : BaseMenuController
         base.CloseMenu();
     }
 
-    public async void OpenMenuWithSkip(bool skipSetup, string joinCode)
+    public async void OpenMenuByJoin(bool skipSetup, string joinCode)
     {
         _skipSetup = skipSetup;
         base.OpenMenu();
+        MenuManager.Instance.SetLoadingScreenActive(true);
 
         if (!_skipSetup)
         {
             await SetupMultiplayerSessionAsync();
+            WaitForLocalPlayerSpawnAndShowMenu();
         }
         else
         {
             startButton.SetActive(false);
             codeToCopy.text = joinCode;
+            WaitForLocalPlayerSpawnAndShowMenu();
         }
+    }
+    
+    private void WaitForLocalPlayerSpawnAndShowMenu()
+    {
+        MenuManager.OnLocalPlayerSpawned += ShowAfterPlayerSpawned;
+    }
+
+    private void ShowAfterPlayerSpawned()
+    {
+        MenuManager.OnLocalPlayerSpawned -= ShowAfterPlayerSpawned;
+        MenuManager.Instance.SetLoadingScreenActive(false);
+        UpdatePlayerSlots();
     }
 }
