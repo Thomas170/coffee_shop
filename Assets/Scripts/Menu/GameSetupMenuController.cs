@@ -32,14 +32,14 @@ public class GameSetupMenuController : BaseMenuController
         
         if (!SaveManager.SlotHasData(slotIndex))
         {
-            levelText.text = "Niveau ?";
-            coinsText.text = "? pièces";
+            levelText.text = "?";
+            coinsText.text = "?";
             return;
         }
         
         SaveData data = SaveManager.LoadFromSlot(slotIndex);
-        levelText.text = $"Niveau {data.level}";
-        coinsText.text = $"{data.coins} pièces";
+        levelText.text = $"{data.level}";
+        coinsText.text = $"{data.coins}";
     }
 
     private void UpdatePlayerSlots()

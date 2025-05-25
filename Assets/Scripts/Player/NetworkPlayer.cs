@@ -22,7 +22,6 @@ public class NetworkPlayer : NetworkBehaviour
             PlayerListManager.Instance.AddPlayer(this);
         }
 
-        SpawnPlayer();
         _rb = GetComponentInChildren<Rigidbody>();
         
         CinemachineVirtualCamera playerCam = transform.GetComponentInChildren<CinemachineVirtualCamera>();
@@ -31,12 +30,15 @@ public class NetworkPlayer : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         
         Invoke(nameof(EnablePhysicsSafely), 1f);
+        transform.position = new Vector3(0, -100f, 0);
         playerModel.SetActive(false);
     }
-
-    private void SpawnPlayer()
+    
+    [ClientRpc]
+    public void UpdatePositionClientRpc(Vector3 pos)
     {
-        transform.position = new Vector3(0f, 1f, 0f);
+        transform.position = pos;
+        ActivateVisual();
     }
 
     private new void OnDestroy()
