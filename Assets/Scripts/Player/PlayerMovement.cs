@@ -1,21 +1,23 @@
+using Unity.Netcode;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private PlayerController playerController;
 
-    private CharacterController _controller;
     private PlayerControls _controls;
+    private Transform _parentTransform;
+    private Rigidbody _parentRb;
 
     private Vector2 _keyboardInput;
     private Vector2 _gamepadInput;
 
     private void Awake()
     {
-        playerController = GetComponent<PlayerController>();
-        _controller = GetComponent<CharacterController>();
+        playerController = GetComponentInChildren<PlayerController>();
+        _parentTransform = transform.parent;
+        _parentRb = _parentTransform.GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -44,18 +46,28 @@ public class PlayerMovement : MonoBehaviour
     {
         _controls.Movements.Disable();
     }
-
-    private void Update()
+    
+    private void FixedUpdate()
     {
-        if (!playerController.CanMove) return;
+        if (!IsOwner || !playerController.CanMove) return;
 
         Vector2 input = _keyboardInput + _gamepadInput;
         Vector3 move = new Vector3(input.x, 0, input.y);
 
         if (move.sqrMagnitude > 0.01f)
         {
-            _controller.Move(move.normalized * (moveSpeed * Time.deltaTime));
-            transform.forward = move.normalized;
+            _parentRb.velocity = move.normalized * moveSpeed;
+            Quaternion targetRotation = Quaternion.LookRotation(move.normalized, Vector3.up);
+            _parentTransform.rotation = Quaternion.Slerp(
+                _parentTransform.rotation,
+                targetRotation,
+                Time.fixedDeltaTime * 10f
+            );
+        }
+        else
+        {
+            _parentRb.velocity = new Vector3(0f, _parentRb.velocity.y, 0f);
         }
     }
+
 }

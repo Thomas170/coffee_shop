@@ -34,10 +34,10 @@ public class ClientCommands : MonoBehaviour, IInteractable
             return;
         }
 
-        GameObject carried = carry.GetCarriedObject();
-        Cup cup = carried.GetComponent<Cup>();
+        //GameObject carried = carry.GetCarriedObject();
+        //Cup cup = carried.GetComponent<Cup>();
 
-        if (cup != null && cup.IsFull)
+        /*if (cup != null && cup.IsFull)
         {
             carry.RemoveCarried();
             ReceiveCommand(carried);
@@ -46,7 +46,7 @@ public class ClientCommands : MonoBehaviour, IInteractable
         else
         {
             Debug.LogWarning("Ce n'est pas un café plein.");
-        }
+        }*/
     }
     
     public void Collect() { }
@@ -84,9 +84,9 @@ public class ClientCommands : MonoBehaviour, IInteractable
         
         _heldCup = commandObj;
         Transform cupSpot = ClientBarSpotManager.Instance.GetCupSpot(commandSpot.gameObject);
-        _heldCup.GetComponent<FollowTarget>().SetTarget(cupSpot);
+        /*_heldCup.GetComponent<FollowTarget>().SetTarget(cupSpot);
         _heldCup.GetComponent<Cup>().Lock();
-        _heldCup.GetComponent<Cup>().OnSpot(commandSpot);
+        _heldCup.GetComponent<Cup>().OnSpot(commandSpot);*/
 
         StartCoroutine(DrinkCoffee());
     }
@@ -99,7 +99,7 @@ public class ClientCommands : MonoBehaviour, IInteractable
         Cup heldCupScript = _heldCup.GetComponent<Cup>();
         heldCupScript.Empty();
         heldCupScript.Unlock();
-        _heldCup.GetComponent<FollowTarget>().ClearTarget();
+        //_heldCup.GetComponent<FollowTarget>().ClearTarget();
         
         LeaveCoffeeShop();
     }

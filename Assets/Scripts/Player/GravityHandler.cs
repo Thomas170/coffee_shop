@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 public class GravityHandler : MonoBehaviour
 {
     [SerializeField] private float gravity = -9.81f;

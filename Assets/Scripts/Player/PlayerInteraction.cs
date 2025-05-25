@@ -10,20 +10,16 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Start()
     {
-        playerController = transform.GetComponent<PlayerController>();
-        
+        playerController = GetComponent<PlayerController>();
+
         if (InputReader.Instance != null)
         {
             InputReader.Instance.InteractAction.performed += OnInteract;
             InputReader.Instance.CollectAction.performed += OnCollect;
             InputReader.Instance.DropAction.performed += OnDrop;
         }
-        else
-        {
-            Debug.LogError("InputReader.Instance est null ! Vérifie qu'il est bien présent dans la scène.");
-        }
     }
-    
+
     private void OnDestroy()
     {
         if (InputReader.Instance != null)
@@ -43,7 +39,7 @@ public class PlayerInteraction : MonoBehaviour
     private void OnCollect(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
-        
+
         PlayerCarry carry = GetComponent<PlayerCarry>();
 
         if (_currentInteractable != null)
@@ -52,24 +48,22 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (_currentPickable != null && !carry.IsCarrying)
         {
-            Cup cup = _currentPickable.GetComponent<Cup>();
-            if (cup != null && cup.IsLocked)
+            ItemBase item = _currentPickable.GetComponent<ItemBase>();
+            if (item != null && item.isLocked.Value)
             {
-                Debug.Log("Tu ne peux pas récupérer cette objet maintenant.");
+                Debug.Log("Objet verrouillé, déjà porté.");
                 return;
             }
 
-            carry.PickUp(_currentPickable);
+            carry.TryPickUp(_currentPickable);
             _currentPickable = null;
         }
     }
-    
+
     private void OnDrop(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
-        
-        var carry = GetComponent<PlayerCarry>();
-        carry.DropInFront();
+        GetComponent<PlayerCarry>().DropInFront();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -1,41 +1,58 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerCarry : MonoBehaviour
+public class PlayerCarry : NetworkBehaviour
 {
     [SerializeField] private Transform carryPoint;
-    private GameObject _carriedObject;
+    private ItemBase _carriedItem;
 
-    public bool IsCarrying => _carriedObject != null;
+    public bool IsCarrying => _carriedItem != null;
 
-    public GameObject GetCarriedObject() => _carriedObject;
-
-    public void PickUp(GameObject item)
+    public void TryPickUp(GameObject itemObj)
     {
-        _carriedObject = item;
-        _carriedObject.GetComponent<FollowTarget>().SetTarget(carryPoint);
+        if (!IsOwner || IsCarrying) return;
 
-        Cup cupScript = _carriedObject.GetComponent<Cup>();
-        if (cupScript.cupSpot != null)
-        {
-            ClientBarSpotManager.Instance.ReleaseSpot(cupScript.cupSpot);
-            cupScript.OutSpot();
-        }
+        var item = itemObj.GetComponent<ItemBase>();
+        if (item == null) return;
+
+        RequestPickUpServerRpc(item.NetworkObject);
     }
 
-    public void RemoveCarried()
+    [ServerRpc]
+    private void RequestPickUpServerRpc(NetworkObjectReference itemRef, ServerRpcParams rpcParams = default)
     {
-        _carriedObject = null;
+        if (!itemRef.TryGet(out var itemObj)) return;
+        var item = itemObj.GetComponent<ItemBase>();
+
+        if (!item.TryLock(rpcParams.Receive.SenderClientId)) return;
+
+        _carriedItem = item;
+        item.AttachTo(carryPoint);
+        item.NetworkObject.ChangeOwnership(rpcParams.Receive.SenderClientId);
+        UpdateItemClientRpc(itemRef);
+    }
+
+    [ClientRpc]
+    private void UpdateItemClientRpc(NetworkObjectReference itemRef)
+    {
+        if (!itemRef.TryGet(out var itemObj)) return;
+        var item = itemObj.GetComponent<ItemBase>();
+        item.AttachTo(carryPoint);
+        _carriedItem = item;
     }
 
     public void DropInFront()
     {
-        if (_carriedObject != null)
-        {
-            _carriedObject.GetComponent<Cup>().Unlock();
-            _carriedObject.GetComponent<FollowTarget>().ClearTarget();
-            Vector3 dropPosition = carryPoint.position + transform.forward * 1f;
-            _carriedObject.transform.position = dropPosition;
-            _carriedObject = null;
-        }
+        if (!IsOwner || !IsCarrying) return;
+
+        RequestDropServerRpc();
+    }
+
+    [ServerRpc]
+    private void RequestDropServerRpc()
+    {
+        _carriedItem.Detach();
+        _carriedItem.Unlock();
+        _carriedItem = null;
     }
 }

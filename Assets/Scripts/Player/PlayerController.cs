@@ -27,9 +27,6 @@ public class PlayerController : MonoBehaviour
     {
         MenuManager.OnMenuStateChanged += HandleMenuStateChanged;
         InputDeviceTracker.Instance.OnDeviceChanged += DeviceChange;
-        
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void OnDestroy()

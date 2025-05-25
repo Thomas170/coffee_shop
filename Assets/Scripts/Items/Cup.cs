@@ -1,52 +1,36 @@
 using UnityEngine;
 
-public class Cup : MonoBehaviour
+public enum CupState
 {
-    public CupState State { get; private set; } = CupState.Empty;
+    Empty,
+    Full,
+    Dirty
+}
 
+public class Cup : ItemBase
+{
     [SerializeField] private GameObject emptyVisual;
     [SerializeField] private GameObject fullVisual;
-    
-    public bool IsFull => State == CupState.Full;
-    public bool IsLocked { get; private set; }
-    public GameObject cupSpot;
 
-    public void Lock() => IsLocked = true;
-    public void Unlock()
+    public new void Start()
     {
-        IsLocked = false;
+        currentState.Value = CupState.Empty.ToString();
+        base.Start();
     }
 
-    public void OnSpot(GameObject commandSpot)
+    public override void UpdateVisuals()
     {
-        cupSpot = commandSpot;
-    }
-
-    public void OutSpot()
-    {
-        cupSpot = null;
-    }
-
-    private void Start()
-    {
-        UpdateVisuals();
+        emptyVisual.SetActive(currentState.Value == CupState.Empty.ToString());
+        fullVisual.SetActive(currentState.Value == CupState.Full.ToString());
     }
 
     public void Fill()
     {
-        State = CupState.Full;
-        UpdateVisuals();
-    }
-    
-    public void Empty()
-    {
-        State = CupState.Empty;
-        UpdateVisuals();
+        if (IsOwner) SetState(CupState.Full.ToString());
     }
 
-    private void UpdateVisuals()
+    public void Empty()
     {
-        emptyVisual.SetActive(State == CupState.Empty);
-        fullVisual.SetActive(State == CupState.Full);
+        if (IsOwner) SetState(CupState.Empty.ToString());
     }
 }

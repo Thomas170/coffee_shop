@@ -9,7 +9,6 @@ public class NetworkPlayer : NetworkBehaviour
     [SerializeField] private GameObject playerModel;
 
     private readonly List<Type> _typesToDisable = new() {
-        typeof(PlayerCarry),
         typeof(PlayerMovement),
         typeof(PlayerInteraction),
         typeof(PlayerUI),
@@ -22,16 +21,9 @@ public class NetworkPlayer : NetworkBehaviour
         {
             PlayerListManager.Instance.AddPlayer(this);
         }
-        
-        var pos = transform.position;
-        pos.y += 5f;
-        transform.position = pos;
-        
-        _rb = GetComponent<Rigidbody>();
-        if (_rb != null)
-        {
-            _rb.isKinematic = true;
-        }
+
+        SpawnPlayer();
+        _rb = GetComponentInChildren<Rigidbody>();
         
         CinemachineVirtualCamera playerCam = transform.GetComponentInChildren<CinemachineVirtualCamera>();
         playerCam.Priority = IsOwner ? 1 : 0;
@@ -39,6 +31,12 @@ public class NetworkPlayer : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         
         Invoke(nameof(EnablePhysicsSafely), 1f);
+        playerModel.SetActive(false);
+    }
+
+    private void SpawnPlayer()
+    {
+        transform.position = new Vector3(0f, 1f, 0f);
     }
 
     private new void OnDestroy()
@@ -70,6 +68,7 @@ public class NetworkPlayer : NetworkBehaviour
         if (_rb != null)
         {
             _rb.isKinematic = false;
+            _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
     }
 }

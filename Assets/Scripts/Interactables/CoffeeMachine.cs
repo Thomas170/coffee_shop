@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class CoffeeMachine : MonoBehaviour, IInteractable
+public class CoffeeMachine : MonoBehaviour//, IInteractable
 {
     [SerializeField] private Transform cupPlacementPoint;
     [SerializeField] private CoffeeGaugeUI gaugeUI;
     private Cup _placedCup;
     private bool _isBrewing;
 
-    public void Interact()
+    /*public void Interact()
     {
         if (_isBrewing || _placedCup != null) return;
 
@@ -68,5 +68,5 @@ public class CoffeeMachine : MonoBehaviour, IInteractable
         _placedCup.Unlock();
         _isBrewing = false;
         Debug.Log("Café prêt !");
-    }
+    }*/
 }
