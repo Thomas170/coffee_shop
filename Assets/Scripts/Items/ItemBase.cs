@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class ItemBase : NetworkBehaviour
 {
-    public NetworkVariable<FixedString128Bytes> currentState = new(
-        new FixedString128Bytes(""),
+    /*public NetworkVariable<FixedString128Bytes> currentState = new(
+        default(FixedString128Bytes),
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
-    );
+    );*/
 
     public NetworkVariable<bool> isLocked = new();
     public float itemMass = 100f;
@@ -28,20 +28,21 @@ public abstract class ItemBase : NetworkBehaviour
         HandleRigidbody(true);
     }
 
-    public bool TryLock(ulong clientId)
+    /*public bool TryLock()
     {
         if (isLocked.Value) return false;
         isLocked.Value = true;
         return true;
     }
 
-    public void Unlock()
+    public bool TryUnlock()
     {
-        if (IsServer)
+        if (!isLocked.Value) return false;
             isLocked.Value = false;
-    }
+        return true;
+    }*/
 
-    public void SetState(string newState)
+    /*public void SetState(string newState)
     {
         if (!IsOwner || currentState == null) return;
         
@@ -50,12 +51,10 @@ public abstract class ItemBase : NetworkBehaviour
 
         currentState.Value = new FixedString128Bytes(newState);
         UpdateVisuals();
-    }
+    }*/
 
     public virtual void AttachTo(Transform carryPoint)
     {
-        if (!IsServer) return;
-        
         HandleRigidbody(false);
         transform.SetParent(carryPoint, false);
         transform.localPosition = Vector3.zero;
@@ -65,10 +64,8 @@ public abstract class ItemBase : NetworkBehaviour
 
     public virtual void Detach()
     {
-        if (!IsServer) return;
-        
-        transform.SetParent(_itemsParent);
         HandleRigidbody(true);
+        transform.SetParent(_itemsParent);
     }
 
     private void HandleRigidbody(bool present)

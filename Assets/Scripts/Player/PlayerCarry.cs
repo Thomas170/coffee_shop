@@ -17,6 +17,14 @@ public class PlayerCarry : NetworkBehaviour
 
         RequestPickUpServerRpc(item.NetworkObject);
     }
+    
+    public void DropInFront()
+    {
+        if (!IsOwner || !IsCarrying) return;
+
+        RequestDropServerRpc(_carriedItem.NetworkObject);
+        _carriedItem = null;
+    }
 
     [ServerRpc]
     private void RequestPickUpServerRpc(NetworkObjectReference itemRef, ServerRpcParams rpcParams = default)
@@ -24,35 +32,45 @@ public class PlayerCarry : NetworkBehaviour
         if (!itemRef.TryGet(out var itemObj)) return;
         var item = itemObj.GetComponent<ItemBase>();
 
-        if (!item.TryLock(rpcParams.Receive.SenderClientId)) return;
+        //if (!item.TryLock()) return;
 
         _carriedItem = item;
-        item.AttachTo(carryPoint);
         item.NetworkObject.ChangeOwnership(rpcParams.Receive.SenderClientId);
-        UpdateItemClientRpc(itemRef);
-    }
-
-    [ClientRpc]
-    private void UpdateItemClientRpc(NetworkObjectReference itemRef)
-    {
-        if (!itemRef.TryGet(out var itemObj)) return;
-        var item = itemObj.GetComponent<ItemBase>();
         item.AttachTo(carryPoint);
-        _carriedItem = item;
-    }
-
-    public void DropInFront()
-    {
-        if (!IsOwner || !IsCarrying) return;
-
-        RequestDropServerRpc();
+        UpdateItemClientRpc(itemRef, true);
     }
 
     [ServerRpc]
-    private void RequestDropServerRpc()
+    private void RequestDropServerRpc(NetworkObjectReference itemRef)
     {
-        _carriedItem.Detach();
-        _carriedItem.Unlock();
+        if (!itemRef.TryGet(out var itemObj)) return;
+        var item = itemObj.GetComponent<ItemBase>();
+        
+        //if (!item.TryUnlock()) return;
+        
         _carriedItem = null;
+        item.Detach();
+        UpdateItemClientRpc(itemRef, false);
+    }
+    
+    [ClientRpc]
+    private void UpdateItemClientRpc(NetworkObjectReference itemRef, bool attach)
+    {
+        if (!itemRef.TryGet(out var itemObj)) return;
+        var item = itemObj.GetComponent<ItemBase>();
+
+        if (item.OwnerClientId == NetworkManager.Singleton.LocalClientId)
+        {
+            if (attach)
+            {
+                _carriedItem = item;
+                item.AttachTo(carryPoint);
+            }
+            else
+            {
+                _carriedItem = null;
+                item.Detach();
+            }
+        }
     }
 }

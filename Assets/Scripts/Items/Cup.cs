@@ -14,23 +14,25 @@ public class Cup : ItemBase
 
     public new void Start()
     {
-        currentState.Value = CupState.Empty.ToString();
+        //currentState.Value = CupState.Empty.ToString();
+        emptyVisual.SetActive(true);
+        fullVisual.SetActive(false);
         base.Start();
     }
 
     public override void UpdateVisuals()
     {
-        emptyVisual.SetActive(currentState.Value == CupState.Empty.ToString());
-        fullVisual.SetActive(currentState.Value == CupState.Full.ToString());
+        /*emptyVisual.SetActive(currentState.Value == CupState.Empty.ToString());
+        fullVisual.SetActive(currentState.Value == CupState.Full.ToString());*/
     }
 
     public void Fill()
     {
-        if (IsOwner) SetState(CupState.Full.ToString());
+        //if (IsOwner) SetState(CupState.Full.ToString());
     }
 
     public void Empty()
     {
-        if (IsOwner) SetState(CupState.Empty.ToString());
+        //if (IsOwner) SetState(CupState.Empty.ToString());
     }
 }

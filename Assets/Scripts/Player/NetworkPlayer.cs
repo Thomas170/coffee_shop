@@ -60,6 +60,8 @@ public class NetworkPlayer : NetworkBehaviour
                     script.enabled = false;
                 }
             }
+            
+            _rb.isKinematic = true;
         }
     }
 
