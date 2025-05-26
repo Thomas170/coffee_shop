@@ -84,13 +84,22 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
     [ServerRpc(RequireOwnership = false)]
     protected void RequestInteractionStartServerRpc(ulong clientId)
     {
-        if (isInUse.Value) return;
+        if (isInUse.Value == false && currentItem != null) return;
+
         var player = GetPlayerByClientId(clientId);
         var carry = player.GetComponent<PlayerCarry>();
 
         var item = carry.GetCarriedObject();
-        var itemBase = carry.GetCarriedObject().GetComponent<ItemBase>();
+        var itemBase = item.GetComponent<ItemBase>();
         if (itemBase == null || itemBase.itemType != requiredItemType) return;
+
+        // S’il y a une interaction en cours, il faut que ça soit le même client pour l’interrompre
+        if (isInUse.Value)
+        {
+            if (interactingClient != clientId || !CanInterrupt()) return;
+            StopCoroutine(activeCoroutine);
+            OnForcedEnd();
+        }
 
         currentItem = itemBase;
         carry.DropInFront();
