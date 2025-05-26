@@ -8,16 +8,24 @@ public class PlayerCarry : NetworkBehaviour
     private ItemBase _carriedItem;
 
     public bool IsCarrying => _carriedItem != null;
-
-    public void TryPickUp(GameObject itemObj)
+    
+    public bool TryPickUp(GameObject item)
     {
-        if (!IsOwner || IsCarrying) return;
+        var itemBase = item.GetComponent<ItemBase>();
+        if (itemBase == null || IsCarrying) return false;
 
-        var item = itemObj.GetComponent<ItemBase>();
-        if (item == null) return;
+        var parentInteractable = itemBase.transform.parent?.GetComponentInParent<InteractableBase>();
+        if (parentInteractable != null && parentInteractable.IsInUse)
+        {
+            parentInteractable.ForceInterruptFromClient();
+        }
 
-        RequestPickUpServerRpc(item.NetworkObject);
+        itemBase.AttachTo(carryPoint);
+        _carriedItem = itemBase;
+        
+        return true;
     }
+
 
     public void DropInFront()
     {

@@ -15,23 +15,42 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
     protected NetworkVariable<float> progress = new NetworkVariable<float>(0);
     protected ItemBase currentItem;
     protected ulong interactingClient;
-
     protected Coroutine activeCoroutine;
+    
+    public bool RequiresHold => requiresHold;
+    public bool IsInUse => isInUse.Value;
 
     public virtual void Interact()
     {
-        if (isInUse.Value && !requiresHold)
+        if (!requiresHold) return;
+
+        if (isInUse.Value)
         {
             if (CanInterrupt())
-            {
                 RequestInterruptServerRpc(NetworkManager.LocalClientId);
-            }
             return;
         }
 
         var player = GetLocalPlayer();
         var carry = player.GetComponent<PlayerCarry>();
+        if (!IsValidInteraction(carry)) return;
 
+        RequestInteractionStartServerRpc(NetworkManager.LocalClientId);
+    }
+    
+    public virtual void SimpleUse()
+    {
+        if (requiresHold) return;
+
+        if (isInUse.Value)
+        {
+            if (CanInterrupt())
+                RequestInterruptServerRpc(NetworkManager.LocalClientId);
+            return;
+        }
+
+        var player = GetLocalPlayer();
+        var carry = player.GetComponent<PlayerCarry>();
         if (!IsValidInteraction(carry)) return;
 
         RequestInteractionStartServerRpc(NetworkManager.LocalClientId);
@@ -152,5 +171,13 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
         var itemBase = item.GetComponent<ItemBase>();
 
         return itemBase != null && itemBase.itemType == requiredItemType;
+    }
+    
+    public void ForceInterruptFromClient()
+    {
+        if (IsOwner && CanInterrupt())
+        {
+            RequestInterruptServerRpc(NetworkManager.LocalClientId);
+        }
     }
 }

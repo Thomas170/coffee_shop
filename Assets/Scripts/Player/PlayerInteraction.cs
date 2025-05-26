@@ -16,7 +16,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             InputReader.Instance.InteractAction.performed += OnInteract;
             InputReader.Instance.CollectAction.performed += OnCollect;
-            InputReader.Instance.DropAction.performed += OnDrop;
         }
     }
 
@@ -26,7 +25,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             InputReader.Instance.InteractAction.performed -= OnInteract;
             InputReader.Instance.CollectAction.performed -= OnCollect;
-            InputReader.Instance.DropAction.performed -= OnDrop;
         }
     }
 
@@ -39,17 +37,39 @@ public class PlayerInteraction : MonoBehaviour
     private void OnCollect(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
-
         PlayerCarry carry = GetComponent<PlayerCarry>();
 
-        if (_currentInteractable != null)
+        if (!carry.IsCarrying)
         {
-            _currentInteractable.Collect();
+            // 1. Récupérer item d'une machine si possible
+            if (_currentInteractable != null)
+            {
+                _currentInteractable.Collect();
+                return;
+            }
+
+            // 2. Ramasser un item au sol
+            if (_currentPickable != null)
+            {
+                carry.TryPickUp(_currentPickable);
+                _currentPickable = null;
+                return;
+            }
         }
-        else if (_currentPickable != null && !carry.IsCarrying)
+        else // Item en main
         {
-            carry.TryPickUp(_currentPickable);
-            _currentPickable = null;
+            if (_currentInteractable != null)
+            {
+                // 3. Utiliser la machine si elle ne demande PAS de maintien
+                if (_currentInteractable is InteractableBase ib && !ib.RequiresHold)
+                {
+                    ib.SimpleUse();
+                    return;
+                }
+            }
+
+            // 4. Sinon, jeter l’objet
+            carry.DropInFront();
         }
     }
 
