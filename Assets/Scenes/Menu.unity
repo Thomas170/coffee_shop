@@ -16780,6 +16780,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Waiting
       objectReference: {fileID: 0}
+    - target: {fileID: 8324255722074453313, guid: 985ee2f5db5ea5343bf49c3f0b83bafb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
