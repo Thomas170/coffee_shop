@@ -19,7 +19,7 @@ public class CoffeeMachine : InteractableBase
         fullCup.GetComponent<NetworkObject>().Spawn();
 
         currentItem = fullCup.GetComponent<ItemBase>();
-        currentItem.AttachTo(itemDisplay);
+        currentItem.AttachToWithoutCollider(itemDisplay);
     }
 
     protected override void OnForcedEnd()

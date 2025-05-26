@@ -61,7 +61,7 @@ public class PlayerInteraction : MonoBehaviour
             if (_currentInteractable != null)
             {
                 // 3. Utiliser la machine si elle ne demande PAS de maintien
-                if (_currentInteractable is InteractableBase ib && !ib.RequiresHold)
+                if (_currentInteractable is InteractableBase ib && !ib.RequiresHold && !ib.IsInUse)
                 {
                     ib.SimpleUse();
                     return;

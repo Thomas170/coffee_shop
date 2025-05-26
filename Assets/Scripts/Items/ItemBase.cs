@@ -26,11 +26,29 @@ public class ItemBase : NetworkBehaviour
         
         StartCoroutine(ResetLocalTransformNextFrame());
     }
+    
+    public virtual void AttachToWithoutCollider(Transform carryPoint)
+    {
+        HandleRigidbody(false);
+        transform.SetParent(carryPoint, true);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        foreach (var col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
+        
+        StartCoroutine(ResetLocalTransformNextFrame());
+    }
 
     public virtual void Detach()
     {
         HandleRigidbody(true);
         transform.SetParent(_itemsParent, true);
+        foreach (var col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = true;
+        }
     }
 
     private void HandleRigidbody(bool present)

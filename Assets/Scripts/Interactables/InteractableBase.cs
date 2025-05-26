@@ -45,9 +45,12 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
         if (isInUse.Value)
         {
             if (CanInterrupt())
+            {
                 RequestInterruptServerRpc(NetworkManager.LocalClientId);
+            }
             return;
         }
+
 
         var player = GetLocalPlayer();
         var carry = player.GetComponent<PlayerCarry>();
@@ -107,7 +110,6 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
         var itemBase = item.GetComponent<ItemBase>();
         if (itemBase == null || itemBase.itemType != requiredItemType) return;
 
-        // S’il y a une interaction en cours, il faut que ça soit le même client pour l’interrompre
         if (isInUse.Value)
         {
             if (interactingClient != clientId || !CanInterrupt()) return;
@@ -117,7 +119,7 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
 
         currentItem = itemBase;
         carry.DropInFront();
-        currentItem.AttachTo(itemDisplay);
+        currentItem.AttachToWithoutCollider(itemDisplay);
 
         interactingClient = clientId;
         isInUse.Value = true;

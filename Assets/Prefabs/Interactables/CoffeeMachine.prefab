@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 5029108329187790038}
   - component: {fileID: 3383259819673615637}
   - component: {fileID: 2540512959699067339}
+  - component: {fileID: 3553699358007632749}
   m_Layer: 0
   m_Name: CoffeeMachineModel
   m_TagString: Untagged
@@ -514,6 +515,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillImage: {fileID: 8498092873844352191}
   gaugeRoot: {fileID: 4746118869210376438}
+--- !u!135 &3553699358007632749
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7645000825021806231}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8227695482759498793
 GameObject:
   m_ObjectHideFlags: 0
