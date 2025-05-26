@@ -41,14 +41,32 @@ public class PlayerInteraction : MonoBehaviour
 
         if (!carry.IsCarrying)
         {
-            // 1. Récupérer item d'une machine si possible
-            if (_currentInteractable != null)
+            if (_currentInteractable != null && _currentInteractable is InteractableBase ib)
             {
-                _currentInteractable.Collect();
-                return;
+                // 1. Mains vides, item au sol, machine prête à récupérer un item
+                if (ib.CurrentItem != null && !ib.IsInUse)
+                {
+                    ib.Collect();
+                    return;
+                }
+
+                // 2. Mains vides, item au sol, machine en cours d’utilisation => ramasse item au sol
+                if (_currentPickable != null && ib.IsInUse)
+                {
+                    carry.TryPickUp(_currentPickable);
+                    _currentPickable = null;
+                    return;
+                }
+
+                // 3. Mains vides, pas d’item au sol, machine en cours d’utilisation => stop l’action et récupère item non fini
+                if (_currentPickable == null && ib.IsInUse)
+                {
+                    ib.ForceInterruptFromClient();
+                    return;
+                }
             }
 
-            // 2. Ramasser un item au sol
+            // Si on arrive là, il reste la possibilité de ramasser un item au sol sans machine
             if (_currentPickable != null)
             {
                 carry.TryPickUp(_currentPickable);
@@ -56,22 +74,18 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
         }
-        else // Item en main
+        else
         {
-            if (_currentInteractable != null)
+            // Mains avec item en main
+            if (_currentInteractable != null && _currentInteractable is InteractableBase ib && !ib.RequiresHold && !ib.IsInUse)
             {
-                // 3. Utiliser la machine si elle ne demande PAS de maintien
-                if (_currentInteractable is InteractableBase ib && !ib.RequiresHold && !ib.IsInUse)
-                {
-                    ib.SimpleUse();
-                    return;
-                }
+                ib.SimpleUse();
+                return;
             }
-
-            // 4. Sinon, jeter l’objet
             carry.DropInFront();
         }
     }
+
 
     private void OnDrop(InputAction.CallbackContext ctx)
     {

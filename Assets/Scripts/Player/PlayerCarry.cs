@@ -9,21 +9,13 @@ public class PlayerCarry : NetworkBehaviour
 
     public bool IsCarrying => _carriedItem != null;
     
-    public bool TryPickUp(GameObject item)
+    public void TryPickUp(GameObject item)
     {
         var itemBase = item.GetComponent<ItemBase>();
-        if (itemBase == null || IsCarrying) return false;
-
-        var parentInteractable = itemBase.transform.parent?.GetComponentInParent<InteractableBase>();
-        if (parentInteractable != null && parentInteractable.IsInUse)
-        {
-            parentInteractable.ForceInterruptFromClient();
-        }
+        if (itemBase == null || IsCarrying) return;
 
         itemBase.AttachTo(carryPoint);
         _carriedItem = itemBase;
-        
-        return true;
     }
 
 
@@ -34,16 +26,15 @@ public class PlayerCarry : NetworkBehaviour
         RequestDropServerRpc(_carriedItem.NetworkObject);
     }
 
-    public void ForceDrop(ItemBase item)
+    /*private void ForceDrop(ItemBase item)
     {
-        if (_carriedItem == item)
-        {
-            _carriedItem = null;
-            UpdateItemClientRpc(item.NetworkObject, false);
-        }
-    }
+        if (_carriedItem != item) return;
+        
+        _carriedItem = null;
+        UpdateItemClientRpc(item.NetworkObject, false);
+    }*/
 
-    [ServerRpc]
+    /*[ServerRpc]
     private void RequestPickUpServerRpc(NetworkObjectReference itemRef, ServerRpcParams rpcParams = default)
     {
         if (!itemRef.TryGet(out var itemObj)) return;
@@ -67,7 +58,7 @@ public class PlayerCarry : NetworkBehaviour
 
         _carriedItem = item;
         UpdateItemClientRpc(itemRef, true);
-    }
+    }*/
 
     [ServerRpc]
     private void RequestDropServerRpc(NetworkObjectReference itemRef)

@@ -7,202 +7,166 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
 {
     [SerializeField] protected Transform itemDisplay;
     [SerializeField] protected float interactionDuration = 5f;
-    [SerializeField] protected bool requiresHold;
     [SerializeField] protected ItemType requiredItemType = ItemType.None;
     [SerializeField] protected ProgressGaugeUI gaugeUI;
+    [SerializeField] protected GameObject resultItemPrefab;
 
-    protected NetworkVariable<bool> isInUse = new NetworkVariable<bool>(false);
-    protected NetworkVariable<float> progress = new NetworkVariable<float>(0);
-    protected ItemBase currentItem;
-    protected ulong interactingClient;
-    protected Coroutine activeCoroutine;
-    
-    public bool RequiresHold => requiresHold;
-    public bool IsInUse => isInUse.Value;
+    private readonly NetworkVariable<NetworkObjectReference> _currentItemRef = new();
+    private readonly NetworkVariable<bool> _isInUse = new();
+    private readonly NetworkVariable<float> _progress = new();
 
-    public virtual void Interact()
+    private Coroutine _activeCoroutine;
+
+    public bool IsInUse => _isInUse.Value;
+
+    public ItemBase CurrentItem
     {
-        if (!requiresHold) return;
-
-        if (isInUse.Value)
-        {
-            if (CanInterrupt())
-                RequestInterruptServerRpc(NetworkManager.LocalClientId);
-            return;
-        }
-
-        var player = GetLocalPlayer();
-        var carry = player.GetComponent<PlayerCarry>();
-        if (!IsValidInteraction(carry)) return;
-
-        RequestInteractionStartServerRpc(NetworkManager.LocalClientId);
+        get => _currentItemRef.Value.TryGet(out NetworkObject netObj) ? netObj.GetComponent<ItemBase>() : null;
+        protected set => _currentItemRef.Value = !value ? default : new NetworkObjectReference(value.GetComponent<NetworkObject>());
     }
-    
-    public virtual void SimpleUse()
+
+    public virtual bool RequiresHold => false;
+
+    protected virtual bool CanInterrupt() => true;
+    protected virtual bool InputHeldByClient() => true;
+    protected abstract void OnForcedEnd();
+
+    protected GameObject GetPlayerByClientId(ulong clientId)
     {
-        if (requiresHold) return;
-
-        if (isInUse.Value)
-        {
-            if (CanInterrupt())
-            {
-                RequestInterruptServerRpc(NetworkManager.LocalClientId);
-            }
-            return;
-        }
-
-
-        var player = GetLocalPlayer();
-        var carry = player.GetComponent<PlayerCarry>();
-        if (!IsValidInteraction(carry)) return;
-
-        RequestInteractionStartServerRpc(NetworkManager.LocalClientId);
+        return FindObjectsOfType<NetworkBehaviour>()
+            .FirstOrDefault(x => x.OwnerClientId == clientId && x.CompareTag("Player"))?.gameObject;
     }
 
     public virtual void Collect()
     {
-        if (!IsOwner || currentItem == null) return;
-
-        var player = GetLocalPlayer();
-        var carry = player.GetComponent<PlayerCarry>();
-
-        if (!carry.IsCarrying)
-        {
-            RequestCollectServerRpc();
-        }
+        if (CurrentItem == null) return;
+        RequestCollectServerRpc();
     }
-    
+
     [ServerRpc(RequireOwnership = false)]
     private void RequestCollectServerRpc(ServerRpcParams rpcParams = default)
     {
-        if (currentItem == null) return;
+        if (CurrentItem == null) return;
 
         var player = GetPlayerByClientId(rpcParams.Receive.SenderClientId);
-        var carry = player?.GetComponent<PlayerCarry>();
+        if (player == null) return;
 
+        var carry = player.GetComponent<PlayerCarry>();
         if (carry != null && !carry.IsCarrying)
         {
-            carry.TryPickUp(currentItem.gameObject);
-            currentItem = null;
-
-            if (activeCoroutine != null)
-            {
-                StopCoroutine(activeCoroutine);
-                activeCoroutine = null;
-                UpdateGaugeClientRpc(false, 0f);
-            }
-
-            isInUse.Value = false;
-            progress.Value = 0;
-            gaugeUI.Hide();
+            carry.TryPickUp(CurrentItem.gameObject);
+            CurrentItem = null;
+            ResetMachineState();
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    protected void RequestInteractionStartServerRpc(ulong clientId)
+    protected void RequestInteractionStartServerRpc(ServerRpcParams rpcParams = default)
     {
-        if (isInUse.Value == false && currentItem != null) return;
+        var clientId = rpcParams.Receive.SenderClientId;
+
+        if (_isInUse.Value || CurrentItem != null) return;
 
         var player = GetPlayerByClientId(clientId);
+        if (player == null) return;
+
         var carry = player.GetComponent<PlayerCarry>();
+        if (carry == null) return;
 
         var item = carry.GetCarriedObject();
+        if (item == null) return;
+
         var itemBase = item.GetComponent<ItemBase>();
         if (itemBase == null || itemBase.itemType != requiredItemType) return;
 
-        if (isInUse.Value)
-        {
-            if (interactingClient != clientId || !CanInterrupt()) return;
-            StopCoroutine(activeCoroutine);
-            OnForcedEnd();
-        }
-
-        currentItem = itemBase;
+        CurrentItem = itemBase;
         carry.DropInFront();
-        currentItem.AttachToWithoutCollider(itemDisplay);
+        CurrentItem.AttachToWithoutCollider(itemDisplay);
 
-        interactingClient = clientId;
-        isInUse.Value = true;
-        progress.Value = 0f;
+        _isInUse.Value = true;
+        _progress.Value = 0f;
 
-        activeCoroutine = StartCoroutine(HandleInteraction());
+        _activeCoroutine = StartCoroutine(HandleInteraction());
         UpdateGaugeClientRpc(true, interactionDuration);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    protected void RequestInterruptServerRpc(ulong clientId)
+    protected void RequestInterruptServerRpc()
     {
-        if (interactingClient != clientId || !CanInterrupt()) return;
-        StopCoroutine(activeCoroutine);
+        if (!CanInterrupt()) return;
+
+        if (_activeCoroutine != null)
+        {
+            StopCoroutine(_activeCoroutine);
+        }
+
         OnForcedEnd();
     }
 
-    protected virtual bool CanInterrupt() => true;
     protected virtual IEnumerator HandleInteraction()
     {
-        float time = 0f;
-        while (requiresHold ? InputHeldByClient(interactingClient) : time < interactionDuration)
+        float elapsed = 0f;
+        while (elapsed < interactionDuration)
         {
+            if (!InputHeldByClient()) break;
             yield return null;
-            time += Time.deltaTime;
-            progress.Value = time / interactionDuration;
+            elapsed += Time.deltaTime;
+            _progress.Value = elapsed / interactionDuration;
         }
-
         FinishInteraction();
     }
 
     protected virtual void FinishInteraction()
     {
-        isInUse.Value = false;
-        interactingClient = 0;
-        progress.Value = 1f;
+        _isInUse.Value = false;
+        _progress.Value = 1f;
+
         OnActionComplete();
         UpdateGaugeClientRpc(false, 0f);
     }
 
-    protected abstract void OnActionComplete();
-    protected abstract void OnForcedEnd();
+    protected virtual void ResetMachineState()
+    {
+        _isInUse.Value = false;
+        _progress.Value = 0f;
+        gaugeUI.Hide();
+        _activeCoroutine = null;
+    }
 
     [ClientRpc]
-    protected void UpdateGaugeClientRpc(bool active, float duration)
+    private void UpdateGaugeClientRpc(bool active, float duration)
     {
-        if (active)
-            gaugeUI.StartFilling(duration);
-        else
-            gaugeUI.Hide();
-    }
-
-    protected virtual bool InputHeldByClient(ulong clientId)
-    {
-        return true;
-    }
-
-    protected GameObject GetLocalPlayer()
-    {
-        return GameObject.FindGameObjectsWithTag("Player")[0];
-    }
-
-    protected GameObject GetPlayerByClientId(ulong clientId)
-    {
-        return GameObject.FindObjectsOfType<NetworkBehaviour>()
-            .FirstOrDefault(x => x.OwnerClientId == clientId && x.CompareTag("Player"))?.gameObject;
+        if (active) gaugeUI.StartFilling(duration);
+        else gaugeUI.Hide();
     }
 
     protected virtual bool IsValidInteraction(PlayerCarry carry)
     {
-        if (carry == null || !carry.IsCarrying) return false;
-
-        var item = carry.GetCarriedObject();
-        var itemBase = item.GetComponent<ItemBase>();
-
-        return itemBase != null && itemBase.itemType == requiredItemType;
+        var item = carry?.GetCarriedObject()?.GetComponent<ItemBase>();
+        return item != null && item.itemType == requiredItemType;
     }
-    
+
     public void ForceInterruptFromClient()
     {
         if (IsOwner && CanInterrupt())
         {
-            RequestInterruptServerRpc(NetworkManager.LocalClientId);
+            RequestInterruptServerRpc();
         }
     }
+    
+    protected virtual void OnActionComplete()
+    {
+        if (!CurrentItem) return;
+
+        Destroy(CurrentItem.gameObject);
+
+        GameObject resultItem = Instantiate(resultItemPrefab, itemDisplay.position, Quaternion.identity);
+        resultItem.GetComponent<NetworkObject>().Spawn();
+
+        CurrentItem = resultItem.GetComponent<ItemBase>();
+        CurrentItem.AttachToWithoutCollider(itemDisplay);
+    }
+
+    public virtual void Interact() {}
+    public virtual void SimpleUse() {}
 }
