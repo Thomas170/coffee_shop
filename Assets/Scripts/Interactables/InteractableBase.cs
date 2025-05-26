@@ -62,13 +62,27 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
 
         var player = GetLocalPlayer();
         var carry = player.GetComponent<PlayerCarry>();
-        
+
         if (!carry.IsCarrying)
+        {
+            RequestCollectServerRpc();
+        }
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void RequestCollectServerRpc(ServerRpcParams rpcParams = default)
+    {
+        if (currentItem == null) return;
+
+        var player = GetPlayerByClientId(rpcParams.Receive.SenderClientId);
+        var carry = player?.GetComponent<PlayerCarry>();
+
+        if (carry != null && !carry.IsCarrying)
         {
             carry.TryPickUp(currentItem.gameObject);
             currentItem = null;
 
-            if (IsServer && activeCoroutine != null)
+            if (activeCoroutine != null)
             {
                 StopCoroutine(activeCoroutine);
                 activeCoroutine = null;
