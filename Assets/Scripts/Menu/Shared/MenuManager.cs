@@ -9,10 +9,9 @@ public class MenuManager : MonoBehaviour
     
     public int CurrentGameIndex { get; set; }
     
-    [Header("Loading Screen")]
     [SerializeField] private GameObject loadingScreen;
     
-    public bool IsLocked { get; private set; } = false;
+    public bool IsLocked { get; private set; }
     
     private void Awake()
     {
@@ -40,7 +39,7 @@ public class MenuManager : MonoBehaviour
     
     public void SetLoadingScreenActive(bool state)
     {
-        if (loadingScreen != null)
+        if (loadingScreen)
         {
             loadingScreen.SetActive(state);
             IsLocked = state;
