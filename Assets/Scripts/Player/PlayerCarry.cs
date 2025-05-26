@@ -67,8 +67,6 @@ public class PlayerCarry : NetworkBehaviour
         if (!itemRef.TryGet(out var itemObj)) return;
         var item = itemObj.GetComponent<ItemBase>();
 
-        //if (!item.TryUnlock()) return;
-
         item.CurrentHolderClientId = null;
         _carriedItem = null;
         item.Detach();
@@ -112,5 +110,10 @@ public class PlayerCarry : NetworkBehaviour
                 item.Detach();
             }
         }
+    }
+    
+    public GameObject GetCarriedObject()
+    {
+        return _carriedItem != null ? _carriedItem.gameObject : null;
     }
 }

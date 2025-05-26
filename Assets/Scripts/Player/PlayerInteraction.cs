@@ -48,13 +48,6 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (_currentPickable != null && !carry.IsCarrying)
         {
-            ItemBase item = _currentPickable.GetComponent<ItemBase>();
-            if (item != null && item.isLocked.Value)
-            {
-                Debug.Log("Objet verrouillé, déjà porté.");
-                return;
-            }
-
             carry.TryPickUp(_currentPickable);
             _currentPickable = null;
         }

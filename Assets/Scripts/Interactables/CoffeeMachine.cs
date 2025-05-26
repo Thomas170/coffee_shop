@@ -1,72 +1,41 @@
+using Unity.Netcode;
 using UnityEngine;
-using System.Collections;
 
-public class CoffeeMachine : MonoBehaviour//, IInteractable
+public class CoffeeMachine : InteractableBase
 {
-    [SerializeField] private Transform cupPlacementPoint;
-    [SerializeField] private CoffeeGaugeUI gaugeUI;
-    private Cup _placedCup;
-    private bool _isBrewing;
+    [SerializeField] private GameObject fullCupPrefab;
 
-    /*public void Interact()
+    protected override void OnActionComplete()
     {
-        if (_isBrewing || _placedCup != null) return;
+        if (!currentItem) return;
 
-        GameObject player = GameObject.FindWithTag("Player");
-        PlayerCarry carry = player.GetComponentInChildren<PlayerCarry>();
-
-        if (!carry.IsCarrying) {
-            Debug.LogWarning("Il faut une tasse vide !");
-            return;
+        var oldCup = currentItem.GetComponent<ItemBase>();
+        if (oldCup)
+        {
+            Destroy(oldCup.gameObject);
         }
 
-        GameObject carried = carry.GetCarriedObject();
-        Cup cup = carried.GetComponent<Cup>();
+        GameObject fullCup = Instantiate(fullCupPrefab, itemDisplay.position, Quaternion.identity);
+        fullCup.GetComponent<NetworkObject>().Spawn();
 
-        if (cup == null || cup.State != CupState.Empty) {
-            Debug.LogWarning("Ce n'est pas une tasse vide !");
-            return;
-        }
-
-        carry.RemoveCarried();
-        _placedCup = cup;
-        _placedCup.GetComponent<FollowTarget>().SetTarget(cupPlacementPoint);
-        
-        StartCoroutine(BrewCoffee());
-        Debug.Log("Préparation du café...");
+        currentItem = fullCup.GetComponent<ItemBase>();
+        currentItem.AttachTo(itemDisplay);
     }
 
-    public void Collect()
+    protected override void OnForcedEnd()
     {
-        if (_placedCup != null && _placedCup.State == CupState.Full)
+        if (currentItem != null)
         {
-            GameObject player = GameObject.FindWithTag("Player");
+            GameObject player = GetLocalPlayer();
             var carry = player.GetComponent<PlayerCarry>();
 
             if (!carry.IsCarrying)
             {
-                carry.PickUp(_placedCup.gameObject);
-                _placedCup = null;
-                Debug.Log("Café récupéré !");
-            }
-            else
-            {
-                Debug.LogWarning("Pose ton objet avant !");
+                carry.TryPickUp(currentItem.gameObject);
+                currentItem = null;
+                isInUse.Value = false;
+                gaugeUI.Hide();
             }
         }
     }
-
-    private IEnumerator BrewCoffee()
-    {
-        _isBrewing = true;
-        
-        gaugeUI.StartFilling(5f);
-        yield return new WaitForSeconds(5f);
-        gaugeUI.Hide();
-        
-        _placedCup.Fill();
-        _placedCup.Unlock();
-        _isBrewing = false;
-        Debug.Log("Café prêt !");
-    }*/
 }

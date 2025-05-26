@@ -96,8 +96,8 @@ public class ClientCommands : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(5f);
         Debug.Log("Client a fini son café.");
         
-        Cup heldCupScript = _heldCup.GetComponent<Cup>();
-        heldCupScript.Empty();
+        //Cup heldCupScript = _heldCup.GetComponent<Cup>();
+        //heldCupScript.Empty();
         //heldCupScript.TryUnlock();
         //_heldCup.GetComponent<FollowTarget>().ClearTarget();
         
