@@ -43,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (_currentInteractable != null && _currentInteractable is InteractableBase ib)
             {
-                // 1. Mains vides, item au sol, machine prête à récupérer un item
+                // 1. Mains vides machine prête à récupérer un item
                 if (ib.CurrentItem != null && !ib.IsInUse)
                 {
                     ib.Collect();

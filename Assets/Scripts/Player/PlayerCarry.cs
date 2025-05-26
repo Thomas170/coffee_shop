@@ -13,28 +13,29 @@ public class PlayerCarry : NetworkBehaviour
     {
         var itemBase = item.GetComponent<ItemBase>();
         if (itemBase == null || IsCarrying) return;
-
-        itemBase.AttachTo(carryPoint);
-        _carriedItem = itemBase;
+        
+        var netObj = itemBase.GetComponent<NetworkObject>();
+        if (netObj == null) return;
+        
+        RequestPickUpServerRpc(new NetworkObjectReference(netObj));
     }
 
 
     public void DropInFront()
     {
-        if (!IsOwner || !IsCarrying) return;
+        if (!IsCarrying) return;
 
         RequestDropServerRpc(_carriedItem.NetworkObject);
     }
 
-    /*private void ForceDrop(ItemBase item)
+    private void ForceDrop(ItemBase item)
     {
         if (_carriedItem != item) return;
         
-        _carriedItem = null;
         UpdateItemClientRpc(item.NetworkObject, false);
-    }*/
+    }
 
-    /*[ServerRpc]
+    [ServerRpc]
     private void RequestPickUpServerRpc(NetworkObjectReference itemRef, ServerRpcParams rpcParams = default)
     {
         if (!itemRef.TryGet(out var itemObj)) return;
@@ -54,11 +55,12 @@ public class PlayerCarry : NetworkBehaviour
         }
 
         item.CurrentHolderClientId = newHolder;
+        Debug.Log("holder : " + newHolder);
         item.NetworkObject.ChangeOwnership(newHolder);
 
         _carriedItem = item;
         UpdateItemClientRpc(itemRef, true);
-    }*/
+    }
 
     [ServerRpc]
     private void RequestDropServerRpc(NetworkObjectReference itemRef)
@@ -88,6 +90,7 @@ public class PlayerCarry : NetworkBehaviour
 
         var localClientId = NetworkManager.Singleton.LocalClientId;
 
+        Debug.Log("id : " + attach + " " + item.OwnerClientId + " " + localClientId);
         if (item.OwnerClientId == localClientId)
         {
             var carry = FindObjectsOfType<PlayerCarry>()
@@ -95,19 +98,23 @@ public class PlayerCarry : NetworkBehaviour
 
             if (carry == null)
             {
+                Debug.Log("carry null");
                 return;
             }
 
             if (attach)
             {
+                Debug.Log("attach");
                 carry._carriedItem = item;
                 item.AttachTo(carry.carryPoint);
             }
             else if (carry._carriedItem == item)
             {
+                Debug.Log("detach");
                 carry._carriedItem = null;
                 item.Detach();
             }
+            Debug.Log("carry item " + carry._carriedItem + " - " + item + " - " + (carry._carriedItem == item));
         }
     }
     

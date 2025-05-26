@@ -55,7 +55,7 @@ public class ItemBase : NetworkBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         
-        if (present)
+        if (present && !rb)
         {
             Rigidbody newRb = gameObject.AddComponent<Rigidbody>();
             newRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -63,7 +63,7 @@ public class ItemBase : NetworkBehaviour
             newRb.mass = itemMass;
             newRb.constraints = RigidbodyConstraints.FreezeRotation;
         }
-        else if (rb)
+        else if (!present && rb)
         {
             Destroy(rb);
         }
