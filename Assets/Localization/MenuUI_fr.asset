@@ -184,6 +184,14 @@ MonoBehaviour:
     m_Localized: Rejoindre une partie
     m_Metadata:
       m_Items: []
+  - m_Id: 5027553686687744
+    m_Localized: Chargement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5027665037070336
+    m_Localized: Chargement en cours, patientez un peu...
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -183,6 +183,14 @@ MonoBehaviour:
     m_Localized: Join a game
     m_Metadata:
       m_Items: []
+  - m_Id: 5027553686687744
+    m_Localized: Loading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5027665037070336
+    m_Localized: Loading in progress, please wait a little...
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
