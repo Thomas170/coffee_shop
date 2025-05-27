@@ -81,7 +81,7 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
 
         CurrentItem = itemBase;
         carry.DropInFront();
-        CurrentItem.AttachToWithoutCollider(itemDisplay);
+        CurrentItem.AttachTo(itemDisplay, false);
 
         _isInUse.Value = true;
         _progress.Value = 0f;
@@ -164,7 +164,7 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
         resultItem.GetComponent<NetworkObject>().Spawn();
 
         CurrentItem = resultItem.GetComponent<ItemBase>();
-        CurrentItem.AttachToWithoutCollider(itemDisplay);
+        CurrentItem.AttachTo(itemDisplay, false);
     }
 
     public virtual void Interact() {}

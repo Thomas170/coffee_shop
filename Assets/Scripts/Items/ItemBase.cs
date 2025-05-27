@@ -5,67 +5,45 @@ using UnityEngine;
 public class ItemBase : NetworkBehaviour
 {
     public ItemType itemType = ItemType.None;
-    
     public float itemMass = 100f;
     public ulong? CurrentHolderClientId;
 
-    private Transform _itemsParent;
-    
     public void Awake()
     {
-        _itemsParent = GameObject.Find("Items").transform;
-        HandleRigidbody(true);
+        HandlePhysics(true, true);
     }
 
-    public virtual void AttachTo(Transform carryPoint)
+    public virtual void AttachTo(Transform carryPoint, bool withColliders = true)
     {
-        HandleRigidbody(false);
+        HandlePhysics(false, withColliders);
         transform.SetParent(carryPoint, true);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
-        
-        StartCoroutine(ResetLocalTransformNextFrame());
-    }
-    
-    public virtual void AttachToWithoutCollider(Transform carryPoint)
-    {
-        HandleRigidbody(false);
-        transform.SetParent(carryPoint, true);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
-        foreach (var col in GetComponentsInChildren<Collider>())
-        {
-            col.enabled = false;
-        }
-        
         StartCoroutine(ResetLocalTransformNextFrame());
     }
 
     public virtual void Detach()
     {
-        HandleRigidbody(true);
-        transform.SetParent(_itemsParent, true);
-        foreach (var col in GetComponentsInChildren<Collider>())
-        {
-            col.enabled = true;
-        }
+        HandlePhysics(true, true);
+        transform.SetParent(GameObject.Find("Items")?.transform, true);
     }
-
-    private void HandleRigidbody(bool present)
+    
+    private void HandlePhysics(bool withRigidbody, bool withColliders)
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         
-        if (present && !rb)
+        if (withRigidbody && !rb)
         {
-            Rigidbody newRb = gameObject.AddComponent<Rigidbody>();
-            newRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            newRb.interpolation = RigidbodyInterpolation.Interpolate;
-            newRb.mass = itemMass;
-            newRb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.mass = itemMass;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
-        else if (!present && rb)
+        else if (!withRigidbody && rb)
         {
             Destroy(rb);
+        }
+        
+        foreach (var col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = withColliders || withRigidbody;
         }
     }
     
