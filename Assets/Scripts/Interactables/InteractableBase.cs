@@ -27,11 +27,9 @@ public abstract class InteractableBase : NetworkBehaviour
 
         if (isInUse)
         {
-            Debug.Log("Interrupt");
             StopAction();
         }
         
-        Debug.Log("Collect");
         RequestCollectServerRpc(NetworkManager.LocalClientId);
     }
 
@@ -51,7 +49,8 @@ public abstract class InteractableBase : NetworkBehaviour
         
         if (!playerCarry.IsCarrying)
         {
-            if (IsServer)
+            currentItem.Detach();
+            if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId)
             {
                 playerCarry.TryPickUp(currentItem.gameObject);
             }

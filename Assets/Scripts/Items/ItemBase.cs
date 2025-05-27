@@ -15,7 +15,6 @@ public class ItemBase : NetworkBehaviour
 
     public virtual void AttachTo(Transform carryPoint, bool withColliders = true)
     {
-        Debug.Log("attach " + withColliders + " - " + carryPoint + " - " + gameObject);
         HandlePhysics(false, withColliders);
         transform.SetParent(carryPoint, true);
         StartCoroutine(ResetLocalTransformNextFrame());
@@ -23,7 +22,6 @@ public class ItemBase : NetworkBehaviour
 
     public virtual void Detach()
     {
-        Debug.Log("detach");
         HandlePhysics(true, true);
         transform.SetParent(GameObject.Find("Items")?.transform, true);
     }

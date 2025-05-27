@@ -11,7 +11,6 @@ public class PlayerCarry : NetworkBehaviour
     
     public bool TryPickUp(GameObject item)
     {
-        Debug.Log("Pickup");
         if (IsCarrying) return false;
         NetworkObject networkObject = item.GetComponent<ItemBase>().NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
@@ -20,13 +19,12 @@ public class PlayerCarry : NetworkBehaviour
     
     public bool TryDrop()
     {
-        Debug.Log("Drop");
         if (!IsCarrying) return false;
         RequestDropServerRpc(carriedItem.NetworkObject);
         return true;
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void RequestPickUpServerRpc(NetworkObjectReference itemRef, ServerRpcParams rpcParams = default)
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
@@ -43,7 +41,7 @@ public class PlayerCarry : NetworkBehaviour
         UpdateItemClientRpc(itemRef, true);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void RequestDropServerRpc(NetworkObjectReference itemRef)
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
