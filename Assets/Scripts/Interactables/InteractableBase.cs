@@ -17,7 +17,7 @@ public abstract class InteractableBase : NetworkBehaviour
     {
         if (IsValidItemToUse(itemToUse))
         {
-            RequestPutItem(itemToUse.NetworkObject, NetworkManager.LocalClientId);
+            RequestPutItemServerRpc(itemToUse.NetworkObject, NetworkManager.LocalClientId);
         }
     }
 
@@ -37,7 +37,7 @@ public abstract class InteractableBase : NetworkBehaviour
     private void RequestCollectServerRpc(ulong playerId) => RequestCollectClientRpc(playerId);
     
     [ServerRpc(RequireOwnership = false)]
-    private void RequestPutItemServerRpc(NetworkObjectReference itemRef, ulong playerId) => RequestPutItem(itemRef, playerId);
+    private void RequestPutItemServerRpc(NetworkObjectReference itemRef, ulong playerId) => RequestPutItemClientRpc(itemRef, playerId);
 
     [ClientRpc]
     private void RequestCollectClientRpc(ulong playerId)
@@ -47,30 +47,33 @@ public abstract class InteractableBase : NetworkBehaviour
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
         
-        Debug.Log(1);
         if (!playerCarry.IsCarrying)
         {
             if (IsServer)
             {
                 playerCarry.TryPickUp(currentItem.gameObject);
             }
-            Debug.Log(2);
             currentItem = null;
             StopAction();
         }
     }
 
-    //[ClientRpc]
-    private void RequestPutItem(NetworkObjectReference itemRef, ulong playerId)
+    [ClientRpc]
+    private void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
     {
-        Debug.Log(3);
+        Debug.Log(1);
         if (isInUse || currentItem || !itemRef.TryGet(out var itemNetworkObject)) return;
-        Debug.Log(4);
-        
-        PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
-        PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
-        playerCarry.TryDrop();
 
+        Debug.Log(2);
+        if (NetworkManager.Singleton.LocalClientId == playerId)
+        {
+            Debug.Log(3);
+            PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
+            PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+            playerCarry.TryDrop();
+        }
+
+        Debug.Log(4);
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
         
         currentItem = itemBase;
@@ -97,12 +100,20 @@ public abstract class InteractableBase : NetworkBehaviour
         Destroy(currentItem.gameObject);
         
         GameObject resultItem = Instantiate(resultItemPrefab, displayPoint.position, Quaternion.identity);
-        resultItem.GetComponent<NetworkObject>().Spawn();
-        
-        currentItem = resultItem.GetComponent<ItemBase>();
+        NetworkObject networkObject = resultItem.GetComponent<NetworkObject>();
+        networkObject.Spawn();
+
+        SpawnResultItemClientRpc(networkObject);
+    }
+
+    [ClientRpc]
+    private void SpawnResultItemClientRpc(NetworkObjectReference itemRef)
+    {
+        if (!itemRef.TryGet(out var itemNetworkObject)) return;
+        currentItem = itemNetworkObject.GetComponent<ItemBase>();
         currentItem.AttachTo(displayPoint, false);
     }
-    
+
     private bool IsValidItemToUse(ItemBase itemToUse)
     {
         return itemToUse != null && itemToUse.itemType == requiredItemType;
@@ -115,7 +126,6 @@ public abstract class InteractableBase : NetworkBehaviour
     
     protected virtual void StopAction()
     {
-        Debug.Log("STOP");
         isInUse = false;
         gaugeUI.Hide();
     }

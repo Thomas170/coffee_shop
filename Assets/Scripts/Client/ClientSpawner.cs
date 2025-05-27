@@ -10,7 +10,7 @@ public class ClientSpawner : MonoBehaviour
     
     private void Start()
     {
-        InvokeRepeating(nameof(SpawnClient), 2f, spawnInterval);
+        //InvokeRepeating(nameof(SpawnClient), 2f, spawnInterval);
     }
 
     private void SpawnClient()

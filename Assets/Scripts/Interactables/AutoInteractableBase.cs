@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class AutoInteractableBase : InteractableBase
 {
-    private readonly float _interactionDuration = 5f;
+    private readonly float _interactionDuration = 20f;
     private Coroutine _activeCoroutine;
     
     public override bool RequiresHold => false;
