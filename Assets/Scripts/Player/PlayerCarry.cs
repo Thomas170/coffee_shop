@@ -34,7 +34,8 @@ public class PlayerCarry : NetworkBehaviour
             UpdateItemClientRpc(itemRef, false);
         }
 
-        itemBase.ChangeItemOwner(newHolderId);
+        itemBase.CurrentHolderClientId = newHolderId;
+        itemBase.NetworkObject.ChangeOwnership(newHolderId);
         UpdateItemClientRpc(itemRef, true);
     }
 

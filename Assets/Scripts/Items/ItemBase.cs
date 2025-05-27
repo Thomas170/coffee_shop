@@ -76,10 +76,4 @@ public class ItemBase : NetworkBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
     }
-
-    public void ChangeItemOwner(ulong newHolderId)
-    {
-        CurrentHolderClientId = newHolderId;
-        NetworkObject.ChangeOwnership(newHolderId);
-    }
 }
