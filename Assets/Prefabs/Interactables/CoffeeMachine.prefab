@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55582875784e9314fac102f36ada11a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDisplay: {fileID: 7812899578674080797}
+  displayPoint: {fileID: 7812899578674080797}
   interactionDuration: 5
   requiredItemType: 1
   gaugeUI: {fileID: 2540512959699067339}

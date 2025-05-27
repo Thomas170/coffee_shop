@@ -7,19 +7,21 @@ public class PlayerCarry : NetworkBehaviour
     private ItemBase _carriedItem;
 
     public bool IsCarrying => _carriedItem != null;
-    public GameObject GetCarriedObject => _carriedItem != null ? _carriedItem.gameObject : null;
+    public ItemBase GetCarriedObject => _carriedItem != null ? _carriedItem : null;
     
-    public void TryPickUp(GameObject item)
+    public bool TryPickUp(GameObject item)
     {
-        if (IsCarrying) return;
+        if (IsCarrying) return false;
         NetworkObject networkObject = item.GetComponent<ItemBase>().GetComponent<NetworkObject>();
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
+        return true;
     }
     
-    public void DropInFront()
+    public bool TryDrop()
     {
-        if (!IsCarrying) return;
+        if (!IsCarrying) return false;
         RequestDropServerRpc(_carriedItem.NetworkObject);
+        return true;
     }
 
     [ServerRpc]

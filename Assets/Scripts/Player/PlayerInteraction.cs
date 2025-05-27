@@ -5,7 +5,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private PlayerController playerController;
     
-    private IInteractable _currentInteractable;
+    private InteractableBase _currentInteractable;
     private GameObject _currentPickable;
 
     private void Start()
@@ -24,7 +24,11 @@ public class PlayerInteraction : MonoBehaviour
     private void OnAction(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
-        _currentInteractable?.Action();
+
+        if (_currentInteractable is ManualInteractableBase manualInteractableBase)
+        {
+            manualInteractableBase.Action();
+        }
     }
 
     private void OnInteract(InputAction.CallbackContext ctx)
@@ -44,13 +48,13 @@ public class PlayerInteraction : MonoBehaviour
     
     private void InteractWithItem(PlayerCarry playerCarry)
     {
-        if (_currentInteractable is InteractableBase { RequiresHold: false, IsInUse: false } interactableBase)
+        if (_currentInteractable is { RequiresHold: false } && !_currentInteractable.IsInUse.Value)
         {
-            interactableBase.SimpleUse();
+            _currentInteractable.PutItem(playerCarry.GetCarriedObject);
         }
         else
         {
-            playerCarry.DropInFront();
+            playerCarry.TryDrop();
         }
     }
 
@@ -58,17 +62,20 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (_currentPickable)
         {
-            playerCarry.TryPickUp(_currentPickable);
+            if (playerCarry.TryPickUp(_currentPickable))
+            {
+                _currentPickable = null;
+            }
         }
-        else if (_currentInteractable is InteractableBase interactableBase && interactableBase.CurrentItem)
+        else if (_currentInteractable && _currentInteractable.CurrentItem)
         {
-            interactableBase.Interact();
+            _currentInteractable.CollectCurrentItem();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out IInteractable interactable))
+        if (other.TryGetComponent(out InteractableBase interactable))
         {
             _currentInteractable = interactable;
         }
@@ -80,7 +87,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out IInteractable interactable) && interactable == _currentInteractable)
+        if (other.TryGetComponent(out InteractableBase interactable) && interactable == _currentInteractable)
         {
             _currentInteractable = null;
         }

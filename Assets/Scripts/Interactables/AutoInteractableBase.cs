@@ -1,22 +1,50 @@
+using System.Collections;
+using Unity.Netcode;
+using UnityEngine;
+
 public abstract class AutoInteractableBase : InteractableBase
 {
+    private readonly float _interactionDuration = 5f;
+    private Coroutine _activeCoroutine;
+    
     public override bool RequiresHold => false;
 
-    public override void SimpleUse()
+    protected override void StartAction()
     {
-        if (IsInUse)
-        {
-            if (CanInterrupt()) RequestInterruptServerRpc();
-            return;
-        }
-
-        var player = GetPlayerByClientId(NetworkManager.LocalClientId);
-        var carry = player.GetComponent<PlayerCarry>();
-        if (IsValidInteraction(carry))
-        {
-            RequestInteractionStartServerRpc();
-        }
+        base.StartAction();
+        _activeCoroutine = StartCoroutine(HandleAction());
+        UpdateGaugeClientRpc(true, _interactionDuration);
     }
 
-    protected override bool InputHeldByClient() => true;
+    private IEnumerator HandleAction()
+    {
+        float elapsed = 0f;
+        while (elapsed < _interactionDuration)
+        {
+            yield return null;
+            elapsed += Time.deltaTime;
+            Progress.Value = elapsed / _interactionDuration;
+        }
+       
+        OnActionComplete();
+        StopAction();
+    }
+    
+    protected override void StopAction()
+    {
+        base.StopAction();
+        
+        if (_activeCoroutine != null)
+        {
+            StopCoroutine(_activeCoroutine);
+        }
+        _activeCoroutine = null;
+    }
+    
+    [ClientRpc]
+    private void UpdateGaugeClientRpc(bool active, float duration)
+    {
+        if (active) gaugeUI.StartFilling(duration);
+        else gaugeUI.Hide();
+    }
 }
