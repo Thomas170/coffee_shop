@@ -38,6 +38,10 @@ MonoBehaviour:
     m_Localized: Ramasser
     m_Metadata:
       m_Items: []
+  - m_Id: 7478589126971392
+    m_Localized: Action
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

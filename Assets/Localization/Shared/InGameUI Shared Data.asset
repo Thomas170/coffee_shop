@@ -35,6 +35,10 @@ MonoBehaviour:
     m_Key: drop_control
     m_Metadata:
       m_Items: []
+  - m_Id: 7478589126971392
+    m_Key: action_control
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

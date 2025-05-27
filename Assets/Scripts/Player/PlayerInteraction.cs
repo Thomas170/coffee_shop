@@ -15,7 +15,7 @@ public class PlayerInteraction : MonoBehaviour
         if (InputReader.Instance != null)
         {
             InputReader.Instance.InteractAction.performed += OnInteract;
-            InputReader.Instance.CollectAction.performed += OnCollect;
+            InputReader.Instance.ActionAction.performed += OnAction;
         }
     }
 
@@ -24,17 +24,17 @@ public class PlayerInteraction : MonoBehaviour
         if (InputReader.Instance != null)
         {
             InputReader.Instance.InteractAction.performed -= OnInteract;
-            InputReader.Instance.CollectAction.performed -= OnCollect;
+            InputReader.Instance.ActionAction.performed -= OnAction;
         }
     }
 
-    private void OnInteract(InputAction.CallbackContext ctx)
+    private void OnAction(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
         _currentInteractable?.Interact();
     }
 
-    private void OnCollect(InputAction.CallbackContext ctx)
+    private void OnInteract(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
         PlayerCarry carry = GetComponent<PlayerCarry>();
@@ -84,13 +84,6 @@ public class PlayerInteraction : MonoBehaviour
             }
             carry.DropInFront();
         }
-    }
-
-
-    private void OnDrop(InputAction.CallbackContext ctx)
-    {
-        if (!playerController.CanInteract) return;
-        GetComponent<PlayerCarry>().DropInFront();
     }
 
     private void OnTriggerEnter(Collider other)

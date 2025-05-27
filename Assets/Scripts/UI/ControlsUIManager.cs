@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ControlsUIManager : MonoBehaviour
 {
-    [System.Serializable]
+    [Serializable]
     public class ActionBindingDisplay
     {
         public string actionName;
@@ -31,9 +31,8 @@ public class ControlsUIManager : MonoBehaviour
         InputDeviceTracker.Instance.OnDeviceChanged += RefreshIcons;
         
         AddBindingUI("Interact");
+        AddBindingUI("Action");
         AddBindingUI("Manage");
-        AddBindingUI("Collect");
-        AddBindingUI("Drop");
         
         RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
     }
