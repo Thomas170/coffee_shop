@@ -7,7 +7,7 @@ public class ItemBase : NetworkBehaviour
     public ItemType itemType = ItemType.None;
     
     public float itemMass = 100f;
-    public ulong? CurrentHolderClientId = null;
+    public ulong? CurrentHolderClientId;
 
     private Transform _itemsParent;
     
@@ -75,5 +75,11 @@ public class ItemBase : NetworkBehaviour
 
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+    }
+
+    public void ChangeItemOwner(ulong newHolderId)
+    {
+        CurrentHolderClientId = newHolderId;
+        NetworkObject.ChangeOwnership(newHolderId);
     }
 }

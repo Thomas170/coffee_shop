@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     [Header("Components")]
     [SerializeField] private GravityHandler gravityHandler;
@@ -29,12 +30,14 @@ public class PlayerController : MonoBehaviour
         InputDeviceTracker.Instance.OnDeviceChanged += DeviceChange;
     }
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
         MenuManager.OnMenuStateChanged -= HandleMenuStateChanged;
         
         if (InputDeviceTracker.Instance != null)
             InputDeviceTracker.Instance.OnDeviceChanged -= DeviceChange;
+        
+        base.OnDestroy();
     }
     
     private void HandleMenuStateChanged(bool isOpen)

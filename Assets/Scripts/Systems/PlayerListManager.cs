@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -114,5 +115,11 @@ public class PlayerListManager : NetworkBehaviour
             Vector3 spawnPosition = new Vector3(i * offsetX, 1f, 0f);
             player.UpdatePositionClientRpc(spawnPosition);
         }
+    }
+
+    public PlayerController GetPlayer(ulong playerId)
+    {
+        return FindObjectsOfType<PlayerController>().FirstOrDefault(
+            playerController => playerController.OwnerClientId == playerId);
     }
 }

@@ -73,7 +73,7 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
         var carry = player.GetComponent<PlayerCarry>();
         if (carry == null) return;
 
-        var item = carry.GetCarriedObject();
+        var item = carry.GetCarriedObject;
         if (item == null) return;
 
         var itemBase = item.GetComponent<ItemBase>();
@@ -142,7 +142,7 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
 
     protected virtual bool IsValidInteraction(PlayerCarry carry)
     {
-        var item = carry?.GetCarriedObject()?.GetComponent<ItemBase>();
+        var item = carry?.GetCarriedObject?.GetComponent<ItemBase>();
         return item != null && item.itemType == requiredItemType;
     }
 

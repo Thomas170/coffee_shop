@@ -30,7 +30,7 @@ public class NetworkPlayer : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         
         Invoke(nameof(EnablePhysicsSafely), 1f);
-        transform.position = new Vector3(0, -100f, 0);
+        transform.position = new Vector3(0, 100, 0);
         playerModel.SetActive(false);
         
         if (IsOwner)
