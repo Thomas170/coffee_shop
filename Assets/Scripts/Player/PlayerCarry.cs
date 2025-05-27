@@ -4,23 +4,25 @@ using Unity.Netcode;
 public class PlayerCarry : NetworkBehaviour
 {
     [SerializeField] private Transform carryPoint;
-    private ItemBase _carriedItem;
+    public ItemBase carriedItem;
 
-    public bool IsCarrying => _carriedItem != null;
-    public ItemBase GetCarriedObject => _carriedItem != null ? _carriedItem : null;
+    public bool IsCarrying => carriedItem != null;
+    public ItemBase GetCarriedObject => carriedItem != null ? carriedItem : null;
     
     public bool TryPickUp(GameObject item)
     {
+        Debug.Log("Pickup");
         if (IsCarrying) return false;
-        NetworkObject networkObject = item.GetComponent<ItemBase>().GetComponent<NetworkObject>();
+        NetworkObject networkObject = item.GetComponent<ItemBase>().NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
         return true;
     }
     
     public bool TryDrop()
     {
+        Debug.Log("Drop");
         if (!IsCarrying) return false;
-        RequestDropServerRpc(_carriedItem.NetworkObject);
+        RequestDropServerRpc(carriedItem.NetworkObject);
         return true;
     }
 
@@ -65,12 +67,12 @@ public class PlayerCarry : NetworkBehaviour
 
             if (attach)
             {
-                playerCarry._carriedItem = itemBase;
+                playerCarry.carriedItem = itemBase;
                 itemBase.AttachTo(playerCarry.carryPoint);
             }
             else
             {
-                playerCarry._carriedItem = null;
+                playerCarry.carriedItem = null;
                 itemBase.Detach();
             }
         }

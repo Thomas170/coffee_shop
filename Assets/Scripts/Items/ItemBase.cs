@@ -23,6 +23,7 @@ public class ItemBase : NetworkBehaviour
 
     public virtual void Detach()
     {
+        Debug.Log("detach");
         HandlePhysics(true, true);
         transform.SetParent(GameObject.Find("Items")?.transform, true);
     }

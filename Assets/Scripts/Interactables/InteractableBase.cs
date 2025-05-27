@@ -27,9 +27,11 @@ public abstract class InteractableBase : NetworkBehaviour
 
         if (isInUse)
         {
+            Debug.Log("Interrupt");
             StopAction();
         }
         
+        Debug.Log("Collect");
         RequestCollectServerRpc(NetworkManager.LocalClientId);
     }
 
@@ -61,22 +63,16 @@ public abstract class InteractableBase : NetworkBehaviour
     [ClientRpc]
     private void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
     {
-        Debug.Log(1);
         if (isInUse || currentItem || !itemRef.TryGet(out var itemNetworkObject)) return;
 
-        Debug.Log(2);
-        if (NetworkManager.Singleton.LocalClientId == playerId)
-        {
-            Debug.Log(3);
-            PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
-            PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
-            playerCarry.TryDrop();
-        }
-
-        Debug.Log(4);
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
         
+        PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
+        PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+        playerCarry.carriedItem = null;
+        
         currentItem = itemBase;
+        currentItem.CurrentHolderClientId = null;
         currentItem.AttachTo(displayPoint, false);
 
         StartAction();
