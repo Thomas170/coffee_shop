@@ -23,11 +23,9 @@ public abstract class AutoInteractableBase : InteractableBase
         {
             yield return null;
             elapsed += Time.deltaTime;
-            Progress.Value = elapsed / _interactionDuration;
         }
        
         OnActionComplete();
-        StopAction();
     }
     
     protected override void StopAction()

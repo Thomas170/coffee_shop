@@ -48,9 +48,9 @@ public class PlayerInteraction : MonoBehaviour
     
     private void InteractWithItem(PlayerCarry playerCarry)
     {
-        if (_currentInteractable is { RequiresHold: false } && !_currentInteractable.IsInUse.Value)
+        if (_currentInteractable is { RequiresHold: false, isInUse: false })
         {
-            _currentInteractable.PutItem(playerCarry.GetCarriedObject);
+            _currentInteractable.TryPutItem(playerCarry.GetCarriedObject);
         }
         else
         {
@@ -67,7 +67,7 @@ public class PlayerInteraction : MonoBehaviour
                 _currentPickable = null;
             }
         }
-        else if (_currentInteractable && _currentInteractable.CurrentItem)
+        else if (_currentInteractable && _currentInteractable.currentItem)
         {
             _currentInteractable.CollectCurrentItem();
         }

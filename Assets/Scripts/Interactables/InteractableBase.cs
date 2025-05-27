@@ -8,85 +8,99 @@ public abstract class InteractableBase : NetworkBehaviour
     [SerializeField] protected ProgressGaugeUI gaugeUI;
     [SerializeField] protected GameObject resultItemPrefab;
 
-    private readonly NetworkVariable<NetworkObjectReference> _currentItemRef = new();
-    public readonly NetworkVariable<bool> IsInUse = new();
-    protected readonly NetworkVariable<float> Progress = new();
+    public ItemBase currentItem;
+    public bool isInUse;
 
     public virtual bool RequiresHold => false;
-    private bool CanInterrupt() => true;
     
-    public ItemBase CurrentItem
-    {
-        get => _currentItemRef.Value.TryGet(out NetworkObject netObj) ? netObj.GetComponent<ItemBase>() : null;
-        private set => _currentItemRef.Value = !value ? default : new NetworkObjectReference(value.GetComponent<NetworkObject>());
-    }
-    
-    public void PutItem(ItemBase itemToUse)
+    public void TryPutItem(ItemBase itemToUse)
     {
         if (IsValidItemToUse(itemToUse))
         {
-            RequestPutItemServerRpc();
+            RequestPutItem(itemToUse.NetworkObject, NetworkManager.LocalClientId);
         }
     }
 
     public void CollectCurrentItem()
     {
-        if (CurrentItem == null) return;
+        if (currentItem == null) return;
 
-        if (IsInUse.Value && CanInterrupt())
+        if (isInUse)
         {
             StopAction();
         }
         
-        RequestCollectServerRpc();
+        RequestCollectServerRpc(NetworkManager.LocalClientId);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void RequestCollectServerRpc(ServerRpcParams rpcParams = default)
-    {
-        if (CurrentItem == null) return;
+    private void RequestCollectServerRpc(ulong playerId) => RequestCollectClientRpc(playerId);
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void RequestPutItemServerRpc(NetworkObjectReference itemRef, ulong playerId) => RequestPutItem(itemRef, playerId);
 
-        PlayerController player = PlayerListManager.Instance.GetPlayer(rpcParams.Receive.SenderClientId);
+    [ClientRpc]
+    private void RequestCollectClientRpc(ulong playerId)
+    {
+        if (currentItem == null) return;
+
+        PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
         
-        if (!playerCarry.IsCarrying && playerCarry.TryPickUp(CurrentItem.gameObject))
+        Debug.Log(1);
+        if (!playerCarry.IsCarrying)
         {
-            CurrentItem = null;
+            if (IsServer)
+            {
+                playerCarry.TryPickUp(currentItem.gameObject);
+            }
+            Debug.Log(2);
+            currentItem = null;
             StopAction();
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void RequestPutItemServerRpc(ServerRpcParams rpcParams = default)
+    //[ClientRpc]
+    private void RequestPutItem(NetworkObjectReference itemRef, ulong playerId)
     {
-        if (IsInUse.Value || CurrentItem) return;
+        Debug.Log(3);
+        if (isInUse || currentItem || !itemRef.TryGet(out var itemNetworkObject)) return;
+        Debug.Log(4);
         
-        ulong clientId = rpcParams.Receive.SenderClientId;
-        PlayerController player = PlayerListManager.Instance.GetPlayer(clientId);
+        PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
-        ItemBase itemBase = playerCarry.GetCarriedObject;
-        
         playerCarry.TryDrop();
-        CurrentItem = itemBase;
-        CurrentItem.AttachTo(displayPoint, false);
 
-        IsInUse.Value = true;
-        Progress.Value = 0f;
+        ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
+        
+        currentItem = itemBase;
+        currentItem.AttachTo(displayPoint, false);
 
         StartAction();
     }
     
     protected void OnActionComplete()
     {
-        if (!CurrentItem) return;
+        if (!currentItem) return;
 
-        Destroy(CurrentItem.gameObject);
+        if (IsServer)
+        {
+            SpawnResultItemServerRpc();
+        }
+        StopAction();
+    }
 
+    [ServerRpc]
+    private void SpawnResultItemServerRpc()
+    {
+        currentItem.NetworkObject.Despawn();
+        Destroy(currentItem.gameObject);
+        
         GameObject resultItem = Instantiate(resultItemPrefab, displayPoint.position, Quaternion.identity);
         resultItem.GetComponent<NetworkObject>().Spawn();
-
-        CurrentItem = resultItem.GetComponent<ItemBase>();
-        CurrentItem.AttachTo(displayPoint, false);
+        
+        currentItem = resultItem.GetComponent<ItemBase>();
+        currentItem.AttachTo(displayPoint, false);
     }
     
     private bool IsValidItemToUse(ItemBase itemToUse)
@@ -94,12 +108,15 @@ public abstract class InteractableBase : NetworkBehaviour
         return itemToUse != null && itemToUse.itemType == requiredItemType;
     }
 
-    protected virtual void StartAction() { }
+    protected virtual void StartAction()
+    {
+        isInUse = true;
+    }
     
     protected virtual void StopAction()
     {
-        IsInUse.Value = false;
-        Progress.Value = 0f;
+        Debug.Log("STOP");
+        isInUse = false;
         gaugeUI.Hide();
     }
 }

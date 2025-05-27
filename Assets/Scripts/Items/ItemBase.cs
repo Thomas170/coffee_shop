@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemBase : NetworkBehaviour
 {
     public ItemType itemType = ItemType.None;
-    public float itemMass = 100f;
+    public float itemMass = 100000f;
     public ulong? CurrentHolderClientId;
 
     public void Awake()
