@@ -17,8 +17,6 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
 
     private Coroutine _activeCoroutine;
 
-    public bool IsInUse => _isInUse.Value;
-
     public ItemBase CurrentItem
     {
         get => _currentItemRef.Value.TryGet(out NetworkObject netObj) ? netObj.GetComponent<ItemBase>() : null;
@@ -26,7 +24,7 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
     }
 
     public virtual bool RequiresHold => false;
-
+    public bool IsInUse => _isInUse.Value;
     protected virtual bool CanInterrupt() => true;
     protected virtual bool InputHeldByClient() => true;
     protected abstract void OnForcedEnd();
@@ -37,10 +35,18 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
             .FirstOrDefault(x => x.OwnerClientId == clientId && x.CompareTag("Player"))?.gameObject;
     }
 
-    public virtual void Collect()
+    public virtual void Interact()
     {
         if (CurrentItem == null) return;
-        RequestCollectServerRpc();
+
+        if (IsInUse)
+        {
+            RequestInterruptServerRpc();
+        }
+        else
+        {
+            RequestCollectServerRpc();
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -148,7 +154,7 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
 
     public void ForceInterruptFromClient()
     {
-        if (IsOwner && CanInterrupt())
+        if (CanInterrupt())
         {
             RequestInterruptServerRpc();
         }
@@ -167,6 +173,6 @@ public abstract class InteractableBase : NetworkBehaviour, IInteractable
         CurrentItem.AttachTo(itemDisplay, false);
     }
 
-    public virtual void Interact() {}
+    public virtual void Action() {}
     public virtual void SimpleUse() {}
 }

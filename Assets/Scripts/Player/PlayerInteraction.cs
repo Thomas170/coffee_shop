@@ -11,78 +11,58 @@ public class PlayerInteraction : MonoBehaviour
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
-
-        if (InputReader.Instance != null)
-        {
-            InputReader.Instance.InteractAction.performed += OnInteract;
-            InputReader.Instance.ActionAction.performed += OnAction;
-        }
+        InputReader.Instance.InteractAction.performed += OnInteract;
+        InputReader.Instance.ActionAction.performed += OnAction;
     }
 
     private void OnDestroy()
     {
-        if (InputReader.Instance != null)
-        {
-            InputReader.Instance.InteractAction.performed -= OnInteract;
-            InputReader.Instance.ActionAction.performed -= OnAction;
-        }
+        InputReader.Instance.InteractAction.performed -= OnInteract;
+        InputReader.Instance.ActionAction.performed -= OnAction;
     }
 
     private void OnAction(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
-        _currentInteractable?.Interact();
+        _currentInteractable?.Action();
     }
 
     private void OnInteract(InputAction.CallbackContext ctx)
     {
         if (!playerController.CanInteract) return;
-        PlayerCarry carry = GetComponent<PlayerCarry>();
+        PlayerCarry playerCarry = GetComponent<PlayerCarry>();
 
-        if (!carry.IsCarrying)
+        if (playerCarry.IsCarrying)
         {
-            if (_currentInteractable != null && _currentInteractable is InteractableBase ib)
-            {
-                // 1. Mains vides machine prête à récupérer un item
-                if (ib.CurrentItem != null && !ib.IsInUse)
-                {
-                    ib.Collect();
-                    return;
-                }
-
-                // 2. Mains vides, item au sol, machine en cours d’utilisation => ramasse item au sol
-                if (_currentPickable != null && ib.IsInUse)
-                {
-                    carry.TryPickUp(_currentPickable);
-                    _currentPickable = null;
-                    return;
-                }
-
-                // 3. Mains vides, pas d’item au sol, machine en cours d’utilisation => stop l’action et récupère item non fini
-                if (_currentPickable == null && ib.IsInUse)
-                {
-                    ib.ForceInterruptFromClient();
-                    return;
-                }
-            }
-
-            // Si on arrive là, il reste la possibilité de ramasser un item au sol sans machine
-            if (_currentPickable != null)
-            {
-                carry.TryPickUp(_currentPickable);
-                _currentPickable = null;
-                return;
-            }
+            InteractWithItem(playerCarry);
         }
         else
         {
-            // Mains avec item en main
-            if (_currentInteractable != null && _currentInteractable is InteractableBase ib && !ib.RequiresHold && !ib.IsInUse)
-            {
-                ib.SimpleUse();
-                return;
-            }
-            carry.DropInFront();
+            InteractWithoutItem(playerCarry);
+        }
+    }
+    
+    private void InteractWithItem(PlayerCarry playerCarry)
+    {
+        if (_currentInteractable is InteractableBase { RequiresHold: false, IsInUse: false } interactableBase)
+        {
+            interactableBase.SimpleUse();
+        }
+        else
+        {
+            playerCarry.DropInFront();
+        }
+    }
+
+    private void InteractWithoutItem(PlayerCarry playerCarry)
+    {
+        if (_currentPickable)
+        {
+            playerCarry.TryPickUp(_currentPickable);
+        }
+        else if (_currentInteractable is InteractableBase interactableBase && interactableBase.CurrentItem)
+        {
+            interactableBase.Interact();
         }
     }
 

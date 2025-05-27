@@ -2,7 +2,7 @@ public abstract class ManualInteractableBase : InteractableBase
 {
     public override bool RequiresHold => true;
 
-    public override void Interact()
+    public override void Action()
     {
         if (IsInUse)
         {

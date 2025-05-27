@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ClientCommands : MonoBehaviour, IInteractable
+public class ClientCommands : MonoBehaviour//, IInteractable
 {
     public ClientController clientController;
     public GameObject commandSpot;
