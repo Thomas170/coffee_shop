@@ -16,7 +16,7 @@ public class LoadSaveMenuController : BaseMenuController
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
-            if (!SaveManager.SlotHasData(i))
+            if (!SaveManager.Instance.SlotHasData(i))
             {
                 entry.button.transform.Find("Empty").gameObject.SetActive(true);
                 entry.button.transform.Find("Info").gameObject.SetActive(false);
@@ -24,7 +24,7 @@ public class LoadSaveMenuController : BaseMenuController
             }
             else
             {
-                SaveData save = SaveManager.LoadFromSlot(i);
+                SaveData save = SaveManager.Instance.LoadFromSlot(i);
                 
                 entry.button.transform.Find("Empty").gameObject.SetActive(false);
                 GameObject info = entry.button.transform.Find("Info").gameObject;
@@ -54,9 +54,9 @@ public class LoadSaveMenuController : BaseMenuController
     private void LoadSave()
     {
         int index = SelectedIndex;
-        if (!SaveManager.SlotHasData(index)) return;
+        if (!SaveManager.Instance.SlotHasData(index)) return;
 
-        MenuManager.Instance.CurrentGameIndex = index;
+        GlobalManager.Instance.SetGameIndex(index);
         CloseMenu();
         gameSetupMenuController.OpenMenu();
     }

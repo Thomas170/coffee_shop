@@ -23,8 +23,6 @@ public class GameSetupMenuController : BaseMenuController
 
     private void OnEnable()
     {
-        UpdateTopRightInfo();
-        //UpdatePlayerSlots();
         PlayerListManager.OnPlayerListChanged += UpdatePlayerSlots;
     }
     
@@ -35,16 +33,16 @@ public class GameSetupMenuController : BaseMenuController
 
     private void UpdateTopRightInfo()
     {
-        int slotIndex = MenuManager.Instance.CurrentGameIndex;
+        int slotIndex = GlobalManager.Instance.CurrentGameIndex;
         
-        if (!SaveManager.SlotHasData(slotIndex))
+        if (!SaveManager.Instance.SlotHasData(slotIndex))
         {
             levelText.text = "?";
             coinsText.text = "?";
             return;
         }
         
-        SaveData data = SaveManager.LoadFromSlot(slotIndex);
+        SaveData data = SaveManager.Instance.LoadFromSlot(slotIndex);
         levelText.text = $"{data.level}";
         coinsText.text = $"{data.coins}";
     }
@@ -130,6 +128,7 @@ public class GameSetupMenuController : BaseMenuController
     public override async void OpenMenu()
     {
         base.OpenMenu();
+        UpdateTopRightInfo();
         await SetupMultiplayerSessionAsync();
     }
     

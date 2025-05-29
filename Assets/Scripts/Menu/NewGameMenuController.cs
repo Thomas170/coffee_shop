@@ -17,14 +17,14 @@ public class NewGameMenuController : BaseMenuController
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
-            if (!SaveManager.SlotHasData(i))
+            if (!SaveManager.Instance.SlotHasData(i))
             {
                 entry.button.transform.Find("Empty").gameObject.SetActive(true);
                 entry.button.transform.Find("Info").gameObject.SetActive(false);
             }
             else
             {
-                SaveData save = SaveManager.LoadFromSlot(i);
+                SaveData save = SaveManager.Instance.LoadFromSlot(i);
                 
                 entry.button.transform.Find("Empty").gameObject.SetActive(false);
                 GameObject info = entry.button.transform.Find("Info").gameObject;
@@ -54,16 +54,16 @@ public class NewGameMenuController : BaseMenuController
     private void SelectSlot()
     {
         int index = SelectedIndex;
-        MenuManager.Instance.CurrentGameIndex = index;
+        GlobalManager.Instance.SetGameIndex(index);
         CloseMenu();
 
-        if (SaveManager.SlotHasData(index))
+        if (SaveManager.Instance.SlotHasData(index))
         {
             confirmPopup.OpenMenu();
         }
         else
         {
-            SaveManager.SaveToSlot(index, new SaveData());
+            SaveManager.Instance.SaveToSlot(index, new SaveData());
             gameSetupMenuController.OpenMenu();
         }
     }

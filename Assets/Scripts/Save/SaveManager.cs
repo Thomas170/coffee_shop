@@ -1,20 +1,36 @@
 using UnityEngine;
 using System.IO;
+using Unity.Netcode;
 
-public static class SaveManager
+public class SaveManager: NetworkBehaviour
 {
-    private static string GetPathForSlot(int slotIndex)
+    public static SaveManager Instance;
+    public SaveData saveData;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+    
+    private string GetPathForSlot(int slotIndex)
     {
         return Path.Combine(Application.persistentDataPath, $"save_slot_{slotIndex}.json");
     }
 
-    public static void SaveToSlot(int slotIndex, SaveData data)
+    public void SaveToSlot(int slotIndex, SaveData data)
     {
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(GetPathForSlot(slotIndex), json);
     }
 
-    public static SaveData LoadFromSlot(int slotIndex)
+    public SaveData LoadFromSlot(int slotIndex)
     {
         string path = GetPathForSlot(slotIndex);
         if (File.Exists(path))
@@ -25,17 +41,8 @@ public static class SaveManager
         return null;
     }
 
-    public static bool SlotHasData(int slotIndex)
+    public bool SlotHasData(int slotIndex)
     {
         return File.Exists(GetPathForSlot(slotIndex));
-    }
-
-    public static void DeleteSlot(int slotIndex)
-    {
-        string path = GetPathForSlot(slotIndex);
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
     }
 }

@@ -7,8 +7,6 @@ public class MenuManager : MonoBehaviour
     
     public static event Action<bool> OnMenuStateChanged;
     
-    public int CurrentGameIndex { get; set; }
-    
     [SerializeField] private GameObject loadingScreen;
     
     public bool IsLocked { get; private set; }

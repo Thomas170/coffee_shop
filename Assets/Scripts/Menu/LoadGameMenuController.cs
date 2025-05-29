@@ -22,7 +22,7 @@ public class LoadGameMenuController : BaseMenuController
         bool hasAnySave = false;
         for (int i = 0; i < 3; i++)
         {
-            if (SaveManager.SlotHasData(i))
+            if (SaveManager.Instance.SlotHasData(i))
             {
                 hasAnySave = true;
                 break;
@@ -38,7 +38,7 @@ public class LoadGameMenuController : BaseMenuController
         button.interactable = interactable;
 
         var text = button.GetComponentInChildren<TextMeshProUGUI>();
-        if (text != null)
+        if (text)
         {
             Color color = text.color;
             color.a = interactable ? 1f : 0.5f;
@@ -72,7 +72,7 @@ public class LoadGameMenuController : BaseMenuController
         int firstValidIndex = -1;
         for (int i = 0; i < 3; i++)
         {
-            if (SaveManager.SlotHasData(i))
+            if (SaveManager.Instance.SlotHasData(i))
             {
                 firstValidIndex = i;
                 break;
@@ -81,7 +81,7 @@ public class LoadGameMenuController : BaseMenuController
 
         if (firstValidIndex != -1)
         {
-            MenuManager.Instance.CurrentGameIndex = firstValidIndex;
+            GlobalManager.Instance.SetGameIndex(firstValidIndex);
             CloseMenu();
             gameSetupMenuController.OpenMenu();
         }
