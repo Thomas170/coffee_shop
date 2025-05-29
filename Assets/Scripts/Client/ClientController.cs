@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class ClientController : MonoBehaviour
+public class ClientController : NetworkBehaviour
 {
     public ClientMovement movement;
     public ClientCommands commands;
@@ -13,7 +14,10 @@ public class ClientController : MonoBehaviour
         commands = GetComponent<ClientCommands>();
         clientSpawner = GameObject.FindWithTag("GameManager").GetComponent<ClientSpawner>();
 
-        commands.InitCommandSpotServerRpc();
+        if (IsServer)
+        {
+            commands.InitCommandSpotServerRpc();
+        }
     }
     
     public void Interact(ItemBase itemToUse)
@@ -29,7 +33,7 @@ public class ClientController : MonoBehaviour
 
     public void OnDestinationReached(Transform reachedTarget)
     {
-        if (reachedTarget == commands.commandSpot.transform)
+        if (reachedTarget == ClientBarSpotManager.Instance.GetClientSpotLocation(commands.commandSpotIndex))
         {
             commands.StartOrderServerRpc();
         }

@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1759375226
+  GlobalObjectIdHash: 3320825758
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -402,9 +402,9 @@ MonoBehaviour:
   orderIcon: {fileID: 3031674010299895037}
   waitingGauge: {fileID: 121666036708990118}
   clientController: {fileID: 4460690199350288766}
-  resultItemPrefab: {fileID: 7705437841392033311, guid: 5cdcadbfe855e1c488359a6b0b555342, type: 3}
+  resultItemPrefab: {fileID: 7394209534051937320, guid: a7970996df79982469055ee425825e4a, type: 3}
   currentItem: {fileID: 0}
-  commandSpot: {fileID: 0}
+  commandSpotIndex: 0
 --- !u!114 &121666036708990118
 MonoBehaviour:
   m_ObjectHideFlags: 0

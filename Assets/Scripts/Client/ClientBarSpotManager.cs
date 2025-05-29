@@ -7,32 +7,38 @@ public class ClientBarSpotManager : NetworkBehaviour
     public static ClientBarSpotManager Instance { get; private set; }
 
     [SerializeField] private List<Transform> barSpots;
-    private readonly HashSet<Transform> _occupiedSpots = new();
+    private readonly HashSet<int> _occupiedSpots = new();
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public Transform RequestSpot()
+    public int RequestSpot()
     {
-        foreach (var spot in barSpots)
+        for (int spotIndex = 0; spotIndex < barSpots.Count; spotIndex++)
         {
-            if (_occupiedSpots.Add(spot.transform))
+            if (_occupiedSpots.Add(spotIndex))
             {
-                return spot.transform;
+                return spotIndex;
             }
         }
-        return null;
-    }
-    
-    public void SyncSpot(Transform spot)
-    {
-        _occupiedSpots.Add(spot.transform);
+
+        return -1;
     }
 
-    public void ReleaseSpot(Transform spot)
+    public void ReleaseSpot(int spotIndex)
     {
-        _occupiedSpots.Remove(spot);
+        _occupiedSpots.Remove(spotIndex);
+    }
+
+    public Transform GetClientSpotLocation(int spotIndex)
+    {
+        return barSpots.Count > spotIndex ? barSpots[spotIndex] : null;
+    }
+    
+    public Transform GetItemSpotLocation(int spotIndex)
+    {
+        return barSpots.Count > spotIndex ? barSpots[spotIndex].Find("CupSpot") : null;
     }
 }

@@ -11,7 +11,7 @@ public class ClientCommands : NetworkBehaviour
     [SerializeField] private GameObject resultItemPrefab;
     
     public ItemBase currentItem;
-    public Transform commandSpot;
+    public int commandSpotIndex;
     
     private readonly float _patienceTime = 40f;
 
@@ -23,21 +23,20 @@ public class ClientCommands : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void InitCommandSpotServerRpc()
     {
-        commandSpot = ClientBarSpotManager.Instance.RequestSpot();
-        if (commandSpot == null)
+        commandSpotIndex = ClientBarSpotManager.Instance.RequestSpot();
+        if (commandSpotIndex == -1)
         {
             clientController.clientSpawner.DespawnClient(gameObject);
             return;
         }
-        clientController.movement.MoveTo(commandSpot);
-        //SyncSpot
-        SyncCommandSpotClientRpc();
+        clientController.movement.MoveTo(ClientBarSpotManager.Instance.GetClientSpotLocation(commandSpotIndex));
+        SyncCommandSpotClientRpc(commandSpotIndex);
     }
 
     [ClientRpc]
-    public void SyncCommandSpotClientRpc()
+    public void SyncCommandSpotClientRpc(int index)
     {
-        //ClientBarSpotManager.Instance.SyncSpot();
+        commandSpotIndex = index;
     }
     
     [ServerRpc(RequireOwnership = false)]
@@ -75,10 +74,10 @@ public class ClientCommands : NetworkBehaviour
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
         playerCarry.carriedItem = null;
         
-        orderIcon?.SetActive(false);
+        orderIcon.SetActive(false);
         currentItem = itemBase;
         currentItem.CurrentHolderClientId = null;
-        currentItem.AttachTo(commandSpot.Find("CupSpot").transform, false);
+        currentItem.AttachTo(ClientBarSpotManager.Instance.GetItemSpotLocation(commandSpotIndex), false);
         
         StartCoroutine(DrinkCoffee());
         CurrencyManager.Instance.AddCoins(10);
@@ -86,9 +85,10 @@ public class ClientCommands : NetworkBehaviour
 
     private IEnumerator DrinkCoffee()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(20f);
 
         SpawnResultItemServerRpc();
+        yield return new WaitForSeconds(1f);
         LeaveCoffeeShop();
     }
     
@@ -98,7 +98,7 @@ public class ClientCommands : NetworkBehaviour
         currentItem.NetworkObject.Despawn();
         Destroy(currentItem.gameObject);
         
-        GameObject resultItem = Instantiate(resultItemPrefab, commandSpot.Find("CupSpot").position, Quaternion.identity);
+        GameObject resultItem = Instantiate(resultItemPrefab, ClientBarSpotManager.Instance.GetItemSpotLocation(commandSpotIndex).position, Quaternion.identity);
         NetworkObject networkObject = resultItem.GetComponent<NetworkObject>();
         networkObject.Spawn();
 
@@ -110,12 +110,16 @@ public class ClientCommands : NetworkBehaviour
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         currentItem = itemNetworkObject.GetComponent<ItemBase>();
-        currentItem.AttachTo(commandSpot.Find("CupSpot"));
+        currentItem.AttachTo(ClientBarSpotManager.Instance.GetItemSpotLocation(commandSpotIndex));
     }
 
     private void LeaveCoffeeShop()
     {
-        ClientBarSpotManager.Instance.ReleaseSpot(commandSpot);
+        if (IsServer)
+        {
+            ClientBarSpotManager.Instance.ReleaseSpot(commandSpotIndex);
+        }
+        
         orderIcon.SetActive(false);
         Transform exit = clientController.clientSpawner.GetRandomExit();
         clientController.movement.MoveTo(exit);
