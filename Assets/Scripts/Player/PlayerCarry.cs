@@ -9,10 +9,10 @@ public class PlayerCarry : NetworkBehaviour
     public bool IsCarrying => carriedItem != null;
     public ItemBase GetCarriedObject => carriedItem != null ? carriedItem : null;
     
-    public bool TryPickUp(GameObject item)
+    public bool TryPickUp(ItemBase itemBase)
     {
         if (IsCarrying) return false;
-        NetworkObject networkObject = item.GetComponent<ItemBase>().NetworkObject;
+        NetworkObject networkObject = itemBase.NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
         return true;
     }

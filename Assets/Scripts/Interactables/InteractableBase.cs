@@ -52,7 +52,7 @@ public abstract class InteractableBase : NetworkBehaviour
             currentItem.Detach();
             if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId)
             {
-                playerCarry.TryPickUp(currentItem.gameObject);
+                playerCarry.TryPickUp(currentItem);
             }
             currentItem = null;
             StopAction();

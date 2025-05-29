@@ -17,6 +17,5 @@ public class CurrencyManager : MonoBehaviour
     {
         coins += amount;
         coinsText.text = coins.ToString();
-        Debug.Log($"+{amount} coins! Total: {coins}");
     }
 }

@@ -1,46 +1,32 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Netcode;
 
-public class ClientBarSpotManager : MonoBehaviour
+public class ClientBarSpotManager : NetworkBehaviour
 {
     public static ClientBarSpotManager Instance { get; private set; }
 
     [SerializeField] private List<Transform> barSpots;
-    private readonly HashSet<GameObject> _occupiedSpots = new();
+    private readonly HashSet<Transform> _occupiedSpots = new();
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public GameObject RequestFreeSpot()
+    public Transform RequestSpot()
     {
         foreach (var spot in barSpots)
         {
-            if (!_occupiedSpots.Contains(spot.gameObject))
+            if (_occupiedSpots.Add(spot.transform))
             {
-                _occupiedSpots.Add(spot.gameObject);
-                return spot.gameObject;
+                return spot.transform;
             }
         }
         return null;
     }
-    
-    public Transform GetCupSpot(GameObject barSpot)
-    {
-        foreach (Transform child in barSpot.transform)
-        {
-            if (child.CompareTag("CupSpot"))
-            {
-                return child;
-            }
-        }
 
-        Debug.LogWarning("Aucun enfant avec le tag 'CupSpot' trouvé.");
-        return null;
-    }
-
-    public void ReleaseSpot(GameObject spot)
+    public void ReleaseSpot(Transform spot)
     {
         _occupiedSpots.Remove(spot);
     }

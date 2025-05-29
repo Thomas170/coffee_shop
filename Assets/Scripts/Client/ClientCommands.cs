@@ -1,123 +1,116 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Netcode;
 
-public class ClientCommands : MonoBehaviour
+public class ClientCommands : NetworkBehaviour
 {
-    public ClientController clientController;
-    public GameObject commandSpot;
-    
     [SerializeField] private Transform handPoint;
     [SerializeField] private GameObject orderIcon;
     [SerializeField] private SmoothGaugeUI waitingGauge;
+    [SerializeField] private ClientController clientController;
+    [SerializeField] private GameObject resultItemPrefab;
+    
+    public ItemBase currentItem;
+    public Transform commandSpot;
     
     private readonly float _patienceTime = 40f;
-    private GameObject _heldCup;
-    private bool _canInteract;
 
     private void Start()
     {
          orderIcon.SetActive(false);
     }
-
-    public void Interact()
-    {
-        if (!_canInteract)
-        {
-            Debug.LogWarning("Impossible d'intéragir avec cette personne.");
-            return;
-        }
-
-        PlayerCarry playerCarry = FindObjectOfType<PlayerCarry>();
-        if (!playerCarry || !playerCarry.IsCarrying)
-        {
-            Debug.LogWarning("Tu n'as rien à donner.");
-            return;
-        }
-
-        //GameObject carried = carry.GetCarriedObject();
-        //Cup cup = carried.GetComponent<Cup>();
-
-        /*if (cup != null && cup.IsFull)
-        {
-            carry.RemoveCarried();
-            ReceiveCommand(carried);
-            CurrencyManager.Instance.AddCoins(10);
-        }
-        else
-        {
-            Debug.LogWarning("Ce n'est pas un café plein.");
-        }*/
-    }
     
-    public void Collect() { }
-
-    public void InitCommandSpot()
+    [ServerRpc(RequireOwnership = false)]
+    public void InitCommandSpotServerRpc()
     {
-        commandSpot = ClientBarSpotManager.Instance.RequestFreeSpot();
+        commandSpot = ClientBarSpotManager.Instance.RequestSpot();
         if (commandSpot == null)
         {
-            Debug.Log("Bar plein, le client repart.");
             clientController.clientSpawner.DespawnClient(gameObject);
             return;
         }
-        
-        clientController.movement.MoveTo(commandSpot.transform);
+        clientController.movement.MoveTo(commandSpot);
     }
     
     public void StartOrder()
     {
-        _canInteract = true;
-        orderIcon?.SetActive(true);
-        
-        if (waitingGauge != null)
-        {
-            waitingGauge.StartGauge(_patienceTime);
-            waitingGauge.OnEmpty = OnPatienceExpired;
-        }
-        
-        Debug.Log("Un client veut un café !");
+        clientController.canInteract = true;
+        orderIcon.SetActive(true);
+
+        waitingGauge.StartGauge(_patienceTime);
+        waitingGauge.OnEmpty = LeaveCoffeeShop;
     }
 
-    private void ReceiveCommand(GameObject commandObj)
+    public void GiveItem(ItemBase itemToUse)
     {
-        orderIcon?.SetActive(false);
-        
-        _heldCup = commandObj;
-        Transform cupSpot = ClientBarSpotManager.Instance.GetCupSpot(commandSpot.gameObject);
-        /*_heldCup.GetComponent<FollowTarget>().SetTarget(cupSpot);
-        _heldCup.GetComponent<Cup>().Lock();
-        _heldCup.GetComponent<Cup>().OnSpot(commandSpot);*/
+        if (IsValidItemToUse(itemToUse))
+        {
+            RequestGiveItemServerRpc(itemToUse.NetworkObject, NetworkManager.LocalClientId);
+        }
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void RequestGiveItemServerRpc(NetworkObjectReference itemRef, ulong playerId) => RequestGiveItemClientRpc(itemRef, playerId);
+    
+    [ClientRpc]
+    private void RequestGiveItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
+    {
+        if (currentItem || !itemRef.TryGet(out var itemNetworkObject)) return;
 
+        ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
+        
+        PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
+        PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+        playerCarry.carriedItem = null;
+        
+        orderIcon?.SetActive(false);
+        currentItem = itemBase;
+        currentItem.CurrentHolderClientId = null;
+        currentItem.AttachTo(commandSpot.Find("CupSpot").transform, false);
+        
         StartCoroutine(DrinkCoffee());
+        CurrencyManager.Instance.AddCoins(10);
     }
 
     private IEnumerator DrinkCoffee()
     {
         yield return new WaitForSeconds(5f);
-        Debug.Log("Client a fini son café.");
-        
-        //Cup heldCupScript = _heldCup.GetComponent<Cup>();
-        //heldCupScript.Empty();
-        //heldCupScript.TryUnlock();
-        //_heldCup.GetComponent<FollowTarget>().ClearTarget();
-        
+
+        SpawnResultItemServerRpc();
         LeaveCoffeeShop();
     }
-
-    private void OnPatienceExpired()
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnResultItemServerRpc()
     {
-        Debug.Log("Client impatient, il part.");
-        orderIcon?.SetActive(false);
+        currentItem.NetworkObject.Despawn();
+        Destroy(currentItem.gameObject);
         
+        GameObject resultItem = Instantiate(resultItemPrefab, commandSpot.Find("CupSpot").position, Quaternion.identity);
+        NetworkObject networkObject = resultItem.GetComponent<NetworkObject>();
+        networkObject.Spawn();
+
+        SpawnResultItemClientRpc(networkObject);
+    }
+
+    [ClientRpc]
+    private void SpawnResultItemClientRpc(NetworkObjectReference itemRef)
+    {
+        if (!itemRef.TryGet(out var itemNetworkObject)) return;
+        currentItem = itemNetworkObject.GetComponent<ItemBase>();
+        currentItem.AttachTo(commandSpot.Find("CupSpot"));
+    }
+
+    private void LeaveCoffeeShop()
+    {
         ClientBarSpotManager.Instance.ReleaseSpot(commandSpot);
+        orderIcon.SetActive(false);
         Transform exit = clientController.clientSpawner.GetRandomExit();
         clientController.movement.MoveTo(exit);
     }
-
-    public void LeaveCoffeeShop()
+    
+    private bool IsValidItemToUse(ItemBase itemToUse)
     {
-        orderIcon?.SetActive(false);
-        Transform exit = clientController.clientSpawner.GetRandomExit();
-        clientController.movement.MoveTo(exit);
+        return itemToUse != null && itemToUse.itemType == ItemType.CupFull;
     }
 }

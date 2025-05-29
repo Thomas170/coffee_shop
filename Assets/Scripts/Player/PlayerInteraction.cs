@@ -6,7 +6,8 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     
     private InteractableBase _currentInteractable;
-    private GameObject _currentPickable;
+    private ClientController _currentClient;
+    private ItemBase _currentPickable;
 
     private void Start()
     {
@@ -52,6 +53,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             _currentInteractable.TryPutItem(playerCarry.GetCarriedObject);
         }
+        else if (_currentClient)
+        {
+            _currentClient.Interact(playerCarry.GetCarriedObject);
+        }
         else
         {
             playerCarry.TryDrop();
@@ -79,9 +84,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             _currentInteractable = interactable;
         }
-        else if (other.CompareTag("Pickable") && !GetComponent<PlayerCarry>().IsCarrying)
+        else if (other.TryGetComponent(out ItemBase item) && !GetComponent<PlayerCarry>().IsCarrying)
         {
-            _currentPickable = other.gameObject;
+            _currentPickable = item;
+        }
+        else if (other.TryGetComponent(out ClientController client))
+        {
+            _currentClient = client;
         }
     }
 
@@ -91,9 +100,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             _currentInteractable = null;
         }
-        else if (other.CompareTag("Pickable") && other.gameObject == _currentPickable)
+        else if (other.TryGetComponent(out ItemBase item) && item == _currentPickable)
         {
             _currentPickable = null;
+        }
+        else if (other.TryGetComponent(out ClientController client) && client == _currentClient)
+        {
+            _currentClient = null;
         }
     }
 }

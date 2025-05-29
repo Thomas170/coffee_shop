@@ -20,7 +20,6 @@ public class NewGameConfirmMenuController : BaseMenuController
     private void CreateSave()
     {
         int index = MenuManager.Instance.CurrentGameIndex;
-        Debug.Log($"[NewGame] Wiping slot #{index}");
 
         SaveManager.SaveToSlot(index, new SaveData());
         CloseMenu();
