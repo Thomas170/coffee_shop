@@ -22,7 +22,7 @@ public class ClientMovement : MonoBehaviour
 
     private void Update()
     {
-        if (CurrentTarget != null && !_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
+        if (CurrentTarget && !_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
         {
             _client.OnDestinationReached(CurrentTarget);
             CurrentTarget = null;

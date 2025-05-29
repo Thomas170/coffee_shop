@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ClientCommands : MonoBehaviour//, IInteractable
+public class ClientCommands : MonoBehaviour
 {
     public ClientController clientController;
     public GameObject commandSpot;
@@ -27,8 +27,8 @@ public class ClientCommands : MonoBehaviour//, IInteractable
             return;
         }
 
-        PlayerCarry carry = FindObjectOfType<PlayerCarry>();
-        if (!carry || !carry.IsCarrying)
+        PlayerCarry playerCarry = FindObjectOfType<PlayerCarry>();
+        if (!playerCarry || !playerCarry.IsCarrying)
         {
             Debug.LogWarning("Tu n'as rien à donner.");
             return;

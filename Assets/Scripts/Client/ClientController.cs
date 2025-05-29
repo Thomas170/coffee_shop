@@ -1,10 +1,7 @@
-using System.Collections;
 using UnityEngine;
 
 public class ClientController : MonoBehaviour
 {
-    public float patienceTime = 300f;
-
     public ClientMovement movement;
     public ClientCommands commands;
     public ClientSpawner clientSpawner;

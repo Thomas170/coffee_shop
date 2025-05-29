@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Netcode;
 
-public class ClientSpawner : MonoBehaviour
+public class ClientSpawner : NetworkBehaviour
 {
     [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] private GameObject clientPrefab;
@@ -10,13 +11,17 @@ public class ClientSpawner : MonoBehaviour
     
     private void Start()
     {
-        //InvokeRepeating(nameof(SpawnClient), 2f, spawnInterval);
+        if (NetworkManager.Singleton.IsServer)
+        {
+            InvokeRepeating(nameof(SpawnClient), 2f, spawnInterval);
+        }
     }
 
     private void SpawnClient()
     {
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
         GameObject client = Instantiate(clientPrefab, spawnPoint.position, Quaternion.identity);
+        client.GetComponent<NetworkObject>().Spawn();
         spawnedClients.Add(client);
     }
     
@@ -25,6 +30,7 @@ public class ClientSpawner : MonoBehaviour
         if (spawnedClients.Contains(client))
         {
             spawnedClients.Remove(client);
+            client.GetComponent<NetworkObject>().Despawn();
             Destroy(client);
         }
     }
@@ -36,7 +42,7 @@ public class ClientSpawner : MonoBehaviour
 
     public bool IsExitPoint(Transform reachedPoint)
     {
-        foreach (var exit in spawnPoints)
+        foreach (Transform exit in spawnPoints)
         {
             if (reachedPoint == exit.transform)
             {

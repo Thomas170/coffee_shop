@@ -410,11 +410,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseUnreliableDeltas: 0
   SyncPositionX: 1
-  SyncPositionY: 1
+  SyncPositionY: 0
   SyncPositionZ: 1
-  SyncRotAngleX: 1
+  SyncRotAngleX: 0
   SyncRotAngleY: 1
-  SyncRotAngleZ: 1
+  SyncRotAngleZ: 0
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
@@ -584,6 +584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carryPoint: {fileID: 8079524428251938336}
+  carriedItem: {fileID: 0}
 --- !u!114 &3280389153802484829
 MonoBehaviour:
   m_ObjectHideFlags: 0
