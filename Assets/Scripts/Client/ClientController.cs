@@ -31,7 +31,7 @@ public class ClientController : MonoBehaviour
     {
         if (reachedTarget == commands.commandSpot.transform)
         {
-            commands.StartOrder();
+            commands.StartOrderServerRpc();
         }
         else if (clientSpawner.IsExitPoint(reachedTarget))
         {

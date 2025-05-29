@@ -30,9 +30,21 @@ public class ClientCommands : NetworkBehaviour
             return;
         }
         clientController.movement.MoveTo(commandSpot);
+        //SyncSpot
+        SyncCommandSpotClientRpc();
+    }
+
+    [ClientRpc]
+    public void SyncCommandSpotClientRpc()
+    {
+        //ClientBarSpotManager.Instance.SyncSpot();
     }
     
-    public void StartOrder()
+    [ServerRpc(RequireOwnership = false)]
+    public void StartOrderServerRpc() => StartOrderClientRpc();
+    
+    [ClientRpc]
+    public void StartOrderClientRpc()
     {
         clientController.canInteract = true;
         orderIcon.SetActive(true);

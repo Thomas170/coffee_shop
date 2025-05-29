@@ -25,6 +25,11 @@ public class ClientBarSpotManager : NetworkBehaviour
         }
         return null;
     }
+    
+    public void SyncSpot(Transform spot)
+    {
+        _occupiedSpots.Add(spot.transform);
+    }
 
     public void ReleaseSpot(Transform spot)
     {
