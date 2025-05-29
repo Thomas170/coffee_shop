@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,22 +30,6 @@ public class GameSetupMenuController : BaseMenuController
     private void OnDisable()
     {
         PlayerListManager.OnPlayerListChanged -= UpdatePlayerSlots;
-    }
-
-    private void UpdateTopRightInfo()
-    {
-        int slotIndex = GlobalManager.Instance.CurrentGameIndex;
-        
-        if (!SaveManager.Instance.SlotHasData(slotIndex))
-        {
-            levelText.text = "?";
-            coinsText.text = "?";
-            return;
-        }
-        
-        SaveData data = SaveManager.Instance.LoadFromSlot(slotIndex);
-        levelText.text = $"{data.level}";
-        coinsText.text = $"{data.coins}";
     }
     
     private void UpdatePlayerSlots()
@@ -104,8 +89,8 @@ public class GameSetupMenuController : BaseMenuController
             if (NetworkManager.Singleton.IsHost)
             {
                 UpdatePlayerSlots();
+                MenuManager.Instance.LoadDataServerRpc();
             }
-
         }
     }
 
@@ -128,7 +113,6 @@ public class GameSetupMenuController : BaseMenuController
     public override async void OpenMenu()
     {
         base.OpenMenu();
-        UpdateTopRightInfo();
         await SetupMultiplayerSessionAsync();
     }
     
@@ -175,7 +159,19 @@ public class GameSetupMenuController : BaseMenuController
             startButton.SetActive(false);
             codeToCopy.text = joinCode;
             WaitForLocalPlayerSpawnAndShowMenu();
+            StartCoroutine(CallLoadDataWhenReady());
         }
+    }
+    
+    private IEnumerator CallLoadDataWhenReady()
+    {
+        while (!MenuManager.Instance || !MenuManager.Instance.IsSpawned)
+        {
+            Debug.Log("t");
+            yield return null;
+        }
+
+        MenuManager.Instance.LoadDataServerRpc();
     }
     
     private void WaitForLocalPlayerSpawnAndShowMenu()
@@ -188,5 +184,12 @@ public class GameSetupMenuController : BaseMenuController
         MenuManager.OnLocalPlayerSpawned -= ShowAfterPlayerSpawned;
         MenuManager.Instance.SetLoadingScreenActive(false);
         UpdatePlayerSlots();
+    }
+    
+    public void LoadData(int level, int coins)
+    {
+        Debug.Log("LOAD 2 " + level + " - " + coins);
+        levelText.text = $"{level}";
+        coinsText.text = $"{coins}";
     }
 }

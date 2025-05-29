@@ -3882,6 +3882,10 @@ PrefabInstance:
       propertyPath: loadingScreen
       value: 
       objectReference: {fileID: 1885670605}
+    - target: {fileID: 4672960527357387254, guid: b10e811645751fc4f9648661249775af, type: 3}
+      propertyPath: gameSetupMenuController
+      value: 
+      objectReference: {fileID: 290753309}
     - target: {fileID: 5098934890468094036, guid: b10e811645751fc4f9648661249775af, type: 3}
       propertyPath: m_Name
       value: GlobalManager
@@ -11851,7 +11855,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 354
+  m_text: '?'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9ad5c9b49886624c866eb6d0fa6b0a6, type: 2}
   m_sharedMaterial: {fileID: 4655364464628868991, guid: f9ad5c9b49886624c866eb6d0fa6b0a6, type: 2}
@@ -14796,7 +14800,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:75383388633585c4db869c1b6af24b6b
     m_TableEntryReference:
-      m_KeyId: 2564533974831104
+      m_KeyId: 2511292167720960
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -15665,7 +15669,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 12
+  m_text: '?'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9ad5c9b49886624c866eb6d0fa6b0a6, type: 2}
   m_sharedMaterial: {fileID: 4655364464628868991, guid: f9ad5c9b49886624c866eb6d0fa6b0a6, type: 2}
@@ -15971,7 +15975,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:75383388633585c4db869c1b6af24b6b
     m_TableEntryReference:
-      m_KeyId: 2511292167720960
+      m_KeyId: 2564533974831104
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

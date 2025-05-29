@@ -1,13 +1,15 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : NetworkBehaviour
 {
     public static MenuManager Instance { get; private set; }
     
     public static event Action<bool> OnMenuStateChanged;
     
     [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private GameSetupMenuController gameSetupMenuController;
     
     public bool IsLocked { get; private set; }
     
@@ -23,6 +25,24 @@ public class MenuManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
         SetLoadingScreenActive(false);
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void LoadDataServerRpc()
+    {
+        Debug.Log("LOAD 1" + GlobalManager.Instance.CurrentGameIndex);
+        int slotIndex = GlobalManager.Instance.CurrentGameIndex;
+        SaveData data = SaveManager.Instance.LoadFromSlot(slotIndex);
+        LoadDataClientRpc(data.level, data.coins);
+    }
+
+    [ClientRpc]
+    private void LoadDataClientRpc(int level, int coins)
+    {
+        if (gameSetupMenuController)
+        {
+            gameSetupMenuController.LoadData(level, coins);
+        }
     }
 
     public void OpenMenu()

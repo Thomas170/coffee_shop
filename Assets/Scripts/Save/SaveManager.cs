@@ -5,7 +5,6 @@ using Unity.Netcode;
 public class SaveManager: NetworkBehaviour
 {
     public static SaveManager Instance;
-    public SaveData saveData;
 
     private void Awake()
     {

@@ -14,6 +14,20 @@ public class CurrencyManager : NetworkBehaviour
         else Destroy(gameObject);
     }
     
+    [ServerRpc(RequireOwnership = false)]
+    public void LoadCoinsServerRpc()
+    {
+        SaveData data = SaveManager.Instance.LoadFromSlot(GlobalManager.Instance.CurrentGameIndex);
+        LoadCoinsClientRpc(data.coins);
+    }
+
+    [ClientRpc]
+    private void LoadCoinsClientRpc(int coinsData)
+    {
+        coins = coinsData;
+        coinsText.text = coins.ToString();
+    }
+    
     public void AddCoins(int amount)
     {
         coins += amount;
@@ -24,18 +38,14 @@ public class CurrencyManager : NetworkBehaviour
             SaveCoins();
         }
     }
-
-    public void LoadCoins()
-    {
-        SaveData data = SaveManager.Instance.LoadFromSlot(GlobalManager.Instance.CurrentGameIndex);
-        coins = data?.coins ?? 0;
-        coinsText.text = coins.ToString();
-    }
     
     private void SaveCoins()
     {
-        SaveData data = SaveManager.Instance.LoadFromSlot(GlobalManager.Instance.CurrentGameIndex) ?? new SaveData();
-        data.coins = coins;
-        SaveManager.Instance.SaveToSlot(GlobalManager.Instance.CurrentGameIndex, data);
+        if (IsServer)
+        {
+            SaveData data = SaveManager.Instance.LoadFromSlot(GlobalManager.Instance.CurrentGameIndex) ?? new SaveData();
+            data.coins = coins;
+            SaveManager.Instance.SaveToSlot(GlobalManager.Instance.CurrentGameIndex, data);
+        }
     }
 }
