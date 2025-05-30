@@ -53,7 +53,7 @@ public class SoundManager : MonoBehaviour
 
         AudioSource aSource = tempGo.AddComponent<AudioSource>();
         aSource.clip = clip;
-        aSource.spatialBlend = 0f;
+        aSource.spatialBlend = 1f;
         aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.loop = loop;
         aSource.Play();
