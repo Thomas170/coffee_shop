@@ -12,6 +12,7 @@ public class NetworkPlayer : NetworkBehaviour
         typeof(PlayerMovement),
         typeof(PlayerInteraction),
         typeof(PlayerUI),
+        typeof(AudioListener),
     };
     private Rigidbody _rb;
 

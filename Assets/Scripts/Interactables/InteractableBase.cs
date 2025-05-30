@@ -55,7 +55,6 @@ public abstract class InteractableBase : NetworkBehaviour
                 playerCarry.TryPickUp(currentItem);
             }
             currentItem = null;
-            StopAction();
         }
     }
 

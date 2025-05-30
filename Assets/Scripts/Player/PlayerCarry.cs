@@ -12,6 +12,7 @@ public class PlayerCarry : NetworkBehaviour
     public bool TryPickUp(ItemBase itemBase)
     {
         if (IsCarrying) return false;
+        SoundManager.Instance.Play3DSound(SoundManager.Instance.takeItem, transform.position);
         NetworkObject networkObject = itemBase.NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
         return true;
@@ -20,6 +21,7 @@ public class PlayerCarry : NetworkBehaviour
     public bool TryDrop()
     {
         if (!IsCarrying) return false;
+        SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, transform.position);
         RequestDropServerRpc(carriedItem.NetworkObject);
         return true;
     }

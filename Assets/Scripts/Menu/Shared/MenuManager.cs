@@ -25,6 +25,7 @@ public class MenuManager : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         
         SetLoadingScreenActive(false);
+        SoundManager.Instance.PlayMusic(SoundManager.Instance.homeMusic);
     }
 
     public void OpenMenu()
