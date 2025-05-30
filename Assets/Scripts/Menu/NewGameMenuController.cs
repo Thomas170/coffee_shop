@@ -17,24 +17,32 @@ public class NewGameMenuController : BaseMenuController
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
-            if (!SaveManager.Instance.SlotHasData(i))
+            int index = i;
+            SaveManager.Instance.RequestSlotHasData(exists =>
             {
-                entry.button.transform.Find("Empty").gameObject.SetActive(true);
-                entry.button.transform.Find("Info").gameObject.SetActive(false);
-            }
-            else
-            {
-                SaveData save = SaveManager.Instance.LoadFromSlot(i);
+                if (!exists)
+                {
+                    entry.button.transform.Find("Empty").gameObject.SetActive(true);
+                    entry.button.transform.Find("Info").gameObject.SetActive(false);
+                }
+                else
+                {
+                    entry.button.transform.Find("Empty").gameObject.SetActive(false);
+                    GameObject info = entry.button.transform.Find("Info").gameObject;
+                    info.SetActive(true);
                 
-                entry.button.transform.Find("Empty").gameObject.SetActive(false);
-                GameObject info = entry.button.transform.Find("Info").gameObject;
-                info.SetActive(true);
+                    SaveManager.Instance.RequestSaveData(data =>
+                    {
+                        if (data != null)
+                        {
+                            TextMeshProUGUI lvlTxt = info.transform.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
+                            lvlTxt.text = $"{data.level}";
+                        }
+                    }, index);
+                }
                 
-                TextMeshProUGUI lvlTxt = info.transform.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
-                lvlTxt.text = $"{save.level}";
-            }
-            
-            entry.button.interactable = true;
+                entry.button.interactable = true;
+            }, i);
         }
     }
 
@@ -57,15 +65,18 @@ public class NewGameMenuController : BaseMenuController
         GlobalManager.Instance.SetGameIndex(index);
         CloseMenu();
 
-        if (SaveManager.Instance.SlotHasData(index))
+        SaveManager.Instance.RequestSlotHasData(exists =>
         {
-            confirmPopup.OpenMenu();
-        }
-        else
-        {
-            SaveManager.Instance.SaveToSlot(index, new SaveData());
-            gameSetupMenuController.OpenMenu();
-        }
+            if (exists)
+            {
+                confirmPopup.OpenMenu();
+            }
+            else
+            {
+                SaveManager.Instance.SaveData(new SaveData());
+                gameSetupMenuController.OpenMenu();
+            }
+        }, index);
     }
     
     public override void OpenMenu()

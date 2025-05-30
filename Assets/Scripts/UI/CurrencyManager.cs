@@ -17,8 +17,13 @@ public class CurrencyManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoadCoinsServerRpc()
     {
-        SaveData data = SaveManager.Instance.LoadFromSlot(GlobalManager.Instance.CurrentGameIndex);
-        LoadCoinsClientRpc(data.coins);
+        SaveManager.Instance.RequestSaveData(data =>
+        {
+            if (data != null)
+            {
+                LoadCoinsClientRpc(data.coins);
+            }
+        });
     }
 
     [ClientRpc]
@@ -43,9 +48,14 @@ public class CurrencyManager : NetworkBehaviour
     {
         if (IsServer)
         {
-            SaveData data = SaveManager.Instance.LoadFromSlot(GlobalManager.Instance.CurrentGameIndex) ?? new SaveData();
-            data.coins = coins;
-            SaveManager.Instance.SaveToSlot(GlobalManager.Instance.CurrentGameIndex, data);
+            SaveManager.Instance.RequestSaveData(data =>
+            {
+                if (data != null)
+                {
+                    data.coins = coins;
+                    SaveManager.Instance.SaveData(data);
+                }
+            });
         }
     }
 }

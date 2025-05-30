@@ -22,15 +22,16 @@ public class LoadGameMenuController : BaseMenuController
         bool hasAnySave = false;
         for (int i = 0; i < 3; i++)
         {
-            if (SaveManager.Instance.SlotHasData(i))
+            SaveManager.Instance.RequestSlotHasData(exists =>
             {
-                hasAnySave = true;
-                break;
-            }
+                if (exists && !hasAnySave)
+                {
+                    hasAnySave = true;
+                    SetButtonInteractable(continueButton, hasAnySave);
+                    SetButtonInteractable(loadButton, hasAnySave);
+                }
+            }, i);
         }
-
-        SetButtonInteractable(continueButton, hasAnySave);
-        SetButtonInteractable(loadButton, hasAnySave);
     }
     
     private void SetButtonInteractable(Button button, bool interactable)
@@ -72,11 +73,14 @@ public class LoadGameMenuController : BaseMenuController
         int firstValidIndex = -1;
         for (int i = 0; i < 3; i++)
         {
-            if (SaveManager.Instance.SlotHasData(i))
+            int index = i;
+            SaveManager.Instance.RequestSlotHasData(exists =>
             {
-                firstValidIndex = i;
-                break;
-            }
+                if (exists && firstValidIndex == -1)
+                {
+                    firstValidIndex = index;
+                }
+            }, i);
         }
 
         if (firstValidIndex != -1)

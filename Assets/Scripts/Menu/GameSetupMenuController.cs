@@ -89,7 +89,14 @@ public class GameSetupMenuController : BaseMenuController
             if (NetworkManager.Singleton.IsHost)
             {
                 UpdatePlayerSlots();
-                MenuManager.Instance.LoadDataServerRpc();
+                SaveManager.Instance.RequestSaveData(data =>
+                {
+                    if (data != null)
+                    {
+                        levelText.text = $"{data.level}";
+                        coinsText.text = $"{data.coins}";
+                    }
+                });
             }
         }
     }
@@ -141,6 +148,9 @@ public class GameSetupMenuController : BaseMenuController
     {
         _skipSetup = false;
         base.CloseMenu();
+        
+        levelText.text = "?";
+        coinsText.text = "?";
     }
 
     public async void OpenMenuByJoin(bool skipSetup, string joinCode)
@@ -159,19 +169,34 @@ public class GameSetupMenuController : BaseMenuController
             startButton.SetActive(false);
             codeToCopy.text = joinCode;
             WaitForLocalPlayerSpawnAndShowMenu();
-            StartCoroutine(CallLoadDataWhenReady());
+            StartCoroutine(WaitForSaveManagerAndRequestData());
         }
     }
     
-    private IEnumerator CallLoadDataWhenReady()
+    private IEnumerator WaitForSaveManagerAndRequestData()
     {
-        while (!MenuManager.Instance || !MenuManager.Instance.IsSpawned)
+        float timeout = 10f;
+        while ((!SaveManager.Instance || !SaveManager.Instance.IsSpawned) && timeout > 0f)
         {
-            Debug.Log("t");
+            timeout -= Time.deltaTime;
             yield return null;
         }
 
-        MenuManager.Instance.LoadDataServerRpc();
+        if (SaveManager.Instance && SaveManager.Instance.IsSpawned)
+        {
+            SaveManager.Instance.RequestSaveData(data =>
+            {
+                if (data != null)
+                {
+                    levelText.text = $"{data.level}";
+                    coinsText.text = $"{data.coins}";
+                }
+            });
+        }
+        else
+        {
+            Debug.LogError("SaveManager was not spawned in time.");
+        }
     }
     
     private void WaitForLocalPlayerSpawnAndShowMenu()
@@ -184,12 +209,5 @@ public class GameSetupMenuController : BaseMenuController
         MenuManager.OnLocalPlayerSpawned -= ShowAfterPlayerSpawned;
         MenuManager.Instance.SetLoadingScreenActive(false);
         UpdatePlayerSlots();
-    }
-    
-    public void LoadData(int level, int coins)
-    {
-        Debug.Log("LOAD 2 " + level + " - " + coins);
-        levelText.text = $"{level}";
-        coinsText.text = $"{coins}";
     }
 }

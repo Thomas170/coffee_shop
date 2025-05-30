@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 using System.Threading.Tasks;
@@ -45,7 +46,7 @@ public class JoinMenuController : BaseMenuController
                 errorMessageObject.SetActive(true);
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError($"[JoinMenu] Échec de la connexion à la session : {ex.Message}");
             errorMessageObject.SetActive(true);

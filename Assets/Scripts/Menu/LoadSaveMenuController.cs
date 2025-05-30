@@ -16,25 +16,33 @@ public class LoadSaveMenuController : BaseMenuController
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
-            if (!SaveManager.Instance.SlotHasData(i))
+            int index = i;
+            SaveManager.Instance.RequestSlotHasData(exists =>
             {
-                entry.button.transform.Find("Empty").gameObject.SetActive(true);
-                entry.button.transform.Find("Info").gameObject.SetActive(false);
-                entry.button.interactable = false;
-            }
-            else
-            {
-                SaveData save = SaveManager.Instance.LoadFromSlot(i);
-                
-                entry.button.transform.Find("Empty").gameObject.SetActive(false);
-                GameObject info = entry.button.transform.Find("Info").gameObject;
-                info.SetActive(true);
-                
-                TextMeshProUGUI lvlTxt = info.transform.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
-                lvlTxt.text = $"{save.level}";
-                
-                entry.button.interactable = true;
-            }
+                if (!exists)
+                {
+                    entry.button.transform.Find("Empty").gameObject.SetActive(true);
+                    entry.button.transform.Find("Info").gameObject.SetActive(false);
+                    entry.button.interactable = false;
+                }
+                else
+                {
+                    entry.button.transform.Find("Empty").gameObject.SetActive(false);
+                    GameObject info = entry.button.transform.Find("Info").gameObject;
+                    info.SetActive(true);
+                    
+                    SaveManager.Instance.RequestSaveData(data =>
+                    {
+                        if (data != null)
+                        {
+                            TextMeshProUGUI lvlTxt = info.transform.Find("Level").GetComponentInChildren<TextMeshProUGUI>();
+                            lvlTxt.text = $"{data.level}";
+                        }
+                    }, index);
+                    
+                    entry.button.interactable = true;
+                }
+            }, i);
         }
     }
 
@@ -54,11 +62,15 @@ public class LoadSaveMenuController : BaseMenuController
     private void LoadSave()
     {
         int index = SelectedIndex;
-        if (!SaveManager.Instance.SlotHasData(index)) return;
-
-        GlobalManager.Instance.SetGameIndex(index);
-        CloseMenu();
-        gameSetupMenuController.OpenMenu();
+        SaveManager.Instance.RequestSlotHasData(exists =>
+        {
+            if (exists)
+            {
+                GlobalManager.Instance.SetGameIndex(index);
+                CloseMenu();
+                gameSetupMenuController.OpenMenu();
+            }
+        }, index);
     }
     
     public override void OpenMenu()

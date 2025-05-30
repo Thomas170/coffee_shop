@@ -19,9 +19,7 @@ public class NewGameConfirmMenuController : BaseMenuController
 
     private void CreateSave()
     {
-        int index = GlobalManager.Instance.CurrentGameIndex;
-
-        SaveManager.Instance.SaveToSlot(index, new SaveData());
+        SaveManager.Instance.SaveData(new SaveData());
         CloseMenu();
         gameSetupMenuController.OpenMenu();
     }
