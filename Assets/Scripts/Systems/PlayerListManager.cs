@@ -11,6 +11,14 @@ public class PlayerListManager : NetworkBehaviour
     public List<NetworkPlayer> players = new();
     private NetworkList<ulong> _connectedPlayerIds;
 
+    private readonly List<Vector3> _spawnsPoints = new()
+    {
+        new (-40f, 4.5f, -80f),
+        new (-30f, 4.5f, -80f),
+        new (-40f, 4.5f, -90f),
+        new (-30f, 4.5f, -90f),
+    };
+
     public static event Action OnPlayerListChanged;
 
     private void Awake()
@@ -108,11 +116,10 @@ public class PlayerListManager : NetworkBehaviour
     {
         if (!NetworkManager.Singleton.IsHost) return;
 
-        const float offsetX = 2f;
         for (int i = 0; i < players.Count; i++)
         {
             var player = players[i];
-            Vector3 spawnPosition = new Vector3(i * offsetX, 1f, 0f);
+            Vector3 spawnPosition = _spawnsPoints[i];
             player.UpdatePositionClientRpc(spawnPosition);
         }
     }

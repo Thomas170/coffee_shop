@@ -1,8 +1,7 @@
 using System;
-using Unity.Netcode;
 using UnityEngine;
 
-public class MenuManager : NetworkBehaviour
+public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
     
@@ -25,6 +24,10 @@ public class MenuManager : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         
         SetLoadingScreenActive(false);
+    }
+
+    private void Start()
+    {
         SoundManager.Instance.PlayMusic(SoundManager.Instance.homeMusic);
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemBase : NetworkBehaviour
 {
     public ItemType itemType = ItemType.None;
-    public float itemMass = 100000f;
+    private readonly float _itemMass = 100000f;
     public ulong? CurrentHolderClientId;
 
     public void Awake()
@@ -33,7 +33,7 @@ public class ItemBase : NetworkBehaviour
         if (withRigidbody && !rb)
         {
             rb = gameObject.AddComponent<Rigidbody>();
-            rb.mass = itemMass;
+            rb.mass = _itemMass;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
         else if (!withRigidbody && rb)

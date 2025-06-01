@@ -38,6 +38,9 @@ public class NetworkPlayer : NetworkBehaviour
         {
             MenuManager.NotifyLocalPlayerSpawned();
         }
+
+        AudioListener audioListener = transform.GetComponentInChildren<AudioListener>();
+        audioListener.enabled = false;
     }
     
     public override void OnNetworkDespawn()
@@ -78,6 +81,11 @@ public class NetworkPlayer : NetworkBehaviour
             }
             
             _rb.isKinematic = true;
+        }
+        else
+        {
+            AudioListener audioListener = transform.GetComponentInChildren<AudioListener>();
+            audioListener.enabled = true;
         }
     }
 
