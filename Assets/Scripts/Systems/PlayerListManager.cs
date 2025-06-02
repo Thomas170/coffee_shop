@@ -14,9 +14,9 @@ public class PlayerListManager : NetworkBehaviour
     private readonly List<Vector3> _spawnsPoints = new()
     {
         new (-40f, 4.5f, -80f),
-        new (-30f, 4.5f, -80f),
-        new (-40f, 4.5f, -90f),
-        new (-30f, 4.5f, -90f),
+        new (-20f, 4.5f, -80f),
+        new (-40f, 4.5f, -100f),
+        new (-20f, 4.5f, -100f),
     };
 
     public static event Action OnPlayerListChanged;
@@ -48,8 +48,6 @@ public class PlayerListManager : NetworkBehaviour
                 OnPlayerListChanged?.Invoke();
             }
         }
-
-        //_connectedPlayerIds.OnListChanged += OnConnectedPlayersChanged;
     }
 
     public override void OnNetworkDespawn()
@@ -59,8 +57,6 @@ public class PlayerListManager : NetworkBehaviour
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
         }
-
-        //_connectedPlayerIds.OnListChanged -= OnConnectedPlayersChanged;
     }
 
     private void OnClientConnected(ulong clientId)
@@ -89,12 +85,6 @@ public class PlayerListManager : NetworkBehaviour
     public List<ulong> GetConnectedPlayerIds()
     {
         return new List<ulong>(_connectedPlayerIds);
-        /*List<ulong> ids = new List<ulong>();
-        foreach (var id in _connectedPlayerIds)
-        {
-            ids.Add(id);
-        }
-        return ids;*/
     }
 
 

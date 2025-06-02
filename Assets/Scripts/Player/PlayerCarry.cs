@@ -16,7 +16,7 @@ public class PlayerCarry : NetworkBehaviour
     {
         if (IsCarrying) return false;
         SoundManager.Instance.Play3DSound(SoundManager.Instance.takeItem, transform.position);
-        playerController.animator.SetTrigger(Pick);
+        playerController.playerAnimation.PlayPickAnimationServerRpc();
         NetworkObject networkObject = itemBase.NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
         return true;
@@ -26,7 +26,7 @@ public class PlayerCarry : NetworkBehaviour
     {
         if (!IsCarrying) return false;
         SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, transform.position);
-        playerController.animator.SetTrigger(Drop);
+        playerController.playerAnimation.PlayDropAnimationServerRpc();
         RequestDropServerRpc(carriedItem.NetworkObject);
         return true;
     }

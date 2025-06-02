@@ -53,7 +53,7 @@ public class PlayerMovement : NetworkBehaviour
         Vector3 move = new Vector3(input.x, 0, input.y);
         
         bool isMoving = move.sqrMagnitude > 0.01f;
-        playerController.animator.SetBool(Run, isMoving);
+        playerController.playerAnimation.SetRunStateServerRpc(isMoving);
 
         if (isMoving)
         {

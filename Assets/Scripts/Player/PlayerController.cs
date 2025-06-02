@@ -9,7 +9,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private PlayerInteraction playerInteraction;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerUI playerUI;
-    public Animator animator;
+    public PlayerAnimation playerAnimation;
     
     public bool CanMove { get; private set; } = true;
     public bool CanInteract { get; private set; } = true;
@@ -23,7 +23,7 @@ public class PlayerController : NetworkBehaviour
         playerInteraction = GetComponentInChildren<PlayerInteraction>();
         playerMovement = GetComponentInChildren<PlayerMovement>();
         playerUI = GetComponentInChildren<PlayerUI>();
-        animator = GetComponentInChildren<Animator>();
+        playerAnimation = GetComponentInChildren<PlayerAnimation>();
     }
     
     private void Start()
