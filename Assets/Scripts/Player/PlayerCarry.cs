@@ -4,7 +4,10 @@ using Unity.Netcode;
 public class PlayerCarry : NetworkBehaviour
 {
     [SerializeField] private Transform carryPoint;
+    [SerializeField] private PlayerController playerController;
     public ItemBase carriedItem;
+    private static readonly int Pick = Animator.StringToHash("Pick");
+    private static readonly int Drop = Animator.StringToHash("Drop");
 
     public bool IsCarrying => carriedItem != null;
     public ItemBase GetCarriedObject => carriedItem != null ? carriedItem : null;
@@ -13,6 +16,7 @@ public class PlayerCarry : NetworkBehaviour
     {
         if (IsCarrying) return false;
         SoundManager.Instance.Play3DSound(SoundManager.Instance.takeItem, transform.position);
+        playerController.animator.SetTrigger(Pick);
         NetworkObject networkObject = itemBase.NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
         return true;
@@ -22,6 +26,7 @@ public class PlayerCarry : NetworkBehaviour
     {
         if (!IsCarrying) return false;
         SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, transform.position);
+        playerController.animator.SetTrigger(Drop);
         RequestDropServerRpc(carriedItem.NetworkObject);
         return true;
     }

@@ -7,17 +7,15 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private PlayerController playerController;
 
     private PlayerControls _controls;
-    private Transform _parentTransform;
-    private Rigidbody _parentRb;
+    private Rigidbody _rb;
 
     private Vector2 _keyboardInput;
     private Vector2 _gamepadInput;
+    private static readonly int Run = Animator.StringToHash("Run");
 
     private void Awake()
     {
-        playerController = GetComponentInChildren<PlayerController>();
-        _parentTransform = transform.parent;
-        _parentRb = _parentTransform.GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -53,20 +51,23 @@ public class PlayerMovement : NetworkBehaviour
 
         Vector2 input = _keyboardInput + _gamepadInput;
         Vector3 move = new Vector3(input.x, 0, input.y);
+        
+        bool isMoving = move.sqrMagnitude > 0.01f;
+        playerController.animator.SetBool(Run, isMoving);
 
-        if (move.sqrMagnitude > 0.01f)
+        if (isMoving)
         {
-            _parentRb.velocity = move.normalized * moveSpeed;
+            _rb.velocity = move.normalized * moveSpeed;
             Quaternion targetRotation = Quaternion.LookRotation(move.normalized, Vector3.up);
-            _parentTransform.rotation = Quaternion.Slerp(
-                _parentTransform.rotation,
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
                 targetRotation,
                 Time.fixedDeltaTime * 10f
             );
         }
         else
         {
-            _parentRb.velocity = new Vector3(0f, _parentRb.velocity.y, 0f);
+            _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
         }
     }
 
