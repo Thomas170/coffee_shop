@@ -30,7 +30,6 @@ public class SmoothGaugeUI : MonoBehaviour
     public void StopGauge()
     {
         _isActive = false;
-        gameObject.SetActive(false);
     }
 
     void Update()

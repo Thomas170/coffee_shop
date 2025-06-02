@@ -75,7 +75,9 @@ public class ClientCommands : NetworkBehaviour
         playerCarry.TryDrop();
         playerCarry.carriedItem = null;
         
+        waitingGauge.StopGauge();
         orderIcon.SetActive(false);
+        
         currentItem = itemBase;
         currentItem.CurrentHolderClientId = null;
         currentItem.AttachTo(ClientBarSpotManager.Instance.GetItemSpotLocation(commandSpotIndex), false);
