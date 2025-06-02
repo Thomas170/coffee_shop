@@ -72,6 +72,7 @@ public class ClientCommands : NetworkBehaviour
         
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+        playerCarry.TryDrop();
         playerCarry.carriedItem = null;
         
         orderIcon.SetActive(false);

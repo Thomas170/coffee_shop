@@ -67,6 +67,7 @@ public abstract class InteractableBase : NetworkBehaviour
         
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+        playerCarry.TryDrop();
         playerCarry.carriedItem = null;
         
         currentItem = itemBase;

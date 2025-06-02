@@ -57,7 +57,11 @@ public abstract class BaseMenuController : MonoBehaviour
             highlight?.Init(this, i);
         }
 
-        SelectButton(0, true);
+        if (isOpen)
+        {
+            SelectButton(0, true);
+            OpenMenu();
+        }
         menuObject.SetActive(isOpen);
     }
 
