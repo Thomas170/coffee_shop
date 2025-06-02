@@ -33,7 +33,7 @@ public class NetworkPlayer : NetworkBehaviour
         Invoke(nameof(EnablePhysicsSafely), 1f);
         transform.position = new Vector3(0, 100, 0);
         playerModel.SetActive(false);
-        
+
         if (IsOwner)
         {
             MenuManager.NotifyLocalPlayerSpawned();

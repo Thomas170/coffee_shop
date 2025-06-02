@@ -55,7 +55,7 @@ public class JoinMenuController : BaseMenuController
         {
             MenuManager.Instance.SetLoadingScreenActive(false);
             CloseMenu();
-            gameSetupMenuController.OpenMenuByJoin(true, code);
+            gameSetupMenuController.OpenMenuByJoin(code);
         }
     }
 

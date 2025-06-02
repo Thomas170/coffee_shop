@@ -20,8 +20,6 @@ public class GameSetupMenuController : BaseMenuController
     
     [SerializeField] private GameObject startButton;
     
-    private bool _skipSetup;
-
     private void OnEnable()
     {
         PlayerListManager.OnPlayerListChanged += UpdatePlayerSlots;
@@ -34,26 +32,29 @@ public class GameSetupMenuController : BaseMenuController
     
     private void UpdatePlayerSlots()
     {
-        var players = PlayerListManager.Instance?.GetConnectedPlayerIds();
-        if (players == null) return;
-
-        for (int i = 0; i < playerSlots.Length; i++)
+        PlayerListManager.Instance?.RequestConnectedPlayerIds(players =>
         {
-            var pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
-            var inviteObject = playerSlots[i].transform.Find("Invite").gameObject;
+            if (players != null)
+            {
+                for (int i = 0; i < playerSlots.Length; i++)
+                {
+                    var pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
+                    var inviteObject = playerSlots[i].transform.Find("Invite").gameObject;
 
-            if (i < players.Count)
-            {
-                pseudoText.text = $"Player {players[i]}";
-                pseudoText.gameObject.SetActive(true);
-                inviteObject.SetActive(false);
+                    if (i < players.Count)
+                    {
+                        pseudoText.text = $"Player {players[i]}";
+                        pseudoText.gameObject.SetActive(true);
+                        inviteObject.SetActive(false);
+                    }
+                    else
+                    {
+                        pseudoText.gameObject.SetActive(false);
+                        inviteObject.SetActive(true);
+                    }
+                }
             }
-            else
-            {
-                pseudoText.gameObject.SetActive(false);
-                inviteObject.SetActive(true);
-            }
-        }
+        });
     }
     
     public void CopyCodeToClipboard()
@@ -146,31 +147,42 @@ public class GameSetupMenuController : BaseMenuController
 
     public override void CloseMenu()
     {
-        _skipSetup = false;
         base.CloseMenu();
         
         levelText.text = "?";
         coinsText.text = "?";
     }
 
-    public async void OpenMenuByJoin(bool skipSetup, string joinCode)
+    public void OpenMenuByJoin(string joinCode)
     {
-        _skipSetup = skipSetup;
         base.OpenMenu();
         MenuManager.Instance.SetLoadingScreenActive(true);
-
-        if (!_skipSetup)
+        
+        startButton.SetActive(false);
+        codeToCopy.text = joinCode;
+        WaitForLocalPlayerSpawnAndShowMenu();
+        StartCoroutine(WaitForSaveManagerAndRequestData());
+    }
+    
+    private void WaitForLocalPlayerSpawnAndShowMenu()
+    {
+        PlayerController player = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
+        if (player)
         {
-            await SetupMultiplayerSessionAsync();
-            WaitForLocalPlayerSpawnAndShowMenu();
+            UpdatePlayerSlots();
+            MenuManager.Instance.SetLoadingScreenActive(false);
         }
         else
         {
-            startButton.SetActive(false);
-            codeToCopy.text = joinCode;
-            WaitForLocalPlayerSpawnAndShowMenu();
-            StartCoroutine(WaitForSaveManagerAndRequestData());
+            MenuManager.OnLocalPlayerSpawned += ShowAfterPlayerSpawned;
         }
+    }
+    
+    private void ShowAfterPlayerSpawned()
+    {
+        MenuManager.OnLocalPlayerSpawned -= ShowAfterPlayerSpawned;
+        UpdatePlayerSlots();
+        MenuManager.Instance.SetLoadingScreenActive(false);
     }
     
     private IEnumerator WaitForSaveManagerAndRequestData()
@@ -197,17 +209,5 @@ public class GameSetupMenuController : BaseMenuController
         {
             Debug.LogError("SaveManager was not spawned in time.");
         }
-    }
-    
-    private void WaitForLocalPlayerSpawnAndShowMenu()
-    {
-        MenuManager.OnLocalPlayerSpawned += ShowAfterPlayerSpawned;
-    }
-
-    private void ShowAfterPlayerSpawned()
-    {
-        MenuManager.OnLocalPlayerSpawned -= ShowAfterPlayerSpawned;
-        MenuManager.Instance.SetLoadingScreenActive(false);
-        UpdatePlayerSlots();
     }
 }

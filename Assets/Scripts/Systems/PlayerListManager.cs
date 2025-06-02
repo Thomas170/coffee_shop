@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -77,16 +78,10 @@ public class PlayerListManager : NetworkBehaviour
         }
     }
 
-    private void OnConnectedPlayersChanged(NetworkListEvent<ulong> change)
+    /*private void OnConnectedPlayersChanged(NetworkListEvent<ulong> change)
     {
         OnPlayerListChanged?.Invoke();
-    }
-
-    public List<ulong> GetConnectedPlayerIds()
-    {
-        return new List<ulong>(_connectedPlayerIds);
-    }
-
+    }*/
 
     public void AddPlayer(NetworkPlayer player)
     {
@@ -122,5 +117,56 @@ public class PlayerListManager : NetworkBehaviour
     {
         return FindObjectsOfType<PlayerController>().FirstOrDefault(
             playerController => playerController.OwnerClientId == playerId);
+    }
+    
+    private event Action<List<ulong>> OnReceiveConnectedPlayerIds;
+    
+    public void RequestConnectedPlayerIds(Action<List<ulong>> onDataReceived)
+    {
+        if (IsServer || IsHost || (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsHost))
+        {
+            onDataReceived?.Invoke(_connectedPlayerIds);
+        }
+        else
+        {
+            if (!IsSpawned)
+            {
+                Debug.LogWarning("PlayerListManager not yet spawned, delaying call...");
+                return;
+            }
+            
+            StartCoroutine(RequestConnectedPlayerIdsRoutine(onDataReceived));
+        }
+    }
+    
+    private IEnumerator RequestConnectedPlayerIdsRoutine(Action<List<ulong>> onDataReceived)
+    {
+        ulong requestId = NetworkManager.LocalClientId;
+        OnReceiveConnectedPlayerIds += onDataReceived;
+        RequestConnectedPlayerIdsServerRpc(requestId);
+
+        float timer = 5f;
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        OnReceiveConnectedPlayerIds -= onDataReceived;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void RequestConnectedPlayerIdsServerRpc(ulong clientId)
+    {
+        SendSaveDataClientRpc(_connectedPlayerIds.ToArray(), clientId);
+    }
+
+    [ClientRpc]
+    private void SendSaveDataClientRpc(ulong[] ids, ulong clientId)
+    {
+        if (NetworkManager.LocalClientId != clientId) return;
+
+        OnReceiveConnectedPlayerIds?.Invoke(ids.ToList());
+        OnReceiveConnectedPlayerIds = null;
     }
 }

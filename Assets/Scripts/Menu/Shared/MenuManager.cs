@@ -58,5 +58,4 @@ public class MenuManager : MonoBehaviour
     {
         OnLocalPlayerSpawned?.Invoke();
     }
-
 }

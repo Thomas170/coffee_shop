@@ -31,7 +31,7 @@ public class EnsureNetworkSpawn : MonoBehaviour
     {
         if (!_networkObject.IsSpawned && NetworkManager.Singleton.IsServer)
         {
-            Debug.Log("[EnsureNetworkSpawn] Spawning SaveManager manually on server.");
+            Debug.Log("[EnsureNetworkSpawn] Spawning GlobalManager manually on server.");
             _networkObject.Spawn();
         }
     }

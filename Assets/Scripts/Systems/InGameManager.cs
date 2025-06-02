@@ -12,7 +12,6 @@ public class InGameManager : MonoBehaviour
 
         PlayerController playerController = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
         PlayerUI playerUI = playerController.GetComponentInChildren<PlayerUI>();
-        Debug.Log("player ui" + " - " + playerUI + " - " + transform);
         playerUI.Init();
     }
 }
