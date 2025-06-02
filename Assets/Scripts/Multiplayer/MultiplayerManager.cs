@@ -106,6 +106,13 @@ public static class MultiplayerManager
             Debug.Log("[Multiplayer] Client a quitté la session.");
         }
 
+        ClearSession();
+
         await Task.Yield();
+    }
+
+    public static void ClearSession()
+    {
+        PlayerListManager.Instance.OnClientDisconnected(NetworkManager.Singleton.LocalClientId);
     }
 }

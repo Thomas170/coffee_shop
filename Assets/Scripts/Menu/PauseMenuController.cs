@@ -14,7 +14,7 @@ public class PauseMenuController : BaseMenuController
                 settingsMenuController.OpenMenu();
                 break;
             case "Leave":
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+                LeaveSession();
                 break;
         }
     }
@@ -22,5 +22,11 @@ public class PauseMenuController : BaseMenuController
     public override void HandleBack()
     {
         CloseMenu();
+    }
+
+    private async void LeaveSession()
+    {
+        await MultiplayerManager.LeaveSessionAsync();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
 }

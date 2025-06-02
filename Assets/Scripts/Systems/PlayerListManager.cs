@@ -9,7 +9,7 @@ public class PlayerListManager : NetworkBehaviour
     public static PlayerListManager Instance { get; private set; }
 
     public List<NetworkPlayer> players = new();
-    private NetworkList<ulong> _connectedPlayerIds;
+    private List<ulong> _connectedPlayerIds;
 
     private readonly List<Vector3> _spawnsPoints = new()
     {
@@ -32,7 +32,7 @@ public class PlayerListManager : NetworkBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        _connectedPlayerIds = new NetworkList<ulong>();
+        _connectedPlayerIds = new();
     }
 
     public override void OnNetworkSpawn()
@@ -45,10 +45,11 @@ public class PlayerListManager : NetworkBehaviour
             if (!_connectedPlayerIds.Contains(NetworkManager.Singleton.LocalClientId))
             {
                 _connectedPlayerIds.Add(NetworkManager.Singleton.LocalClientId);
+                OnPlayerListChanged?.Invoke();
             }
         }
 
-        _connectedPlayerIds.OnListChanged += OnConnectedPlayersChanged;
+        //_connectedPlayerIds.OnListChanged += OnConnectedPlayersChanged;
     }
 
     public override void OnNetworkDespawn()
@@ -59,7 +60,7 @@ public class PlayerListManager : NetworkBehaviour
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
         }
 
-        _connectedPlayerIds.OnListChanged -= OnConnectedPlayersChanged;
+        //_connectedPlayerIds.OnListChanged -= OnConnectedPlayersChanged;
     }
 
     private void OnClientConnected(ulong clientId)
@@ -67,14 +68,16 @@ public class PlayerListManager : NetworkBehaviour
         if (!_connectedPlayerIds.Contains(clientId))
         {
             _connectedPlayerIds.Add(clientId);
+            OnPlayerListChanged?.Invoke();
         }
     }
 
-    private void OnClientDisconnected(ulong clientId)
+    public void OnClientDisconnected(ulong clientId)
     {
         if (_connectedPlayerIds.Contains(clientId))
         {
             _connectedPlayerIds.Remove(clientId);
+            OnPlayerListChanged?.Invoke();
         }
     }
 
@@ -85,12 +88,13 @@ public class PlayerListManager : NetworkBehaviour
 
     public List<ulong> GetConnectedPlayerIds()
     {
-        List<ulong> ids = new List<ulong>();
+        return new List<ulong>(_connectedPlayerIds);
+        /*List<ulong> ids = new List<ulong>();
         foreach (var id in _connectedPlayerIds)
         {
             ids.Add(id);
         }
-        return ids;
+        return ids;*/
     }
 
 

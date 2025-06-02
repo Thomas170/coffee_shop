@@ -10,7 +10,7 @@ public class PlayerUI : MonoBehaviour
     private InputAction _pauseAction;
     private Action<InputAction.CallbackContext> _pauseCallback;
 
-    private void Start()
+    public void Init()
     {
         pauseMenuController = GameObject.Find("GameManager").GetComponent<PauseMenuController>();
         _pauseAction = InputReader.Instance.PauseAction;

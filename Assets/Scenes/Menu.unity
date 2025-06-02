@@ -2363,6 +2363,7 @@ GameObject:
   - component: {fileID: 290753309}
   - component: {fileID: 290753310}
   - component: {fileID: 290753311}
+  - component: {fileID: 290753312}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2632,6 +2633,18 @@ MonoBehaviour:
   codeInputField: {fileID: 719352222}
   errorMessageObject: {fileID: 1102805726}
   gameSetupMenuController: {fileID: 290753309}
+--- !u!114 &290753312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290753303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53177ead04cbeef408b21b4af7426236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &294252283 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 985366697696384284, guid: 40f70e2123fd44c47af3955ac965bf6a, type: 3}

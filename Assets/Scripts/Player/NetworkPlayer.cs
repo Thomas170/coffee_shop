@@ -56,6 +56,8 @@ public class NetworkPlayer : NetworkBehaviour
     {
         transform.position = pos;
         ActivateVisual();
+        PlayerUI playerUI = GetComponentInChildren<PlayerUI>();
+        playerUI.Init();
     }
 
     private new void OnDestroy()

@@ -7,8 +7,8 @@ public class MenuManager : MonoBehaviour
     
     public static event Action<bool> OnMenuStateChanged;
     
-    [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameSetupMenuController gameSetupMenuController;
+    private GameObject _loadingScreen;
     
     public bool IsLocked { get; private set; }
     
@@ -22,13 +22,12 @@ public class MenuManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        
-        SetLoadingScreenActive(false);
     }
 
-    private void Start()
+    public void Init()
     {
-        SoundManager.Instance.PlayMusic(SoundManager.Instance.homeMusic);
+        _loadingScreen = GameObject.Find("Waiting");
+        SetLoadingScreenActive(false);
     }
 
     public void OpenMenu()
@@ -43,9 +42,9 @@ public class MenuManager : MonoBehaviour
     
     public void SetLoadingScreenActive(bool state)
     {
-        if (loadingScreen)
+        if (_loadingScreen)
         {
-            loadingScreen.SetActive(state);
+            _loadingScreen.SetActive(state);
             IsLocked = state;
         }
         else
