@@ -23,6 +23,13 @@ public class GameSetupMenuController : BaseMenuController
     private void OnEnable()
     {
         PlayerListManager.OnPlayerListChanged += UpdatePlayerSlots;
+        for (int i = 0; i < playerSlots.Length; i++)
+        {
+            var pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
+            var inviteObject = playerSlots[i].transform.Find("Invite").gameObject;
+            pseudoText.gameObject.SetActive(false);
+            inviteObject.SetActive(true);
+        }
     }
     
     private void OnDisable()
