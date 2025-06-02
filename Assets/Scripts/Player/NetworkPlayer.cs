@@ -18,11 +18,6 @@ public class NetworkPlayer : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
-        {
-            PlayerListManager.Instance.AddPlayer(this);
-        }
-
         _rb = GetComponentInChildren<Rigidbody>();
         
         CinemachineVirtualCamera playerCam = transform.GetComponentInChildren<CinemachineVirtualCamera>();
@@ -34,21 +29,8 @@ public class NetworkPlayer : NetworkBehaviour
         transform.position = new Vector3(0, 100, 0);
         playerModel.SetActive(false);
 
-        if (IsOwner)
-        {
-            MenuManager.NotifyLocalPlayerSpawned();
-        }
-
         AudioListener audioListener = transform.GetComponentInChildren<AudioListener>();
         audioListener.enabled = false;
-    }
-    
-    public override void OnNetworkDespawn()
-    {
-        if (IsServer)
-        {
-            PlayerListManager.Instance.RemovePlayer(this);
-        }
     }
     
     [ClientRpc]
@@ -58,15 +40,7 @@ public class NetworkPlayer : NetworkBehaviour
         ActivateVisual();
     }
 
-    private new void OnDestroy()
-    {
-        if (PlayerListManager.Instance != null)
-        {
-            PlayerListManager.Instance.RemovePlayer(this);
-        }
-    }
-    
-    public void ActivateVisual()
+    private void ActivateVisual()
     {
         playerModel.SetActive(true);
 

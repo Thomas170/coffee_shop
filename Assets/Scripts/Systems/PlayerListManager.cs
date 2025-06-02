@@ -9,9 +9,7 @@ public class PlayerListManager : NetworkBehaviour
 {
     public static PlayerListManager Instance { get; private set; }
 
-    public List<NetworkPlayer> players = new();
     private List<ulong> _connectedPlayerIds;
-
     private readonly List<Vector3> _spawnsPoints = new()
     {
         new (-40f, 4.5f, -80f),
@@ -21,6 +19,7 @@ public class PlayerListManager : NetworkBehaviour
     };
 
     public static event Action OnPlayerListChanged;
+    private event Action<List<ulong>> OnReceiveConnectedPlayerIds;
 
     private void Awake()
     {
@@ -65,6 +64,7 @@ public class PlayerListManager : NetworkBehaviour
         if (!_connectedPlayerIds.Contains(clientId))
         {
             _connectedPlayerIds.Add(clientId);
+            UpdateClientsPlayerList();
             OnPlayerListChanged?.Invoke();
         }
     }
@@ -74,43 +74,23 @@ public class PlayerListManager : NetworkBehaviour
         if (_connectedPlayerIds.Contains(clientId))
         {
             _connectedPlayerIds.Remove(clientId);
+            UpdateClientsPlayerList();
             OnPlayerListChanged?.Invoke();
         }
     }
-
-    /*private void OnConnectedPlayersChanged(NetworkListEvent<ulong> change)
+    
+    private void UpdateClientsPlayerList()
     {
+        SendUpdatedPlayerListClientRpc(_connectedPlayerIds.ToArray());
+    }
+
+    [ClientRpc]
+    private void SendUpdatedPlayerListClientRpc(ulong[] updatedList)
+    {
+        if (IsServer) return;
+
+        _connectedPlayerIds = updatedList.ToList();
         OnPlayerListChanged?.Invoke();
-    }*/
-
-    public void AddPlayer(NetworkPlayer player)
-    {
-        if (!players.Contains(player))
-        {
-            players.Add(player);
-            OnPlayerListChanged?.Invoke();
-        }
-    }
-
-    public void RemovePlayer(NetworkPlayer player)
-    {
-        if (players.Contains(player))
-        {
-            players.Remove(player);
-            OnPlayerListChanged?.Invoke();
-        }
-    }
-
-    public void ActivateAllPlayerModelsFromHost()
-    {
-        if (!NetworkManager.Singleton.IsHost) return;
-
-        for (int i = 0; i < players.Count; i++)
-        {
-            var player = players[i];
-            Vector3 spawnPosition = _spawnsPoints[i];
-            player.UpdatePositionClientRpc(spawnPosition);
-        }
     }
 
     public PlayerController GetPlayer(ulong playerId)
@@ -118,8 +98,6 @@ public class PlayerListManager : NetworkBehaviour
         return FindObjectsOfType<PlayerController>().FirstOrDefault(
             playerController => playerController.OwnerClientId == playerId);
     }
-    
-    private event Action<List<ulong>> OnReceiveConnectedPlayerIds;
     
     public void RequestConnectedPlayerIds(Action<List<ulong>> onDataReceived)
     {
@@ -168,5 +146,18 @@ public class PlayerListManager : NetworkBehaviour
 
         OnReceiveConnectedPlayerIds?.Invoke(ids.ToList());
         OnReceiveConnectedPlayerIds = null;
+    }
+    
+    public void ActivateAllPlayerModelsFromHost()
+    {
+        if (!NetworkManager.Singleton.IsHost) return;
+
+        List<NetworkPlayer> players = FindObjectsOfType<NetworkPlayer>().ToList();
+        for (int i = 0; i < players.Count; i++)
+        {
+            NetworkPlayer player = players[i];
+            Vector3 spawnPosition = _spawnsPoints[i];
+            player.UpdatePositionClientRpc(spawnPosition);
+        }
     }
 }

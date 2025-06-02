@@ -6,7 +6,6 @@ public class MenuManager : MonoBehaviour
     public static MenuManager Instance { get; private set; }
     
     public static event Action<bool> OnMenuStateChanged;
-    public static event Action OnLocalPlayerSpawned;
     
     [SerializeField] private GameSetupMenuController gameSetupMenuController;
     private GameObject _loadingScreen;
@@ -52,10 +51,5 @@ public class MenuManager : MonoBehaviour
         {
             Debug.LogWarning("[MenuManager] No loadingScreen assigned.");
         }
-    }
-
-    public static void NotifyLocalPlayerSpawned()
-    {
-        OnLocalPlayerSpawned?.Invoke();
     }
 }

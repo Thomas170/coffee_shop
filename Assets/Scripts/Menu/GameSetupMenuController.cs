@@ -160,29 +160,9 @@ public class GameSetupMenuController : BaseMenuController
         
         startButton.SetActive(false);
         codeToCopy.text = joinCode;
-        WaitForLocalPlayerSpawnAndShowMenu();
-        StartCoroutine(WaitForSaveManagerAndRequestData());
-    }
-    
-    private void WaitForLocalPlayerSpawnAndShowMenu()
-    {
-        PlayerController player = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
-        if (player)
-        {
-            UpdatePlayerSlots();
-            MenuManager.Instance.SetLoadingScreenActive(false);
-        }
-        else
-        {
-            MenuManager.OnLocalPlayerSpawned += ShowAfterPlayerSpawned;
-        }
-    }
-    
-    private void ShowAfterPlayerSpawned()
-    {
-        MenuManager.OnLocalPlayerSpawned -= ShowAfterPlayerSpawned;
         UpdatePlayerSlots();
         MenuManager.Instance.SetLoadingScreenActive(false);
+        StartCoroutine(WaitForSaveManagerAndRequestData());
     }
     
     private IEnumerator WaitForSaveManagerAndRequestData()
