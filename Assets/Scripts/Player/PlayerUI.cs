@@ -12,7 +12,8 @@ public class PlayerUI : MonoBehaviour
 
     public void Init()
     {
-        pauseMenuController = GameObject.Find("GameManager").GetComponent<PauseMenuController>();
+        pauseMenuController = GameObject.Find("GameManager").GetComponentInChildren<PauseMenuController>();
+        Debug.Log("pause " + pauseMenuController + " - " + GameObject.Find("GameManager") + " - " + GameObject.Find("GameManager").GetComponentInChildren<PauseMenuController>());
         _pauseAction = InputReader.Instance.PauseAction;
         _pauseCallback = _ =>
         {

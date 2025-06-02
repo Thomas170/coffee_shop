@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class InGameManager : MonoBehaviour
@@ -8,5 +9,10 @@ public class InGameManager : MonoBehaviour
         CurrencyManager.Instance.LoadCoinsServerRpc();
         CursorManager.Instance.InactiveCursor();
         SoundManager.Instance.PlayMusic(SoundManager.Instance.backgroundMusic);
+
+        PlayerController playerController = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
+        PlayerUI playerUI = playerController.GetComponentInChildren<PlayerUI>();
+        Debug.Log("player ui" + " - " + playerUI + " - " + transform);
+        playerUI.Init();
     }
 }

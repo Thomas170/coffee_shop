@@ -175,7 +175,7 @@ public class GameSetupMenuController : BaseMenuController
     
     private IEnumerator WaitForSaveManagerAndRequestData()
     {
-        float timeout = 10f;
+        float timeout = 20f;
         while ((!SaveManager.Instance || !SaveManager.Instance.IsSpawned) && timeout > 0f)
         {
             timeout -= Time.deltaTime;

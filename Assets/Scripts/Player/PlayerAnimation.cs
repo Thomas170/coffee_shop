@@ -11,25 +11,6 @@ public class PlayerAnimation : NetworkBehaviour
 
     private bool _lastRunState;
 
-    /*public void SetRunState(bool isRunning)
-    {
-        if (isRunning != _lastRunState)
-        {
-            _lastRunState = isRunning;
-            SetRunStateServerRpc(isRunning);
-        }
-    }
-
-    public void PlayPickAnimation()
-    {
-        PlayPickAnimationServerRpc();
-    }
-
-    public void PlayDropAnimation()
-    {
-        PlayDropAnimationServerRpc();
-    }*/
-
     [ServerRpc(RequireOwnership = false)]
     public void SetRunStateServerRpc(bool isRunning)
     {
