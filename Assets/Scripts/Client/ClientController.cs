@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ClientController : NetworkBehaviour
 {
@@ -33,8 +34,14 @@ public class ClientController : NetworkBehaviour
 
     public void OnDestinationReached(Transform reachedTarget)
     {
-        if (reachedTarget == ClientBarSpotManager.Instance.GetClientSpotLocation(commands.commandSpotIndex))
+        if (reachedTarget == ClientSpotManager.Instance.GetClientSpotLocation(commands.commandSpotIndex))
         {
+            GetComponent<NavMeshAgent>().enabled = false;
+            
+            transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+            GameObject spot = ClientSpotManager.Instance.GetSpot(commands.commandSpotIndex);
+            transform.rotation = spot.transform.rotation;
+            
             commands.StartOrderServerRpc();
         }
         else if (clientSpawner.IsExitPoint(reachedTarget))

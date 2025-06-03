@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Unity.Netcode;
+using UnityEngine.AI;
 
 public class ClientCommands : NetworkBehaviour
 {
@@ -23,13 +24,13 @@ public class ClientCommands : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void InitCommandSpotServerRpc()
     {
-        commandSpotIndex = ClientBarSpotManager.Instance.RequestSpot();
+        commandSpotIndex = ClientSpotManager.Instance.RequestSpot();
         if (commandSpotIndex == -1)
         {
             clientController.clientSpawner.DespawnClient(gameObject);
             return;
         }
-        clientController.movement.MoveTo(ClientBarSpotManager.Instance.GetClientSpotLocation(commandSpotIndex));
+        clientController.movement.MoveTo(ClientSpotManager.Instance.GetClientSpotLocation(commandSpotIndex));
         SyncCommandSpotClientRpc(commandSpotIndex);
     }
 
@@ -80,7 +81,7 @@ public class ClientCommands : NetworkBehaviour
         
         currentItem = itemBase;
         currentItem.CurrentHolderClientId = null;
-        currentItem.AttachTo(ClientBarSpotManager.Instance.GetItemSpotLocation(commandSpotIndex), false);
+        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpotIndex), false);
         
         StartCoroutine(DrinkCoffee());
         CurrencyManager.Instance.AddCoins(10);
@@ -101,7 +102,7 @@ public class ClientCommands : NetworkBehaviour
         currentItem.NetworkObject.Despawn();
         Destroy(currentItem.gameObject);
         
-        GameObject resultItem = Instantiate(resultItemPrefab, ClientBarSpotManager.Instance.GetItemSpotLocation(commandSpotIndex).position, Quaternion.identity);
+        GameObject resultItem = Instantiate(resultItemPrefab, ClientSpotManager.Instance.GetItemSpotLocation(commandSpotIndex).position, Quaternion.identity);
         NetworkObject networkObject = resultItem.GetComponent<NetworkObject>();
         networkObject.Spawn();
 
@@ -113,16 +114,17 @@ public class ClientCommands : NetworkBehaviour
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         currentItem = itemNetworkObject.GetComponent<ItemBase>();
-        currentItem.AttachTo(ClientBarSpotManager.Instance.GetItemSpotLocation(commandSpotIndex));
+        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpotIndex));
     }
 
     private void LeaveCoffeeShop()
     {
         if (IsServer)
         {
-            ClientBarSpotManager.Instance.ReleaseSpot(commandSpotIndex);
+            ClientSpotManager.Instance.ReleaseSpot(commandSpotIndex);
         }
         
+        GetComponent<NavMeshAgent>().enabled = true;
         orderIcon.SetActive(false);
         Transform exit = clientController.clientSpawner.GetRandomExit();
         clientController.movement.MoveTo(exit);

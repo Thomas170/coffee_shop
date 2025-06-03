@@ -13,7 +13,7 @@ public class ClientSpawner : NetworkBehaviour
     {
         if (NetworkManager.Singleton.IsServer)
         {
-            //InvokeRepeating(nameof(SpawnClient), 2f, spawnInterval);
+            InvokeRepeating(nameof(SpawnClient), 2f, spawnInterval);
         }
     }
 

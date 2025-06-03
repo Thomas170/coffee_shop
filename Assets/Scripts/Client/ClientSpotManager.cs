@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.Netcode;
 
-public class ClientBarSpotManager : NetworkBehaviour
+public class ClientSpotManager : NetworkBehaviour
 {
-    public static ClientBarSpotManager Instance { get; private set; }
+    public static ClientSpotManager Instance { get; private set; }
 
-    [SerializeField] private List<Transform> barSpots;
+    [SerializeField] private List<GameObject> spots;
     private readonly HashSet<int> _occupiedSpots = new();
 
     private void Awake()
@@ -16,7 +16,7 @@ public class ClientBarSpotManager : NetworkBehaviour
 
     public int RequestSpot()
     {
-        for (int spotIndex = 0; spotIndex < barSpots.Count; spotIndex++)
+        for (int spotIndex = 0; spotIndex < spots.Count; spotIndex++)
         {
             if (_occupiedSpots.Add(spotIndex))
             {
@@ -31,14 +31,19 @@ public class ClientBarSpotManager : NetworkBehaviour
     {
         _occupiedSpots.Remove(spotIndex);
     }
-
+    
+    public GameObject GetSpot(int spotIndex)
+    {
+        return spots.Count > spotIndex ? spots[spotIndex] : null;
+    }
+    
     public Transform GetClientSpotLocation(int spotIndex)
     {
-        return barSpots.Count > spotIndex ? barSpots[spotIndex] : null;
+        return spots.Count > spotIndex ? spots[spotIndex].transform.Find("ClientSpot") : null;
     }
     
     public Transform GetItemSpotLocation(int spotIndex)
     {
-        return barSpots.Count > spotIndex ? barSpots[spotIndex].Find("CupSpot") : null;
+        return spots.Count > spotIndex ? spots[spotIndex].transform.Find("ItemSpot") : null;
     }
 }
