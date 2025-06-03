@@ -13,7 +13,7 @@ public class ClientCommands : NetworkBehaviour
     public ItemBase currentItem;
     public int commandSpotIndex;
     
-    private readonly float _patienceTime = 40f;
+    private readonly float _patienceTime = 120f;
 
     private void Start()
     {
@@ -56,7 +56,7 @@ public class ClientCommands : NetworkBehaviour
     {
         if (IsValidItemToUse(itemToUse))
         {
-            RequestGiveItemServerRpc(itemToUse.NetworkObject, NetworkManager.LocalClientId);
+            RequestGiveItemServerRpc(itemToUse.NetworkObject, NetworkManager.Singleton.LocalClientId);
         }
     }
     
@@ -88,7 +88,7 @@ public class ClientCommands : NetworkBehaviour
 
     private IEnumerator DrinkCoffee()
     {
-        yield return new WaitForSeconds(20f);
+        yield return new WaitForSeconds(10f);
 
         SpawnResultItemServerRpc();
         yield return new WaitForSeconds(1f);

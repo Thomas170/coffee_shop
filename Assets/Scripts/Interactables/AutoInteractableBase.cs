@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class AutoInteractableBase : InteractableBase
 {
+    [SerializeField] protected ProgressGaugeUI gaugeUI;
     private readonly float _interactionDuration = 5f;
     private Coroutine _activeCoroutine;
     
@@ -37,6 +38,7 @@ public abstract class AutoInteractableBase : InteractableBase
             StopCoroutine(_activeCoroutine);
         }
         _activeCoroutine = null;
+        gaugeUI.Hide();
     }
     
     [ClientRpc]

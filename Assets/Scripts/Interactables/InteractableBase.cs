@@ -5,7 +5,6 @@ public abstract class InteractableBase : NetworkBehaviour
 {
     [SerializeField] protected Transform displayPoint;
     [SerializeField] protected ItemType requiredItemType = ItemType.None;
-    [SerializeField] protected ProgressGaugeUI gaugeUI;
     [SerializeField] protected GameObject resultItemPrefab;
 
     public ItemBase currentItem;
@@ -109,7 +108,7 @@ public abstract class InteractableBase : NetworkBehaviour
         currentItem.AttachTo(displayPoint, false);
     }
 
-    private bool IsValidItemToUse(ItemBase itemToUse)
+    protected virtual bool IsValidItemToUse(ItemBase itemToUse)
     {
         return itemToUse != null && itemToUse.itemType == requiredItemType;
     }
@@ -122,6 +121,5 @@ public abstract class InteractableBase : NetworkBehaviour
     protected virtual void StopAction()
     {
         isInUse = false;
-        gaugeUI.Hide();
     }
 }
