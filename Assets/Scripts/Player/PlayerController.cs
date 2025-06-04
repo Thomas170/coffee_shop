@@ -7,7 +7,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GravityHandler gravityHandler;
     [SerializeField] private PlayerCarry playerCarry;
     [SerializeField] private PlayerInteraction playerInteraction;
-    [SerializeField] private PlayerMovement playerMovement;
+    public PlayerMovement playerMovement;
     [SerializeField] private PlayerUI playerUI;
     public PlayerAnimation playerAnimation;
     

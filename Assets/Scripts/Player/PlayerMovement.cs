@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
+    public float moveSpeed = 40f;
     [SerializeField] private PlayerController playerController;
 
     private PlayerControls _controls;

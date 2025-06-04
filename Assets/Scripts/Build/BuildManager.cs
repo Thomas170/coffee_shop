@@ -10,7 +10,8 @@ public class BuildManager : MonoBehaviour
     public Material invalidMaterial;
 
     [Header("Player Reference")]
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private Transform buildPoint;
     
     [SerializeField] private GameObject gridPreview;
     private BuildablePreview _preview;
@@ -27,10 +28,10 @@ public class BuildManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_isInBuildMode || !_preview || !playerTransform) return;
+        if (!_isInBuildMode || !_preview || !buildPoint) return;
 
-        Vector3 forwardOffset = playerTransform.forward.normalized * 1.5f;
-        Vector3 previewWorldPos = playerTransform.position + forwardOffset;
+        Vector3 forwardOffset = buildPoint.forward.normalized * 1.5f;
+        Vector3 previewWorldPos = buildPoint.position + forwardOffset;
         Vector3 gridPosition = SnapToGrid(previewWorldPos);
 
         _preview.SetPreviewPosition(gridPosition);
@@ -47,6 +48,7 @@ public class BuildManager : MonoBehaviour
         _preview.Init(validMaterial, invalidMaterial);
 
         gridPreview.SetActive(true);
+        playerController.playerMovement.moveSpeed = 40f;
     }
 
     public void ExitBuildMode()
@@ -55,6 +57,7 @@ public class BuildManager : MonoBehaviour
         if (_preview) Destroy(_preview.gameObject);
 
         gridPreview.SetActive(false);
+        playerController.playerMovement.moveSpeed = 50f;
     }
 
 
