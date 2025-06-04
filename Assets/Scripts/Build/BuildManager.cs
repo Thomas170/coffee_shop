@@ -11,12 +11,19 @@ public class BuildManager : MonoBehaviour
 
     [Header("Player Reference")]
     [SerializeField] private Transform playerTransform;
-
+    
+    [SerializeField] private GameObject gridPreview;
     private BuildablePreview _preview;
     private bool _isInBuildMode;
     private int _currentRotation;
 
     public bool IsInBuildMode => _isInBuildMode;
+
+    public void Init()
+    {
+        gridPreview = GameObject.Find("GridPreview");
+        gridPreview.SetActive(false);
+    }
 
     private void Update()
     {
@@ -29,7 +36,7 @@ public class BuildManager : MonoBehaviour
         _preview.SetPreviewPosition(gridPosition);
         _preview.CheckIfValid(buildBlockMask);
     }
-
+    
     public void EnterBuildMode(BuildableDefinition buildable)
     {
         _isInBuildMode = true;
@@ -38,13 +45,18 @@ public class BuildManager : MonoBehaviour
         GameObject previewBuild = Instantiate(buildable.previewPrefab, Vector3.zero, Quaternion.identity);
         _preview = previewBuild.GetComponent<BuildablePreview>();
         _preview.Init(validMaterial, invalidMaterial);
+
+        gridPreview.SetActive(true);
     }
 
     public void ExitBuildMode()
     {
         _isInBuildMode = false;
         if (_preview) Destroy(_preview.gameObject);
+
+        gridPreview.SetActive(false);
     }
+
 
     public void RotateLeft()
     {

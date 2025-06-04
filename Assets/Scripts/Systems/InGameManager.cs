@@ -11,7 +11,7 @@ public class InGameManager : MonoBehaviour
         SoundManager.Instance.PlayMusic(SoundManager.Instance.backgroundMusic);
 
         PlayerController playerController = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
-        PlayerUI playerUI = playerController.GetComponentInChildren<PlayerUI>();
-        playerUI.Init();
+        playerController.GetComponentInChildren<PlayerUI>().Init();
+        playerController.GetComponentInChildren<BuildManager>().Init();
     }
 }
