@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 480516433283522112}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ItemPlacementPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: -1408232588245799571}
   - component: {fileID: 6371086873566104453}
   - component: {fileID: 3094809612935276922}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WorkTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayPoint: {fileID: 480516433283522112}
   requiredItemType: 0
-  gaugeUI: {fileID: 0}
   resultItemPrefab: {fileID: 0}
   currentItem: {fileID: 0}
   isInUse: 0

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7593696598201127479}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CupPlacementPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 997875112695566462}
   - component: {fileID: 7767936607174331396}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CoffeeMachine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2571371497
+  GlobalObjectIdHash: 1837875179
   InScenePlacedSourceGlobalObjectIdHash: 75052282
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 2427877466625037313}
   - component: {fileID: 4392571991834943076}
   - component: {fileID: 745067719393387059}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 6551586416827868376}
   - component: {fileID: 4854685930198124621}
   - component: {fileID: 7903531148117896183}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WorkTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ GameObject:
   - component: {fileID: 2285521695159285792}
   - component: {fileID: 1903596431554027727}
   - component: {fileID: 5440983224448719810}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5750591133283704131}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CoffeeGauge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9160800088194580968}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GaugeAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 5053290826513572832}
   - component: {fileID: 6554509870371091548}
   - component: {fileID: 3822041861360672880}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +559,7 @@ GameObject:
   - component: {fileID: 4813630154403839070}
   - component: {fileID: 4739239950357302138}
   - component: {fileID: 6199436931168046523}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CoffeeMachineModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
