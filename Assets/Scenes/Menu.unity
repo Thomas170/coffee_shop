@@ -2601,6 +2601,7 @@ MonoBehaviour:
   isOpen: 0
   backMenuController: {fileID: 290753307}
   gameSetupMenuController: {fileID: 290753309}
+  defaultBuildSetup: {fileID: 11400000, guid: 0b673bc7aa6167648bb7f8f269f57e1d, type: 2}
 --- !u!114 &290753311
 MonoBehaviour:
   m_ObjectHideFlags: 0

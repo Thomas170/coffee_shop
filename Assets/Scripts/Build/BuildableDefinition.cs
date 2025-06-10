@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Buildable Definition")]
+[CreateAssetMenu(menuName = "Build/Buildable Definition")]
 public class BuildableDefinition : ScriptableObject
 {
     public GameObject previewPrefab;

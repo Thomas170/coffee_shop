@@ -1,8 +1,7 @@
-using UnityEngine;
-
 public class NewGameConfirmMenuController : BaseMenuController
 {
     public GameSetupMenuController gameSetupMenuController;
+    public DefaultBuildSetup defaultBuildSetup;
     
     public override void ExecuteMenuAction(string buttonName)
     {
@@ -19,7 +18,14 @@ public class NewGameConfirmMenuController : BaseMenuController
 
     private void CreateSave()
     {
-        SaveManager.Instance.SaveData(new SaveData());
+        SaveData newSave = new SaveData();
+
+        if (defaultBuildSetup != null)
+        {
+            newSave.builds = BuildSaveUtility.ConvertDefaultToSaveData(defaultBuildSetup);
+        }
+
+        SaveManager.Instance.SaveData(newSave);
         CloseMenu();
         gameSetupMenuController.OpenMenu();
     }

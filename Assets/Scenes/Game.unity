@@ -6279,6 +6279,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allBuildables:
   - {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
+  - {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
+  - {fileID: 11400000, guid: daf4663551a45e94098e5deb29189717, type: 2}
 --- !u!1 &278417792
 GameObject:
   m_ObjectHideFlags: 0
@@ -25007,7 +25009,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1144343734
 Transform:
   m_ObjectHideFlags: 0
@@ -28138,7 +28140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1294781903
 Transform:
   m_ObjectHideFlags: 0
@@ -51635,6 +51637,10 @@ PrefabInstance:
     - target: {fileID: 1884463179367529286, guid: a962c93156bce854f9edc0f3be3ed703, type: 3}
       propertyPath: m_Name
       value: CoffeeMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884463179367529286, guid: a962c93156bce854f9edc0f3be3ed703, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3023306145440660160, guid: a962c93156bce854f9edc0f3be3ed703, type: 3}
       propertyPath: GlobalObjectIdHash
