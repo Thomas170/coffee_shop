@@ -145,4 +145,15 @@ public class SaveManager: NetworkBehaviour
     {
         return File.Exists(GetPathForSlot(slotIndex));
     }
+    
+    public SaveData LoadCurrentSlot()
+    {
+        int slotIndex = GlobalManager.Instance.CurrentGameIndex;
+        string raw = LoadFromFile(slotIndex);
+
+        if (string.IsNullOrEmpty(raw))
+            return new SaveData();
+
+        return JsonUtility.FromJson<SaveData>(raw);
+    }
 }

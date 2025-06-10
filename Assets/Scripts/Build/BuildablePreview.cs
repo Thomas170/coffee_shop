@@ -28,9 +28,9 @@ public class BuildablePreview : MonoBehaviour
         Collider[] colliders = Physics.OverlapBox(transform.position, transform.localScale / 2f, transform.rotation, blockMask);
         IsValid = colliders.Length == 0;
 
-        foreach (MeshRenderer r in _renderers)
+        foreach (MeshRenderer renderer in _renderers)
         {
-            r.material = IsValid ? _validMat : _invalidMat;
+            renderer.material = IsValid ? _validMat : _invalidMat;
         }
     }
 }

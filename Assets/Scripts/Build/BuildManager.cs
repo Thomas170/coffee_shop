@@ -84,6 +84,17 @@ public class BuildManager : MonoBehaviour
 
         SpawnBuildableServerRpc(position, rotation);
         ExitBuildMode();
+        
+        BuildSaveData data = new BuildSaveData
+        {
+            prefabName = currentBuildable.resultPrefab.name,
+            position = position,
+            rotation = rotation
+        };
+
+        SaveData save = SaveManager.Instance.LoadCurrentSlot();
+        save.builds.Add(data);
+        SaveManager.Instance.SaveData(save);
     }
 
     [ServerRpc(RequireOwnership = false)]
