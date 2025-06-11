@@ -117,9 +117,21 @@ public class BuildManager : MonoBehaviour
     {
         foreach (GameObject cell in _cachedGridCells)
         {
-            if (cell != null)
+            if (cell == null) continue;
+
+            if (value)
             {
-                cell.SetActive(value);
+                Vector3 center = cell.transform.position;
+                Vector3 halfExtents = new Vector3(4f, 1f, 4f);
+
+                Collider[] colliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, LayerMask.GetMask("Build"));
+                bool isOccupied = colliders.Length > 0;
+
+                cell.SetActive(!isOccupied);
+            }
+            else
+            {
+                cell.SetActive(false);
             }
         }
     }

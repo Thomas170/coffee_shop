@@ -19,7 +19,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - GridCell
   - Ground
   - Item
   - Player
