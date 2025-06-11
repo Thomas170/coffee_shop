@@ -3,8 +3,8 @@ using UnityEngine;
 public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager Instance;
-    public int _currentGameIndex;
-    public int CurrentGameIndex => _currentGameIndex;
+    public int currentGameIndex;
+    public int CurrentGameIndex => currentGameIndex;
 
     private void Awake()
     {
@@ -20,6 +20,6 @@ public class GlobalManager : MonoBehaviour
 
     public void SetGameIndex(int index)
     {
-        _currentGameIndex = index;
+        currentGameIndex = index;
     }
 }

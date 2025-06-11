@@ -12,10 +12,10 @@ public class PlayerListManager : NetworkBehaviour
     private List<ulong> _connectedPlayerIds;
     private readonly List<Vector3> _spawnsPoints = new()
     {
-        new (-40f, 4.5f, -80f),
-        new (-20f, 4.5f, -80f),
-        new (-40f, 4.5f, -100f),
-        new (-20f, 4.5f, -100f),
+        new (-40f, 6f, -40f),
+        new (-20f, 6f, -40f),
+        new (-40f, 6f, -60f),
+        new (-20f, 6f, -60f),
     };
 
     public static event Action OnPlayerListChanged;

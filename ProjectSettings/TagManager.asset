@@ -8,6 +8,7 @@ TagManager:
   - Client
   - GameManager
   - CupSpot
+  - GridCell
   layers:
   - Default
   - TransparentFX

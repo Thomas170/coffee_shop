@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -13,17 +14,18 @@ public class BuildManager : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Transform buildPoint;
     
-    [SerializeField] private GameObject gridPreview;
     private BuildablePreview _preview;
     private bool _isInBuildMode;
     private int _currentRotation;
+    private List<GameObject> _cachedGridCells = new();
 
     public bool IsInBuildMode => _isInBuildMode;
 
     public void Init()
     {
-        gridPreview = GameObject.Find("GridPreview");
-        gridPreview.SetActive(false);
+        _cachedGridCells.Clear();
+        _cachedGridCells.AddRange(GameObject.FindGameObjectsWithTag("GridCell"));
+        DisplayPreviewGrid(false);
     }
 
     private void Update()
@@ -47,7 +49,7 @@ public class BuildManager : MonoBehaviour
         _preview = previewBuild.GetComponent<BuildablePreview>();
         _preview.Init(validMaterial, invalidMaterial);
 
-        gridPreview.SetActive(true);
+        DisplayPreviewGrid(true);
         playerController.playerMovement.moveSpeed = 40f;
     }
 
@@ -56,7 +58,7 @@ public class BuildManager : MonoBehaviour
         _isInBuildMode = false;
         if (_preview) Destroy(_preview.gameObject);
 
-        gridPreview.SetActive(false);
+        DisplayPreviewGrid(false);
         playerController.playerMovement.moveSpeed = 50f;
     }
 
@@ -109,5 +111,16 @@ public class BuildManager : MonoBehaviour
         float x = Mathf.Round((position.x - 5f) / 10f) * 10f + 5f;
         float z = Mathf.Round((position.z - 5f) / 10f) * 10f + 5f;
         return new Vector3(x, 0f, z);
+    }
+
+    private void DisplayPreviewGrid(bool value)
+    {
+        foreach (GameObject cell in _cachedGridCells)
+        {
+            if (cell != null)
+            {
+                cell.SetActive(value);
+            }
+        }
     }
 }

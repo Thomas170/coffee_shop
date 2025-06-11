@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultBuilds:
   - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
-    position: {x: -135, y: 1, z: -95}
+    position: {x: -85, y: 2, z: -35}
     rotationEuler: {x: 0, y: 0, z: 0}
   - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
-    position: {x: -135, y: 1, z: -85}
+    position: {x: -85, y: 2, z: -25}
     rotationEuler: {x: 0, y: 0, z: 0}
   - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
-    position: {x: -135, y: 1, z: -75}
+    position: {x: -85, y: 2, z: -15}
     rotationEuler: {x: 0, y: 0, z: 0}
   - definition: {fileID: 11400000, guid: daf4663551a45e94098e5deb29189717, type: 2}
-    position: {x: -135, y: 1, z: -65}
+    position: {x: -85, y: 2, z: -5}
     rotationEuler: {x: 0, y: 90, z: 0}
   - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
-    position: {x: -75, y: 5, z: -75}
+    position: {x: -35, y: 5.5, z: -25}
     rotationEuler: {x: 0, y: -90, z: 0}
   - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
-    position: {x: -75, y: 5, z: -85}
+    position: {x: -35, y: 5.5, z: -15}
     rotationEuler: {x: 0, y: -90, z: 0}
   - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
-    position: {x: -75, y: 5, z: -95}
+    position: {x: -35, y: 5.5, z: -5}
     rotationEuler: {x: 0, y: -90, z: 0}
