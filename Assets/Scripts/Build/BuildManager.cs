@@ -45,7 +45,7 @@ public class BuildManager : MonoBehaviour
         _isInBuildMode = true;
         currentBuildable = buildable;
 
-        GameObject previewBuild = Instantiate(buildable.previewPrefab, Vector3.zero, Quaternion.identity);
+        GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, Quaternion.identity);
         _preview = previewBuild.GetComponent<BuildablePreview>();
         _preview.Init(validMaterial, invalidMaterial);
 
@@ -110,7 +110,7 @@ public class BuildManager : MonoBehaviour
     {
         float x = Mathf.Round((position.x - 5f) / 10f) * 10f + 5f;
         float z = Mathf.Round((position.z - 5f) / 10f) * 10f + 5f;
-        return new Vector3(x, 0f, z);
+        return new Vector3(x, _preview.transform.position.y, z);
     }
 
     private void DisplayPreviewGrid(bool value)
