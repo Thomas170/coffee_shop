@@ -9,6 +9,7 @@ TagManager:
   - GameManager
   - CupSpot
   - GridCell
+  - Spot
   layers:
   - Default
   - TransparentFX

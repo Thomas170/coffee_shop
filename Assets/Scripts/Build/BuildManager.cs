@@ -93,6 +93,8 @@ public class BuildManager : MonoBehaviour
             position = position,
             rotation = rotation
         };
+        
+        ClientSpotManager.Instance.RefreshSpotsFromScene();
 
         SaveData save = SaveManager.Instance.LoadCurrentSlot();
         save.builds.Add(data);
