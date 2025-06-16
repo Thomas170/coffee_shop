@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7792976905109503024}
-  - component: {fileID: 4004633078257892982}
-  m_Layer: 14
+  - component: {fileID: 4017006026552482489}
+  m_Layer: 0
   m_Name: CoffeeMachinePreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 1241213101880939476}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4004633078257892982
+--- !u!114 &4017006026552482489
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,18 +43,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 819371319022024379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Script: {fileID: 11500000, guid: e0d45f482edfa454bacf3043392c6e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 368457596
-  InScenePlacedSourceGlobalObjectIdHash: 1837875179
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &5765827733015844143
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,7 +59,7 @@ GameObject:
   - component: {fileID: 1013386355950671264}
   - component: {fileID: 4210161169221318146}
   - component: {fileID: 7396101050911159321}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: WorkTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +181,7 @@ GameObject:
   - component: {fileID: 4384920752199784700}
   - component: {fileID: 5133472489188890992}
   - component: {fileID: 4043667713569099035}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: CoffeeMachineModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -81,19 +81,26 @@ public class BuildManager : MonoBehaviour
     {
         if (_preview == null || !_preview.IsValid) return;
 
+        if (CurrencyManager.Instance.coins < currentBuildable.cost)
+        {
+            Debug.Log("Pas assez d'argent !");
+            return;
+        }
+        
+        CurrencyManager.Instance.RemoveCoins(currentBuildable.cost);
         Vector3 position = _preview.transform.position;
         Quaternion rotation = _preview.transform.rotation;
 
         SpawnBuildableServerRpc(position, rotation);
         ExitBuildMode();
-        
+    
         BuildSaveData data = new BuildSaveData
         {
             prefabName = currentBuildable.resultPrefab.name,
             position = position,
             rotation = rotation
         };
-        
+    
         ClientSpotManager.Instance.RefreshSpotsFromScene();
 
         SaveData save = SaveManager.Instance.LoadCurrentSlot();

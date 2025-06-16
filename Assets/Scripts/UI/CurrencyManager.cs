@@ -35,7 +35,22 @@ public class CurrencyManager : NetworkBehaviour
     
     public void AddCoins(int amount)
     {
+        if (amount < 0) return;
+        
         coins += amount;
+        coinsText.text = coins.ToString();
+
+        if (IsServer)
+        {
+            SaveCoins();
+        }
+    }
+    
+    public void RemoveCoins(int amount)
+    {
+        if (amount < 0) return;
+        
+        coins -= amount;
         coinsText.text = coins.ToString();
 
         if (IsServer)

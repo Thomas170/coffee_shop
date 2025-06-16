@@ -1,0 +1,49 @@
+using TMPro;
+using UnityEngine;
+
+public class BuildSelectionMenuController : BaseMenuController
+{
+    [SerializeField] private BuildableDefinition[] availableBuilds;
+    [SerializeField] private TextMeshProUGUI[] costTexts;
+
+    private PlayerBuild _playerBuild;
+
+    protected override void Start()
+    {
+        base.Start();
+        _playerBuild = FindObjectOfType<PlayerBuild>();
+        InitMenu();
+    }
+
+    private void InitMenu()
+    {
+        for (int i = 0; i < menuButtons.Length; i++)
+        {
+            if (i >= availableBuilds.Length) continue;
+
+            var def = availableBuilds[i];
+            var cost = def.cost;
+            costTexts[i].text = $"{cost}";
+            menuButtons[i].button.interactable = true;
+        }
+    }
+
+    public override void ExecuteMenuAction(string buttonName)
+    {
+        int index = SelectedIndex;
+        if (index >= 0 && index < availableBuilds.Length)
+        {
+            var selectedBuild = availableBuilds[index];
+
+            if (CurrencyManager.Instance.coins >= selectedBuild.cost)
+            {
+                CloseMenu();
+                _playerBuild.StartPreviewMode(selectedBuild);
+            }
+            else
+            {
+                Debug.Log("Pas assez d'argent !");
+            }
+        }
+    }
+}
