@@ -18,34 +18,43 @@ public class PlayerBuild : MonoBehaviour
         _playerController = GetComponent<PlayerController>();
         _buildManager = GetComponent<BuildManager>();
 
-        InputReader.Instance.ManageAction.performed += OnManage;
+        InputReader.Instance.ShopAction.performed += OnShop;
+        InputReader.Instance.EditAction.performed += OnEdit;
         InputReader.Instance.RotateRightAction.performed += OnRotateRight;
         InputReader.Instance.RotateLeftAction.performed += OnRotateLeft;
         InputReader.Instance.ActionAction.performed += OnBuild;
-        InputReader.Instance.BackAction.performed += OnCancel;
+        InputReader.Instance.CancelAction.performed += OnCancel;
     }
 
     private void OnDestroy()
     {
-        InputReader.Instance.ManageAction.performed -= OnManage;
+        InputReader.Instance.ShopAction.performed -= OnShop;
+        InputReader.Instance.EditAction.performed -= OnEdit;
         InputReader.Instance.RotateRightAction.performed -= OnRotateRight;
         InputReader.Instance.RotateLeftAction.performed -= OnRotateLeft;
         InputReader.Instance.ActionAction.performed -= OnBuild;
-        InputReader.Instance.BackAction.performed -= OnCancel;
+        InputReader.Instance.CancelAction.performed -= OnCancel;
     }
 
-    private void OnManage(InputAction.CallbackContext ctx)
+    private void OnShop(InputAction.CallbackContext ctx)
     {
         if (!_playerController.CanInteract) return;
 
         if (_buildManager.IsInBuildMode)
         {
             _buildManager.ExitBuildMode();
+            buildMenuController.OpenMenu();
         }
         else
         {
             buildMenuController.OpenMenu();
         }
+    }
+    
+    private void OnEdit(InputAction.CallbackContext ctx)
+    {
+        if (!_playerController.CanInteract) return;
+        _buildManager.EnterEditMode();
     }
 
     private void OnRotateRight(InputAction.CallbackContext ctx)
@@ -68,14 +77,7 @@ public class PlayerBuild : MonoBehaviour
 
     private void OnCancel(InputAction.CallbackContext ctx)
     {
-        if (_buildManager.IsInBuildMode)
-        {
-            _buildManager.ExitBuildMode();
-        }
-        else if (buildMenuController.isOpen)
-        {
-            buildMenuController.CloseMenu();
-        }
+        _buildManager.ExitBuildMode();
     }
 
     public void StartPreviewMode(BuildableDefinition selected)

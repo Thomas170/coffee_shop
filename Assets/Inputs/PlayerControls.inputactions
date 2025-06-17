@@ -110,7 +110,7 @@
             ]
         },
         {
-            "name": "Interactions",
+            "name": "Gameplay",
             "id": "a774bacf-97eb-46d5-b9b2-34c5c0bc1268",
             "actions": [
                 {
@@ -132,9 +132,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Manage",
+                    "name": "Shop",
                     "type": "Button",
                     "id": "2cf82d4c-c0d9-42ea-ace7-128c3c10f97c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Edit",
+                    "type": "Button",
+                    "id": "3d9de9b2-0c42-446b-9b5b-4c13509181b0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -153,6 +162,15 @@
                     "name": "RotateLeft",
                     "type": "Button",
                     "id": "c5970567-18cd-4e15-9dd7-235d5f7ac333",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "08d1fd8e-ece6-486a-a597-d3005bc44450",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -207,11 +225,11 @@
                 {
                     "name": "",
                     "id": "778f8b43-7542-4272-8f2e-1649031e73f7",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Manage",
+                    "action": "Shop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -222,7 +240,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Manage",
+                    "action": "Shop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -267,6 +285,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7a0506f-a50e-496e-9878-1251b299f9dc",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Edit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1852bdc4-a79f-4f67-996c-6106a01862cf",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Edit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca6eba3d-2c78-43ef-8974-b7c9881fec6c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ae638fb-8f91-4518-a7fc-dfab91a01794",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

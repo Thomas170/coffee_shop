@@ -15,11 +15,19 @@ public class BuildManager : MonoBehaviour
     [SerializeField] private Transform buildPoint;
     
     private BuildablePreview _preview;
-    private bool _isInBuildMode;
     private int _currentRotation;
-    private List<GameObject> _cachedGridCells = new();
+    private readonly List<GameObject> _cachedGridCells = new();
 
-    public bool IsInBuildMode => _isInBuildMode;
+    private enum BuildModeState
+    {
+        None,
+        Building,
+        Edition
+    }
+    private BuildModeState _currentMode = BuildModeState.None;
+
+    public bool IsInBuildMode => _currentMode == BuildModeState.Building;
+    public bool IsInEditMode => _currentMode == BuildModeState.Edition;
 
     public void Init()
     {
@@ -30,7 +38,7 @@ public class BuildManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_isInBuildMode || !_preview || !buildPoint) return;
+        if (_currentMode != BuildModeState.Building || !_preview || !buildPoint) return;
 
         Vector3 forwardOffset = buildPoint.forward.normalized * 1.5f;
         Vector3 previewWorldPos = buildPoint.position + forwardOffset;
@@ -42,7 +50,7 @@ public class BuildManager : MonoBehaviour
     
     public void EnterBuildMode(BuildableDefinition buildable)
     {
-        _isInBuildMode = true;
+        _currentMode = BuildModeState.Building;
         currentBuildable = buildable;
 
         GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, Quaternion.identity);
@@ -55,13 +63,26 @@ public class BuildManager : MonoBehaviour
 
     public void ExitBuildMode()
     {
-        _isInBuildMode = false;
+        _currentMode = BuildModeState.None;
         if (_preview) Destroy(_preview.gameObject);
 
         DisplayPreviewGrid(false);
         playerController.playerMovement.moveSpeed = 50f;
     }
 
+    public void EnterEditMode()
+    {
+        _currentMode = BuildModeState.Edition;
+        DisplayPreviewGrid(true);
+        Debug.Log("Mode Gestion Activé");
+    }
+    
+    public void ExitManageMode()
+    {
+        _currentMode = BuildModeState.None;
+        DisplayPreviewGrid(false);
+        Debug.Log("Mode Gestion Désactivé");
+    }
 
     public void RotateLeft()
     {
@@ -109,7 +130,7 @@ public class BuildManager : MonoBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnBuildableServerRpc(Vector3 position, Quaternion rotation)
+    private void SpawnBuildableServerRpc(Vector3 position, Quaternion rotation)
     {
         GameObject buildObject = Instantiate(currentBuildable.resultPrefab, position, rotation);
         buildObject.GetComponent<NetworkObject>().Spawn();

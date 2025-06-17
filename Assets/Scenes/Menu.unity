@@ -4062,6 +4062,10 @@ PrefabInstance:
       propertyPath: NetworkConfig.NetworkTransport
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 9175459443570899182, guid: b10e811645751fc4f9648661249775af, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: a774bacf-97eb-46d5-b9b2-34c5c0bc1268
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7871805087275348163, guid: b10e811645751fc4f9648661249775af, type: 3}
     m_RemovedGameObjects: []

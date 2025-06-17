@@ -23,7 +23,7 @@ public class ControlsUIManager : MonoBehaviour
     public GameObject bindingUIPrefab;
     public ActionBindingDisplay[] actionDisplays;
 
-    private Dictionary<string, GameObject> _activeBindings = new();
+    private readonly Dictionary<string, GameObject> _activeBindings = new();
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class ControlsUIManager : MonoBehaviour
         
         AddBindingUI("Interact");
         AddBindingUI("Action");
-        AddBindingUI("Manage");
+        AddBindingUI("Shop");
         
         RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
     }
@@ -45,7 +45,7 @@ public class ControlsUIManager : MonoBehaviour
         LocalizationSettings.SelectedLocaleChanged -= OnLanguageChanged;
     }
 
-    public void AddBindingUI(string actionName)
+    private void AddBindingUI(string actionName)
     {
         if (_activeBindings.ContainsKey(actionName))
             return;

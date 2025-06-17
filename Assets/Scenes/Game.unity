@@ -540,7 +540,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  - actionName: Manage
+  - actionName: Shop
     keyboardSprite: {fileID: 21300000, guid: fb78a042ee082a64d8c47581c6ee5cc4, type: 3}
     gamepadSprite: {fileID: 21300000, guid: 825103f557cbd3b43b404d58f6d0d88b, type: 3}
     localizedActionLabel:
@@ -548,18 +548,6 @@ MonoBehaviour:
         m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
       m_TableEntryReference:
         m_KeyId: 2132329914273792
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - actionName: Drop
-    keyboardSprite: {fileID: 21300000, guid: fb78a042ee082a64d8c47581c6ee5cc4, type: 3}
-    gamepadSprite: {fileID: 21300000, guid: 29355da89f446b245a7b0cdba8349362, type: 3}
-    localizedActionLabel:
-      m_TableReference:
-        m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
-      m_TableEntryReference:
-        m_KeyId: 2410120803094528
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0

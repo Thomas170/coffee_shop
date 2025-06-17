@@ -21,8 +21,8 @@ public class BuildSelectionMenuController : BaseMenuController
         {
             if (i >= availableBuilds.Length) continue;
 
-            var def = availableBuilds[i];
-            var cost = def.cost;
+            BuildableDefinition buildableDefinition = availableBuilds[i];
+            int cost = buildableDefinition.cost;
             costTexts[i].text = $"{cost}";
             menuButtons[i].button.interactable = true;
         }
@@ -33,7 +33,7 @@ public class BuildSelectionMenuController : BaseMenuController
         int index = SelectedIndex;
         if (index >= 0 && index < availableBuilds.Length)
         {
-            var selectedBuild = availableBuilds[index];
+            BuildableDefinition selectedBuild = availableBuilds[index];
 
             if (CurrencyManager.Instance.coins >= selectedBuild.cost)
             {
@@ -45,5 +45,10 @@ public class BuildSelectionMenuController : BaseMenuController
                 Debug.Log("Pas assez d'argent !");
             }
         }
+    }
+    
+    public override void HandleBack()
+    {
+        CloseMenu();
     }
 }

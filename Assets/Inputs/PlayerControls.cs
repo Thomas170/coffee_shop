@@ -132,7 +132,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Interactions"",
+            ""name"": ""Gameplay"",
             ""id"": ""a774bacf-97eb-46d5-b9b2-34c5c0bc1268"",
             ""actions"": [
                 {
@@ -154,9 +154,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Manage"",
+                    ""name"": ""Shop"",
                     ""type"": ""Button"",
                     ""id"": ""2cf82d4c-c0d9-42ea-ace7-128c3c10f97c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Edit"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d9de9b2-0c42-446b-9b5b-4c13509181b0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -175,6 +184,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""RotateLeft"",
                     ""type"": ""Button"",
                     ""id"": ""c5970567-18cd-4e15-9dd7-235d5f7ac333"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""08d1fd8e-ece6-486a-a597-d3005bc44450"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -229,11 +247,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""778f8b43-7542-4272-8f2e-1649031e73f7"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Manage"",
+                    ""action"": ""Shop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -244,7 +262,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Manage"",
+                    ""action"": ""Shop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -289,6 +307,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotateLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7a0506f-a50e-496e-9878-1251b299f9dc"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Edit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1852bdc4-a79f-4f67-996c-6106a01862cf"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Edit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca6eba3d-2c78-43ef-8974-b7c9881fec6c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ae638fb-8f91-4518-a7fc-dfab91a01794"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -453,13 +515,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Movements_Left = m_Movements.FindAction("Left", throwIfNotFound: true);
         m_Movements_Right = m_Movements.FindAction("Right", throwIfNotFound: true);
         m_Movements_MoveGamepad = m_Movements.FindAction("MoveGamepad", throwIfNotFound: true);
-        // Interactions
-        m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
-        m_Interactions_Action = m_Interactions.FindAction("Action", throwIfNotFound: true);
-        m_Interactions_Interact = m_Interactions.FindAction("Interact", throwIfNotFound: true);
-        m_Interactions_Manage = m_Interactions.FindAction("Manage", throwIfNotFound: true);
-        m_Interactions_RotateRight = m_Interactions.FindAction("RotateRight", throwIfNotFound: true);
-        m_Interactions_RotateLeft = m_Interactions.FindAction("RotateLeft", throwIfNotFound: true);
+        // Gameplay
+        m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
+        m_Gameplay_Action = m_Gameplay.FindAction("Action", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_Shop = m_Gameplay.FindAction("Shop", throwIfNotFound: true);
+        m_Gameplay_Edit = m_Gameplay.FindAction("Edit", throwIfNotFound: true);
+        m_Gameplay_RotateRight = m_Gameplay.FindAction("RotateRight", throwIfNotFound: true);
+        m_Gameplay_RotateLeft = m_Gameplay.FindAction("RotateLeft", throwIfNotFound: true);
+        m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -602,50 +666,60 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public MovementsActions @Movements => new MovementsActions(this);
 
-    // Interactions
-    private readonly InputActionMap m_Interactions;
-    private List<IInteractionsActions> m_InteractionsActionsCallbackInterfaces = new List<IInteractionsActions>();
-    private readonly InputAction m_Interactions_Action;
-    private readonly InputAction m_Interactions_Interact;
-    private readonly InputAction m_Interactions_Manage;
-    private readonly InputAction m_Interactions_RotateRight;
-    private readonly InputAction m_Interactions_RotateLeft;
-    public struct InteractionsActions
+    // Gameplay
+    private readonly InputActionMap m_Gameplay;
+    private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
+    private readonly InputAction m_Gameplay_Action;
+    private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_Shop;
+    private readonly InputAction m_Gameplay_Edit;
+    private readonly InputAction m_Gameplay_RotateRight;
+    private readonly InputAction m_Gameplay_RotateLeft;
+    private readonly InputAction m_Gameplay_Cancel;
+    public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
-        public InteractionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Action => m_Wrapper.m_Interactions_Action;
-        public InputAction @Interact => m_Wrapper.m_Interactions_Interact;
-        public InputAction @Manage => m_Wrapper.m_Interactions_Manage;
-        public InputAction @RotateRight => m_Wrapper.m_Interactions_RotateRight;
-        public InputAction @RotateLeft => m_Wrapper.m_Interactions_RotateLeft;
-        public InputActionMap Get() { return m_Wrapper.m_Interactions; }
+        public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Action => m_Wrapper.m_Gameplay_Action;
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @Shop => m_Wrapper.m_Gameplay_Shop;
+        public InputAction @Edit => m_Wrapper.m_Gameplay_Edit;
+        public InputAction @RotateRight => m_Wrapper.m_Gameplay_RotateRight;
+        public InputAction @RotateLeft => m_Wrapper.m_Gameplay_RotateLeft;
+        public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
+        public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(InteractionsActions set) { return set.Get(); }
-        public void AddCallbacks(IInteractionsActions instance)
+        public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
+        public void AddCallbacks(IGameplayActions instance)
         {
-            if (instance == null || m_Wrapper.m_InteractionsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_InteractionsActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
             @Action.started += instance.OnAction;
             @Action.performed += instance.OnAction;
             @Action.canceled += instance.OnAction;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @Manage.started += instance.OnManage;
-            @Manage.performed += instance.OnManage;
-            @Manage.canceled += instance.OnManage;
+            @Shop.started += instance.OnShop;
+            @Shop.performed += instance.OnShop;
+            @Shop.canceled += instance.OnShop;
+            @Edit.started += instance.OnEdit;
+            @Edit.performed += instance.OnEdit;
+            @Edit.canceled += instance.OnEdit;
             @RotateRight.started += instance.OnRotateRight;
             @RotateRight.performed += instance.OnRotateRight;
             @RotateRight.canceled += instance.OnRotateRight;
             @RotateLeft.started += instance.OnRotateLeft;
             @RotateLeft.performed += instance.OnRotateLeft;
             @RotateLeft.canceled += instance.OnRotateLeft;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
-        private void UnregisterCallbacks(IInteractionsActions instance)
+        private void UnregisterCallbacks(IGameplayActions instance)
         {
             @Action.started -= instance.OnAction;
             @Action.performed -= instance.OnAction;
@@ -653,32 +727,38 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @Manage.started -= instance.OnManage;
-            @Manage.performed -= instance.OnManage;
-            @Manage.canceled -= instance.OnManage;
+            @Shop.started -= instance.OnShop;
+            @Shop.performed -= instance.OnShop;
+            @Shop.canceled -= instance.OnShop;
+            @Edit.started -= instance.OnEdit;
+            @Edit.performed -= instance.OnEdit;
+            @Edit.canceled -= instance.OnEdit;
             @RotateRight.started -= instance.OnRotateRight;
             @RotateRight.performed -= instance.OnRotateRight;
             @RotateRight.canceled -= instance.OnRotateRight;
             @RotateLeft.started -= instance.OnRotateLeft;
             @RotateLeft.performed -= instance.OnRotateLeft;
             @RotateLeft.canceled -= instance.OnRotateLeft;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
-        public void RemoveCallbacks(IInteractionsActions instance)
+        public void RemoveCallbacks(IGameplayActions instance)
         {
-            if (m_Wrapper.m_InteractionsActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_GameplayActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IInteractionsActions instance)
+        public void SetCallbacks(IGameplayActions instance)
         {
-            foreach (var item in m_Wrapper.m_InteractionsActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_GameplayActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_InteractionsActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_GameplayActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public InteractionsActions @Interactions => new InteractionsActions(this);
+    public GameplayActions @Gameplay => new GameplayActions(this);
 
     // UI
     private readonly InputActionMap m_UI;
@@ -775,13 +855,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRight(InputAction.CallbackContext context);
         void OnMoveGamepad(InputAction.CallbackContext context);
     }
-    public interface IInteractionsActions
+    public interface IGameplayActions
     {
         void OnAction(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnManage(InputAction.CallbackContext context);
+        void OnShop(InputAction.CallbackContext context);
+        void OnEdit(InputAction.CallbackContext context);
         void OnRotateRight(InputAction.CallbackContext context);
         void OnRotateLeft(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

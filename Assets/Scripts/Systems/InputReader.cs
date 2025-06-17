@@ -20,11 +20,13 @@ public class InputReader : MonoBehaviour
         Controls.UI.Enable();
     }
 
-    public InputAction ActionAction => Controls.Interactions.Action;
-    public InputAction InteractAction => Controls.Interactions.Interact;
-    public InputAction ManageAction => Controls.Interactions.Manage;
-    public InputAction RotateRightAction => Controls.Interactions.RotateRight;
-    public InputAction RotateLeftAction => Controls.Interactions.RotateLeft;
+    public InputAction ActionAction => Controls.Gameplay.Action;
+    public InputAction InteractAction => Controls.Gameplay.Interact;
+    public InputAction ShopAction => Controls.Gameplay.Shop;
+    public InputAction EditAction => Controls.Gameplay.Edit;
+    public InputAction RotateRightAction => Controls.Gameplay.RotateRight;
+    public InputAction RotateLeftAction => Controls.Gameplay.RotateLeft;
+    public InputAction CancelAction => Controls.Gameplay.Cancel;
     public InputAction NavigateAction => Controls.UI.Navigate;
     public InputAction SubmitAction => Controls.UI.Submit;
     public InputAction BackAction => Controls.UI.Back;
