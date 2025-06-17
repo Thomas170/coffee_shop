@@ -11,7 +11,6 @@ public class PlayerMovement : NetworkBehaviour
 
     private Vector2 _keyboardInput;
     private Vector2 _gamepadInput;
-    private static readonly int Run = Animator.StringToHash("Run");
 
     private void Awake()
     {
@@ -47,7 +46,13 @@ public class PlayerMovement : NetworkBehaviour
     
     private void FixedUpdate()
     {
-        if (!IsOwner || !playerController.CanMove) return;
+        if (!IsOwner) return;
+
+        if (!playerController.CanMove)
+        {
+            _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
+            return;
+        }
 
         Vector2 input = _keyboardInput + _gamepadInput;
         Vector3 move = new Vector3(input.x, 0, input.y);
