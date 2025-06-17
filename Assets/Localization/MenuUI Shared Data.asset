@@ -195,6 +195,10 @@ MonoBehaviour:
     m_Key: waiting_message
     m_Metadata:
       m_Items: []
+  - m_Id: 12986606668845056
+    m_Key: shop_title
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

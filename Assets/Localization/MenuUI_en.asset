@@ -191,6 +191,10 @@ MonoBehaviour:
     m_Localized: Loading in progress, please wait a little...
     m_Metadata:
       m_Items: []
+  - m_Id: 12986606668845056
+    m_Localized: Shop
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

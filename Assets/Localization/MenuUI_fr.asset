@@ -192,6 +192,10 @@ MonoBehaviour:
     m_Localized: Chargement en cours, patientez un peu...
     m_Metadata:
       m_Items: []
+  - m_Id: 12986606668845056
+    m_Localized: Magasin
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
