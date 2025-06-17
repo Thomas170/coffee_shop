@@ -516,19 +516,19 @@ MonoBehaviour:
   bindingsContainer: {fileID: 418403235}
   bindingUIPrefab: {fileID: 2486492780844541349, guid: c9332b5a83ce2974e8e4ff47e4225eb4, type: 3}
   actionDisplays:
-  - actionName: Interact
+  - tipsName: Interact
     keyboardSprite: {fileID: 21300000, guid: 580b867cfc02c35489c850455ae4f6ad, type: 3}
     gamepadSprite: {fileID: 21300000, guid: d014b6e3afdf7724592c663a8cc53adf, type: 3}
     localizedActionLabel:
       m_TableReference:
         m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
       m_TableEntryReference:
-        m_KeyId: 2132286851354624
+        m_KeyId: 15137854721462272
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  - actionName: Action
+  - tipsName: Action
     keyboardSprite: {fileID: 21300000, guid: 72f29a9035d5ebc44bb167c0ee519478, type: 3}
     gamepadSprite: {fileID: 21300000, guid: b79f78b10cb355547b237c75aec086f4, type: 3}
     localizedActionLabel:
@@ -540,7 +540,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  - actionName: Shop
+  - tipsName: Shop
     keyboardSprite: {fileID: 21300000, guid: fb78a042ee082a64d8c47581c6ee5cc4, type: 3}
     gamepadSprite: {fileID: 21300000, guid: 825103f557cbd3b43b404d58f6d0d88b, type: 3}
     localizedActionLabel:
@@ -548,6 +548,66 @@ MonoBehaviour:
         m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
       m_TableEntryReference:
         m_KeyId: 2132329914273792
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tipsName: Edit
+    keyboardSprite: {fileID: 21300000, guid: bc7486f0c1b92cc4ab68fbdca96e2f84, type: 3}
+    gamepadSprite: {fileID: 21300000, guid: 1eb0ee2e40f4481409d4dcf28e3a6666, type: 3}
+    localizedActionLabel:
+      m_TableReference:
+        m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
+      m_TableEntryReference:
+        m_KeyId: 15138273539493888
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tipsName: Drop
+    keyboardSprite: {fileID: 21300000, guid: 580b867cfc02c35489c850455ae4f6ad, type: 3}
+    gamepadSprite: {fileID: 21300000, guid: d014b6e3afdf7724592c663a8cc53adf, type: 3}
+    localizedActionLabel:
+      m_TableReference:
+        m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
+      m_TableEntryReference:
+        m_KeyId: 15138457489084416
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tipsName: Build
+    keyboardSprite: {fileID: 21300000, guid: 72f29a9035d5ebc44bb167c0ee519478, type: 3}
+    gamepadSprite: {fileID: 21300000, guid: b79f78b10cb355547b237c75aec086f4, type: 3}
+    localizedActionLabel:
+      m_TableReference:
+        m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
+      m_TableEntryReference:
+        m_KeyId: 15138755171422208
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tipsName: Cancel
+    keyboardSprite: {fileID: 21300000, guid: bc7486f0c1b92cc4ab68fbdca96e2f84, type: 3}
+    gamepadSprite: {fileID: 21300000, guid: 29355da89f446b245a7b0cdba8349362, type: 3}
+    localizedActionLabel:
+      m_TableReference:
+        m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
+      m_TableEntryReference:
+        m_KeyId: 15138902534098944
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - tipsName: Destroy
+    keyboardSprite: {fileID: 21300000, guid: 580b867cfc02c35489c850455ae4f6ad, type: 3}
+    gamepadSprite: {fileID: 21300000, guid: d014b6e3afdf7724592c663a8cc53adf, type: 3}
+    localizedActionLabel:
+      m_TableReference:
+        m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
+      m_TableEntryReference:
+        m_KeyId: 15144220819296256
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0

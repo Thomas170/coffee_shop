@@ -59,6 +59,7 @@ public class BuildManager : MonoBehaviour
 
         DisplayPreviewGrid(true);
         playerController.playerMovement.moveSpeed = 40f;
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Build);
     }
 
     public void ExitBuildMode()
@@ -68,6 +69,7 @@ public class BuildManager : MonoBehaviour
 
         DisplayPreviewGrid(false);
         playerController.playerMovement.moveSpeed = 50f;
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
     }
 
     public void EnterEditMode()
@@ -75,6 +77,7 @@ public class BuildManager : MonoBehaviour
         _currentMode = BuildModeState.Edition;
         DisplayPreviewGrid(true);
         Debug.Log("Mode Gestion Activé");
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Edit);
     }
     
     public void ExitEditMode()
@@ -82,6 +85,7 @@ public class BuildManager : MonoBehaviour
         _currentMode = BuildModeState.None;
         DisplayPreviewGrid(false);
         Debug.Log("Mode Gestion Désactivé");
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
     }
 
     public void RotateLeft()

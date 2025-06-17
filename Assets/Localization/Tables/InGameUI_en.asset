@@ -42,6 +42,30 @@ MonoBehaviour:
     m_Localized: Action
     m_Metadata:
       m_Items: []
+  - m_Id: 15137854721462272
+    m_Localized: Interact / Pick
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138273539493888
+    m_Localized: Edit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138457489084416
+    m_Localized: Drop / Place
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138755171422208
+    m_Localized: Build
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138902534098944
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15144220819296256
+    m_Localized: Destroy
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

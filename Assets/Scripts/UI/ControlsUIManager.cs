@@ -9,10 +9,12 @@ using UnityEngine.UI;
 
 public class ControlsUIManager : MonoBehaviour
 {
+    public static ControlsUIManager Instance { get; private set; }
+    
     [Serializable]
     public class ActionBindingDisplay
     {
-        public string actionName;
+        public string tipsName;
         public Sprite keyboardSprite;
         public Sprite gamepadSprite;
         public LocalizedString localizedActionLabel;
@@ -24,17 +26,32 @@ public class ControlsUIManager : MonoBehaviour
     public ActionBindingDisplay[] actionDisplays;
 
     private readonly Dictionary<string, GameObject> _activeBindings = new();
+    
+    public enum ControlsMode
+    {
+        Default,
+        PickUp,
+        Edit,
+        Build,
+    }
+    
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     private void Start()
     {
         LocalizationSettings.SelectedLocaleChanged += OnLanguageChanged;
         InputDeviceTracker.Instance.OnDeviceChanged += RefreshIcons;
         
-        AddBindingUI("Interact");
-        AddBindingUI("Action");
-        AddBindingUI("Shop");
-        
-        RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
+        SetControlsTips(ControlsMode.Default);
     }
 
     private void OnDestroy()
@@ -45,22 +62,15 @@ public class ControlsUIManager : MonoBehaviour
         LocalizationSettings.SelectedLocaleChanged -= OnLanguageChanged;
     }
 
-    private void AddBindingUI(string actionName)
+    private void AddBindingUI(string tipsName)
     {
-        if (_activeBindings.ContainsKey(actionName))
+        if (_activeBindings.ContainsKey(tipsName))
             return;
 
-        var display = Array.Find(actionDisplays, d => d.actionName == actionName);
+        var display = Array.Find(actionDisplays, d => d.tipsName == tipsName);
         if (display == null)
         {
-            Debug.LogWarning($"Display config not found for action '{actionName}'");
-            return;
-        }
-
-        var action = inputActions.FindAction(actionName);
-        if (action == null)
-        {
-            Debug.LogWarning($"Action '{actionName}' not found in InputActions.");
+            Debug.LogWarning($"Display config not found for action '{tipsName}'");
             return;
         }
 
@@ -76,23 +86,14 @@ public class ControlsUIManager : MonoBehaviour
                 ? display.gamepadSprite
                 : display.keyboardSprite;
 
-        _activeBindings[actionName] = uiElement;
-    }
-
-    public void RemoveBindingUI(string actionName)
-    {
-        if (_activeBindings.TryGetValue(actionName, out var uiElement))
-        {
-            Destroy(uiElement);
-            _activeBindings.Remove(actionName);
-        }
+        _activeBindings[tipsName] = uiElement;
     }
 
     private void RefreshIcons(bool isGamepad)
     {
         foreach (var kvp in _activeBindings)
         {
-            var display = Array.Find(actionDisplays, d => d.actionName == kvp.Key);
+            var display = Array.Find(actionDisplays, d => d.tipsName == kvp.Key);
             var image = kvp.Value.transform.Find("KeyIcon")?.GetComponent<Image>();
             if (image != null)
                 image.sprite = isGamepad ? display.gamepadSprite : display.keyboardSprite;
@@ -103,10 +104,50 @@ public class ControlsUIManager : MonoBehaviour
     {
         foreach (var kvp in _activeBindings)
         {
-            var display = Array.Find(actionDisplays, d => d.actionName == kvp.Key);
+            var display = Array.Find(actionDisplays, d => d.tipsName == kvp.Key);
             var text = kvp.Value.GetComponentInChildren<TextMeshProUGUI>();
             if (text != null)
                 text.text = display.localizedActionLabel.GetLocalizedString();
+        }
+    }
+
+    public void SetControlsTips(ControlsMode controlsMode)
+    {
+        foreach (var kvp in _activeBindings)
+        {
+            Destroy(kvp.Value);
+        }
+        _activeBindings.Clear();
+        
+        if (controlsMode == ControlsMode.Default)
+        {
+            AddBindingUI("Interact");
+            AddBindingUI("Shop");
+            AddBindingUI("Edit");
+        
+            RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
+        }
+        else if (controlsMode == ControlsMode.PickUp)
+        {
+            AddBindingUI("Drop");
+            AddBindingUI("Shop");
+            AddBindingUI("Edit");
+        
+            RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
+        }
+        else if (controlsMode == ControlsMode.Build)
+        {
+            AddBindingUI("Build");
+            AddBindingUI("Cancel");
+        
+            RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
+        }
+        else if (controlsMode == ControlsMode.Edit)
+        {
+            AddBindingUI("Destroy");
+            AddBindingUI("Cancel");
+        
+            RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);
         }
     }
 }

@@ -24,7 +24,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2132329914273792
-    m_Key: manage_control
+    m_Key: shop_tips
     m_Metadata:
       m_Items: []
   - m_Id: 2410085029875712
@@ -37,6 +37,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7478589126971392
     m_Key: action_control
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15137854721462272
+    m_Key: interact_tips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138273539493888
+    m_Key: edit_tips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138457489084416
+    m_Key: drop_tips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138755171422208
+    m_Key: build_tips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15138902534098944
+    m_Key: cancel_tips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15144220819296256
+    m_Key: destroy_tips
     m_Metadata:
       m_Items: []
   m_Metadata:

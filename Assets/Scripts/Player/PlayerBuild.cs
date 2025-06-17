@@ -42,14 +42,7 @@ public class PlayerBuild : MonoBehaviour
 
     private void OnShop(InputAction.CallbackContext ctx)
     {
-        if (!_playerController.CanInteract) return;
-
-        if (_buildManager.IsInBuildMode)
-        {
-            _buildManager.ExitBuildMode();
-            buildMenuController.OpenMenu();
-        }
-        else
+        if (!_buildManager.IsInBuildMode && !_buildManager.IsInEditMode && _playerController.CanInteract)
         {
             buildMenuController.OpenMenu();
         }

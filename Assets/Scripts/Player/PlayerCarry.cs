@@ -19,6 +19,7 @@ public class PlayerCarry : NetworkBehaviour
         playerController.playerAnimation.PlayPickAnimationServerRpc();
         NetworkObject networkObject = itemBase.NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.PickUp);
         return true;
     }
     
@@ -28,6 +29,7 @@ public class PlayerCarry : NetworkBehaviour
         SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, transform.position);
         playerController.playerAnimation.PlayDropAnimationServerRpc();
         RequestDropServerRpc(carriedItem.NetworkObject);
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
         return true;
     }
 
