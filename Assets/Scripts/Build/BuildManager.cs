@@ -77,7 +77,7 @@ public class BuildManager : MonoBehaviour
         Debug.Log("Mode Gestion Activé");
     }
     
-    public void ExitManageMode()
+    public void ExitEditMode()
     {
         _currentMode = BuildModeState.None;
         DisplayPreviewGrid(false);
@@ -143,7 +143,7 @@ public class BuildManager : MonoBehaviour
         return new Vector3(x, _preview.transform.position.y, z);
     }
 
-    private void DisplayPreviewGrid(bool value)
+    public void DisplayPreviewGrid(bool value)
     {
         foreach (GameObject cell in _cachedGridCells)
         {

@@ -7,6 +7,7 @@ public class PlayerBuild : MonoBehaviour
 
     private PlayerController _playerController;
     private BuildManager _buildManager;
+    private EditManager _editManager;
     
     public void Init()
     {
@@ -17,6 +18,7 @@ public class PlayerBuild : MonoBehaviour
     {
         _playerController = GetComponent<PlayerController>();
         _buildManager = GetComponent<BuildManager>();
+        _editManager = GetComponent<EditManager>();
 
         InputReader.Instance.ShopAction.performed += OnShop;
         InputReader.Instance.EditAction.performed += OnEdit;
@@ -24,6 +26,7 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.RotateLeftAction.performed += OnRotateLeft;
         InputReader.Instance.ActionAction.performed += OnBuild;
         InputReader.Instance.CancelAction.performed += OnCancel;
+        InputReader.Instance.InteractAction.performed += OnInteract;
     }
 
     private void OnDestroy()
@@ -34,6 +37,7 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.RotateLeftAction.performed -= OnRotateLeft;
         InputReader.Instance.ActionAction.performed -= OnBuild;
         InputReader.Instance.CancelAction.performed -= OnCancel;
+        InputReader.Instance.InteractAction.performed -= OnInteract;
     }
 
     private void OnShop(InputAction.CallbackContext ctx)
@@ -72,12 +76,29 @@ public class PlayerBuild : MonoBehaviour
     private void OnBuild(InputAction.CallbackContext ctx)
     {
         if (_buildManager.IsInBuildMode)
+        {
             _buildManager.ConfirmBuild();
+        }
     }
 
     private void OnCancel(InputAction.CallbackContext ctx)
     {
-        _buildManager.ExitBuildMode();
+        if (_buildManager.IsInBuildMode)
+        {
+            _buildManager.ExitBuildMode();
+        }
+        else if (_buildManager.IsInEditMode)
+        {
+            _buildManager.ExitEditMode();
+        }
+    }
+    
+    private void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (_buildManager.IsInEditMode)
+        {
+            _editManager.TryDelete();
+        }
     }
 
     public void StartPreviewMode(BuildableDefinition selected)

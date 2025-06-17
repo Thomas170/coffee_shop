@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 997875112695566462}
   - component: {fileID: 7767936607174331396}
+  - component: {fileID: -8671496586745486993}
   m_Layer: 14
   m_Name: CoffeeMachine
   m_TagString: Untagged
@@ -88,6 +89,19 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-8671496586745486993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884463179367529286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9fc2f0b93a797a4bbdaf002b3fbcbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  definition: {fileID: 11400000, guid: daf4663551a45e94098e5deb29189717, type: 2}
 --- !u!1 &3394299593559672083
 GameObject:
   m_ObjectHideFlags: 0

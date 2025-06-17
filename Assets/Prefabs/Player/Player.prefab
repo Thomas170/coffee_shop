@@ -750,6 +750,7 @@ GameObject:
   - component: {fileID: 468512985716968647}
   - component: {fileID: 3703098591381962738}
   - component: {fileID: 418641112861208588}
+  - component: {fileID: 7477783914063680158}
   m_Layer: 12
   m_Name: Player
   m_TagString: Untagged
@@ -1034,7 +1035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e2ec0457c75036439a7d28d24fca3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultBuildable: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
+  buildMenuController: {fileID: 0}
 --- !u!114 &418641112861208588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,7 +1056,20 @@ MonoBehaviour:
   invalidMaterial: {fileID: 2100000, guid: d9dd016d65ec17744a90e272ee795f35, type: 2}
   playerController: {fileID: 8907663148894752108}
   buildPoint: {fileID: 1589991686520901281}
-  gridPreview: {fileID: 0}
+--- !u!114 &7477783914063680158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144480234650336366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5698b7c50c0d6534da526428f6506df4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildPoint: {fileID: 1589991686520901281}
+  highlightMaterial: {fileID: 2100000, guid: 42cf35a78b6c68a4290f4bb3f42be861, type: 2}
 --- !u!1 &5344583418902214587
 GameObject:
   m_ObjectHideFlags: 0
