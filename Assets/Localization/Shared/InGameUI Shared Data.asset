@@ -63,6 +63,10 @@ MonoBehaviour:
     m_Key: destroy_tips
     m_Metadata:
       m_Items: []
+  - m_Id: 16582637532844032
+    m_Key: move_tips
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

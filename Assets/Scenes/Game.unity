@@ -612,6 +612,18 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+  - tipsName: Move
+    keyboardSprite: {fileID: 21300000, guid: 72f29a9035d5ebc44bb167c0ee519478, type: 3}
+    gamepadSprite: {fileID: 21300000, guid: b79f78b10cb355547b237c75aec086f4, type: 3}
+    localizedActionLabel:
+      m_TableReference:
+        m_TableCollectionName: GUID:62f044348ae9fa345a0e6a2e8199ee41
+      m_TableEntryReference:
+        m_KeyId: 16582637532844032
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   references:
     version: 2
     RefIds: []

@@ -145,6 +145,7 @@ public class ControlsUIManager : MonoBehaviour
         else if (controlsMode == ControlsMode.Edit)
         {
             AddBindingUI("Destroy");
+            AddBindingUI("Move");
             AddBindingUI("Cancel");
         
             RefreshIcons(InputDeviceTracker.Instance.IsUsingGamepad);

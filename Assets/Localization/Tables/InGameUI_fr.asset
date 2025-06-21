@@ -66,6 +66,10 @@ MonoBehaviour:
     m_Localized: "D\xE9truire"
     m_Metadata:
       m_Items: []
+  - m_Id: 16582637532844032
+    m_Localized: "D\xE9placer"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
