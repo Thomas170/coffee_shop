@@ -6,4 +6,5 @@ public class BuildableDefinition : ScriptableObject
     public GameObject previewPrefab;
     public GameObject resultPrefab;
     public int cost;
+    public Sprite icon;
 }

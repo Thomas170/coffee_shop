@@ -1,15 +1,14 @@
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildSelectionMenuController : BaseMenuController
 {
     [SerializeField] private BuildableDefinition[] availableBuilds;
-    [SerializeField] private TextMeshProUGUI[] costTexts;
-    [SerializeField] private TextMeshProUGUI[] costNoMoneyTexts;
-    [SerializeField] private GameObject[] costPanels;
-    [SerializeField] private GameObject[] costNoMoneyPanels;
-    [SerializeField] private GameObject[] noMoneyPanels;
+    [SerializeField] private GameObject cellPrefab;
+    [SerializeField] private Transform cellParent;
 
+    private readonly List<BuildSelectionCell> _cells = new();
     private PlayerBuild _playerBuild;
 
     protected override void Start()
@@ -21,25 +20,34 @@ public class BuildSelectionMenuController : BaseMenuController
 
     private void InitMenu()
     {
-        for (int i = 0; i < menuButtons.Length; i++)
+        foreach (Transform child in cellParent)
         {
-            if (i >= availableBuilds.Length) continue;
-            BuildableDefinition buildableDefinition = availableBuilds[i];
-            
-            int cost = buildableDefinition.cost;
-            costTexts[i].text = $"{cost}";
-            costNoMoneyTexts[i].text = $"{cost}";
-            menuButtons[i].button.interactable = true;
+            Destroy(child.gameObject);
+        }
+        _cells.Clear();
+        menuButtons = new MenuEntry[availableBuilds.Length];
+
+        for (int i = 0; i < availableBuilds.Length; i++)
+        {
+            var buildDef = availableBuilds[i];
+            GameObject cellGoGameObject = Instantiate(cellPrefab, cellParent);
+            var cell = cellGoGameObject.GetComponent<BuildSelectionCell>();
+            cell.Init(buildDef);
+
+            int index = i;
+            var button = cellGoGameObject.GetComponentInChildren<Button>();
+            button.onClick.AddListener(() => OnCellClicked(index));
+
+            _cells.Add(cell);
+            menuButtons[i] = new MenuEntry { button = button, backgroundImage = cell.GetComponent<Image>() };
         }
     }
-
-    public override void ExecuteMenuAction(string buttonName)
+    
+    private void OnCellClicked(int index)
     {
-        int index = SelectedIndex;
         if (index >= 0 && index < availableBuilds.Length)
         {
             BuildableDefinition selectedBuild = availableBuilds[index];
-
             if (CurrencyManager.Instance.coins >= selectedBuild.cost)
             {
                 CloseMenu();
@@ -51,28 +59,26 @@ public class BuildSelectionMenuController : BaseMenuController
     public override void OpenMenu()
     {
         base.OpenMenu();
-        for (int i = 0; i < menuButtons.Length; i++)
+        for (int i = 0; i < _cells.Count; i++)
         {
-            if (i >= availableBuilds.Length) continue;
-            BuildableDefinition buildableDefinition = availableBuilds[i];
-            
-            if (buildableDefinition.cost <= CurrencyManager.Instance.coins)
+            bool canAfford = CurrencyManager.Instance.coins >= availableBuilds[i].cost;
+            _cells[i].UpdateAffordability(canAfford);
+        }
+    }
+
+    public override void ExecuteMenuAction(string buttonName)
+    {
+        int index = SelectedIndex;
+        if (index >= 0 && index < availableBuilds.Length)
+        {
+            BuildableDefinition selectedBuild = availableBuilds[index];
+            if (CurrencyManager.Instance.coins >= selectedBuild.cost)
             {
-                costPanels[i].SetActive(true);
-                costNoMoneyPanels[i].SetActive(false);
-                noMoneyPanels[i].SetActive(false);
-            }
-            else
-            {
-                costPanels[i].SetActive(false);
-                costNoMoneyPanels[i].SetActive(true);
-                noMoneyPanels[i].SetActive(true);
+                CloseMenu();
+                _playerBuild.OnSelectBuild(selectedBuild);
             }
         }
     }
 
-    public override void HandleBack()
-    {
-        CloseMenu();
-    }
+    public override void HandleBack() => CloseMenu();
 }
