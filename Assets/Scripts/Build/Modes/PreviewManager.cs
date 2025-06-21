@@ -35,6 +35,8 @@ public class PreviewManager : MonoBehaviour
 
     public void StartPreview(BuildableDefinition buildable = null, Quaternion rotation = default)
     {
+        if (rotation == default) rotation = Quaternion.identity;
+        
         if (buildable)
         {
             GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, rotation);
