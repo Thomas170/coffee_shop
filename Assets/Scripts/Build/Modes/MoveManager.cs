@@ -27,7 +27,7 @@ public class MoveManager : MonoBehaviour
 
         buildManager.currentBuildable = buildableDefinition;
         editManager.currentBuildable = buildableDefinition;
-        editManager.previewManager.StartPreview(buildableDefinition);
+        editManager.previewManager.StartPreview(buildableDefinition, _toReplace.transform.rotation);
     }
 
     public void ConfirmBuildMove()

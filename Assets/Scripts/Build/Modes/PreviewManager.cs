@@ -33,11 +33,12 @@ public class PreviewManager : MonoBehaviour
         preview.CheckIfValid(buildBlockMask);
     }
 
-    public void StartPreview(BuildableDefinition buildable = null)
+    public void StartPreview(BuildableDefinition buildable = null, Quaternion rotation = default)
     {
         if (buildable)
         {
-            GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, buildable.resultPrefab.transform.rotation);
+            GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, rotation);
+            currentRotation = Mathf.RoundToInt(rotation.eulerAngles.y);
             preview = previewBuild.GetComponent<BuildablePreview>();
             preview.Init(validMaterial, invalidMaterial);
         }
@@ -53,8 +54,6 @@ public class PreviewManager : MonoBehaviour
             Destroy(preview.gameObject);
             preview = null;
         }
-        /*editManager._toReplace = null;
-        editManager._toReplaceData = default;*/
         
         DisplayPreviewGrid(false);
         playerController.playerMovement.moveSpeed = 50f;
