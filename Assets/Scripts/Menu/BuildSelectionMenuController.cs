@@ -29,7 +29,7 @@ public class BuildSelectionMenuController : BaseMenuController
 
         for (int i = 0; i < availableBuilds.Length; i++)
         {
-            var buildDef = availableBuilds[i];
+            BuildableDefinition buildDef = availableBuilds[i];
             GameObject cellGoGameObject = Instantiate(cellPrefab, cellParent);
             var cell = cellGoGameObject.GetComponent<BuildSelectionCell>();
             cell.Init(buildDef);
@@ -37,6 +37,7 @@ public class BuildSelectionMenuController : BaseMenuController
             int index = i;
             var button = cellGoGameObject.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => OnCellClicked(index));
+            button.interactable = CurrencyManager.Instance.coins >= buildDef.cost;
 
             _cells.Add(cell);
             menuButtons[i] = new MenuEntry { button = button, backgroundImage = cell.GetComponent<Image>() };
