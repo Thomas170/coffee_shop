@@ -80,4 +80,32 @@ public class EditManager : BaseBuildMode
 
         return buildObject;
     }
+    
+    public void RefreshDetectedBuilds()
+    {
+        Collider[] colliders = Physics.OverlapBox(previewManager.buildPoint.position, GetComponent<Collider>().bounds.extents, transform.rotation, LayerMask.GetMask("Build"));
+
+        foreach (var col in colliders)
+        {
+            GameObject rootBuild = GetRootBuildObject(col.gameObject);
+            if (rootBuild != null)
+            {
+                HighlightBuild(rootBuild);
+                break;
+            }
+        }
+    }
+    
+    public override void EnterMode(BuildableDefinition buildableDefinition = null)
+    {
+        base.EnterMode(buildableDefinition);
+        RefreshDetectedBuilds();
+    }
+
+    public override void ExitMode()
+    {
+        base.ExitMode();
+        ClearPreviousHighlight();
+        targetedBuild = null;
+    }
 }

@@ -37,7 +37,7 @@ public class PreviewManager : MonoBehaviour
     {
         if (buildable)
         {
-            GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, Quaternion.identity);
+            GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, buildable.resultPrefab.transform.rotation);
             preview = previewBuild.GetComponent<BuildablePreview>();
             preview.Init(validMaterial, invalidMaterial);
         }

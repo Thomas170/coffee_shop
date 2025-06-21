@@ -1,47 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveManager : MonoBehaviour
 {
-    /*public void TryMove()
+    public EditManager editManager;
+    public DeleteManager deleteManager;
+    public BuildManager buildManager;
+    private GameObject _toReplace;
+    private BuildSaveData _toReplaceData;
+
+    
+    public void TryMove()
     {
-        if (_targetedBuild == null) return;
-
-        string prefabName = _targetedBuild.name.Replace("(Clone)", "").Trim();
-        Vector3 position = _targetedBuild.transform.position;
-        Quaternion rotation = _targetedBuild.transform.rotation;
-
-        // On enregistre les infos du build actuel
-        BuildSaveData data = new BuildSaveData
-        {
-            prefabName = prefabName,
-            position = position,
-            rotation = rotation
-        };
-
-        BuildableReference buildableReference = _targetedBuild.GetComponentInChildren<BuildableReference>();
-
-        // Stocker ce build à supprimer plus tard
-        StartMoveMode(_targetedBuild, data, buildableReference.definition);
-        ClearPreviousHighlight();
+        if (editManager.targetedBuild == null) return;
+        BuildableReference buildableReference = editManager.targetedBuild.GetComponentInChildren<BuildableReference>();
+        
+        _toReplace = editManager.targetedBuild;
+        StartMoveBuild(buildableReference.definition);
     }
     
-    public void StartMoveMode(GameObject buildToReplace, BuildSaveData originalData, BuildableDefinition buildableDefinition)
+    private void StartMoveBuild(BuildableDefinition buildableDefinition)
     {
-        playerController.playerBuild.currentMode = BuildModeState.Moving;
-        _toReplace = buildToReplace;
-        _toReplaceData = originalData;
+        editManager.playerController.playerBuild.currentMode = BuildModeState.Moving;
+        GameObject targetOld = editManager.targetedBuild;
+        editManager.ClearPreviousHighlight();
+        editManager.targetedBuild = targetOld;
 
-        _buildManager.currentBuildable = buildableDefinition;
+        buildManager.currentBuildable = buildableDefinition;
+        editManager.currentBuildable = buildableDefinition;
+        editManager.previewManager.StartPreview(buildableDefinition);
+    }
 
-        GameObject previewBuild = Instantiate(_buildManager.currentBuildable.previewPrefab, buildToReplace.transform.position, buildToReplace.transform.rotation);
-        _buildManager._preview = previewBuild.GetComponent<BuildablePreview>();
-        _buildManager._preview.Init(_buildManager.validMaterial, _buildManager.invalidMaterial);
-        _buildManager._currentRotation = Mathf.RoundToInt(buildToReplace.transform.rotation.eulerAngles.y);
-
-        _buildManager.DisplayPreviewGrid(true);
-        _buildManager.playerController.playerMovement.moveSpeed = 40f;
-        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Build); // ou un mode spécifique "Move" si tu veux
-    }*/
+    public void ConfirmBuildMove()
+    {
+        string prefabName = _toReplace.name.Replace("(Clone)", "").Trim();
+        Vector3 position = _toReplace.transform.position;
+        Quaternion rotation = _toReplace.transform.rotation;
+        
+        buildManager.ConfirmBuild();
+        deleteManager.RemoveBuild(prefabName, position, rotation);
+        editManager.targetedBuild = null;
+    }
 }

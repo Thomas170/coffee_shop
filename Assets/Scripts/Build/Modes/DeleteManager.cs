@@ -4,6 +4,7 @@ using UnityEngine;
 public class DeleteManager : MonoBehaviour
 {
     public EditManager editManager;
+    
     public void TryDelete()
     {
         if (editManager.targetedBuild == null) return;
@@ -15,7 +16,7 @@ public class DeleteManager : MonoBehaviour
         RemoveBuild(prefabName, position, rotation);
     }
 
-    private void RemoveBuild(string buildName, Vector3 position, Quaternion rotation)
+    public void RemoveBuild(string buildName, Vector3 position, Quaternion rotation)
     {
         DeleteBuildServerRpc(editManager.targetedBuild.GetComponent<NetworkObject>().NetworkObjectId);
         editManager.ClearPreviousHighlight();
@@ -31,6 +32,7 @@ public class DeleteManager : MonoBehaviour
         save.builds.Remove(data);
         SaveManager.Instance.SaveData(save);
         
+        ClientSpotManager.Instance.RefreshSpotsFromScene();
         editManager.ExitMode();
     }
     

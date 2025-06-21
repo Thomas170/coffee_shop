@@ -40,10 +40,6 @@ public class BuildSelectionMenuController : BaseMenuController
                 CloseMenu();
                 _playerBuild.OnSelectBuild(selectedBuild);
             }
-            else
-            {
-                Debug.Log("Pas assez d'argent !");
-            }
         }
     }
     

@@ -9,6 +9,7 @@ public class PlayerBuild : MonoBehaviour
     public BuildManager buildManager;
     public EditManager editManager;
     public DeleteManager deleteManager;
+    public MoveManager moveManager;
     public PreviewManager previewManager;
     public BuildModeState currentMode = BuildModeState.None;
 
@@ -28,6 +29,7 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.RotateRightAction.performed += OnRotateRight;
         InputReader.Instance.RotateLeftAction.performed += OnRotateLeft;
         InputReader.Instance.ActionAction.performed += OnConfirmBuild;
+        InputReader.Instance.ActionAction.performed += OnMove;
         InputReader.Instance.CancelAction.performed += OnCancel;
         InputReader.Instance.InteractAction.performed += OnInteract;
     }
@@ -39,6 +41,7 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.RotateRightAction.performed -= OnRotateRight;
         InputReader.Instance.RotateLeftAction.performed -= OnRotateLeft;
         InputReader.Instance.ActionAction.performed -= OnConfirmBuild;
+        InputReader.Instance.ActionAction.performed -= OnMove;
         InputReader.Instance.CancelAction.performed -= OnCancel;
         InputReader.Instance.InteractAction.performed -= OnInteract;
     }
@@ -67,6 +70,18 @@ public class PlayerBuild : MonoBehaviour
         {
             buildManager.ConfirmBuild();
         }
+        else if (IsInMoveMode)
+        {
+            moveManager.ConfirmBuildMove();
+        }
+    }
+    
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        if (IsInEditMode)
+        {
+            moveManager.TryMove();
+        }
     }
     
     public void OnSelectBuild(BuildableDefinition selected)
@@ -86,7 +101,7 @@ public class PlayerBuild : MonoBehaviour
         {
             buildManager.ExitMode();
         }
-        else if (IsInEditMode)
+        else if (IsInEditMode || IsInMoveMode)
         {
             editManager.ExitMode();
         }

@@ -9,9 +9,8 @@ public abstract class BaseBuildMode : MonoBehaviour
     public bool isPreviewMode;
     public BuildableDefinition currentBuildable;
     
-    public void EnterMode(BuildableDefinition buildableDefinition = null)
+    public virtual void EnterMode(BuildableDefinition buildableDefinition = null)
     {
-        Debug.Log("Mode Activé : " + buildModeState);
         playerController.playerBuild.currentMode = buildModeState;
         ControlsUIManager.Instance.SetControlsTips(controlsMode);
         currentBuildable = buildableDefinition;
@@ -22,9 +21,8 @@ public abstract class BaseBuildMode : MonoBehaviour
         }
     }
     
-    public void ExitMode()
+    public virtual void ExitMode()
     {
-        Debug.Log("Mode Désactivé : " + buildModeState);
         playerController.playerBuild.currentMode = BuildModeState.None;
         ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
         currentBuildable = null;

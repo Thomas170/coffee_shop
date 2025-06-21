@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 418641112861208588}
   - component: {fileID: 7477783914063680158}
   - component: {fileID: 297584532149371174}
+  - component: {fileID: 7808703266700210302}
   - component: {fileID: 5702082268860395788}
   m_Layer: 12
   m_Name: Player
@@ -1043,6 +1044,7 @@ MonoBehaviour:
   buildManager: {fileID: 418641112861208588}
   editManager: {fileID: 7477783914063680158}
   deleteManager: {fileID: 297584532149371174}
+  moveManager: {fileID: 7808703266700210302}
   previewManager: {fileID: 5702082268860395788}
   currentMode: 0
 --- !u!114 &418641112861208588
@@ -1081,7 +1083,6 @@ MonoBehaviour:
   controlsMode: 2
   isPreviewMode: 1
   currentBuildable: {fileID: 0}
-  buildPoint: {fileID: 1589991686520901281}
   highlightMaterial: {fileID: 2100000, guid: 42cf35a78b6c68a4290f4bb3f42be861, type: 2}
   targetedBuild: {fileID: 0}
 --- !u!114 &297584532149371174
@@ -1097,6 +1098,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editManager: {fileID: 7477783914063680158}
+--- !u!114 &7808703266700210302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144480234650336366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9627259bfde782347a7a15a8125e45c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editManager: {fileID: 7477783914063680158}
+  deleteManager: {fileID: 297584532149371174}
+  buildManager: {fileID: 418641112861208588}
 --- !u!114 &5702082268860395788
 MonoBehaviour:
   m_ObjectHideFlags: 0
