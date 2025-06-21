@@ -5,9 +5,16 @@ public class PlayerBuild : MonoBehaviour
 {
     [SerializeField] private BuildSelectionMenuController buildMenuController;
 
-    private PlayerController _playerController;
-    private BuildManager _buildManager;
-    private EditManager _editManager;
+    public PlayerController playerController;
+    public BuildManager buildManager;
+    public EditManager editManager;
+    public DeleteManager deleteManager;
+    public PreviewManager previewManager;
+    public BuildModeState currentMode = BuildModeState.None;
+
+    public bool IsInBuildMode => currentMode == BuildModeState.Building;
+    public bool IsInEditMode => currentMode == BuildModeState.Edition;
+    public bool IsInMoveMode => currentMode == BuildModeState.Moving;
     
     public void Init()
     {
@@ -16,15 +23,11 @@ public class PlayerBuild : MonoBehaviour
 
     private void Start()
     {
-        _playerController = GetComponent<PlayerController>();
-        _buildManager = GetComponent<BuildManager>();
-        _editManager = GetComponent<EditManager>();
-
         InputReader.Instance.ShopAction.performed += OnShop;
         InputReader.Instance.EditAction.performed += OnEdit;
         InputReader.Instance.RotateRightAction.performed += OnRotateRight;
         InputReader.Instance.RotateLeftAction.performed += OnRotateLeft;
-        InputReader.Instance.ActionAction.performed += OnBuild;
+        InputReader.Instance.ActionAction.performed += OnConfirmBuild;
         InputReader.Instance.CancelAction.performed += OnCancel;
         InputReader.Instance.InteractAction.performed += OnInteract;
     }
@@ -35,67 +38,65 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.EditAction.performed -= OnEdit;
         InputReader.Instance.RotateRightAction.performed -= OnRotateRight;
         InputReader.Instance.RotateLeftAction.performed -= OnRotateLeft;
-        InputReader.Instance.ActionAction.performed -= OnBuild;
+        InputReader.Instance.ActionAction.performed -= OnConfirmBuild;
         InputReader.Instance.CancelAction.performed -= OnCancel;
         InputReader.Instance.InteractAction.performed -= OnInteract;
     }
 
     private void OnShop(InputAction.CallbackContext ctx)
     {
-        if (!_buildManager.IsInBuildMode && !_buildManager.IsInEditMode && _playerController.CanInteract)
+        if (!IsInBuildMode && !IsInEditMode && playerController.CanInteract)
         {
             buildMenuController.OpenMenu();
         }
     }
-    
-    private void OnEdit(InputAction.CallbackContext ctx)
-    {
-        if (!_playerController.CanInteract) return;
-        _buildManager.EnterEditMode();
-    }
 
     private void OnRotateRight(InputAction.CallbackContext ctx)
     {
-        if (_buildManager.IsInBuildMode)
-            _buildManager.RotateRight();
+        previewManager.RotateRight();
     }
 
     private void OnRotateLeft(InputAction.CallbackContext ctx)
     {
-        if (_buildManager.IsInBuildMode)
-            _buildManager.RotateLeft();
+        previewManager.RotateLeft();
     }
 
-    private void OnBuild(InputAction.CallbackContext ctx)
+    private void OnConfirmBuild(InputAction.CallbackContext ctx)
     {
-        if (_buildManager.IsInBuildMode)
+        if (IsInBuildMode)
         {
-            _buildManager.ConfirmBuild();
+            buildManager.ConfirmBuild();
         }
+    }
+    
+    public void OnSelectBuild(BuildableDefinition selected)
+    {
+        buildManager.EnterMode(selected);
+    }
+    
+    private void OnEdit(InputAction.CallbackContext ctx)
+    {
+        if (!playerController.CanInteract) return;
+        editManager.EnterMode();
     }
 
     private void OnCancel(InputAction.CallbackContext ctx)
     {
-        if (_buildManager.IsInBuildMode)
+        if (IsInBuildMode)
         {
-            _buildManager.ExitBuildMode();
+            buildManager.ExitMode();
         }
-        else if (_buildManager.IsInEditMode)
+        else if (IsInEditMode)
         {
-            _buildManager.ExitEditMode();
+            editManager.ExitMode();
         }
     }
     
     private void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (_buildManager.IsInEditMode)
+        if (IsInEditMode)
         {
-            _editManager.TryDelete();
+            deleteManager.TryDelete();
         }
-    }
-
-    public void StartPreviewMode(BuildableDefinition selected)
-    {
-        _buildManager.EnterBuildMode(selected);
     }
 }

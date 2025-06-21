@@ -38,7 +38,7 @@ public class BuildSelectionMenuController : BaseMenuController
             if (CurrencyManager.Instance.coins >= selectedBuild.cost)
             {
                 CloseMenu();
-                _playerBuild.StartPreviewMode(selectedBuild);
+                _playerBuild.OnSelectBuild(selectedBuild);
             }
             else
             {
