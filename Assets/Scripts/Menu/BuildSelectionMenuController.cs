@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class BuildSelectionMenuController : BaseMenuController
 {
     [SerializeField] private BuildableDefinition[] availableBuilds;
+    [SerializeField] private GameObject[] categories;
     [SerializeField] private GameObject cellPrefab;
     [SerializeField] private Transform cellParent;
 

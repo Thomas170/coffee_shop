@@ -7,4 +7,5 @@ public class BuildableDefinition : ScriptableObject
     public GameObject resultPrefab;
     public int cost;
     public Sprite icon;
+    public BuildType type;
 }
