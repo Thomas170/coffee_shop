@@ -148,7 +148,10 @@ public abstract class BaseMenuController : MonoBehaviour
             }
         }
 
-        EventSystem.current.SetSelectedGameObject(menuButtons[SelectedIndex].button.gameObject);
+        if (menuButtons[SelectedIndex] != null)
+        {
+            EventSystem.current.SetSelectedGameObject(menuButtons[SelectedIndex].button.gameObject);
+        }
     }
 
     public virtual void OnSubmit()

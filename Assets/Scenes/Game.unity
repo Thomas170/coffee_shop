@@ -449,6 +449,7 @@ GameObject:
   - component: {fileID: 272424055}
   - component: {fileID: 272424057}
   - component: {fileID: 272424058}
+  - component: {fileID: 272424059}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -745,15 +746,31 @@ MonoBehaviour:
   moveCooldown: 0.2
   isOpen: 0
   backMenuController: {fileID: 0}
+  buildMenuManager: {fileID: 272424059}
+  currentRow: 1
+  currentCol: 0
+--- !u!114 &272424059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272424044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69ebe6606205aa46b7e38df3871dcc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellPrefab: {fileID: 5850545240276864205, guid: c5eeb9afc9ab7e34b9b0faf6a24ba77f, type: 3}
+  cellParent: {fileID: 560966208}
+  buildSelectionMenuController: {fileID: 272424058}
+  categoryButtons:
+  - {fileID: 371785037}
+  - {fileID: 306659847}
   availableBuilds:
   - {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
   - {fileID: 11400000, guid: daf4663551a45e94098e5deb29189717, type: 2}
   - {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
-  categoryButtons:
-  - {fileID: 371785037}
-  - {fileID: 306659847}
-  cellPrefab: {fileID: 5850545240276864205, guid: c5eeb9afc9ab7e34b9b0faf6a24ba77f, type: 3}
-  cellParent: {fileID: 560966208}
 --- !u!1 &306659847
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +785,7 @@ GameObject:
   - component: {fileID: 306659851}
   - component: {fileID: 306659852}
   m_Layer: 5
-  m_Name: Stock
+  m_Name: Decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -875,19 +892,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 306659849}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 272424058}
-        m_TargetAssemblyTypeName: BuildSelectionMenuController, Assembly-CSharp
-        m_MethodName: OnSubmit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &306659852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,7 +1350,7 @@ GameObject:
   - component: {fileID: 371785041}
   - component: {fileID: 371785042}
   m_Layer: 5
-  m_Name: Builds
+  m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1452,19 +1457,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 371785039}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 272424058}
-        m_TargetAssemblyTypeName: BuildSelectionMenuController, Assembly-CSharp
-        m_MethodName: OnSubmit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &371785042
 MonoBehaviour:
   m_ObjectHideFlags: 0
