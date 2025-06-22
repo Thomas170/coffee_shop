@@ -29,8 +29,8 @@ public abstract class BaseMenuController : MonoBehaviour
     protected InputAction SubmitAction;
     protected InputAction BackAction;
 
-    private Action<InputAction.CallbackContext> _submitCallback;
-    private Action<InputAction.CallbackContext> _backCallback;
+    protected Action<InputAction.CallbackContext> SubmitCallback;
+    protected Action<InputAction.CallbackContext> BackCallback;
 
     protected virtual void Start()
     {
@@ -38,8 +38,8 @@ public abstract class BaseMenuController : MonoBehaviour
         SubmitAction   = InputReader.Instance.SubmitAction;
         BackAction     = InputReader.Instance.BackAction;
 
-        _submitCallback = _ => OnSubmit();
-        _backCallback   = _ => HandleBack();
+        SubmitCallback = _ => OnSubmit();
+        BackCallback   = _ => HandleBack();
 
         for (int i = 0; i < menuButtons.Length; i++)
         {
@@ -75,9 +75,9 @@ public abstract class BaseMenuController : MonoBehaviour
     protected virtual void OnDestroy()
     {
         if (SubmitAction != null)
-            SubmitAction.performed -= _submitCallback;
+            SubmitAction.performed -= SubmitCallback;
         if (BackAction != null)
-            BackAction.performed -= _backCallback;
+            BackAction.performed -= BackCallback;
     }
 
     protected virtual void HandleNavigation()
@@ -182,7 +182,7 @@ public abstract class BaseMenuController : MonoBehaviour
 
         NavigateAction.Enable();
         BackAction.Enable();
-        BackAction.performed += _backCallback;
+        BackAction.performed += BackCallback;
         
         StartCoroutine(SubscribeSubmitNextFrame());
     }
@@ -192,7 +192,7 @@ public abstract class BaseMenuController : MonoBehaviour
         yield return null; 
 
         SubmitAction.Enable();
-        SubmitAction.performed += _submitCallback;
+        SubmitAction.performed += SubmitCallback;
         
         isOpen = true;
         SelectedIndex = DefaultSelectedIndex;
@@ -203,8 +203,8 @@ public abstract class BaseMenuController : MonoBehaviour
     {
         if (!isOpen || MenuManager.Instance.IsLocked) return;
 
-        SubmitAction.performed -= _submitCallback;
-        BackAction.performed   -= _backCallback;
+        SubmitAction.performed -= SubmitCallback;
+        BackAction.performed   -= BackCallback;
         
         NavigateAction.Disable();
         SubmitAction.Disable();

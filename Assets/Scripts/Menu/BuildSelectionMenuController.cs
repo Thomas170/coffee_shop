@@ -110,18 +110,6 @@ public class BuildSelectionMenuController : BaseMenuController
         }
     }
 
-    public override void OnSubmit()
-    {
-        if (currentRow == 0)
-        {
-            ExecuteMenuAction(buildMenuManager.CurrentBuildCategory.Category.ToString(name));
-        }
-        else
-        {
-            ExecuteMenuAction(buildMenuManager.CurrentBuildCategory.Definitions[currentCol].name);
-        }
-    }
-
     public override void HandleBack()
     {
         CloseMenu();

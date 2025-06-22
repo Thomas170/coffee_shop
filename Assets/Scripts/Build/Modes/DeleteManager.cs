@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -41,6 +42,10 @@ public class DeleteManager : MonoBehaviour
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var netObj))
         {
+            BuildableDefinition definition = netObj.gameObject.GetComponent<BuildableReference>().definition;
+            int returnMoney = (int)Math.Floor(definition.cost * 0.75f);
+            CurrencyManager.Instance.AddCoins(returnMoney);
+            
             netObj.Despawn();
             Destroy(netObj.gameObject);
         }
