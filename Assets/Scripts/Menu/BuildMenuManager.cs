@@ -64,9 +64,13 @@ public class BuildMenuManager : MonoBehaviour
 
             Button button = categoryObject.GetComponentInChildren<Button>();
             button.name = category.ToString();
-            TextMeshProUGUI textButton = button.transform.Find("CategoryName").GetComponent<TextMeshProUGUI>();
-            textButton.text = category.ToString();
             button.onClick.AddListener(() => buildSelectionMenuController.ExecuteMenuAction(category.ToString()));
+            
+            Image[] childImages = categoryObject.GetComponentsInChildren<Image>(true);
+            foreach (Image childImage in childImages)
+            {
+                childImage.gameObject.SetActive(childImage.gameObject.name == category.ToString());
+            }
 
             buildSelectionMenuController.menuButtons[index] = new MenuEntry
             {
