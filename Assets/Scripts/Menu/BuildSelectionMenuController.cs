@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -18,8 +19,7 @@ public class BuildSelectionMenuController : BaseMenuController
     
     public override void ExecuteMenuAction(string buttonName)
     {
-        Debug.Log("name " + buttonName + " " + System.Enum.TryParse(buttonName, out BuildType _));
-        if (System.Enum.TryParse(buttonName, out BuildType parsedCategory))
+        if (Enum.TryParse(buttonName, out BuildType parsedCategory))
         {
             buildMenuManager.DisplayCategory(parsedCategory);
             return;
@@ -38,7 +38,10 @@ public class BuildSelectionMenuController : BaseMenuController
         buildMenuManager.InitCategories();
         buildMenuManager.DisplayCategory(BuildType.Interactable);
         
-        DefaultSelectedIndex = buildMenuManager.categoryButtons.Length + (currentRow - 1) * CellsPerRow + currentCol;
+        currentRow = 1;
+        currentCol = 0;
+        
+        DefaultSelectedIndex = Enum.GetValues(typeof(BuildType)).Length + (currentRow - 1) * CellsPerRow + currentCol;
         SelectedIndex = DefaultSelectedIndex;
 
         base.OpenMenu();
@@ -66,7 +69,7 @@ public class BuildSelectionMenuController : BaseMenuController
             int dir = move.y < 0 ? 1 : -1;
             currentRow = Mathf.Clamp(currentRow + dir, 0, totalRows - 1);
 
-            maxCol = (currentRow == 0) ? buildMenuManager.categoryButtons.Length - 1 : CellsPerRow - 1;
+            maxCol = (currentRow == 0) ? Enum.GetValues(typeof(BuildType)).Length - 1 : CellsPerRow - 1;
             currentCol = Mathf.Clamp(currentCol, 0, maxCol);
 
             MoveTimer = moveCooldown;
@@ -76,7 +79,7 @@ public class BuildSelectionMenuController : BaseMenuController
         if (Mathf.Abs(move.x) > 0.5f)
         {
             int dir = move.x > 0 ? 1 : -1;
-            maxCol = (currentRow == 0) ? buildMenuManager.categoryButtons.Length - 1 : CellsPerRow - 1;
+            maxCol = (currentRow == 0) ? Enum.GetValues(typeof(BuildType)).Length - 1 : CellsPerRow - 1;
             currentCol = Mathf.Clamp(currentCol + dir, 0, maxCol);
 
             MoveTimer = moveCooldown;
@@ -88,7 +91,7 @@ public class BuildSelectionMenuController : BaseMenuController
     {
         if (currentRow == 0)
         {
-            if (currentCol >= 0 && currentCol < buildMenuManager.categoryButtons.Length)
+            if (currentCol >= 0 && currentCol < Enum.GetValues(typeof(BuildType)).Length)
             {
                 SelectedIndex = currentCol;
                 SelectButton(SelectedIndex);
@@ -101,7 +104,7 @@ public class BuildSelectionMenuController : BaseMenuController
 
             if (cellIndex >= 0 && cellIndex < totalCells)
             {
-                SelectedIndex = buildMenuManager.categoryButtons.Length + cellIndex;
+                SelectedIndex = Enum.GetValues(typeof(BuildType)).Length + cellIndex;
                 SelectButton(SelectedIndex);
             }
         }
@@ -111,7 +114,7 @@ public class BuildSelectionMenuController : BaseMenuController
     {
         if (currentRow == 0)
         {
-            ExecuteMenuAction(buildMenuManager.categoryButtons[currentCol].name);
+            ExecuteMenuAction(buildMenuManager.CurrentBuildCategory.Category.ToString(name));
         }
         else
         {

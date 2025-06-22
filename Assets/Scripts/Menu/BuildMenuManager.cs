@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +9,10 @@ public class BuildMenuManager : MonoBehaviour
     [Header("Setup")]
     [SerializeField] private GameObject cellPrefab;
     [SerializeField] private Transform cellParent;
+    [SerializeField] private GameObject categoryPrefab;
+    [SerializeField] private Transform categoryParent;
     
     public BuildSelectionMenuController buildSelectionMenuController;
-    public GameObject[] categoryButtons;
     public BuildableDefinition[] availableBuilds;
     public readonly List<BuildCategory> Categories = new();
     public BuildCategory CurrentBuildCategory;
@@ -45,25 +47,31 @@ public class BuildMenuManager : MonoBehaviour
         CurrentBuildCategory = buildCategory;
 
         ClearCells();
-        buildSelectionMenuController.menuButtons = new MenuEntry[categoryButtons.Length + buildCategory.Definitions.Count];
+        buildSelectionMenuController.menuButtons = new MenuEntry[Enum.GetValues(typeof(BuildType)).Length + buildCategory.Definitions.Count];
 
         InitCategoriesButtons();
         InitCells(buildCategory);
-        
-        buildSelectionMenuController.currentRow = 1;
-        buildSelectionMenuController.currentCol = 0;
     }
 
     private void InitCategoriesButtons()
     {
-        for (int i = 0; i < categoryButtons.Length; i++)
+        BuildType[] buildTypes = (BuildType[])Enum.GetValues(typeof(BuildType));
+        
+        for (int index = 0; index < buildTypes.Length; index++)
         {
-            Button button = categoryButtons[i].GetComponent<Button>();
-            button.onClick.AddListener(() => buildSelectionMenuController.ExecuteMenuAction(button.name));
-            buildSelectionMenuController.menuButtons[i] = new MenuEntry
+            BuildType category = buildTypes[index];
+            GameObject categoryObject = Instantiate(categoryPrefab, categoryParent);
+
+            Button button = categoryObject.GetComponentInChildren<Button>();
+            button.name = category.ToString();
+            TextMeshProUGUI textButton = button.transform.Find("CategoryName").GetComponent<TextMeshProUGUI>();
+            textButton.text = category.ToString();
+            button.onClick.AddListener(() => buildSelectionMenuController.ExecuteMenuAction(category.ToString()));
+
+            buildSelectionMenuController.menuButtons[index] = new MenuEntry
             {
                 button = button,
-                backgroundImage = button.GetComponent<Image>()
+                backgroundImage = categoryObject.GetComponent<Image>()
             };
         }
     }
@@ -81,7 +89,7 @@ public class BuildMenuManager : MonoBehaviour
             button.onClick.AddListener(() => buildSelectionMenuController.ExecuteMenuAction(cellSelection.GetBuildable().name));
             button.interactable = CurrencyManager.Instance.coins >= definition.cost;
 
-            buildSelectionMenuController.menuButtons[categoryButtons.Length + index] = new MenuEntry
+            buildSelectionMenuController.menuButtons[Enum.GetValues(typeof(BuildType)).Length + index] = new MenuEntry
             {
                 button = button,
                 backgroundImage = cellObject.GetComponent<Image>()
@@ -96,14 +104,7 @@ public class BuildMenuManager : MonoBehaviour
     {
         foreach (MenuEntry entry in buildSelectionMenuController.menuButtons)
         {
-            if (entry.button && !Enum.TryParse<BuildType>(entry.button.name, out _))
-            {
-                Destroy(entry.button.gameObject);
-            }
-            else
-            {
-                entry.button.onClick.RemoveAllListeners();
-            }
+            Destroy(entry.button.gameObject);
         }
 
         buildSelectionMenuController.menuButtons = Array.Empty<MenuEntry>();
