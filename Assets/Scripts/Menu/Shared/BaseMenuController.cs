@@ -22,6 +22,7 @@ public abstract class BaseMenuController : MonoBehaviour
     public BaseMenuController backMenuController;
 
     protected int SelectedIndex;
+    protected int DefaultSelectedIndex;
     protected float MoveTimer;
 
     protected InputAction NavigateAction;
@@ -59,7 +60,7 @@ public abstract class BaseMenuController : MonoBehaviour
 
         if (isOpen)
         {
-            SelectButton(0, true);
+            SelectButton(DefaultSelectedIndex, true);
             OpenMenu();
         }
         menuObject.SetActive(isOpen);
@@ -191,8 +192,8 @@ public abstract class BaseMenuController : MonoBehaviour
         SubmitAction.performed += _submitCallback;
         
         isOpen = true;
-        SelectedIndex = 0;
-        SelectButton(0);
+        SelectedIndex = DefaultSelectedIndex;
+        SelectButton(DefaultSelectedIndex);
     }
 
     public virtual void CloseMenu()

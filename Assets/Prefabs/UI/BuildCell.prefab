@@ -393,6 +393,7 @@ GameObject:
   - component: {fileID: 7727224346036294462}
   - component: {fileID: 4061122766124357344}
   - component: {fileID: 4317999210319643497}
+  - component: {fileID: 1006016148397286012}
   m_Layer: 5
   m_Name: BuildCell
   m_TagString: Untagged
@@ -559,6 +560,19 @@ MonoBehaviour:
   noMoneyOverlay: {fileID: 4733323027330879903}
   affordableColor: {r: 0.6313726, g: 0.32941177, b: 0.043137256, a: 1}
   unaffordableColor: {r: 0.91764706, g: 0.2, b: 0.07450981, a: 1}
+--- !u!114 &1006016148397286012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5850545240276864205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d55ac68f4f6cd44beee525c4fa08d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {fileID: 0}
 --- !u!1 &5859772612909814764
 GameObject:
   m_ObjectHideFlags: 0
