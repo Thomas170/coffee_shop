@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 541d0b46ad4d53f4888ea007c2258679, type: 3}
-  m_Name: Bar
+  m_Name: Pilar1
   m_EditorClassIdentifier: 
-  previewPrefab: {fileID: 1024896412442084948, guid: 07bb34115dfe1074a859b2bf53a2d2ba, type: 3}
-  resultPrefab: {fileID: 9113234455451761783, guid: b7c05bd6291e1e549b610575f4293283, type: 3}
-  cost: 500
-  icon: {fileID: 21300000, guid: 00eee02f4d26fb74aba9ec695651a190, type: 3}
-  type: 0
+  previewPrefab: {fileID: 1064639740810868314, guid: 83a71a5dadb7ced4d86ed260df012726, type: 3}
+  resultPrefab: {fileID: 3268002013391275898, guid: 3b1546c877e62ee46ba39934ac22c5d4, type: 3}
+  cost: 10
+  icon: {fileID: 21300000, guid: ac2aa49fb6660c34d88f5306f28ed2f2, type: 3}
+  type: 2

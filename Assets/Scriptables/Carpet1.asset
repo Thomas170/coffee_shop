@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 541d0b46ad4d53f4888ea007c2258679, type: 3}
-  m_Name: Bar
+  m_Name: Carpet1
   m_EditorClassIdentifier: 
-  previewPrefab: {fileID: 1024896412442084948, guid: 07bb34115dfe1074a859b2bf53a2d2ba, type: 3}
-  resultPrefab: {fileID: 9113234455451761783, guid: b7c05bd6291e1e549b610575f4293283, type: 3}
-  cost: 500
-  icon: {fileID: 21300000, guid: 00eee02f4d26fb74aba9ec695651a190, type: 3}
-  type: 0
+  previewPrefab: {fileID: 429116195687303791, guid: 337a056db8dfda440850c0b10d921d99, type: 3}
+  resultPrefab: {fileID: 6731257731008962854, guid: 04d1cbb1a828565479811717a2b5e4c8, type: 3}
+  cost: 10
+  icon: {fileID: 21300000, guid: 8c2670900cce6fd45a6d7b32ccc347de, type: 3}
+  type: 2
