@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541d0b46ad4d53f4888ea007c2258679, type: 3}
+  m_Name: Sink
+  m_EditorClassIdentifier: 
+  previewPrefab: {fileID: 9152750214502972068, guid: 89965a9d90829654cad77a41927cf80f, type: 3}
+  resultPrefab: {fileID: 3655430237413643898, guid: a90be72cb094eac4bb620fdf9e81971b, type: 3}
+  cost: 10
+  icon: {fileID: 21300000, guid: eceae78e4c13d3448afc6aa8622e8a9b, type: 3}
+  type: 0
