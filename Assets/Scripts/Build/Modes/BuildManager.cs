@@ -31,8 +31,6 @@ public class BuildManager : BaseBuildMode
         };
 
         SaveData save = SaveManager.Instance.LoadCurrentSlot();
-        CurrencyManager.Instance.RemoveCoins(currentBuildable.cost);
-
         save.builds.Add(data);
         SaveManager.Instance.SaveData(save);
 
