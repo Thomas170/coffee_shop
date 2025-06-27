@@ -201,7 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9003489478465203042}
   m_Layer: 14
-  m_Name: crate
+  m_Name: CrateModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

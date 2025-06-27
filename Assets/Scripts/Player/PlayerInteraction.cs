@@ -8,27 +8,43 @@ public class PlayerInteraction : MonoBehaviour
     private InteractableBase _currentInteractable;
     private ClientController _currentClient;
     private ItemBase _currentPickable;
+    private bool _isHoldingAction;
 
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
         InputReader.Instance.InteractAction.performed += OnInteract;
-        InputReader.Instance.ActionAction.performed += OnAction;
+        InputReader.Instance.ActionAction.started += OnActionStarted;
+        InputReader.Instance.ActionAction.canceled += OnActionCanceled;
     }
 
     private void OnDestroy()
     {
         InputReader.Instance.InteractAction.performed -= OnInteract;
-        InputReader.Instance.ActionAction.performed -= OnAction;
+        InputReader.Instance.ActionAction.started -= OnActionStarted;
+        InputReader.Instance.ActionAction.canceled -= OnActionCanceled;
+    }
+    
+    private void Update()
+    {
+        if (_isHoldingAction && playerController.CanInteract && _currentInteractable is ManualInteractableBase manual)
+        {
+            manual.Action(true);
+        }
+    }
+    
+    private void OnActionStarted(InputAction.CallbackContext ctx)
+    {
+        _isHoldingAction = true;
     }
 
-    private void OnAction(InputAction.CallbackContext ctx)
+    private void OnActionCanceled(InputAction.CallbackContext ctx)
     {
-        if (!playerController.CanInteract) return;
+        _isHoldingAction = false;
 
-        if (_currentInteractable is ManualInteractableBase manualInteractableBase)
+        if (_currentInteractable is ManualInteractableBase manual)
         {
-            manualInteractableBase.Action();
+            manual.Action(false);
         }
     }
 
@@ -49,7 +65,7 @@ public class PlayerInteraction : MonoBehaviour
     
     private void InteractWithItem(PlayerCarry playerCarry)
     {
-        if (_currentInteractable is { RequiresHold: false, isInUse: false })
+        if (_currentInteractable is { isInUse: false })
         {
             _currentInteractable.TryPutItem(playerCarry.GetCarriedObject);
         }
