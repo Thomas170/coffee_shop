@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class AutoInteractableBase : InteractableBase
 {
     [SerializeField] protected ProgressGaugeUI gaugeUI;
-    private readonly float _interactionDuration = 5f;
+    private const float InteractionDuration = 5f;
     private Coroutine _activeCoroutine;
     
     public override bool RequiresHold => false;
@@ -14,13 +14,13 @@ public abstract class AutoInteractableBase : InteractableBase
     {
         base.StartAction();
         _activeCoroutine = StartCoroutine(HandleAction());
-        UpdateGaugeClientRpc(true, _interactionDuration);
+        UpdateGaugeClientRpc(true, InteractionDuration);
     }
 
     private IEnumerator HandleAction()
     {
         float elapsed = 0f;
-        while (elapsed < _interactionDuration)
+        while (elapsed < InteractionDuration)
         {
             yield return null;
             elapsed += Time.deltaTime;
