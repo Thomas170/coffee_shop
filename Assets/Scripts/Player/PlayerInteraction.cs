@@ -88,7 +88,7 @@ public class PlayerInteraction : MonoBehaviour
                 _currentPickable = null;
             }
         }
-        else if (_currentInteractable && _currentInteractable.currentItem)
+        else if (_currentInteractable)
         {
             _currentInteractable.CollectCurrentItem();
         }

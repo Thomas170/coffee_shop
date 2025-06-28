@@ -7,12 +7,12 @@ public abstract class InteractableBase : NetworkBehaviour
     [SerializeField] protected ItemType requiredItemType = ItemType.None;
     [SerializeField] protected GameObject resultItemPrefab;
 
-    public ItemBase currentItem;
-    public bool isInUse;
+    [HideInInspector] public ItemBase currentItem;
+    [HideInInspector] public bool isInUse;
 
     public virtual bool RequiresHold => false;
     
-    public void TryPutItem(ItemBase itemToUse)
+    public virtual void TryPutItem(ItemBase itemToUse)
     {
         if (IsValidItemToUse(itemToUse))
         {
@@ -20,7 +20,7 @@ public abstract class InteractableBase : NetworkBehaviour
         }
     }
 
-    public void CollectCurrentItem()
+    public virtual void CollectCurrentItem()
     {
         if (currentItem == null) return;
 
