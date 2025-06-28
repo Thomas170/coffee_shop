@@ -292,11 +292,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayPoint: {fileID: 9136419417834827864}
-  requiredItemType: 4
   resultItemPrefab: {fileID: 5122522811443459769, guid: 32ac508fd0e838e49ade85902b474c04, type: 3}
-  currentItem: {fileID: 0}
+  hasAction: 1
+  storeItems:
+  - itemType: 5
+    maxAmount: 1
+    currentAmount: 0
+  itemStoreToDisplay: 0
+  currentDisplayItem: {fileID: 0}
   isInUse: 0
-  requiredHoldDuration: 10
+  isReady: 0
+  requiredHoldDuration: 5
   gaugeUI: {fileID: 8111459613710645350}
 --- !u!114 &8111459613710645350
 MonoBehaviour:

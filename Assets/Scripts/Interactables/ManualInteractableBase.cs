@@ -2,18 +2,15 @@ using UnityEngine;
 
 public abstract class ManualInteractableBase : InteractableBase
 {
-    [SerializeField] protected float requiredHoldDuration = 3f;
+    [SerializeField] protected float requiredHoldDuration = 10f;
     [SerializeField] protected ProgressGaugeUI gaugeUI;
 
     private float _holdProgress;
-    private bool isPlayerInteracting = false;
 
     public override bool RequiresHold => true;
 
     public void Action(bool isHolding)
     {
-        isPlayerInteracting = isHolding;
-
         if (isHolding && isInUse)
         {
             _holdProgress += Time.deltaTime;
@@ -23,10 +20,6 @@ public abstract class ManualInteractableBase : InteractableBase
             {
                 OnActionComplete();
             }
-        }
-        else if (!isHolding)
-        {
-            isPlayerInteracting = false;
         }
     }
 
@@ -41,7 +34,6 @@ public abstract class ManualInteractableBase : InteractableBase
     {
         base.StopAction();
         _holdProgress = 0f;
-        isPlayerInteracting = false;
         gaugeUI.Hide();
     }
 }

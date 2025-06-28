@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemBase : NetworkBehaviour
 {
-    public ItemType itemType = ItemType.None;
+    public ItemType itemType = ItemType.Any;
     private readonly float _itemMass = 100000f;
     public ulong? CurrentHolderClientId;
 

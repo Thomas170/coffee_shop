@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1837875179
+  GlobalObjectIdHash: 2571371497
   InScenePlacedSourceGlobalObjectIdHash: 75052282
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -666,10 +666,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayPoint: {fileID: 7593696598201127479}
-  requiredItemType: 1
   resultItemPrefab: {fileID: 7705437841392033311, guid: 5cdcadbfe855e1c488359a6b0b555342, type: 3}
-  currentItem: {fileID: 0}
+  hasAction: 1
+  storeItems:
+  - itemType: 2
+    maxAmount: 1
+    currentAmount: 0
+  - itemType: 6
+    maxAmount: 5
+    currentAmount: 0
+  itemStoreToDisplay: 2
+  currentDisplayItem: {fileID: 0}
   isInUse: 0
+  isReady: 0
   gaugeUI: {fileID: 4739239950357302138}
 --- !u!114 &4739239950357302138
 MonoBehaviour:

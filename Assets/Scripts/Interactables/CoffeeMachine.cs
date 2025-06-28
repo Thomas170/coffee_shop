@@ -3,7 +3,12 @@ using UnityEngine;
 public class CoffeeMachine : AutoInteractableBase
 {
     private AudioSource _coffeeLoopSource;
-    
+
+    protected override bool ShouldDisplayItem(ItemBase item)
+    {
+        return item.itemType == ItemType.CupEmpty;
+    }
+
     protected override void StartAction()
     {
         base.StartAction();
@@ -14,9 +19,12 @@ public class CoffeeMachine : AutoInteractableBase
     {
         base.StopAction();
 
-        SoundManager.Instance.StopSound(_coffeeLoopSource);
-        _coffeeLoopSource = null;
+        if (_coffeeLoopSource)
+        {
+            SoundManager.Instance.StopSound(_coffeeLoopSource);
+            _coffeeLoopSource = null;
+        }
+
         SoundManager.Instance.Play3DSound(SoundManager.Instance.coffeeMachineEnd, transform.position);
     }
-
 }
