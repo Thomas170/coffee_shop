@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541d0b46ad4d53f4888ea007c2258679, type: 3}
+  m_Name: DishCabinet
+  m_EditorClassIdentifier: 
+  previewPrefab: {fileID: 225114351404883123, guid: ab7877e3d51a04a4289ee9bd31719404, type: 3}
+  resultPrefab: {fileID: 4940488615535488651, guid: 162460764ccfede49927be94fef38f5f, type: 3}
+  cost: 10
+  icon: {fileID: 21300000, guid: a00959d09d55a794f81c41014917f579, type: 3}
+  type: 1

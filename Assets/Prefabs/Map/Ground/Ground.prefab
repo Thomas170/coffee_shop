@@ -144,6 +144,10 @@ PrefabInstance:
       value: PreviewCell (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
       propertyPath: m_TagString
       value: GridCell
       objectReference: {fileID: 0}
@@ -220,6 +224,10 @@ PrefabInstance:
     - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
       propertyPath: m_Name
       value: PreviewCell (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
       propertyPath: m_TagString
@@ -300,6 +308,10 @@ PrefabInstance:
       value: PreviewCell (2)
       objectReference: {fileID: 0}
     - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
       propertyPath: m_TagString
       value: GridCell
       objectReference: {fileID: 0}
@@ -376,6 +388,10 @@ PrefabInstance:
     - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
       propertyPath: m_Name
       value: PreviewCell
+      objectReference: {fileID: 0}
+    - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2423808791785300346, guid: 470d62f049703b749ae624ec742d6300, type: 3}
       propertyPath: m_TagString
