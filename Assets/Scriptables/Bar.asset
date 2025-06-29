@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 541d0b46ad4d53f4888ea007c2258679, type: 3}
   m_Name: Bar
   m_EditorClassIdentifier: 
-  previewPrefab: {fileID: 1024896412442084948, guid: 07bb34115dfe1074a859b2bf53a2d2ba, type: 3}
+  previewPrefab: {fileID: 8754907799081725536, guid: 07bb34115dfe1074a859b2bf53a2d2ba, type: 3}
   resultPrefab: {fileID: 9113234455451761783, guid: b7c05bd6291e1e549b610575f4293283, type: 3}
   cost: 500
   icon: {fileID: 21300000, guid: 00eee02f4d26fb74aba9ec695651a190, type: 3}
