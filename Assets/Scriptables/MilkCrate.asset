@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MilkCrate
   m_EditorClassIdentifier: 
   previewPrefab: {fileID: 5048554223820011590, guid: 7d2445e7f5dddc24daaa58ef19c79b04, type: 3}
-  resultPrefab: {fileID: 4050236047106986822, guid: c6efdcf90dd8bf746827548d47764f98, type: 3}
+  resultPrefab: {fileID: 9026477261637731672, guid: f0b773df23ae64f4da5a2e5c2f37ff6e, type: 3}
   cost: 10
   icon: {fileID: 21300000, guid: b31bf7a19f85a0747965cb197a34ea2d, type: 3}
   type: 1
