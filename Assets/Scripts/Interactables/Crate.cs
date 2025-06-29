@@ -40,9 +40,4 @@ public class Crate : InteractableBase
             }
         }
     }
-
-    protected override bool ShouldDisplayItem(ItemBase item)
-    {
-        return false;
-    }
 }

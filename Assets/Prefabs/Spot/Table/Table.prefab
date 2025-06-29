@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1600486089291419640}
   - component: {fileID: 4321053953629788990}
   - component: {fileID: 8032954359134294005}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: TableModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3351031354
+  GlobalObjectIdHash: 3995195058
   InScenePlacedSourceGlobalObjectIdHash: 3793489187
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
