@@ -33,7 +33,6 @@ public abstract class AutoInteractableBase : InteractableBase
     {
         base.StopAction();
         
-        Debug.Log(6);
         if (_activeCoroutine != null)
         {
             StopCoroutine(_activeCoroutine);

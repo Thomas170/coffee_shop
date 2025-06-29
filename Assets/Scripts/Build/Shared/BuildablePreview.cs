@@ -25,12 +25,9 @@ public class BuildablePreview : MonoBehaviour
 
     public void CheckIfValid(LayerMask blockMask)
     {
-        Debug.Log(1);
         Collider[] colliders = Physics.OverlapBox(transform.position, transform.localScale / 2f, transform.rotation, blockMask);
-        Debug.Log(2);
         IsValid = colliders.Length == 0;
 
-        Debug.Log(colliders.Length);
         foreach (MeshRenderer rend in _renderers)
         {
             Material[] mats = rend.materials;
