@@ -205,11 +205,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayPoint: {fileID: 0}
-  requiredItemType: 0
-  resultItemPrefab: {fileID: 364796270339367464, guid: d413985abc3e60747a77ac27e4d1144b, type: 3}
-  currentItem: {fileID: 0}
+  resultItemPrefab: {fileID: 364796270339367464, guid: c3bd54f153da42147961bdfb413d7db9, type: 3}
+  hasAction: 0
+  storeItems: []
+  itemStoreToDisplay: 0
+  currentDisplayItem: {fileID: 0}
   isInUse: 0
-  resultItemPrefab: {fileID: 0}
+  isReady: 0
 --- !u!1 &7621921996688178633
 GameObject:
   m_ObjectHideFlags: 0

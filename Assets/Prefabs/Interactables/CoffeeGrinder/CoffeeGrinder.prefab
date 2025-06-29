@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayPoint: {fileID: 9136419417834827864}
-  resultItemPrefab: {fileID: 5122522811443459769, guid: 32ac508fd0e838e49ade85902b474c04, type: 3}
+  resultItemPrefab: {fileID: 5122522811443459769, guid: 565f28783ce9b754b8f58bf4a6628cb0, type: 3}
   hasAction: 1
   storeItems:
   - itemType: 5

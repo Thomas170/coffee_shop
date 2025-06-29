@@ -3,8 +3,12 @@ public enum ItemType
     None,
     Any,
     CupEmpty,
-    CupFull,
+    CupCoffee,
     CupDirty,
     CoffeeBeans,
     CoffeePowder,
+    Sugar,
+    Milk,
+    CupCoffeeMilk,
+    CupCoffeeSugar,
 }

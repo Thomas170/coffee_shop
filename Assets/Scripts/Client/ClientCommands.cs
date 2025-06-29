@@ -132,6 +132,6 @@ public class ClientCommands : NetworkBehaviour
     
     private bool IsValidItemToUse(ItemBase itemToUse)
     {
-        return itemToUse != null && itemToUse.itemType == ItemType.CupFull;
+        return itemToUse != null && itemToUse.itemType == ItemType.CupCoffee;
     }
 }
