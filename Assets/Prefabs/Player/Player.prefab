@@ -739,7 +739,6 @@ GameObject:
   - component: {fileID: 5246275239938511511}
   - component: {fileID: 4629270966192239099}
   - component: {fileID: 498252903245833344}
-  - component: {fileID: 691930422113105251}
   - component: {fileID: 3806718764563324009}
   - component: {fileID: 9029353962558096670}
   - component: {fileID: 7250622449252382628}
@@ -776,6 +775,7 @@ Transform:
   m_Children:
   - {fileID: 6619773877743678096}
   - {fileID: 8079524428251938336}
+  - {fileID: 2258968468618478914}
   - {fileID: 1589991686520901281}
   - {fileID: 4574088814322712732}
   - {fileID: 220811139444796870}
@@ -896,27 +896,6 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!65 &691930422113105251
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4144480234650336366}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4, y: 10, z: 6}
-  m_Center: {x: 0, y: 0, z: 8}
 --- !u!114 &3806718764563324009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -952,6 +931,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 8907663148894752108}
+  boxHalfExtents: {x: 1, y: 8, z: 5}
+  interactionDistance: 4
+  interactionMask:
+    serializedVersion: 2
+    m_Bits: 26624
+  rayOrigin: {fileID: 2258968468618478914}
 --- !u!114 &5841634399247074232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,6 +1119,37 @@ MonoBehaviour:
   invalidMaterial: {fileID: 2100000, guid: d9dd016d65ec17744a90e272ee795f35, type: 2}
   buildPoint: {fileID: 1589991686520901281}
   playerController: {fileID: 8907663148894752108}
+--- !u!1 &4189622039890550404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2258968468618478914}
+  m_Layer: 12
+  m_Name: InteractPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2258968468618478914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4189622039890550404}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7846962033894390644}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5344583418902214587
 GameObject:
   m_ObjectHideFlags: 0

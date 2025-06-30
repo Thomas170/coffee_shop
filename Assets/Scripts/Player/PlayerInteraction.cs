@@ -9,6 +9,11 @@ public class PlayerInteraction : MonoBehaviour
     private ClientController _currentClient;
     private ItemBase _currentPickable;
     private bool _isHoldingAction;
+    
+    [SerializeField] private Vector3 boxHalfExtents = new(1f, 8f, 5f);
+    [SerializeField] private float interactionDistance = 4f;
+    [SerializeField] private LayerMask interactionMask;
+    [SerializeField] private Transform rayOrigin;
 
     private void Start()
     {
@@ -31,6 +36,8 @@ public class PlayerInteraction : MonoBehaviour
         {
             manual.Action(true);
         }
+
+        DetectInteractableInFront();
     }
     
     private void OnActionStarted(InputAction.CallbackContext ctx)
@@ -94,35 +101,51 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void DetectInteractableInFront()
     {
-        if (other.TryGetComponent(out InteractableBase interactable))
+        Vector3 center = rayOrigin.position + rayOrigin.forward * (interactionDistance * 0.5f);
+        Quaternion orientation = rayOrigin.rotation;
+
+        Collider[] hits = Physics.OverlapBox(center, boxHalfExtents, orientation, interactionMask);
+
+        _currentInteractable = null;
+        _currentPickable = null;
+        _currentClient = null;
+
+        float closestDistance = float.MaxValue;
+
+        foreach (var hit in hits)
         {
-            _currentInteractable = interactable;
-        }
-        else if (other.TryGetComponent(out ItemBase item) && !GetComponent<PlayerCarry>().IsCarrying)
-        {
-            _currentPickable = item;
-        }
-        else if (other.TryGetComponent(out ClientController client))
-        {
-            _currentClient = client;
+            float dist = Vector3.Distance(transform.position, hit.transform.position);
+
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+
+                if (hit.TryGetComponent(out InteractableBase interactable))
+                {
+                    _currentInteractable = interactable;
+                }
+                else if (hit.TryGetComponent(out ItemBase item) && !GetComponent<PlayerCarry>().IsCarrying)
+                {
+                    _currentPickable = item;
+                }
+                else if (hit.TryGetComponent(out ClientController client))
+                {
+                    _currentClient = client;
+                }
+            }
         }
     }
-
-    private void OnTriggerExit(Collider other)
+    
+    private void OnDrawGizmosSelected()
     {
-        if (other.TryGetComponent(out InteractableBase interactable) && interactable == _currentInteractable)
-        {
-            _currentInteractable = null;
-        }
-        else if (other.TryGetComponent(out ItemBase item) && item == _currentPickable)
-        {
-            _currentPickable = null;
-        }
-        else if (other.TryGetComponent(out ClientController client) && client == _currentClient)
-        {
-            _currentClient = null;
-        }
+        if (rayOrigin == null) return;
+
+        Gizmos.color = Color.cyan;
+
+        Vector3 center = rayOrigin.position + rayOrigin.forward * (interactionDistance * 0.5f);
+        Gizmos.matrix = Matrix4x4.TRS(center, rayOrigin.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, boxHalfExtents * 2f);
     }
 }
