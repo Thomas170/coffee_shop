@@ -15,9 +15,16 @@ public abstract class BaseBuildMode : MonoBehaviour
         ControlsUIManager.Instance.SetControlsTips(controlsMode);
         currentBuildable = buildableDefinition;
         
-        if (isPreviewMode && currentBuildable)
+        if (isPreviewMode)
         {
-            previewManager.StartPreview(currentBuildable, currentBuildable.previewPrefab.transform.rotation);
+            if (currentBuildable)
+            {
+                previewManager.StartPreview(currentBuildable, currentBuildable.previewPrefab.transform.rotation);
+            }
+            else
+            {
+                previewManager.StartPreview();
+            }
         }
     }
     

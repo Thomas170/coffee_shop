@@ -1070,6 +1070,11 @@ MonoBehaviour:
   currentBuildable: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: 42cf35a78b6c68a4290f4bb3f42be861, type: 2}
   targetedBuild: {fileID: 0}
+  interactionDistance: 4
+  buildMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  rayOrigin: {fileID: 2258968468618478914}
 --- !u!114 &297584532149371174
 MonoBehaviour:
   m_ObjectHideFlags: 0

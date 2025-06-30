@@ -7,26 +7,50 @@ public class EditManager : BaseBuildMode
     public GameObject targetedBuild;
 
     private readonly Dictionary<MeshRenderer, Material[]> _originalMaterials = new();
+    private Vector3 boxHalfExtents = new(1f, 8f, 5f);
+    [SerializeField] private float interactionDistance = 4f;
+    [SerializeField] private LayerMask buildMask;
+    [SerializeField] private Transform rayOrigin;
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
         if (!playerController.playerBuild.IsInEditMode) return;
-
-        GameObject rootBuild = GetRootBuildObject(other.gameObject);
-        if (rootBuild != null)
-        {
-            HighlightBuild(rootBuild);
-        }
+        DetectBuildInFront();
     }
-
-    private void OnTriggerExit(Collider other)
+    
+    private void DetectBuildInFront()
     {
-        if (!playerController.playerBuild.IsInEditMode) return;
+        Vector3 center = rayOrigin.position + rayOrigin.forward * (interactionDistance * 0.5f);
+        Quaternion orientation = rayOrigin.rotation;
 
-        GameObject rootBuild = GetRootBuildObject(other.gameObject);
-        if (rootBuild != null && rootBuild == targetedBuild)
+        Collider[] hits = Physics.OverlapBox(center, boxHalfExtents, orientation, buildMask);
+
+        GameObject nearestBuild = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (var col in hits)
         {
-            ClearPreviousHighlight();
+            GameObject rootBuild = GetRootBuildObject(col.gameObject);
+            if (!rootBuild) continue;
+
+            float dist = Vector3.Distance(transform.position, rootBuild.transform.position);
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+                nearestBuild = rootBuild;
+            }
+        }
+
+        if (nearestBuild != targetedBuild)
+        {
+            if (nearestBuild)
+            {
+                HighlightBuild(nearestBuild);
+            }
+            else
+            {
+                ClearPreviousHighlight();
+            }
         }
     }
 
@@ -56,11 +80,11 @@ public class EditManager : BaseBuildMode
 
     public void ClearPreviousHighlight()
     {
-        if (targetedBuild == null) return;
+        if (!targetedBuild) return;
 
         foreach (var kvp in _originalMaterials)
         {
-            if (kvp.Key != null)
+            if (kvp.Key)
                 kvp.Key.materials = kvp.Value;
         }
 
@@ -74,32 +98,11 @@ public class EditManager : BaseBuildMode
         
         while (buildObject.layer == LayerMask.NameToLayer("Build"))
         {
-            if (buildObject.transform.parent == null) break;
+            if (!buildObject.transform.parent) break;
             buildObject = buildObject.transform.parent.gameObject;
         }
 
         return buildObject;
-    }
-    
-    public void RefreshDetectedBuilds()
-    {
-        Collider[] colliders = Physics.OverlapBox(previewManager.buildPoint.position, GetComponent<Collider>().bounds.extents, transform.rotation, LayerMask.GetMask("Build"));
-
-        foreach (var col in colliders)
-        {
-            GameObject rootBuild = GetRootBuildObject(col.gameObject);
-            if (rootBuild != null)
-            {
-                HighlightBuild(rootBuild);
-                break;
-            }
-        }
-    }
-    
-    public override void EnterMode(BuildableDefinition buildableDefinition = null)
-    {
-        base.EnterMode(buildableDefinition);
-        RefreshDetectedBuilds();
     }
 
     public override void ExitMode()
