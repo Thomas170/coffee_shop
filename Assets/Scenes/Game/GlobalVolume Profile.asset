@@ -58,16 +58,38 @@ MonoBehaviour:
     m_Value: 0.5
   contrast:
     m_OverrideState: 1
-    m_Value: -2
+    m_Value: -5
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: -56
   saturation:
     m_OverrideState: 1
     m_Value: 5
+--- !u!114 &-2727646764471954307
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
+  m_Name: LiftGammaGain
+  m_EditorClassIdentifier: 
+  active: 1
+  lift:
+    m_OverrideState: 1
+    m_Value: {x: 0.93426, y: 0.96943367, z: 1, w: 0}
+  gamma:
+    m_OverrideState: 1
+    m_Value: {x: 0.95402014, y: 0.96782446, z: 1, w: 0}
+  gain:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
 --- !u!114 &-1394859962454524165
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -82,8 +104,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   mode:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 2
   gaussianStart:
     m_OverrideState: 0
     m_Value: 10
@@ -97,17 +119,17 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   focusDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 10
   aperture:
-    m_OverrideState: 0
-    m_Value: 5.6
+    m_OverrideState: 1
+    m_Value: 8
   focalLength:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 50
   bladeCount:
-    m_OverrideState: 0
-    m_Value: 5
+    m_OverrideState: 1
+    m_Value: 6
   bladeCurvature:
     m_OverrideState: 0
     m_Value: 1
@@ -158,6 +180,7 @@ MonoBehaviour:
   - {fileID: -8708264190284729119}
   - {fileID: -1076512985406167292}
   - {fileID: -1394859962454524165}
+  - {fileID: -2727646764471954307}
 --- !u!114 &7414282969827269651
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -172,8 +195,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   color:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
@@ -182,7 +205,7 @@ MonoBehaviour:
     m_Value: 0.1
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 1
   rounded:
     m_OverrideState: 0
     m_Value: 0
@@ -207,7 +230,7 @@ MonoBehaviour:
     m_Value: 1.2
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.5
   scatter:
     m_OverrideState: 1
     m_Value: 1
