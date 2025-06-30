@@ -6,14 +6,14 @@ public class ClientSpawner : NetworkBehaviour
 {
     [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] private GameObject clientPrefab;
-    [SerializeField] private float spawnInterval = 10f;
+    private const float SpawnInterval = 10f;
     [SerializeField] private List<GameObject> spawnedClients = new();
     
     private void Start()
     {
         if (NetworkManager.Singleton.IsServer)
         {
-            InvokeRepeating(nameof(SpawnClient), 2f, spawnInterval);
+            InvokeRepeating(nameof(SpawnClient), 2f, SpawnInterval);
         }
     }
 

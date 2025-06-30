@@ -7,9 +7,9 @@ TagManager:
   - Pickable
   - Client
   - GameManager
-  - CupSpot
   - GridCell
   - Spot
+  - ClientSpot
   layers:
   - Default
   - TransparentFX

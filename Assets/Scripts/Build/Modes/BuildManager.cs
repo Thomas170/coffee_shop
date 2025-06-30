@@ -34,7 +34,7 @@ public class BuildManager : BaseBuildMode
         save.builds.Add(data);
         SaveManager.Instance.SaveData(save);
 
-        ClientSpotManager.Instance.RefreshSpotsFromScene();
+        // Refresh spots
         ExitMode();
     }
 

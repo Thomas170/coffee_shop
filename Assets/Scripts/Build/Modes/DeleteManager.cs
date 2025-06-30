@@ -33,7 +33,7 @@ public class DeleteManager : MonoBehaviour
         save.builds.Remove(data);
         SaveManager.Instance.SaveData(save);
         
-        ClientSpotManager.Instance.RefreshSpotsFromScene();
+        // Refresh spots
         editManager.ExitMode();
     }
     

@@ -9,7 +9,7 @@ public class BuildLoader : MonoBehaviour
     private void Start()
     {
         LoadBuilds();
-        ClientSpotManager.Instance.RefreshSpotsFromScene();
+        ClientSpotManager.Instance.SetSpotsFromScene();
     }
 
     public void LoadBuilds()

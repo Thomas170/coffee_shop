@@ -39,9 +39,9 @@ public class ClientController : NetworkBehaviour
         {
             GetComponent<NavMeshAgent>().enabled = false;
             
-            transform.position = new Vector3(transform.position.x, 10f, transform.position.z);
-            GameObject spot = ClientSpotManager.Instance.GetSpot(commands.commandSpotIndex);
-            transform.rotation = spot.transform.rotation;
+            Transform spot = ClientSpotManager.Instance.GetClientSpotLocation(commands.commandSpotIndex);
+            transform.position = new(spot.position.x, spot.position.y + 4f, spot.position.z);
+            transform.rotation = spot.parent.rotation;
             
             commands.StartOrderServerRpc();
         }
