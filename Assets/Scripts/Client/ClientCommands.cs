@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class ClientCommands : NetworkBehaviour
 {
@@ -15,6 +16,9 @@ public class ClientCommands : NetworkBehaviour
     public int commandSpotIndex;
     
     private readonly float _patienceTime = 120f;
+    
+    public OrderType currentOrder;
+    [SerializeField] private OrderList possibleOrders;
 
     private void Start()
     {
@@ -48,6 +52,10 @@ public class ClientCommands : NetworkBehaviour
     {
         clientController.canInteract = true;
         orderIcon.SetActive(true);
+        
+        currentOrder = possibleOrders.GetRandomOrder();
+        Image orderImage = orderIcon.transform.Find("OrderImage").GetComponent<Image>();
+        orderImage.sprite = currentOrder.orderIcon;
 
         waitingGauge.StartGauge(_patienceTime);
         waitingGauge.OnEmpty = LeaveCoffeeShop;
@@ -84,7 +92,7 @@ public class ClientCommands : NetworkBehaviour
         currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpotIndex), false);
         
         StartCoroutine(DrinkCoffee());
-        CurrencyManager.Instance.AddCoins(10);
+        CurrencyManager.Instance.AddCoins(currentOrder.price);
     }
 
     private IEnumerator DrinkCoffee()
@@ -132,6 +140,7 @@ public class ClientCommands : NetworkBehaviour
     
     private bool IsValidItemToUse(ItemBase itemToUse)
     {
-        return itemToUse != null && itemToUse.itemType == ItemType.CupCoffee;
+        if (itemToUse == null || currentOrder == null) return false;
+        return itemToUse.itemType == currentOrder.requiredItemType;
     }
 }
