@@ -23,11 +23,13 @@ public class PlayerCarry : NetworkBehaviour
         return true;
     }
     
-    public bool TryDrop()
+    public bool TryDrop(bool withAnimation = true)
     {
         if (!IsCarrying) return false;
         SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, transform.position);
-        playerController.playerAnimation.PlayDropAnimationServerRpc();
+        
+        if (withAnimation) playerController.playerAnimation.PlayDropAnimationServerRpc();
+        
         RequestDropServerRpc(carriedItem.NetworkObject);
         ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
         return true;

@@ -50,7 +50,7 @@ public class Counter : InteractableBase
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
 
-        playerCarry.TryDrop();
+        playerCarry.TryDrop(false);
         playerCarry.carriedItem = null;
         
         playerItemNetworkObject.Despawn();
