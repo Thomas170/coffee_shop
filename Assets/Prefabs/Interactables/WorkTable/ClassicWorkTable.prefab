@@ -248,3 +248,4 @@ MonoBehaviour:
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0
+  fusionRecipes: {fileID: 11400000, guid: 463f085d7532ab84885562c33bbb1c4a, type: 2}
