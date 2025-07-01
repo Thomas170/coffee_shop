@@ -435,7 +435,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.5, z: 0.4}
+  m_LocalScale: {x: 0.5, y: 0.6, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2543253647331673503}
@@ -973,7 +973,7 @@ MonoBehaviour:
   clientController: {fileID: 4460690199350288766}
   resultItemPrefab: {fileID: 9022906363220089391, guid: 20701469b5be58b419bdcf3599a4dd3d, type: 3}
   currentItem: {fileID: 0}
-  commandSpotIndex: 0
+  commandSpot: {fileID: 0}
   currentOrder: {fileID: 0}
   possibleOrders: {fileID: 11400000, guid: 1e337b67526450e40ad1e33f8ed22ef2, type: 2}
 --- !u!114 &121666036708990118
