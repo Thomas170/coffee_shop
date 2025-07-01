@@ -7,7 +7,7 @@ public class BuildManager : BaseBuildMode
     {
         if (previewManager.preview == null || !previewManager.preview.IsValid) return;
 
-        if (!playerController.playerBuild.IsInMoveMode && CurrencyManager.Instance.coins < currentBuildable.cost)
+        if (!playerController.playerBuild.IsInMoveMode)
         {
             if (CurrencyManager.Instance.coins < currentBuildable.cost)
             {
