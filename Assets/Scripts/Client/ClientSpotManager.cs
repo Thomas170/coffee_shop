@@ -7,7 +7,7 @@ public class ClientSpotManager : NetworkBehaviour
     public static ClientSpotManager Instance { get; private set; }
 
     public List<GameObject> _spots;
-    public readonly HashSet<int> _occupiedSpots = new();
+    public Dictionary<GameObject, GameObject> _occupiedSpots = new();
 
     private void Awake()
     {
@@ -38,36 +38,43 @@ public class ClientSpotManager : NetworkBehaviour
         {
             if (child.CompareTag("ClientSpot"))
             {
-                _spots.Remove(child.gameObject);
+                GameObject spot = child.gameObject;
+
+                if (_spots.Contains(spot))
+                {
+                    if (_occupiedSpots.TryGetValue(spot, out GameObject client))
+                    {
+                        client.GetComponent<ClientCommands>().LeaveCoffeeShop();
+                        ReleaseSpot(spot);
+                    }
+
+                    _spots.Remove(spot);
+                }
             }
         }
     }
-
-    public int RequestSpot()
+    
+    public GameObject RequestSpot(GameObject client)
     {
-        for (int spotIndex = 0; spotIndex < _spots.Count; spotIndex++)
+        foreach (GameObject spot in _spots)
         {
-            if (_occupiedSpots.Add(spotIndex))
+            if (!_occupiedSpots.ContainsKey(spot))
             {
-                return spotIndex;
+                _occupiedSpots[spot] = client;
+                return spot;
             }
         }
 
-        return -1;
+        return null;
     }
 
-    public void ReleaseSpot(int spotIndex)
+    public void ReleaseSpot(GameObject spot)
     {
-        _occupiedSpots.Remove(spotIndex);
+        _occupiedSpots.Remove(spot);
     }
     
-    public Transform GetClientSpotLocation(int spotIndex)
+    public Transform GetItemSpotLocation(GameObject spot)
     {
-        return _spots.Count > spotIndex ? _spots[spotIndex].transform : null;
-    }
-    
-    public Transform GetItemSpotLocation(int spotIndex)
-    {
-        return _spots.Count > spotIndex ? _spots[spotIndex].transform.Find("ItemSpot") : null;
+        return spot?.transform.Find("ItemSpot");
     }
 }

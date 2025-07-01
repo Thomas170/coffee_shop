@@ -35,11 +35,11 @@ public class ClientController : NetworkBehaviour
 
     public void OnDestinationReached(Transform reachedTarget)
     {
-        if (reachedTarget == ClientSpotManager.Instance.GetClientSpotLocation(commands.commandSpotIndex))
+        if (reachedTarget == commands.commandSpot.transform)
         {
             GetComponent<NavMeshAgent>().enabled = false;
             
-            Transform spot = ClientSpotManager.Instance.GetClientSpotLocation(commands.commandSpotIndex);
+            Transform spot = commands.commandSpot.transform;
             transform.position = new(spot.position.x, spot.position.y + 4f, spot.position.z);
             transform.rotation = spot.parent.rotation;
             

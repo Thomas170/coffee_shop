@@ -13,12 +13,14 @@ public class ClientCommands : NetworkBehaviour
     [SerializeField] private GameObject resultItemPrefab;
     
     public ItemBase currentItem;
-    public int commandSpotIndex;
+    public GameObject commandSpot;
     
     private readonly float _patienceTime = 120f;
     
     public OrderType currentOrder;
     [SerializeField] private OrderList possibleOrders;
+
+    private Coroutine _drinkCoffeeCoroutine;
 
     private void Start()
     {
@@ -28,27 +30,43 @@ public class ClientCommands : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void InitCommandSpotServerRpc()
     {
-        commandSpotIndex = ClientSpotManager.Instance.RequestSpot();
-        if (commandSpotIndex == -1)
+        commandSpot = ClientSpotManager.Instance.RequestSpot(gameObject);
+        if (commandSpot == null)
         {
             clientController.clientSpawner.DespawnClient(gameObject);
             return;
         }
-        clientController.movement.MoveTo(ClientSpotManager.Instance.GetClientSpotLocation(commandSpotIndex));
-        SyncCommandSpotClientRpc(commandSpotIndex);
+        clientController.movement.MoveTo(commandSpot.transform);
+
+        ClientSpot clientSpot = commandSpot.GetComponent<ClientSpot>();
+        SyncCommandSpotClientRpc(clientSpot.buildParent.GetComponent<NetworkObject>(), clientSpot.index);
     }
 
     [ClientRpc]
-    public void SyncCommandSpotClientRpc(int index)
+    private void SyncCommandSpotClientRpc(NetworkObjectReference buildRef, int childIndex)
     {
-        commandSpotIndex = index;
+        if (buildRef.TryGet(out NetworkObject build))
+        {
+            ClientSpot[] spots = build.GetComponentsInChildren<ClientSpot>(true);
+
+            foreach (ClientSpot spot in spots)
+            {
+                if (spot.index == childIndex)
+                {
+                    commandSpot = spot.gameObject;
+                    break;
+                }
+            }
+
+            if (commandSpot == null) Debug.LogWarning($"ClientSpot with index {childIndex} not found on {build.name}");
+        }
     }
     
     [ServerRpc(RequireOwnership = false)]
     public void StartOrderServerRpc() => StartOrderClientRpc();
     
     [ClientRpc]
-    public void StartOrderClientRpc()
+    private void StartOrderClientRpc()
     {
         clientController.canInteract = true;
         orderIcon.SetActive(true);
@@ -89,10 +107,11 @@ public class ClientCommands : NetworkBehaviour
         
         currentItem = itemBase;
         currentItem.CurrentHolderClientId = null;
-        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpotIndex), false);
+        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpot), false);
         
-        StartCoroutine(DrinkCoffee());
+        _drinkCoffeeCoroutine = StartCoroutine(DrinkCoffee());
         CurrencyManager.Instance.AddCoins(currentOrder.price);
+        clientController.canInteract = false;
     }
 
     private IEnumerator DrinkCoffee()
@@ -110,7 +129,7 @@ public class ClientCommands : NetworkBehaviour
         currentItem.NetworkObject.Despawn();
         Destroy(currentItem.gameObject);
         
-        GameObject resultItem = Instantiate(resultItemPrefab, ClientSpotManager.Instance.GetItemSpotLocation(commandSpotIndex).position, Quaternion.identity);
+        GameObject resultItem = Instantiate(resultItemPrefab, ClientSpotManager.Instance.GetItemSpotLocation(commandSpot).position, Quaternion.identity);
         NetworkObject networkObject = resultItem.GetComponent<NetworkObject>();
         networkObject.Spawn();
 
@@ -122,18 +141,27 @@ public class ClientCommands : NetworkBehaviour
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         currentItem = itemNetworkObject.GetComponent<ItemBase>();
-        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpotIndex));
+        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpot));
     }
 
-    private void LeaveCoffeeShop()
+    public void LeaveCoffeeShop()
     {
+        waitingGauge.StopGauge();
+        orderIcon.SetActive(false);
+        clientController.canInteract = false;
+        
+        if (_drinkCoffeeCoroutine != null)
+        {
+            StopCoroutine(_drinkCoffeeCoroutine);
+            _drinkCoffeeCoroutine = null;
+        }
+        
         if (IsServer)
         {
-            ClientSpotManager.Instance.ReleaseSpot(commandSpotIndex);
+            ClientSpotManager.Instance.ReleaseSpot(commandSpot);
         }
         
         GetComponent<NavMeshAgent>().enabled = true;
-        orderIcon.SetActive(false);
         Transform exit = clientController.clientSpawner.GetRandomExit();
         clientController.movement.MoveTo(exit);
     }
