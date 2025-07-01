@@ -14,9 +14,9 @@ public class BuildablePreview : MonoBehaviour
     private Vector3 GetOverlapBoxSize()
     {
         return new Vector3(
-            _cellSize.x * x,
+            _cellSize.x * x -2f,
             _cellSize.y,
-            _cellSize.z * z
+            _cellSize.z * z -2f
         );
     }
 
