@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5581865519501398287}
   - component: {fileID: 626492256091390014}
   - component: {fileID: 4753888425607691468}
+  - component: {fileID: 4963481711208421835}
+  - component: {fileID: 1312867065740809398}
   m_Layer: 9
   m_Name: PreviewCell
   m_TagString: GridCell
@@ -83,3 +85,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4963481711208421835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2423808791785300346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a022465b79df7d640b018e3de9e6d127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedMaterial: {fileID: 2100000, guid: 42cf35a78b6c68a4290f4bb3f42be861, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 0a6d0f3e8edf2ff489c8cccba003dae2, type: 2}
+--- !u!65 &1312867065740809398
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2423808791785300346}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 0, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildablePreview : MonoBehaviour
@@ -9,6 +10,8 @@ public class BuildablePreview : MonoBehaviour
 
     private Material _validMat, _invalidMat;
     private MeshRenderer[] _renderers;
+    private readonly HashSet<CellPreview> _touchedCells = new();
+    
     public bool IsValid { get; private set; }
 
     private Vector3 GetOverlapBoxSize()
@@ -58,8 +61,30 @@ public class BuildablePreview : MonoBehaviour
 
         Vector3 center = transform.position + GetBoxCenterOffset();
 
-        Collider[] colliders = Physics.OverlapBox(center, halfExtents, transform.rotation, blockMask);
-        IsValid = colliders.Length == 0;
+        Collider[] colliders = Physics.OverlapBox(center, halfExtents, transform.rotation);
+
+        IsValid = true;
+        _touchedCells.Clear();
+
+        foreach (Collider col in colliders)
+        {
+            if (((1 << col.gameObject.layer) & blockMask) != 0)
+                IsValid = false;
+
+            CellPreview cell = col.GetComponent<CellPreview>();
+            if (cell)
+            {
+                _touchedCells.Add(cell);
+                cell.SelectCell();
+            }
+        }
+
+        CellPreview[] allCells = FindObjectsOfType<CellPreview>();
+        foreach (CellPreview cell in allCells)
+        {
+            if (!_touchedCells.Contains(cell))
+                cell.UnSelectCell();
+        }
 
         foreach (MeshRenderer rend in _renderers)
         {
