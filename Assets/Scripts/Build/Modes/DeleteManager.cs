@@ -33,7 +33,6 @@ public class DeleteManager : MonoBehaviour
         save.builds.Remove(data);
         SaveManager.Instance.SaveData(save);
         
-        // Refresh spots
         editManager.ExitMode();
     }
     
@@ -45,6 +44,7 @@ public class DeleteManager : MonoBehaviour
             BuildableDefinition definition = netObj.gameObject.GetComponent<BuildableReference>().definition;
             int returnMoney = (int)Math.Floor(definition.cost * 0.75f);
             CurrencyManager.Instance.AddCoins(returnMoney);
+            ClientSpotManager.Instance.RemoveSpotsFromBuild(netObj.gameObject);
             
             netObj.Despawn();
             Destroy(netObj.gameObject);

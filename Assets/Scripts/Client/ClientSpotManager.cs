@@ -20,6 +20,28 @@ public class ClientSpotManager : NetworkBehaviour
         _spots = new List<GameObject>(GameObject.FindGameObjectsWithTag("ClientSpot"));
         _occupiedSpots.Clear();
     }
+    
+    public void AddSpotsFromBuild(GameObject build)
+    {
+        foreach (Transform child in build.GetComponentsInChildren<Transform>(false))
+        {
+            if (child.CompareTag("ClientSpot"))
+            {
+                _spots.Add(child.gameObject);
+            }
+        }
+    }
+    
+    public void RemoveSpotsFromBuild(GameObject build)
+    {
+        foreach (Transform child in build.GetComponentsInChildren<Transform>(false))
+        {
+            if (child.CompareTag("ClientSpot"))
+            {
+                _spots.Remove(child.gameObject);
+            }
+        }
+    }
 
     public int RequestSpot()
     {

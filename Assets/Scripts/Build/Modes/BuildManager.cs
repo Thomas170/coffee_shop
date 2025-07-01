@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -33,8 +35,7 @@ public class BuildManager : BaseBuildMode
         SaveData save = SaveManager.Instance.LoadCurrentSlot();
         save.builds.Add(data);
         SaveManager.Instance.SaveData(save);
-
-        // Refresh spots
+        
         ExitMode();
     }
 
@@ -43,5 +44,7 @@ public class BuildManager : BaseBuildMode
     {
         GameObject buildObject = Instantiate(currentBuildable.resultPrefab, position, rotation);
         buildObject.GetComponent<NetworkObject>().Spawn();
+        
+        ClientSpotManager.Instance.AddSpotsFromBuild(buildObject);
     }
 }
