@@ -2,9 +2,37 @@ using UnityEngine;
 
 public class BuildablePreview : MonoBehaviour
 {
+    [Header("Overlap Box Settings")]
+    public int x = 1;
+    public int z = 1;
+    private readonly Vector3 _cellSize = new(10f, 20f, 10f);
+
     private Material _validMat, _invalidMat;
     private MeshRenderer[] _renderers;
     public bool IsValid { get; private set; }
+
+    private Vector3 GetOverlapBoxSize()
+    {
+        return new Vector3(
+            _cellSize.x * x,
+            _cellSize.y,
+            _cellSize.z * z
+        );
+    }
+
+    private Vector3 GetBoxCenterOffset()
+    {
+        Vector3 offset = Vector3.zero;
+        offset += transform.up * 10f;
+
+        if (x % 2 == 0)
+            offset += transform.right * -5f;
+
+        if (z % 2 == 0)
+            offset += transform.forward * -5f;
+
+        return offset;
+    }
 
     public void Init(Material valid, Material invalid)
     {
@@ -25,7 +53,12 @@ public class BuildablePreview : MonoBehaviour
 
     public void CheckIfValid(LayerMask blockMask)
     {
-        Collider[] colliders = Physics.OverlapBox(transform.position, transform.localScale / 2f, transform.rotation, blockMask);
+        Vector3 boxSize = GetOverlapBoxSize();
+        Vector3 halfExtents = boxSize / 2f;
+
+        Vector3 center = transform.position + GetBoxCenterOffset();
+
+        Collider[] colliders = Physics.OverlapBox(center, halfExtents, transform.rotation, blockMask);
         IsValid = colliders.Length == 0;
 
         foreach (MeshRenderer rend in _renderers)
@@ -37,5 +70,20 @@ public class BuildablePreview : MonoBehaviour
             }
             rend.materials = mats;
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 boxSize = GetOverlapBoxSize();
+        Vector3 center = transform.position + GetBoxCenterOffset();
+
+        Gizmos.color = IsValid ? Color.green : Color.red;
+
+        Matrix4x4 oldMatrix = Gizmos.matrix;
+        Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, boxSize);
+
+        Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+
+        Gizmos.matrix = oldMatrix;
     }
 }
