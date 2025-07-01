@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,12 +9,12 @@ public class BuildManager : BaseBuildMode
 
         if (!playerController.playerBuild.IsInMoveMode && CurrencyManager.Instance.coins < currentBuildable.cost)
         {
-            Debug.Log("Pas assez d'argent !");
-            return;
-        }
-
-        if (!playerController.playerBuild.IsInMoveMode)
-        {
+            if (CurrencyManager.Instance.coins < currentBuildable.cost)
+            {
+                Debug.Log("Pas assez d'argent !");
+                return;
+            }
+            
             CurrencyManager.Instance.RemoveCoins(currentBuildable.cost);
         }
 

@@ -19,6 +19,13 @@ public class DeleteManager : MonoBehaviour
 
     public void RemoveBuild(string buildName, Vector3 position, Quaternion rotation)
     {
+        if (!editManager.playerController.playerBuild.IsInMoveMode)
+        {
+            BuildableDefinition definition = editManager.targetedBuild.GetComponent<BuildableReference>().definition;
+            int returnMoney = (int)Math.Floor(definition.cost * 0.75f);
+            CurrencyManager.Instance.AddCoins(returnMoney);
+        }
+        
         DeleteBuildServerRpc(editManager.targetedBuild.GetComponent<NetworkObject>().NetworkObjectId);
         editManager.ClearPreviousHighlight();
 
@@ -41,11 +48,7 @@ public class DeleteManager : MonoBehaviour
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var netObj))
         {
-            BuildableDefinition definition = netObj.gameObject.GetComponent<BuildableReference>().definition;
-            int returnMoney = (int)Math.Floor(definition.cost * 0.75f);
-            CurrencyManager.Instance.AddCoins(returnMoney);
             ClientSpotManager.Instance.RemoveSpotsFromBuild(netObj.gameObject);
-            
             netObj.Despawn();
             Destroy(netObj.gameObject);
         }

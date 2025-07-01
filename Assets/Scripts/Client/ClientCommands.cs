@@ -117,9 +117,6 @@ public class ClientCommands : NetworkBehaviour
     private IEnumerator DrinkCoffee()
     {
         yield return new WaitForSeconds(10f);
-
-        SpawnResultItemServerRpc();
-        yield return new WaitForSeconds(1f);
         LeaveCoffeeShop();
     }
     
@@ -146,6 +143,11 @@ public class ClientCommands : NetworkBehaviour
 
     public void LeaveCoffeeShop()
     {
+        if (currentItem)
+        {
+            SpawnResultItemServerRpc();
+        }
+        
         waitingGauge.StopGauge();
         orderIcon.SetActive(false);
         clientController.canInteract = false;
