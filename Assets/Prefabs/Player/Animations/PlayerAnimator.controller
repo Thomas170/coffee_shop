@@ -58,7 +58,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: P_Sink
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8518228268527150555}
@@ -147,7 +147,7 @@ AnimatorStateMachine:
     m_Position: {x: 315.19775, y: 23.511078, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6116544282529902203}
-    m_Position: {x: 290, y: -110, z: 0}
+    m_Position: {x: 320, y: -110, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 5953692037269751655}

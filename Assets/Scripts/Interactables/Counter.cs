@@ -63,7 +63,7 @@ public class Counter : InteractableBase
         {
             if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId)
             {
-                playerCarry.TryPickUp(resultItemBase);
+                playerCarry.TryPickUp(resultItemBase, false);
             }
         
             foreach (ItemStorage storage in storeItems)
@@ -82,6 +82,8 @@ public class Counter : InteractableBase
             currentDisplayItem = resultItemBase;
             currentDisplayItem.CurrentHolderClientId = null;
             currentDisplayItem.AttachTo(displayPoint, false);
+            
+            player.playerAnimation.PlayDropAnimationServerRpc();
         }
     }
 

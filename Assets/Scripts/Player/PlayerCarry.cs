@@ -12,11 +12,13 @@ public class PlayerCarry : NetworkBehaviour
     public bool IsCarrying => carriedItem != null;
     public ItemBase GetCarriedObject => carriedItem != null ? carriedItem : null;
     
-    public bool TryPickUp(ItemBase itemBase)
+    public bool TryPickUp(ItemBase itemBase, bool withAnimation = true)
     {
         if (IsCarrying) return false;
         SoundManager.Instance.Play3DSound(SoundManager.Instance.takeItem, transform.position);
-        playerController.playerAnimation.PlayPickAnimationServerRpc();
+        
+        if (withAnimation) playerController.playerAnimation.PlayPickAnimationServerRpc();
+        
         NetworkObject networkObject = itemBase.NetworkObject;
         RequestPickUpServerRpc(new NetworkObjectReference(networkObject));
         ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.PickUp);
