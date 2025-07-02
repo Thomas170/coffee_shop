@@ -18,6 +18,10 @@ public abstract class ManualInteractableBase : InteractableBase
 
             if (_holdProgress >= requiredHoldDuration)
             {
+                PlayerController player = PlayerListManager.Instance.GetPlayer(NetworkManager.LocalClientId);
+                player.canMove = true;
+                player.playerAnimation.SetSinkAnimationServerRpc(false);
+                
                 OnActionComplete();
             }
         }

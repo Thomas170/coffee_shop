@@ -12,7 +12,7 @@ public class PlayerController : NetworkBehaviour
     public PlayerAnimation playerAnimation;
     public PlayerBuild playerBuild;
     
-    public bool CanMove { get; private set; } = true;
+    public bool canMove = true;
     public bool CanInteract { get; private set; } = true;
     public bool CanOpenMenu { get; private set; } = true;
     public bool HasMenuOpen { get; private set; }
@@ -47,7 +47,7 @@ public class PlayerController : NetworkBehaviour
     private void HandleMenuStateChanged(bool isOpen)
     {
         HasMenuOpen = isOpen;
-        CanMove = !isOpen;
+        canMove = !isOpen;
         CanInteract = !isOpen;
         CanOpenMenu = !isOpen;
     }

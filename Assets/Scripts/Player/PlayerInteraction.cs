@@ -9,6 +9,7 @@ public class PlayerInteraction : MonoBehaviour
     private ClientController _currentClient;
     private ItemBase _currentPickable;
     private bool _isHoldingAction;
+    public bool test;
     
     [SerializeField] private Vector3 boxHalfExtents = new(1f, 8f, 5f);
     [SerializeField] private float interactionDistance = 4f;
@@ -42,16 +43,24 @@ public class PlayerInteraction : MonoBehaviour
     
     private void OnActionStarted(InputAction.CallbackContext ctx)
     {
+        if (!_isHoldingAction && _currentInteractable is ManualInteractableBase { isInUse: true })
+        {
+            playerController.playerAnimation.SetSinkAnimationServerRpc(true);
+            playerController.canMove = false;
+        }
+        
         _isHoldingAction = true;
     }
 
     private void OnActionCanceled(InputAction.CallbackContext ctx)
     {
         _isHoldingAction = false;
+        playerController.canMove = true;
 
         if (_currentInteractable is ManualInteractableBase manual)
         {
             manual.Action(false);
+            playerController.playerAnimation.SetSinkAnimationServerRpc(false);
         }
     }
 

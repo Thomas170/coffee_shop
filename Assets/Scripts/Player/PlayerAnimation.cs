@@ -8,6 +8,7 @@ public class PlayerAnimation : NetworkBehaviour
     private static readonly int RunHash = Animator.StringToHash("Run");
     private static readonly int PickHash = Animator.StringToHash("Pick");
     private static readonly int DropHash = Animator.StringToHash("Drop");
+    private static readonly int SinkHash = Animator.StringToHash("Sink");
 
     private bool _lastRunState;
 
@@ -28,6 +29,12 @@ public class PlayerAnimation : NetworkBehaviour
     {
         PlayDropAnimationClientRpc();
     }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void SetSinkAnimationServerRpc(bool isActing)
+    {
+        PlaySinkAnimationClientRpc(isActing);
+    }
 
     [ClientRpc]
     private void SetRunStateClientRpc(bool isRunning)
@@ -45,5 +52,11 @@ public class PlayerAnimation : NetworkBehaviour
     private void PlayDropAnimationClientRpc()
     {
         animator.SetTrigger(DropHash);
+    }
+        
+    [ClientRpc]
+    private void PlaySinkAnimationClientRpc(bool isActing)
+    {
+        animator.SetBool(SinkHash, isActing);
     }
 }
