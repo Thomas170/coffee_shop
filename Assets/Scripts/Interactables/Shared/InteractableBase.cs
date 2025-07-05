@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ public abstract class InteractableBase : NetworkBehaviour
     [SerializeField] protected Transform displayPoint;
     [SerializeField] protected GameObject resultItemPrefab;
     [SerializeField] protected bool hasAction;
+    [SerializeField] protected GameObject hightlightRender;
 
     [Header("Item storages")]
     [SerializeField] protected List<ItemStorage> storeItems = new();
@@ -17,8 +19,11 @@ public abstract class InteractableBase : NetworkBehaviour
     [HideInInspector] public bool isInUse;
     [HideInInspector] public bool isReady;
 
-    public virtual bool RequiresHold => false;
-    
+    private void Start()
+    {
+        SetHightlight(false);
+    }
+
     public virtual void TryPutItem(ItemBase itemToUse)
     {
         if (TryStoreItem(itemToUse))
@@ -183,5 +188,13 @@ public abstract class InteractableBase : NetworkBehaviour
     protected virtual void StopAction()
     {
         isInUse = false;
+    }
+
+    public void SetHightlight(bool value)
+    {
+        if (hightlightRender)
+        {
+            hightlightRender.SetActive(value);
+        }
     }
 }

@@ -9,7 +9,6 @@ public class PlayerInteraction : MonoBehaviour
     private ClientController _currentClient;
     private ItemBase _currentPickable;
     private bool _isHoldingAction;
-    public bool test;
     
     [SerializeField] private Vector3 boxHalfExtents = new(1f, 8f, 5f);
     [SerializeField] private float interactionDistance = 4f;
@@ -117,6 +116,9 @@ public class PlayerInteraction : MonoBehaviour
 
         Collider[] hits = Physics.OverlapBox(center, boxHalfExtents, orientation, interactionMask);
 
+        if (_currentInteractable) _currentInteractable.SetHightlight(false);
+        if (_currentClient) _currentClient.SetHightlight(false);
+        
         _currentInteractable = null;
         _currentPickable = null;
         _currentClient = null;
@@ -133,7 +135,9 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (hit.TryGetComponent(out InteractableBase interactable))
                 {
+                    if (_currentInteractable) _currentInteractable.SetHightlight(false);
                     _currentInteractable = interactable;
+                    interactable.SetHightlight(true);
                 }
                 else if (hit.TryGetComponent(out ItemBase item) && !GetComponent<PlayerCarry>().IsCarrying)
                 {
@@ -141,7 +145,9 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 else if (hit.TryGetComponent(out ClientController client))
                 {
+                    if (_currentClient) _currentClient.SetHightlight(false);
                     _currentClient = client;
+                    client.SetHightlight(true);
                 }
             }
         }

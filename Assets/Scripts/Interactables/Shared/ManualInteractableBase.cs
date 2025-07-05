@@ -7,8 +7,6 @@ public abstract class ManualInteractableBase : InteractableBase
 
     private float _holdProgress;
 
-    public override bool RequiresHold => true;
-
     public void Action(bool isHolding)
     {
         if (isHolding && isInUse)

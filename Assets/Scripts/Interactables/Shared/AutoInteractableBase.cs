@@ -8,8 +8,6 @@ public abstract class AutoInteractableBase : InteractableBase
     private const float InteractionDuration = 5f;
     private Coroutine _activeCoroutine;
     
-    public override bool RequiresHold => false;
-
     protected override void StartAction()
     {
         base.StartAction();

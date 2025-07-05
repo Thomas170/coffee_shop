@@ -9,12 +9,14 @@ public class ClientController : NetworkBehaviour
     public ClientCommands commands;
     public ClientSpawner clientSpawner;
     public bool canInteract;
+    public GameObject hightlightRender;
 
     private void Start()
     {
         movement = GetComponent<ClientMovement>();
         commands = GetComponent<ClientCommands>();
         clientSpawner = GameObject.FindWithTag("GameManager").GetComponent<ClientSpawner>();
+        SetHightlight(false);
 
         if (IsServer)
         {
@@ -48,6 +50,14 @@ public class ClientController : NetworkBehaviour
         else if (clientSpawner.IsExitPoint(reachedTarget))
         {
             clientSpawner.DespawnClient(gameObject);
+        }
+    }
+    
+    public void SetHightlight(bool value)
+    {
+        if (hightlightRender)
+        {
+            hightlightRender.SetActive(value);
         }
     }
 }
