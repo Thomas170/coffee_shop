@@ -7,6 +7,7 @@ public class ItemBase : NetworkBehaviour
     public ItemType itemType = ItemType.Any;
     private readonly float _itemMass = 100000f;
     public ulong? CurrentHolderClientId;
+    public Sprite itemImage;
 
     public void Awake()
     {

@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public abstract class InteractableBase : NetworkBehaviour
 {
@@ -10,6 +10,8 @@ public abstract class InteractableBase : NetworkBehaviour
     [SerializeField] protected GameObject resultItemPrefab;
     [SerializeField] protected bool hasAction;
     [SerializeField] protected GameObject hightlightRender;
+    [SerializeField] protected GameObject resultItemIcon;
+    [SerializeField] protected bool showResultOnPut;
 
     [Header("Item storages")]
     [SerializeField] protected List<ItemStorage> storeItems = new();
@@ -22,6 +24,7 @@ public abstract class InteractableBase : NetworkBehaviour
     private void Start()
     {
         SetHightlight(false);
+        if (resultItemIcon) resultItemIcon.SetActive(false);
     }
 
     public virtual void TryPutItem(ItemBase itemToUse)
@@ -82,6 +85,13 @@ public abstract class InteractableBase : NetworkBehaviour
             Destroy(itemBase.gameObject);
         }
 
+        if (showResultOnPut && currentDisplayItem && currentDisplayItem.itemImage)
+        {
+            resultItemIcon.SetActive(true);
+            Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+            itemImage.sprite = currentDisplayItem.itemImage;
+        }
+
         StartActionIfReady();
     }
     
@@ -132,6 +142,7 @@ public abstract class InteractableBase : NetworkBehaviour
                 }
             }
             
+            if (resultItemIcon) resultItemIcon.SetActive(false);
             currentDisplayItem = null;
         }
     }
@@ -151,6 +162,14 @@ public abstract class InteractableBase : NetworkBehaviour
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         currentDisplayItem = itemNetworkObject.GetComponent<ItemBase>();
         currentDisplayItem.AttachTo(displayPoint, false);
+
+        if (resultItemIcon)
+        {
+            resultItemIcon.SetActive(true);
+            Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+            itemImage.sprite = currentDisplayItem.itemImage;
+        }
+
     }
     
     private void StartActionIfReady()
