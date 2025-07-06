@@ -125,6 +125,7 @@ MonoBehaviour:
   hasAction: 0
   hightlightRender: {fileID: 7469743517834102434}
   resultItemIcon: {fileID: 0}
+  showResultOnPut: 0
   storeItems: []
   itemStoreToDisplay: 0
   currentDisplayItem: {fileID: 0}
@@ -295,8 +296,8 @@ MeshRenderer:
   - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
   - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
   - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
-  - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
-  - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
+  - {fileID: 2100000, guid: b146e025ec7251e43b32870b99810381, type: 2}
+  - {fileID: 2100000, guid: b146e025ec7251e43b32870b99810381, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

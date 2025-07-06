@@ -64,8 +64,8 @@ MeshRenderer:
   - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
   - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
   - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
-  - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
-  - {fileID: 2100000, guid: afe9b1219edf22141a50ac26345c1d1e, type: 2}
+  - {fileID: 2100000, guid: b146e025ec7251e43b32870b99810381, type: 2}
+  - {fileID: 2100000, guid: b146e025ec7251e43b32870b99810381, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -243,6 +243,8 @@ MonoBehaviour:
   resultItemPrefab: {fileID: 1492787660989971561, guid: 5d9c6f8e09bc2c642b8f2ebd30b50688, type: 3}
   hasAction: 0
   hightlightRender: {fileID: 3483666387687427673}
+  resultItemIcon: {fileID: 0}
+  showResultOnPut: 0
   storeItems: []
   itemStoreToDisplay: 0
   currentDisplayItem: {fileID: 0}
