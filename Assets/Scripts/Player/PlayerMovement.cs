@@ -48,7 +48,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (!playerController.canMove)
+        if (!playerController.canMove || playerController.HasMenuOpen)
         {
             _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
             return;

@@ -46,6 +46,7 @@ public class PlayerController : NetworkBehaviour
     
     private void HandleMenuStateChanged(bool isOpen)
     {
+        Debug.Log("menu");
         HasMenuOpen = isOpen;
         canMove = !isOpen;
         CanInteract = !isOpen;

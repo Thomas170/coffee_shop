@@ -75,6 +75,7 @@ public class Counter : InteractableBase
                 }
             }
         
+            if (resultItemIcon) resultItemIcon.SetActive(false);
             currentDisplayItem = null;
         }
         else

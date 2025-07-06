@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 4
-  itemImage: {fileID: 21300000, guid: ac2aa49fb6660c34d88f5306f28ed2f2, type: 3}
+  itemImage: {fileID: 21300000, guid: 9dd6eeb96c121f942b54fc07c31f5aac, type: 3}
 --- !u!114 &5545017322573330489
 MonoBehaviour:
   m_ObjectHideFlags: 0

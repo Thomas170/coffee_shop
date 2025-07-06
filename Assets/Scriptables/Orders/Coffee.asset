@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bf26ef224290a4ba75155a3e1bbd69, type: 3}
   m_Name: Coffee
   m_EditorClassIdentifier: 
-  orderIcon: {fileID: 21300000, guid: 0fc5c3e49f0f56247a40a0aff77ea851, type: 3}
+  orderIcon: {fileID: 21300000, guid: 8c3f47f8428e83b4197a949ab5e69bff, type: 3}
   price: 10
   selectionWeight: 1
   requiredItemType: 3
