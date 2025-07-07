@@ -15,5 +15,6 @@ MonoBehaviour:
   orderIcon: {fileID: 21300000, guid: 1e3ec25141db91141a4dccc517cb4392, type: 3}
   price: 15
   experience: 15
+  level: 3
   selectionWeight: 1
   requiredItemType: 9

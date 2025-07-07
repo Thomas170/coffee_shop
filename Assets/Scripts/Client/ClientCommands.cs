@@ -111,7 +111,7 @@ public class ClientCommands : NetworkBehaviour
         
         _drinkCoffeeCoroutine = StartCoroutine(DrinkCoffee());
         CurrencyManager.Instance.AddCoins(currentOrder.price);
-        LevelManager.Instance.GainExperience(currentOrder.price);
+        LevelManager.Instance.GainExperience(currentOrder.experience);
         clientController.canInteract = false;
     }
 
