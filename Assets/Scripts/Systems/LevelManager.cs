@@ -1,6 +1,8 @@
 ﻿using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class LevelManager : NetworkBehaviour
 {
@@ -12,6 +14,8 @@ public class LevelManager : NetworkBehaviour
     private int _experienceToNextLevel;
 
     private const int MaxLevel = 20;
+    
+    public Image xpFillImage;
 
     private void Awake()
     {
@@ -38,6 +42,7 @@ public class LevelManager : NetworkBehaviour
         levelText.text = level.ToString();
         _experience = experience;
         _experienceToNextLevel = GetExperienceRequiredForLevel(level);
+        UpdateXpGauge();
     }
 
     public void GainExperience(int amount)
@@ -52,6 +57,8 @@ public class LevelManager : NetworkBehaviour
             IncreaseLevel();
             _experienceToNextLevel = GetExperienceRequiredForLevel(level);
         }
+
+        UpdateXpGauge();
         
         if (IsServer)
         {
@@ -70,6 +77,15 @@ public class LevelManager : NetworkBehaviour
         
         level += 1;
         levelText.text = level.ToString();
+    }
+
+    private void UpdateXpGauge()
+    {
+        if (xpFillImage && _experienceToNextLevel > 0)
+        {
+            float targetFill = Mathf.Clamp01((float)_experience / _experienceToNextLevel);
+            xpFillImage.DOFillAmount(targetFill, 0.5f).SetEase(Ease.OutQuad);
+        }
     }
     
     private void SaveLevel()
