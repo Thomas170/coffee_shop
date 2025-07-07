@@ -11,4 +11,9 @@ public enum ItemType
     Milk,
     CupCoffeeMilk,
     CupCoffeeSugar,
+    ChocolatePowder,
+    Lemon,
+    LemonSlices,
+    Mint,
+    MintSlices,
 }
