@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -82,9 +83,13 @@ public class BuildMenuManager : MonoBehaviour
     
     private void InitCells(BuildCategory buildCategory)
     {
-        for (int index = 0; index < buildCategory.Definitions.Count; index++)
+        List<BuildableDefinition> sortedBuilds = buildCategory.Definitions
+                .OrderBy(def => def.level)
+                .ToList();
+        
+        for (int index = 0; index < sortedBuilds.Count; index++)
         {
-            BuildableDefinition definition = buildCategory.Definitions[index];
+            BuildableDefinition definition = sortedBuilds[index];
             GameObject cellObject = Instantiate(cellPrefab, cellParent);
             BuildSelectionCell cellSelection = cellObject.GetComponent<BuildSelectionCell>();
             cellSelection.Init(definition);
@@ -100,7 +105,7 @@ public class BuildMenuManager : MonoBehaviour
             };
             
             bool canAfford = CurrencyManager.Instance.coins >= definition.cost;
-            cellSelection.UpdateAffordability(canAfford);
+            cellSelection.UpdateState(canAfford, definition.level);
         }
     }
 

@@ -17,3 +17,4 @@ MonoBehaviour:
   cost: 10
   icon: {fileID: 21300000, guid: cc082e43dd1cf3545b47fdf405562d85, type: 3}
   type: 2
+  level: 1

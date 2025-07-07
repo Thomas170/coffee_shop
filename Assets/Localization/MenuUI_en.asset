@@ -195,6 +195,10 @@ MonoBehaviour:
     m_Localized: Shop
     m_Metadata:
       m_Items: []
+  - m_Id: 20224796270104576
+    m_Localized: Level
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

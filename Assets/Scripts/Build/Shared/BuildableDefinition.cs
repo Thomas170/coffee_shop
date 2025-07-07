@@ -8,4 +8,5 @@ public class BuildableDefinition : ScriptableObject
     public int cost;
     public Sprite icon;
     public BuildType type;
+    public int level;
 }

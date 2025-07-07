@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SugarCoffee
   m_EditorClassIdentifier: 
   orderIcon: {fileID: 21300000, guid: 8753a195b4198ef4ba8a185882cba640, type: 3}
-  price: 12
+  price: 15
+  experience: 15
   selectionWeight: 1
   requiredItemType: 10

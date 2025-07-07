@@ -7,6 +7,11 @@ public class LevelManager : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI levelText;
     public static LevelManager Instance;
     public int level;
+    
+    private int _experience;
+    private int _experienceToNextLevel;
+
+    private const int MaxLevel = 20;
 
     private void Awake()
     {
@@ -21,27 +26,50 @@ public class LevelManager : NetworkBehaviour
         {
             if (data != null)
             {
-                LoadLevelClientRpc(data.level);
+                LoadLevelClientRpc(data.level, data.experience);
             }
         });
     }
 
     [ClientRpc]
-    private void LoadLevelClientRpc(int levelData)
+    private void LoadLevelClientRpc(int levelData, int experience)
     {
         level = levelData;
         levelText.text = level.ToString();
+        _experience = experience;
+        _experienceToNextLevel = GetExperienceRequiredForLevel(level);
     }
-    
-    public void IncreaseLevel()
-    {
-        level += 1;
-        levelText.text = level.ToString();
 
+    public void GainExperience(int amount)
+    {
+        if (level >= MaxLevel) return;
+
+        _experience += amount;
+
+        while (_experience >= _experienceToNextLevel && level < MaxLevel)
+        {
+            _experience -= _experienceToNextLevel;
+            IncreaseLevel();
+            _experienceToNextLevel = GetExperienceRequiredForLevel(level);
+        }
+        
         if (IsServer)
         {
             SaveLevel();
         }
+    }
+    
+    private int GetExperienceRequiredForLevel(int currentLevel)
+    {
+        return 100 * currentLevel;
+    }
+    
+    public void IncreaseLevel()
+    {
+        if (level >= MaxLevel) return;
+        
+        level += 1;
+        levelText.text = level.ToString();
     }
     
     private void SaveLevel()
@@ -53,6 +81,7 @@ public class LevelManager : NetworkBehaviour
                 if (data != null)
                 {
                     data.level = level;
+                    data.experience = _experience;
                     SaveManager.Instance.SaveData(data);
                 }
             });

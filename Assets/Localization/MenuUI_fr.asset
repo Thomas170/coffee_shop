@@ -196,6 +196,10 @@ MonoBehaviour:
     m_Localized: Magasin
     m_Metadata:
       m_Items: []
+  - m_Id: 20224796270104576
+    m_Localized: Niveau
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

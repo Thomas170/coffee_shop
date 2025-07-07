@@ -26,7 +26,7 @@ public class BuildSelectionMenuController : BaseMenuController
         }
 
         BuildableDefinition selectedBuild = buildMenuManager.availableBuilds.FirstOrDefault(definition => definition.name == buttonName);
-        if (selectedBuild && CurrencyManager.Instance.coins >= selectedBuild.cost)
+        if (selectedBuild && CurrencyManager.Instance.coins >= selectedBuild.cost && LevelManager.Instance.level >= selectedBuild.level)
         {
             CloseMenu();
             _playerBuild.OnSelectBuild(selectedBuild);
