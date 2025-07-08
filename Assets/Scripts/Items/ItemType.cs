@@ -16,4 +16,5 @@ public enum ItemType
     LemonSlices,
     Mint,
     MintSlices,
+    TeaBag,
 }
