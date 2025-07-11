@@ -240,13 +240,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayPoint: {fileID: 0}
-  resultItemPrefab: {fileID: 5812308112939778362, guid: 0e4662c2080850046a5b31a307548757, type: 3}
+  resultItemPrefab: {fileID: 1492787660989971561, guid: 5d9c6f8e09bc2c642b8f2ebd30b50688, type: 3}
   hasAction: 0
+  hasMultipleCombinaisons: 0
   hightlightRender: {fileID: 3483666387687427673}
   resultItemIcon: {fileID: 0}
-  showResultOnPut: 0
   storeItems: []
-  itemStoreToDisplay: 0
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0

@@ -1,11 +1,8 @@
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class BuildLoader : MonoBehaviour
 {
-    [SerializeField] private List<BuildableDefinition> allBuildables;
-
     private void Start()
     {
         LoadBuilds();
@@ -19,7 +16,7 @@ public class BuildLoader : MonoBehaviour
 
         foreach (BuildSaveData build in data.builds)
         {
-            BuildableDefinition definition = allBuildables.Find(b => b.resultPrefab.name == build.prefabName);
+            BuildableDefinition definition = BuildDatabase.Instance.Builds.Find(b => b.resultPrefab.name == build.prefabName);
             if (definition == null)
             {
                 Debug.LogWarning($"Prefab not found: {build.prefabName}");

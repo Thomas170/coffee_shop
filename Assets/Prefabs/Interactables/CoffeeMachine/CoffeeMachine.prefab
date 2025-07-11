@@ -980,8 +980,10 @@ MonoBehaviour:
   displayPoint: {fileID: 7593696598201127479}
   resultItemPrefab: {fileID: 7705437841392033311, guid: 5cdcadbfe855e1c488359a6b0b555342, type: 3}
   hasAction: 1
+  hasMultipleCombinaisons: 0
   hightlightRender: {fileID: 3417227419802708988}
   resultItemIcon: {fileID: 4709718283662106950}
+  showResultIcon: 1
   storeItems:
   - itemType: 2
     maxAmount: 1
@@ -989,7 +991,6 @@ MonoBehaviour:
   - itemType: 6
     maxAmount: 5
     currentAmount: 0
-  itemStoreToDisplay: 2
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0

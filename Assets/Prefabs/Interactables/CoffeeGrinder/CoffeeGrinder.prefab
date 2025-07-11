@@ -411,13 +411,14 @@ MonoBehaviour:
   displayPoint: {fileID: 9136419417834827864}
   resultItemPrefab: {fileID: 5122522811443459769, guid: 565f28783ce9b754b8f58bf4a6628cb0, type: 3}
   hasAction: 1
+  hasMultipleCombinaisons: 0
   hightlightRender: {fileID: 2209260220674924537}
   resultItemIcon: {fileID: 5855379237101379850}
+  showResultIcon: 1
   storeItems:
   - itemType: 5
     maxAmount: 1
     currentAmount: 0
-  itemStoreToDisplay: 0
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0

@@ -14,7 +14,6 @@ public class BuildMenuManager : MonoBehaviour
     [SerializeField] private Transform categoryParent;
     
     public BuildSelectionMenuController buildSelectionMenuController;
-    public BuildableDefinition[] availableBuilds;
     public readonly List<BuildCategory> Categories = new();
     public BuildCategory CurrentBuildCategory;
 
@@ -30,7 +29,7 @@ public class BuildMenuManager : MonoBehaviour
                 Definitions = new List<BuildableDefinition>()
             };
 
-            foreach (BuildableDefinition def in availableBuilds)
+            foreach (BuildableDefinition def in BuildDatabase.Instance.Builds)
             {
                 if (def.type == type)
                 {

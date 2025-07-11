@@ -5,7 +5,7 @@ public class ItemStorage
 {
     public ItemType itemType;
     public int maxAmount = 1;
-    /*[HideInInspector] */public int currentAmount;
+    [HideInInspector]public int currentAmount;
 
     public bool CanAdd => currentAmount < maxAmount;
 

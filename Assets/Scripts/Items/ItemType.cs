@@ -17,4 +17,7 @@ public enum ItemType
     Mint,
     MintSlices,
     TeaBag,
+    CupMilk,
+    CupHotMilk,
+    CupHotChocolate
 }

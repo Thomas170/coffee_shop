@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 
 public abstract class InteractableBase : NetworkBehaviour
@@ -9,15 +10,15 @@ public abstract class InteractableBase : NetworkBehaviour
     [SerializeField] protected Transform displayPoint;
     [SerializeField] protected GameObject resultItemPrefab;
     [SerializeField] protected bool hasAction;
+    [SerializeField] protected bool hasMultipleCombinaisons;
     [SerializeField] protected GameObject hightlightRender;
     [SerializeField] protected GameObject resultItemIcon;
-    [SerializeField] protected bool showResultOnPut;
 
     [Header("Item storages")]
     [SerializeField] protected List<ItemStorage> storeItems = new();
-    [SerializeField] protected ItemType itemStoreToDisplay = ItemType.None;
+    private ItemType _itemStoreToDisplay = ItemType.None;
     
-    [HideInInspector] public ItemBase currentDisplayItem;
+    public ItemBase currentDisplayItem;
     [HideInInspector] public bool isInUse;
     [HideInInspector] public bool isReady;
 
@@ -25,6 +26,9 @@ public abstract class InteractableBase : NetworkBehaviour
     {
         SetHightlight(false);
         if (resultItemIcon) resultItemIcon.SetActive(false);
+        
+        if (hasMultipleCombinaisons) _itemStoreToDisplay = ItemType.Any;
+        else if (storeItems.Count > 0) _itemStoreToDisplay = storeItems[0].itemType;
     }
 
     public virtual void TryPutItem(ItemBase itemToUse)
@@ -37,6 +41,8 @@ public abstract class InteractableBase : NetworkBehaviour
     
     private bool TryStoreItem(ItemBase item)
     {
+        if (!IsValidItem(item) || (hasMultipleCombinaisons && storeItems.Any(storeItem => storeItem.currentAmount > 0))) return false;
+        
         ItemStorage storage = storeItems.Find(storeItem =>
             item.itemType == storeItem.itemType || storeItem.itemType == ItemType.Any);
         
@@ -44,14 +50,18 @@ public abstract class InteractableBase : NetworkBehaviour
         storage.Add(1);
         return true;
     }
-    
-    protected virtual bool ShouldDisplayItem(ItemBase item)
+
+    protected virtual bool IsValidItem(ItemBase item) => true;
+
+    private bool ShouldDisplayItem(ItemBase item)
     {
-        return item.itemType == itemStoreToDisplay || itemStoreToDisplay == ItemType.Any;
+        return item.itemType == _itemStoreToDisplay || _itemStoreToDisplay == ItemType.Any;
     }
 
-    private bool HasAllRequiredItems()
+    private bool HasAllRequiredIngredients()
     {
+        if (hasMultipleCombinaisons && currentDisplayItem) return true;
+        
         foreach (ItemStorage storage in storeItems)
         {
             if (storage.currentAmount < 1) return false;
@@ -85,7 +95,7 @@ public abstract class InteractableBase : NetworkBehaviour
             Destroy(itemBase.gameObject);
         }
 
-        if (showResultOnPut && currentDisplayItem && currentDisplayItem.itemImage)
+        if (resultItemIcon && currentDisplayItem && currentDisplayItem.itemImage)
         {
             resultItemIcon.SetActive(true);
             Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
@@ -150,9 +160,17 @@ public abstract class InteractableBase : NetworkBehaviour
     [ServerRpc]
     private void SpawnResultItemServerRpc()
     {
-        GameObject resultItem = Instantiate(resultItemPrefab, displayPoint.position, Quaternion.identity);
+        if (!resultItemPrefab && !currentDisplayItem?.transformatedItem) return;
+            
+        GameObject prefab = resultItemPrefab ? resultItemPrefab : currentDisplayItem.transformatedItem;
+        GameObject resultItem = Instantiate(prefab, displayPoint.position, Quaternion.identity);
         NetworkObject networkObject = resultItem.GetComponent<NetworkObject>();
         networkObject.Spawn();
+        
+        currentDisplayItem.NetworkObject.Despawn();
+        Destroy(currentDisplayItem.gameObject);
+        currentDisplayItem = null;
+        
         SpawnResultItemClientRpc(networkObject);
     }
 
@@ -174,24 +192,17 @@ public abstract class InteractableBase : NetworkBehaviour
     
     private void StartActionIfReady()
     {
-        if (!HasAllRequiredItems() || !hasAction) return;
+        if (!HasAllRequiredIngredients() || !hasAction) return;
         StartAction();
     }
     
     protected void OnActionComplete()
     {
-        if (!HasAllRequiredItems()) return;
+        if (!HasAllRequiredIngredients()) return;
 
         foreach (ItemStorage storage in storeItems)
         {
             storage.Consume(1);
-        }
-
-        if (currentDisplayItem)
-        {
-            currentDisplayItem.NetworkObject.Despawn();
-            Destroy(currentDisplayItem.gameObject);
-            currentDisplayItem = null;
         }
 
         isReady = true;

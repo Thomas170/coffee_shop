@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1237852514
+  GlobalObjectIdHash: 2081517999
   InScenePlacedSourceGlobalObjectIdHash: 1670935686
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 12
   itemImage: {fileID: 21300000, guid: 999e64e1a0d3aab40bf97d091973edaa, type: 3}
+  transformatedItem: {fileID: 2587657731330662087, guid: a07a9a63bd2cefe4ca36b5ce13eab937, type: 3}
 --- !u!114 &1843061499662699447
 MonoBehaviour:
   m_ObjectHideFlags: 0

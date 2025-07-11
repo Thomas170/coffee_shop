@@ -4,11 +4,6 @@ public class CoffeeMachine : AutoInteractableBase
 {
     private AudioSource _coffeeLoopSource;
 
-    protected override bool ShouldDisplayItem(ItemBase item)
-    {
-        return item.itemType == ItemType.CupEmpty;
-    }
-
     protected override void StartAction()
     {
         base.StartAction();

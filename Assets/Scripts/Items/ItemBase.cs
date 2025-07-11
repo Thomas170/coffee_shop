@@ -8,6 +8,7 @@ public class ItemBase : NetworkBehaviour
     private readonly float _itemMass = 100000f;
     public ulong? CurrentHolderClientId;
     public Sprite itemImage;
+    public GameObject transformatedItem;
 
     public void Awake()
     {

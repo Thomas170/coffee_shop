@@ -56,7 +56,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 3.2626975, y: 0.5, z: 1.4647379}
-  m_Center: {x: 0.13134873, y: 1.5, z: 0.0059518814}
+  m_Center: {x: 0.13134873, y: 1.8, z: 0.0059518814}
 --- !u!114 &1196761989441840691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2131761377
+  GlobalObjectIdHash: 609154326
   InScenePlacedSourceGlobalObjectIdHash: 2081517999
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 15
   itemImage: {fileID: 21300000, guid: d8f6009ffee456748b32662b083236e3, type: 3}
+  transformatedItem: {fileID: 0}
 --- !u!114 &8682842234743859520
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class BuildSelectionMenuController : BaseMenuController
             return;
         }
 
-        BuildableDefinition selectedBuild = buildMenuManager.availableBuilds.FirstOrDefault(definition => definition.name == buttonName);
+        BuildableDefinition selectedBuild = BuildDatabase.Instance.Builds.FirstOrDefault(definition => definition.name == buttonName);
         if (selectedBuild && CurrencyManager.Instance.coins >= selectedBuild.cost && LevelManager.Instance.level >= selectedBuild.level)
         {
             CloseMenu();

@@ -28,7 +28,6 @@ public class BuildSelectionCell : MonoBehaviour
     public void UpdateState(bool canAfford, int level)
     {
         bool isLevel = LevelManager.Instance.level >= level;
-        Debug.Log("level " + LevelManager.Instance.level + " - " + level + isLevel);
         
         if (!isLevel)
         {
