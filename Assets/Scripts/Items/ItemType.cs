@@ -19,5 +19,13 @@ public enum ItemType
     TeaBag,
     CupMilk,
     CupHotMilk,
-    CupHotChocolate
+    CupHotChocolate,
+    Kettle,
+    WaterKettle,
+    HotWaterCup,
+    TeaCup,
+    LemonCup,
+    MintCup,
+    TeaLemonCup,
+    TeaMintCup,
 }

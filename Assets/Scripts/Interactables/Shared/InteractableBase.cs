@@ -18,7 +18,7 @@ public abstract class InteractableBase : NetworkBehaviour
     [SerializeField] protected List<ItemStorage> storeItems = new();
     private ItemType _itemStoreToDisplay = ItemType.None;
     
-    public ItemBase currentDisplayItem;
+    [HideInInspector] public ItemBase currentDisplayItem;
     [HideInInspector] public bool isInUse;
     [HideInInspector] public bool isReady;
 
@@ -41,7 +41,8 @@ public abstract class InteractableBase : NetworkBehaviour
     
     private bool TryStoreItem(ItemBase item)
     {
-        if (!IsValidItem(item) || (hasMultipleCombinaisons && storeItems.Any(storeItem => storeItem.currentAmount > 0))) return false;
+        if (hasMultipleCombinaisons && item.transformatedItem == null) return false;
+        if (hasMultipleCombinaisons && storeItems.Any(storeItem => storeItem.currentAmount > 0)) return false;
         
         ItemStorage storage = storeItems.Find(storeItem =>
             item.itemType == storeItem.itemType || storeItem.itemType == ItemType.Any);
@@ -50,8 +51,6 @@ public abstract class InteractableBase : NetworkBehaviour
         storage.Add(1);
         return true;
     }
-
-    protected virtual bool IsValidItem(ItemBase item) => true;
 
     private bool ShouldDisplayItem(ItemBase item)
     {
@@ -73,7 +72,7 @@ public abstract class InteractableBase : NetworkBehaviour
     private void RequestPutItemServerRpc(NetworkObjectReference itemRef, ulong playerId) => RequestPutItemClientRpc(itemRef, playerId);
 
     [ClientRpc]
-    private void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
+    protected virtual void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
     {
         if (isInUse || !itemRef.TryGet(out var itemNetworkObject)) return;
         
