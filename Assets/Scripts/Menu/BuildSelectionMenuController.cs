@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BuildSelectionMenuController : BaseMenuController
 {
@@ -10,11 +11,31 @@ public class BuildSelectionMenuController : BaseMenuController
     private const int CellsPerRow = 6;
     public int currentRow = 1;
     public int currentCol;
+    
+    private InputAction _rotateLeftAction;
+    private InputAction _rotateRightAction;
 
     protected override void Start()
     {
         base.Start();
         _playerBuild = FindObjectOfType<PlayerBuild>();
+
+        _rotateLeftAction = InputReader.Instance.RotateLeftAction;
+        _rotateRightAction = InputReader.Instance.RotateRightAction;
+
+        _rotateLeftAction.performed += _ => ChangeCategory(-1);
+        _rotateRightAction.performed += _ => ChangeCategory(1);
+
+        _rotateLeftAction.Enable();
+        _rotateRightAction.Enable();
+    }
+    
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        
+        _rotateLeftAction.performed -= _ => ChangeCategory(-1);
+        _rotateRightAction.performed -= _ => ChangeCategory(1);
     }
     
     public override void ExecuteMenuAction(string buttonName)
@@ -85,6 +106,24 @@ public class BuildSelectionMenuController : BaseMenuController
             MoveTimer = moveCooldown;
             UpdateSelection();
         }
+    }
+    
+    private void ChangeCategory(int direction)
+    {
+        BuildType[] categories = (BuildType[])Enum.GetValues(typeof(BuildType));
+        BuildType currentCategory = buildMenuManager.CurrentBuildCategory.Category;
+
+        int index = Array.IndexOf(categories, currentCategory);
+        int newIndex = Mathf.Clamp(index + direction, 0, categories.Length - 1);
+
+        BuildType newCategory = categories[newIndex];
+        buildMenuManager.DisplayCategory(newCategory);
+
+        currentRow = 1;
+        currentCol = 0;
+
+        SelectedIndex = Enum.GetValues(typeof(BuildType)).Length;
+        SelectButton(SelectedIndex);
     }
 
     private void UpdateSelection()
