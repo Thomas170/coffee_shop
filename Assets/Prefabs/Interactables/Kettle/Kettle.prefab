@@ -279,6 +279,8 @@ MonoBehaviour:
   emptyKettlePrefab: {fileID: 3539204215806882204, guid: e958616d6f12eab4d99f6512347c3a45, type: 3}
   kettleObject: {fileID: 5088073404250967692}
   highlightKettleObject: {fileID: 8197543313477808917}
+  emptyKettleImage: {fileID: 21300000, guid: b79f78b10cb355547b237c75aec086f4, type: 3}
+  hotWaterImage: {fileID: 21300000, guid: 29355da89f446b245a7b0cdba8349362, type: 3}
 --- !u!114 &3301591017578069832
 MonoBehaviour:
   m_ObjectHideFlags: 0

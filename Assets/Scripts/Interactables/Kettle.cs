@@ -1,16 +1,29 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Kettle : AutoInteractableBase
 {
-    public KettleStatus _status;
+    private KettleStatus _status;
     public GameObject emptyKettlePrefab;
     public GameObject kettleObject;
     public GameObject highlightKettleObject;
+    public Sprite emptyKettleImage;
+    public Sprite hotWaterImage;
+
+    private int _usages = 3;
+
+    protected new void Start()
+    {
+        base.Start();
+        resultItemIcon.SetActive(true);
+        Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+        itemImage.sprite = emptyKettleImage;
+    }
     
     public override void TryPutItem(ItemBase itemToUse)
     {
-        bool noKettleOk = _status == KettleStatus.NoKettle && itemToUse.itemType == ItemType.WaterKettle;
+        bool noKettleOk = _status == KettleStatus.NoKettle && itemToUse.itemType is ItemType.WaterKettle or ItemType.Kettle;
         bool hotWaterKettleOk = _status == KettleStatus.HotWaterKettle && itemToUse.itemType == ItemType.CupEmpty;
         
         if (!noKettleOk && !hotWaterKettleOk) return;
@@ -48,12 +61,20 @@ public class Kettle : AutoInteractableBase
         
         itemBase.NetworkObject.Despawn();
         Destroy(itemBase.gameObject);
-
-        //StartActionIfReady();
         
         kettleObject.SetActive(true);
         highlightKettleObject.SetActive(true);
-        _status = KettleStatus.HotWaterKettle;
+
+        if (itemBase.itemType is ItemType.WaterKettle)
+        {
+            StartAction();
+            _status = KettleStatus.WaterKettle;
+        }
+        else if (itemBase.itemType is ItemType.Kettle)
+        {
+            resultItemIcon.SetActive(true);
+            _status = KettleStatus.EmptyKettle;
+        }
     }
     
     [ClientRpc]
@@ -74,8 +95,26 @@ public class Kettle : AutoInteractableBase
         {
             playerCarry.TryPickUp(itemBase);
         }
-        
-        _status = KettleStatus.EmptyKettle;
+
+        _usages -= 1;
+
+        if (_usages == 0)
+        {
+            _status = KettleStatus.EmptyKettle;
+            Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+            itemImage.sprite = emptyKettleImage;
+        }
+    }
+    
+    protected override void OnActionComplete()
+    {
+        isReady = true;
+        _status = KettleStatus.HotWaterKettle;
+        _usages = 3;
+        resultItemIcon.SetActive(true);
+        Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+        itemImage.sprite = hotWaterImage;
+        StopAction();
     }
 
     public override void CollectCurrentItem()
@@ -116,6 +155,7 @@ public class Kettle : AutoInteractableBase
         kettleObject.SetActive(false);
         highlightKettleObject.SetActive(false);
         _status = KettleStatus.NoKettle;
+        resultItemIcon.SetActive(false);
     }
 }
 

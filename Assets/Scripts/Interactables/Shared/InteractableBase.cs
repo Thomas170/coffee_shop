@@ -22,7 +22,7 @@ public abstract class InteractableBase : NetworkBehaviour
     [HideInInspector] public bool isInUse;
     [HideInInspector] public bool isReady;
 
-    private void Start()
+    protected void Start()
     {
         SetHightlight(false);
         if (resultItemIcon) resultItemIcon.SetActive(false);
@@ -195,7 +195,7 @@ public abstract class InteractableBase : NetworkBehaviour
         StartAction();
     }
     
-    protected void OnActionComplete()
+    protected virtual void OnActionComplete()
     {
         if (!HasAllRequiredIngredients()) return;
 
