@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Counter : InteractableBase
 {
@@ -86,6 +87,24 @@ public class Counter : InteractableBase
             
             player.playerAnimation.PlayDropAnimationServerRpc();
         }
+        
+        if (resultItemIcon && currentDisplayItem && currentDisplayItem.itemImage)
+        {
+            resultItemIcon.SetActive(true);
+            Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+            itemImage.sprite = currentDisplayItem.itemImage;
+        }
+    }
+
+    protected override void AfterPutItem()
+    {
+        if (resultItemIcon && currentDisplayItem && currentDisplayItem.itemImage)
+        {
+            resultItemIcon.SetActive(true);
+            Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+            itemImage.sprite = currentDisplayItem.itemImage;
+        }
+        base.AfterPutItem();
     }
 
     protected override void StartAction() { }

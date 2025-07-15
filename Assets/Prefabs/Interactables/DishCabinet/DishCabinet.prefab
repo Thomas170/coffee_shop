@@ -350,6 +350,7 @@ GameObject:
   - component: {fileID: 3144020818546819241}
   - component: {fileID: 8647733155714012634}
   - component: {fileID: 5167316754645138024}
+  - component: {fileID: 148505328164718053}
   m_Layer: 14
   m_Name: DishCabinetModel
   m_TagString: Untagged
@@ -461,12 +462,29 @@ MonoBehaviour:
   displayPoint: {fileID: 0}
   resultItemPrefab: {fileID: 7394209534051937320, guid: a7970996df79982469055ee425825e4a, type: 3}
   hasAction: 0
+  hasMultipleCombinaisons: 0
   hightlightRender: {fileID: 7156711000663629690}
+  resultItemIcon: {fileID: 0}
   storeItems: []
-  itemStoreToDisplay: 0
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0
+--- !u!208 &148505328164718053
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5521538050232357277}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.4080001, y: 5.486, z: 2.9720001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.027, y: 3.321, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &5658897497728958415
 GameObject:
   m_ObjectHideFlags: 0

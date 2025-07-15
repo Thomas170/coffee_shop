@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3616062697556819926}
   - component: {fileID: 1770433841810344066}
   - component: {fileID: 3110624562940950195}
+  - component: {fileID: 1626765757263641591}
   m_Layer: 14
   m_Name: Model
   m_TagString: Untagged
@@ -123,14 +124,29 @@ MonoBehaviour:
   displayPoint: {fileID: 0}
   resultItemPrefab: {fileID: 847115017232215267, guid: f3efa3cf1b482d644b3b5674a7bec940, type: 3}
   hasAction: 0
+  hasMultipleCombinaisons: 0
   hightlightRender: {fileID: 3563801130788818699}
   resultItemIcon: {fileID: 0}
-  showResultOnPut: 0
   storeItems: []
-  itemStoreToDisplay: 0
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0
+--- !u!208 &1626765757263641591
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2223516578138571978}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1, y: 1, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3563801130788818699
 GameObject:
   m_ObjectHideFlags: 0

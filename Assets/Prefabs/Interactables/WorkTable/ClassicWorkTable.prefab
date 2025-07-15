@@ -340,7 +340,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 5.2120004, y: 2.8820002, z: 5.289}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.16100001, z: 0.07700001}
   m_TimeToStationary: 0.5
@@ -359,14 +359,13 @@ MonoBehaviour:
   displayPoint: {fileID: 4205459816804224510}
   resultItemPrefab: {fileID: 1825924408120633526}
   hasAction: 0
+  hasMultipleCombinaisons: 0
   hightlightRender: {fileID: 6372072593965407202}
   resultItemIcon: {fileID: 1825924408120633526}
-  showResultOnPut: 1
   storeItems:
   - itemType: 1
     maxAmount: 1
     currentAmount: 0
-  itemStoreToDisplay: 1
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0

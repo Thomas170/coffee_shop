@@ -72,7 +72,7 @@ public abstract class InteractableBase : NetworkBehaviour
     private void RequestPutItemServerRpc(NetworkObjectReference itemRef, ulong playerId) => RequestPutItemClientRpc(itemRef, playerId);
 
     [ClientRpc]
-    protected virtual void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
+    protected void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
     {
         if (isInUse || !itemRef.TryGet(out var itemNetworkObject)) return;
         
@@ -94,15 +94,11 @@ public abstract class InteractableBase : NetworkBehaviour
             Destroy(itemBase.gameObject);
         }
 
-        if (resultItemIcon && currentDisplayItem && currentDisplayItem.itemImage)
-        {
-            resultItemIcon.SetActive(true);
-            Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
-            itemImage.sprite = currentDisplayItem.itemImage;
-        }
-
         StartActionIfReady();
+        AfterPutItem();
     }
+
+    protected virtual void AfterPutItem() { }
     
     public virtual void CollectCurrentItem()
     {
@@ -198,6 +194,13 @@ public abstract class InteractableBase : NetworkBehaviour
     protected virtual void OnActionComplete()
     {
         if (!HasAllRequiredIngredients()) return;
+        
+        if (resultItemIcon && currentDisplayItem && currentDisplayItem.itemImage)
+        {
+            resultItemIcon.SetActive(true);
+            Image itemImage = resultItemIcon.transform.Find("Panel/ItemImage").GetComponent<Image>();
+            itemImage.sprite = currentDisplayItem.itemImage;
+        }
 
         foreach (ItemStorage storage in storeItems)
         {

@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: 53431906437730331}
   - component: {fileID: 3641337875325516418}
   - component: {fileID: 71631572246733328}
+  - component: {fileID: 7313708551138280181}
   m_Layer: 14
   m_Name: SinkModel
   m_TagString: Untagged
@@ -517,13 +518,13 @@ MonoBehaviour:
   displayPoint: {fileID: 3225241699370031715}
   resultItemPrefab: {fileID: 7394209534051937320, guid: a7970996df79982469055ee425825e4a, type: 3}
   hasAction: 1
+  hasMultipleCombinaisons: 0
   hightlightRender: {fileID: 4902008663656523923}
   resultItemIcon: {fileID: 2940640027242907452}
   storeItems:
   - itemType: 4
     maxAmount: 1
     currentAmount: 0
-  itemStoreToDisplay: 4
   currentDisplayItem: {fileID: 0}
   isInUse: 0
   isReady: 0
@@ -543,6 +544,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillImage: {fileID: 3596108739978198534}
   gaugeRoot: {fileID: 305467813143863983}
+--- !u!208 &7313708551138280181
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4483108365290987179}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.028, y: 0.028, z: 0.035}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.025}
+  m_TimeToStationary: 0.5
 --- !u!1 &4902008663656523923
 GameObject:
   m_ObjectHideFlags: 0

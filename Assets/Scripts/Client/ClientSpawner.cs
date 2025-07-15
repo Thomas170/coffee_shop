@@ -16,12 +16,21 @@ public class ClientSpawner : NetworkBehaviour
             InvokeRepeating(nameof(SpawnClient), 2f, SpawnInterval);
         }
     }
-
+    
     private void SpawnClient()
     {
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
         GameObject client = Instantiate(clientPrefab, spawnPoint.position, Quaternion.identity);
         client.GetComponent<NetworkObject>().Spawn();
+
+        ClientController controller = client.GetComponent<ClientController>();
+
+        float sodaChance = SodaDispenserManager.Instance.GetSodaClientChance();
+        if (Random.value < sodaChance)
+        {
+            controller.commands.SetSodaClient();
+        }
+
         spawnedClients.Add(client);
     }
     

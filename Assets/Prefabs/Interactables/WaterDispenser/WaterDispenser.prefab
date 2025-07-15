@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4188830936
+  GlobalObjectIdHash: 3745513288
   InScenePlacedSourceGlobalObjectIdHash: 524422394
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 8348600203452656763}
   - component: {fileID: 7150569302141446408}
   - component: {fileID: 668666688987139816}
+  - component: {fileID: 9123305627159387600}
   m_Layer: 14
   m_Name: Model
   m_TagString: Untagged
@@ -324,3 +325,19 @@ MonoBehaviour:
   isInUse: 0
   isReady: 0
   gaugeUI: {fileID: 0}
+--- !u!208 &9123305627159387600
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4570236555857305401}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.003, y: 4.846, z: 2.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 2.8430002, z: 0}
+  m_TimeToStationary: 0.5

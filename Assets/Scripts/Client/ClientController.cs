@@ -37,6 +37,12 @@ public class ClientController : NetworkBehaviour
 
     public void OnDestinationReached(Transform reachedTarget)
     {
+        if (commands.IsSodaClient())
+        {
+            commands.PurchaseSodaAndLeave();
+            return;
+        }
+        
         if (reachedTarget == commands.commandSpot.transform)
         {
             GetComponent<NavMeshAgent>().enabled = false;

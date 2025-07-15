@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8222598802995107209}
   - component: {fileID: 2747020269471407060}
   - component: {fileID: 7961953034363483458}
+  - component: {fileID: 472607579196190309}
   m_Layer: 14
   m_Name: Pilar1
   m_TagString: Untagged
@@ -106,6 +107,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.027806873, y: 0.02780688, z: 0.018748282}
   m_Center: {x: 0, y: 0, z: 0.007218008}
+--- !u!208 &472607579196190309
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337907798069965730}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.014, y: 0.014, z: 0.009000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.007}
+  m_TimeToStationary: 0.5
 --- !u!1 &3268002013391275898
 GameObject:
   m_ObjectHideFlags: 0

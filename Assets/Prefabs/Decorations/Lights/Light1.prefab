@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 545773523057406740}
   - component: {fileID: 3543731303360354166}
   - component: {fileID: 6695277231600472433}
+  - component: {fileID: 1179800503046708946}
   m_Layer: 14
   m_Name: Light1
   m_TagString: Untagged
@@ -296,3 +297,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.020000005, z: 0.039224572}
   m_Center: {x: 0, y: 0, z: 0.018034467}
+--- !u!208 &1179800503046708946
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6798897837079051221}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.010000001, y: 0.010000001, z: 0.020000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.018000001}
+  m_TimeToStationary: 0.5

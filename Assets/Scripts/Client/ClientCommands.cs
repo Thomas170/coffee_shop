@@ -21,6 +21,8 @@ public class ClientCommands : NetworkBehaviour
     [SerializeField] private OrderList possibleOrders;
 
     private Coroutine _drinkCoffeeCoroutine;
+    private bool _isSodaClient;
+    public bool IsSodaClient() => _isSodaClient;
 
     private void Start()
     {
@@ -30,6 +32,21 @@ public class ClientCommands : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void InitCommandSpotServerRpc()
     {
+        if (_isSodaClient)
+        {
+            GameObject targetDispenser = SodaDispenserManager.Instance.GetRandomDispenser();
+            if (targetDispenser == null)
+            {
+                _isSodaClient = false;
+            }
+            else
+            {
+                SodaDispenser sodaDispenser = targetDispenser.GetComponent<SodaDispenser>();
+                clientController.movement.MoveTo(sodaDispenser.targetPoint.transform);
+                return;
+            }
+        }
+        
         commandSpot = ClientSpotManager.Instance.RequestSpot(gameObject);
         if (commandSpot == null)
         {
@@ -173,5 +190,19 @@ public class ClientCommands : NetworkBehaviour
     {
         if (itemToUse == null || currentOrder == null) return false;
         return itemToUse.itemType == currentOrder.requiredItemType;
+    }
+    
+    public void SetSodaClient()
+    {
+        _isSodaClient = true;
+    }
+    
+    public void PurchaseSodaAndLeave()
+    {
+        CurrencyManager.Instance.AddCoins(10);
+        LevelManager.Instance.GainExperience(10);
+
+        Transform exit = clientController.clientSpawner.GetRandomExit();
+        clientController.movement.MoveTo(exit);
     }
 }
