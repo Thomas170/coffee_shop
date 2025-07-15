@@ -32,6 +32,8 @@ public class MoveManager : MonoBehaviour
 
     public void ConfirmBuildMove()
     {
+        if (buildManager.previewManager.preview == null || !buildManager.previewManager.preview.IsValid) return;
+        
         string prefabName = _toReplace.name.Replace("(Clone)", "").Trim();
         Vector3 position = _toReplace.transform.position;
         Quaternion rotation = _toReplace.transform.rotation;
