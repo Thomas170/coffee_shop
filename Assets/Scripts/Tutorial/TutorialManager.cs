@@ -5,7 +5,8 @@ public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
 
-    public GameObject arrowPrefab;
+    [SerializeField] private Canvas tutorialCanvas;
+    [SerializeField] private GameObject arrowUIPrefab;
 
     public Transform entranceTarget;
     public Transform coffeeCrateTarget;
@@ -43,8 +44,13 @@ public class TutorialManager : MonoBehaviour
     private void ShowArrow(Transform target)
     {
         if (currentArrow != null) Destroy(currentArrow);
-        currentArrow = Instantiate(arrowPrefab, target.position + Vector3.up * 2f, Quaternion.identity);
-        currentArrow.transform.SetParent(target);
+
+        currentArrow = Instantiate(arrowUIPrefab, tutorialCanvas.transform);
+    
+        var arrowScript = currentArrow.GetComponent<TutorialArrowUI>();
+        arrowScript.target = target;
+        arrowScript.mainCamera = Camera.main;
+        arrowScript.canvasRect = tutorialCanvas.GetComponent<RectTransform>();
     }
 
     private void AdvanceStep()
