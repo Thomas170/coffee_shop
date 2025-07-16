@@ -8,6 +8,7 @@ public class ClientSpawner : NetworkBehaviour
     [SerializeField] private GameObject clientPrefab;
     private const float SpawnInterval = 10f;
     [SerializeField] private List<GameObject> spawnedClients = new();
+    public bool canSpawn;
     
     private void Start()
     {
@@ -19,19 +20,22 @@ public class ClientSpawner : NetworkBehaviour
     
     private void SpawnClient()
     {
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
-        GameObject client = Instantiate(clientPrefab, spawnPoint.position, Quaternion.identity);
-        client.GetComponent<NetworkObject>().Spawn();
-
-        ClientController controller = client.GetComponent<ClientController>();
-
-        float sodaChance = SodaDispenserManager.Instance.GetSodaClientChance();
-        if (Random.value < sodaChance)
+        if (canSpawn)
         {
-            controller.commands.SetSodaClient();
-        }
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            GameObject client = Instantiate(clientPrefab, spawnPoint.position, Quaternion.identity);
+            client.GetComponent<NetworkObject>().Spawn();
 
-        spawnedClients.Add(client);
+            ClientController controller = client.GetComponent<ClientController>();
+
+            float sodaChance = SodaDispenserManager.Instance.GetSodaClientChance();
+            if (Random.value < sodaChance)
+            {
+                controller.commands.SetSodaClient();
+            }
+
+            spawnedClients.Add(client);
+        }
     }
     
     public void DespawnClient(GameObject client)

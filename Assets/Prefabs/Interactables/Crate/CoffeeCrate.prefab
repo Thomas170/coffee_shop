@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7372115730238779440}
   m_Layer: 14
   m_Name: Model
-  m_TagString: Untagged
+  m_TagString: TutoCoffeeCrate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 2635204377010130586}
   m_Layer: 14
   m_Name: CoffeeCrate
-  m_TagString: Untagged
+  m_TagString: TutoCoffeeCrate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

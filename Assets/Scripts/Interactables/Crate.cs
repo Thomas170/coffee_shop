@@ -39,5 +39,10 @@ public class Crate : InteractableBase
                 playerCarry.TryPickUp(item);
             }
         }
+        
+        if (transform.CompareTag("TutoCoffeeCrate"))
+        {
+            TutorialManager.Instance.NotifyCoffeeBeansTaken();
+        }
     }
 }
