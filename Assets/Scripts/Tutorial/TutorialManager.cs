@@ -5,8 +5,7 @@ public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
 
-    [SerializeField] private Canvas tutorialCanvas;
-    [SerializeField] private GameObject arrowUIPrefab;
+    [SerializeField] private WorldArrow worldArrow;
 
     public Transform entranceTarget;
     public Transform coffeeCrateTarget;
@@ -14,8 +13,27 @@ public class TutorialManager : MonoBehaviour
     public Transform coffeeMachineTarget;
     public Transform cupShelfTarget;*/
 
-    private GameObject currentArrow;
     private TutorialStep currentStep = TutorialStep.None;
+    
+    [SerializeField] private float targetDistanceThreshold = 3f;
+    private Transform currentTarget;
+    private TutoPointer currentPointer;
+
+    private void Update()
+    {
+        if (!currentTarget || !currentPointer || !worldArrow) return;
+
+        Transform player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId)?.transform;
+        if (!player) return;
+        
+        float dist = Vector3.Distance(player.position, currentTarget.position);
+
+        bool isClose = dist < targetDistanceThreshold;
+
+        currentPointer.gameObject.SetActive(isClose);
+        worldArrow.gameObject.SetActive(!isClose);
+    }
+
 
     private void Awake()
     {
@@ -38,19 +56,30 @@ public class TutorialManager : MonoBehaviour
         ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
         if (spawner != null) spawner.canSpawn = false;
 
-        ShowArrow(entranceTarget);
+        ShowPointer(entranceTarget);
     }
-
-    private void ShowArrow(Transform target)
-    {
-        if (currentArrow != null) Destroy(currentArrow);
-
-        currentArrow = Instantiate(arrowUIPrefab, tutorialCanvas.transform);
     
-        var arrowScript = currentArrow.GetComponent<TutorialArrowUI>();
-        arrowScript.target = target;
-        arrowScript.mainCamera = Camera.main;
-        arrowScript.canvasRect = tutorialCanvas.GetComponent<RectTransform>();
+    private void ShowPointer(Transform target)
+    {
+        currentTarget = target;
+
+        // Désactive tous les autres pointeurs
+        foreach (var pointer in FindObjectsOfType<TutoPointer>())
+        {
+            pointer.gameObject.SetActive(false);
+        }
+
+        if (!target) return;
+
+        // Active le pointer si joueur est proche (sera géré dans Update)
+        currentPointer = target.GetComponentInChildren<TutoPointer>(true);
+
+        if (currentPointer != null)
+            currentPointer.gameObject.SetActive(false); // affiché uniquement si proche
+
+        // Met à jour la flèche de direction
+        worldArrow.target = target;
+        worldArrow.gameObject.SetActive(true); // visible uniquement si trop loin
     }
 
     private void AdvanceStep()
@@ -59,12 +88,12 @@ public class TutorialManager : MonoBehaviour
         switch (currentStep)
         {
             case TutorialStep.TakeGrains:
-                ShowArrow(coffeeCrateTarget);
+                ShowPointer(coffeeCrateTarget);
                 break;
-            /*case TutorialStep.GrindGrains:
-                ShowArrow(grinderTarget);
+            case TutorialStep.GrindGrains:
+                ShowPointer(null);
                 break;
-            case TutorialStep.TakePowder:
+            /*case TutorialStep.TakePowder:
                 // Pas de flèche, on attend que le joueur récupère la poudre
                 break;
             case TutorialStep.UseCoffeeMachine1:
