@@ -42,7 +42,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        StartTutorial();
+        ShowPointer(null);
+        //StartTutorial();
     }
 
     private void StartTutorial()

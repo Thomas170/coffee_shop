@@ -1,10 +1,12 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ClientMovement : MonoBehaviour
+public class ClientMovement : NetworkBehaviour
 {
     private NavMeshAgent _agent;
     private ClientController _client;
+    public Transform modelTransform;
 
     public Transform CurrentTarget { get; private set; }
 
@@ -19,8 +21,8 @@ public class ClientMovement : MonoBehaviour
         CurrentTarget = target;
         _agent.SetDestination(target.position);
     }
-
-    private void Update()
+    
+    void Update()
     {
         if (CurrentTarget && !_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
         {
