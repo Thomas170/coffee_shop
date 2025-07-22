@@ -1,8 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CoffeeGrinder : ManualInteractableBase
 {
-    
+    protected override void AfterCollectItem()
+    {
+        PlayerController player = PlayerListManager.Instance.GetPlayer(NetworkManager.LocalClientId);
+        PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+
+        if (playerCarry.carriedItem.itemType == ItemType.CoffeePowder)
+        {
+            TutorialManager.Instance.ValidStep(TutorialStep.GrindGrains);
+        }
+        
+        base.AfterCollectItem();
+    }
 }

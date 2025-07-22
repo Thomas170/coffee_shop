@@ -4,9 +4,9 @@ public enum TutorialStep
     EnterCafe,
     TakeGrains,
     GrindGrains,
-    /*TakePowder,
     UseCoffeeMachine1,
     TakeCup,
     UseCoffeeMachine2,
-    Done*/
+    GiveCupClient,
+    Done
 }

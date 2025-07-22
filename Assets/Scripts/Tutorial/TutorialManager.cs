@@ -6,34 +6,27 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager Instance;
 
     [SerializeField] private WorldArrow worldArrow;
+    [SerializeField] private ClientSpawner clientSpawner;
+    [SerializeField] private PopupTips popupTips;
+
 
     public Transform entranceTarget;
     public Transform coffeeCrateTarget;
-    /*public Transform grinderTarget;
+    public Transform grinderTarget;
     public Transform coffeeMachineTarget;
-    public Transform cupShelfTarget;*/
+    public Transform dishCabinetTarget;
+    public GameObject tutorialClient;
 
-    private TutorialStep currentStep = TutorialStep.None;
+    public Sprite moveTuto;
+    public Sprite grindTuto;
+    public Sprite coffeeTuto;
+    public Sprite orderTuto;
+
+    private TutorialStep _currentStep = TutorialStep.None;
     
     [SerializeField] private float targetDistanceThreshold = 3f;
-    private Transform currentTarget;
-    private TutoPointer currentPointer;
-
-    private void Update()
-    {
-        if (!currentTarget || !currentPointer || !worldArrow) return;
-
-        Transform player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId)?.transform;
-        if (!player) return;
-        
-        float dist = Vector3.Distance(player.position, currentTarget.position);
-
-        bool isClose = dist < targetDistanceThreshold;
-
-        currentPointer.gameObject.SetActive(isClose);
-        worldArrow.gameObject.SetActive(!isClose);
-    }
-
+    private Transform _currentTarget;
+    private TutoPointer _currentPointer;
 
     private void Awake()
     {
@@ -42,14 +35,30 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        worldArrow.gameObject.SetActive(false);
         ShowPointer(null);
-        //StartTutorial();
+        tutorialClient.SetActive(false);
+        StartTutorial();
+    }
+    
+    private void Update()
+    {
+        if (!_currentTarget || !_currentPointer || !worldArrow) return;
+
+        Transform player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId)?.transform;
+        if (!player) return;
+        
+        float dist = Vector3.Distance(player.position, _currentTarget.position);
+
+        bool isClose = dist < targetDistanceThreshold;
+
+        _currentPointer.gameObject.SetActive(isClose);
+        worldArrow.gameObject.SetActive(!isClose);
     }
 
     private void StartTutorial()
     {
-        Debug.Log("Start tuto");
-        currentStep = TutorialStep.EnterCafe;
+        _currentStep = TutorialStep.EnterCafe;
 
         PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId)
             .playerBuild.enabled = false;
@@ -57,14 +66,14 @@ public class TutorialManager : MonoBehaviour
         ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
         if (spawner != null) spawner.canSpawn = false;
 
+        popupTips.OpenPopup(moveTuto);
         ShowPointer(entranceTarget);
     }
     
     private void ShowPointer(Transform target)
     {
-        currentTarget = target;
+        _currentTarget = target;
 
-        // Désactive tous les autres pointeurs
         foreach (var pointer in FindObjectsOfType<TutoPointer>())
         {
             pointer.gameObject.SetActive(false);
@@ -72,99 +81,73 @@ public class TutorialManager : MonoBehaviour
 
         if (!target) return;
 
-        // Active le pointer si joueur est proche (sera géré dans Update)
-        currentPointer = target.GetComponentInChildren<TutoPointer>(true);
+        _currentPointer = target.GetComponentInChildren<TutoPointer>(true);
 
-        if (currentPointer != null)
-            currentPointer.gameObject.SetActive(false); // affiché uniquement si proche
+        if (_currentPointer != null)
+            _currentPointer.gameObject.SetActive(false);
 
-        // Met à jour la flèche de direction
         worldArrow.target = target;
-        worldArrow.gameObject.SetActive(true); // visible uniquement si trop loin
+        worldArrow.gameObject.SetActive(true);
     }
 
     private void AdvanceStep()
     {
-        currentStep++;
-        switch (currentStep)
+        _currentStep++;
+        switch (_currentStep)
         {
             case TutorialStep.TakeGrains:
+                popupTips.OpenPopup(grindTuto);
                 ShowPointer(coffeeCrateTarget);
                 break;
             case TutorialStep.GrindGrains:
-                ShowPointer(null);
-                break;
-            /*case TutorialStep.TakePowder:
-                // Pas de flèche, on attend que le joueur récupère la poudre
+                ShowPointer(grinderTarget);
                 break;
             case TutorialStep.UseCoffeeMachine1:
-                ShowArrow(coffeeMachineTarget);
+                popupTips.OpenPopup(coffeeTuto);
+                ShowPointer(coffeeMachineTarget);
                 break;
             case TutorialStep.TakeCup:
-                ShowArrow(cupShelfTarget);
+                ShowPointer(dishCabinetTarget);
                 break;
             case TutorialStep.UseCoffeeMachine2:
-                ShowArrow(coffeeMachineTarget);
+                ShowPointer(coffeeMachineTarget);
+                break;
+            case TutorialStep.GiveCupClient:
+                popupTips.OpenPopup(orderTuto);
+                ShowPointer(tutorialClient.transform);
+                SpawnTutorialClient();
                 break;
             case TutorialStep.Done:
-                if (currentArrow != null) Destroy(currentArrow);
-                PlayerPrefs.SetInt("TutorialDone", 1);
-
-                // Réactive les menus
-                PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId)
-                    .playerBuild.enabled = true;
-
-                // Redémarre le spawn
-                FindObjectOfType<ClientSpawner>()?.InvokeRepeating("SpawnClient", 2f, 10f);
-                break;*/
+                ShowPointer(null);
+                FinishTutorial();
+                break;
         }
     }
-
-    public void NotifyPlayerEnteredCafe()
+    
+    public void ValidStep(TutorialStep step)
     {
-        if (currentStep == TutorialStep.EnterCafe)
+        if (_currentStep == step) AdvanceStep();
+    }
+    
+    private void SpawnTutorialClient()
+    {
+        tutorialClient.SetActive(true);
+
+        NetworkObject networkObject = tutorialClient.GetComponent<NetworkObject>();
+        if (!networkObject.IsSpawned && NetworkManager.Singleton.IsServer)
         {
-            Debug.Log("Enter coffee");
-            AdvanceStep();
+            networkObject.Spawn();
         }
     }
 
-    public void NotifyCoffeeBeansTaken()
+    private void FinishTutorial()
     {
-        if (currentStep == TutorialStep.TakeGrains)
-        {
-            Debug.Log("Take coffee beans");
-            AdvanceStep();
-        }
-    }
+        // Save
 
-    /*public void NotifyGrainGround()
-    {
-        if (currentStep == TutorialStep.GrindGrains)
-            AdvanceStep();
-    }
+        PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId)
+            .playerBuild.enabled = true;
 
-    public void NotifyPowderTaken()
-    {
-        if (currentStep == TutorialStep.TakePowder)
-            AdvanceStep();
+        ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
+        if (spawner != null) spawner.canSpawn = true;
     }
-
-    public void NotifyPowderInMachine()
-    {
-        if (currentStep == TutorialStep.UseCoffeeMachine1)
-            AdvanceStep();
-    }
-
-    public void NotifyCupTaken()
-    {
-        if (currentStep == TutorialStep.TakeCup)
-            AdvanceStep();
-    }
-
-    public void NotifyFinalCoffeeTaken()
-    {
-        if (currentStep == TutorialStep.UseCoffeeMachine2)
-            AdvanceStep();
-    }*/
 }

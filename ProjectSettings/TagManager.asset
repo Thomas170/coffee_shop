@@ -10,7 +10,8 @@ TagManager:
   - GridCell
   - Spot
   - ClientSpot
-  - TutoCoffeeCrate
+  - CoffeeCrate
+  - DishCabinet
   layers:
   - Default
   - TransparentFX

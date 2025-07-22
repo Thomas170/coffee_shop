@@ -54,7 +54,6 @@ public class ClientCommands : NetworkBehaviour
             return;
         }
         clientController.movement.MoveTo(commandSpot.transform);
-
         ClientSpot clientSpot = commandSpot.GetComponent<ClientSpot>();
         SyncCommandSpotClientRpc(clientSpot.buildParent.GetComponent<NetworkObject>(), clientSpot.index);
     }
@@ -92,8 +91,11 @@ public class ClientCommands : NetworkBehaviour
         Image orderImage = orderIcon.transform.Find("OrderImage").GetComponent<Image>();
         orderImage.sprite = currentOrder.orderIcon;
 
-        waitingGauge.StartGauge(_patienceTime);
-        waitingGauge.OnEmpty = LeaveCoffeeShop;
+        if (!clientController.isTuto)
+        {
+            waitingGauge.StartGauge(_patienceTime);
+            waitingGauge.OnEmpty = LeaveCoffeeShop;
+        }
     }
 
     public void GiveItem(ItemBase itemToUse)
@@ -130,6 +132,8 @@ public class ClientCommands : NetworkBehaviour
         CurrencyManager.Instance.AddCoins(currentOrder.price);
         LevelManager.Instance.GainExperience(currentOrder.experience);
         clientController.canInteract = false;
+
+        if (clientController.isTuto) TutorialManager.Instance.ValidStep(TutorialStep.GiveCupClient);
     }
 
     private IEnumerator DrinkCoffee()

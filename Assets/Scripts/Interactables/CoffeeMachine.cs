@@ -22,4 +22,27 @@ public class CoffeeMachine : AutoInteractableBase
 
         SoundManager.Instance.Play3DSound(SoundManager.Instance.coffeeMachineEnd, transform.position);
     }
+    
+    protected override void AfterPutItem()
+    {
+        if (storeItems.Exists(item => item.itemType == ItemType.CoffeePowder && item.currentAmount > 0))
+        {
+            TutorialManager.Instance.ValidStep(TutorialStep.UseCoffeeMachine1);
+        }
+        
+        base.AfterPutItem();
+    }
+    
+    protected override void AfterCollectItem()
+    {
+        PlayerController player = PlayerListManager.Instance.GetPlayer(NetworkManager.LocalClientId);
+        PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+
+        if (playerCarry.carriedItem.itemType == ItemType.CupCoffee)
+        {
+            TutorialManager.Instance.ValidStep(TutorialStep.UseCoffeeMachine2);
+        }
+        
+        base.AfterCollectItem();
+    }
 }

@@ -149,8 +149,11 @@ public abstract class InteractableBase : NetworkBehaviour
             
             if (resultItemIcon) resultItemIcon.SetActive(false);
             currentDisplayItem = null;
+            AfterCollectItem();
         }
     }
+    
+    protected virtual void AfterCollectItem() { }
     
     [ServerRpc]
     private void SpawnResultItemServerRpc()

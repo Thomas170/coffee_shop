@@ -40,9 +40,14 @@ public class Crate : InteractableBase
             }
         }
         
-        if (transform.CompareTag("TutoCoffeeCrate"))
+        if (playerCarry.carriedItem.itemType == ItemType.CoffeeBeans)
         {
-            TutorialManager.Instance.NotifyCoffeeBeansTaken();
+            TutorialManager.Instance.ValidStep(TutorialStep.TakeGrains);
+        }
+        
+        if (playerCarry.carriedItem.itemType == ItemType.CupEmpty)
+        {
+            TutorialManager.Instance.ValidStep(TutorialStep.TakeCup);
         }
     }
 }

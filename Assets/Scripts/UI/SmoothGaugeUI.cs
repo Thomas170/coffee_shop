@@ -19,12 +19,15 @@ public class SmoothGaugeUI : MonoBehaviour
 
     public void StartGauge(float customDuration)
     {
-        duration = customDuration;
-        _currentTime = 0f;
-        _isActive = true;
-        fillImage.fillAmount = 1f;
-        fillImage.color = fullColor;
-        gameObject.SetActive(true);
+        if (fillImage)
+        {
+            duration = customDuration;
+            _currentTime = 0f;
+            _isActive = true;
+            fillImage.fillAmount = 1f;
+            fillImage.color = fullColor;
+            gameObject.SetActive(true);
+        }
     }
 
     public void StopGauge()

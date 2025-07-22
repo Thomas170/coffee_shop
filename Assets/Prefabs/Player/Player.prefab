@@ -1983,6 +1983,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: player_circle
       objectReference: {fileID: 0}
+    - target: {fileID: 6567672764202239166, guid: dec3b6b31da4fb24691bbca3d726e647, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

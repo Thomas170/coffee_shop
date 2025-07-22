@@ -9,6 +9,7 @@ public class ClientController : NetworkBehaviour
     public ClientSpawner clientSpawner;
     public bool canInteract;
     public GameObject hightlightRender;
+    public bool isTuto;
 
     private void Start()
     {

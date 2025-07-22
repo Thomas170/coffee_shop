@@ -18,6 +18,8 @@ public class ClientMovement : NetworkBehaviour
 
     public void MoveTo(Transform target)
     {
+        if (!target) return;
+        
         CurrentTarget = target;
         _agent.SetDestination(target.position);
     }

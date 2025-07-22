@@ -19,15 +19,15 @@ public class PlayerInteraction : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         InputReader.Instance.InteractAction.performed += OnInteract;
-        InputReader.Instance.ActionAction.started += OnActionStarted;
         InputReader.Instance.ActionAction.canceled += OnActionCanceled;
+        InputReader.Instance.ActionAction.started += OnActionStarted;
     }
 
     private void OnDestroy()
     {
         InputReader.Instance.InteractAction.performed -= OnInteract;
-        InputReader.Instance.ActionAction.started -= OnActionStarted;
         InputReader.Instance.ActionAction.canceled -= OnActionCanceled;
+        InputReader.Instance.ActionAction.started -= OnActionStarted;
     }
     
     private void Update()
@@ -53,8 +53,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnActionCanceled(InputAction.CallbackContext ctx)
     {
-        _isHoldingAction = false;
-        playerController.canMove = true;
+        if (_isHoldingAction)
+        {
+            _isHoldingAction = false;
+            playerController.canMove = true;
+        }
 
         if (_currentInteractable is ManualInteractableBase manual)
         {

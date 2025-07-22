@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 2635204377010130586}
   m_Layer: 14
   m_Name: CoffeeCrate
-  m_TagString: TutoCoffeeCrate
+  m_TagString: CoffeeCrate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1613755245
+  GlobalObjectIdHash: 2049399245
   InScenePlacedSourceGlobalObjectIdHash: 2049399245
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
