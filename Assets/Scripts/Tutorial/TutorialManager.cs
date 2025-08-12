@@ -88,7 +88,7 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator ShowFirstPopupAfterDelay()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0f);
         popupTips.OpenPopup(moveTuto);
     }
     
@@ -105,44 +105,99 @@ public class TutorialManager : MonoBehaviour
 
         _currentPointer = target.GetComponentInChildren<TutoPointer>(true);
 
-        if (_currentPointer != null)
+        if (_currentPointer)
             _currentPointer.gameObject.SetActive(false);
 
         worldArrow.target = target;
         worldArrow.gameObject.SetActive(true);
     }
-
+    
     private void AdvanceStep()
     {
         _currentStep++;
+
         switch (_currentStep)
         {
             case TutorialStep.TakeGrains:
-                popupTips.OpenPopup(grindTuto);
-                ShowPointer(coffeeCrateTarget);
+                StartStepWithDialogue(
+                    new [] { "Maintenant, prends des grains de café." },
+                    grindTuto,
+                    coffeeCrateTarget
+                );
                 break;
+
             case TutorialStep.GrindGrains:
-                ShowPointer(grinderTarget);
+                StartStepWithDialogue(
+                    new [] { "Super ! Broie les grains dans le moulin." },
+                    null,
+                    grinderTarget
+                );
                 break;
+
             case TutorialStep.UseCoffeeMachine1:
-                popupTips.OpenPopup(coffeeTuto);
-                ShowPointer(coffeeMachineTarget);
+                StartStepWithDialogue(
+                    new [] { "Il est temps de préparer un café avec la machine." },
+                    coffeeTuto,
+                    coffeeMachineTarget
+                );
                 break;
+
             case TutorialStep.TakeCup:
-                ShowPointer(dishCabinetTarget);
+                StartStepWithDialogue(
+                    new [] { "Prends une tasse propre dans le placard." },
+                    null,
+                    dishCabinetTarget
+                );
                 break;
+
             case TutorialStep.UseCoffeeMachine2:
-                ShowPointer(coffeeMachineTarget);
+                StartStepWithDialogue(
+                    new [] { "Verse ton café dans la tasse." },
+                    null,
+                    coffeeMachineTarget
+                );
                 break;
+
             case TutorialStep.GiveCupClient:
-                popupTips.OpenPopup(orderTuto);
-                ShowPointer(tutorialClient.transform);
-                SpawnTutorialClient();
+                StartStepWithDialogue(
+                    new [] { "Apporte la tasse au client." },
+                    orderTuto,
+                    tutorialClient.transform,
+                    true
+                );
                 break;
+
             case TutorialStep.Done:
                 ShowPointer(null);
                 FinishTutorial();
                 break;
+        }
+    }
+    
+    private void StartStepWithDialogue(string[] dialogue, Sprite popupSprite, Transform pointerTarget, bool spawnClient = false)
+    {
+        DialogueManager.Instance.OnDialogueEnd += () =>
+        {
+            StartCoroutine(WaitAndShowPopup(popupSprite, pointerTarget, spawnClient));
+        };
+
+        DialogueManager.Instance.StartDialogue(dialogue);
+    }
+
+    private IEnumerator WaitAndShowPopup(Sprite popupSprite, Transform pointerTarget, bool spawnClient)
+    {
+        yield return new WaitForSeconds(0f);
+
+        if (popupSprite)
+        {
+            popupTips.OpenPopup(popupSprite);
+        }
+
+        ShowPointer(pointerTarget);
+
+        if (spawnClient)
+        {
+            SpawnTutorialClient();
         }
     }
     

@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,10 +36,10 @@ public class PopupTips : MonoBehaviour
         EnablePlayer(false);
 
         Transform imageTransform = gameObject.transform.Find("PopupImage");
-        if (imageTransform != null)
+        if (imageTransform)
         {
             Image popupImage = imageTransform.GetComponent<Image>();
-            if (popupImage != null)
+            if (popupImage)
             {
                 popupImage.sprite = spritePopup;
             }
@@ -84,7 +83,7 @@ public class PopupTips : MonoBehaviour
         PlayerController player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId);
         if (player)
         {
-            player.canMove = value;
+            player.isInPopup = !value;
         }
     }
 }
