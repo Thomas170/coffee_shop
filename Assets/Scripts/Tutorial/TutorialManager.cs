@@ -17,6 +17,7 @@ public class TutorialManager : MonoBehaviour
     public Transform coffeeMachineTarget;
     public Transform dishCabinetTarget;
     public GameObject tutorialClient;
+    public Transform robotTarget;
 
     public Sprite moveTuto;
     public Sprite grindTuto;
@@ -122,7 +123,8 @@ public class TutorialManager : MonoBehaviour
                 StartStepWithDialogue(
                     new [] { "Maintenant, prends des grains de café." },
                     grindTuto,
-                    coffeeCrateTarget
+                    coffeeCrateTarget,
+                    robotTarget
                 );
                 break;
 
@@ -163,6 +165,7 @@ public class TutorialManager : MonoBehaviour
                     new [] { "Apporte la tasse au client." },
                     orderTuto,
                     tutorialClient.transform,
+                    null,
                     true
                 );
                 break;
@@ -174,11 +177,11 @@ public class TutorialManager : MonoBehaviour
         }
     }
     
-    private void StartStepWithDialogue(string[] dialogue, Sprite popupSprite, Transform pointerTarget, bool spawnClient = false)
+    private void StartStepWithDialogue(string[] dialogue, Sprite popupSprite, Transform pointerTarget, Transform robotTargetPoint = null, bool spawnClient = false)
     {
-        if (RobotController.Instance != null)
+        if (robotTargetPoint && RobotController.Instance)
         {
-            RobotController.Instance.MoveTo(pointerTarget);
+            RobotController.Instance.MoveTo(robotTargetPoint);
         }
         
         DialogueManager.Instance.OnDialogueEnd += () =>

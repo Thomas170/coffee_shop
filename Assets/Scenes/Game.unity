@@ -1674,6 +1674,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 675794987980957594, guid: 75e919f253615e5438fe17be453cd92c, type: 3}
   m_PrefabInstance: {fileID: 1934198289763770343}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &250476963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 250476964}
+  m_Layer: 0
+  m_Name: RobotTutoPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &250476964
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250476963}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -122, y: 14.2, z: 93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1479618414}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &254925625
 GameObject:
   m_ObjectHideFlags: 0
@@ -12237,6 +12268,7 @@ Transform:
   - {fileID: 449295917}
   - {fileID: 1796784902856007468}
   - {fileID: 460337370}
+  - {fileID: 250476964}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1479618415
@@ -12260,6 +12292,7 @@ MonoBehaviour:
   coffeeMachineTarget: {fileID: 596529424}
   dishCabinetTarget: {fileID: 449295917}
   tutorialClient: {fileID: 7510789238902515951}
+  robotTarget: {fileID: 250476964}
   moveTuto: {fileID: 21300000, guid: 8964fe7818543ae4caadc57771a11ba3, type: 3}
   grindTuto: {fileID: 21300000, guid: e400e57e8079b6d4888e888311245db1, type: 3}
   coffeeTuto: {fileID: 21300000, guid: 51ff4af02994cc74489e4390a49b2b41, type: 3}
@@ -20635,7 +20668,8 @@ PrefabInstance:
       value: Robot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5472064588880841098, guid: de88742700c91834eb06a4755e955ea3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de88742700c91834eb06a4755e955ea3, type: 3}
