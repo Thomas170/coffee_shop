@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -55,7 +56,7 @@ public class TutorialManager : MonoBehaviour
         _currentPointer.gameObject.SetActive(isClose);
         worldArrow.gameObject.SetActive(!isClose);
     }
-
+    
     private void StartTutorial()
     {
         _currentStep = TutorialStep.EnterCafe;
@@ -66,8 +67,29 @@ public class TutorialManager : MonoBehaviour
         ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
         if (spawner != null) spawner.canSpawn = false;
 
-        popupTips.OpenPopup(moveTuto);
+        string[] robotLines =
+        {
+            "Salut ! Je suis Cappu, ton assistant caféiné.",
+            "Je vais t'apprendre à préparer un café parfait.",
+            "Pour commencer, essaie de te déplacer et entre dans le café."
+        };
+
+        DialogueManager.Instance.OnDialogueEnd += OnIntroDialogueFinished;
+
+        DialogueManager.Instance.StartDialogue(robotLines);
+    }
+
+    private void OnIntroDialogueFinished()
+    {
+        DialogueManager.Instance.OnDialogueEnd -= OnIntroDialogueFinished;
+        StartCoroutine(ShowFirstPopupAfterDelay());
         ShowPointer(entranceTarget);
+    }
+
+    private IEnumerator ShowFirstPopupAfterDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        popupTips.OpenPopup(moveTuto);
     }
     
     private void ShowPointer(Transform target)

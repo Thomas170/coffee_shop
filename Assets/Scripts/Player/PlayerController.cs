@@ -13,6 +13,7 @@ public class PlayerController : NetworkBehaviour
     public PlayerBuild playerBuild;
     
     public bool canMove = true;
+    public bool isInDialogue = true;
     public bool CanInteract { get; private set; } = true;
     public bool CanOpenMenu { get; private set; } = true;
     public bool HasMenuOpen { get; private set; }

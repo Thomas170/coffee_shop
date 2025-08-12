@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,6 +9,11 @@ public class PopupTips : MonoBehaviour
     private float _inputDelayTimer;
     private bool _isPopupActive;
     private const float InputDelay = 0.5f;
+
+    private void Start()
+    {
+        ClosePopup();
+    }
 
     private void Update()
     {
