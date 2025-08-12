@@ -176,6 +176,11 @@ public class TutorialManager : MonoBehaviour
     
     private void StartStepWithDialogue(string[] dialogue, Sprite popupSprite, Transform pointerTarget, bool spawnClient = false)
     {
+        if (RobotController.Instance != null)
+        {
+            RobotController.Instance.MoveTo(pointerTarget);
+        }
+        
         DialogueManager.Instance.OnDialogueEnd += () =>
         {
             StartCoroutine(WaitAndShowPopup(popupSprite, pointerTarget, spawnClient));
