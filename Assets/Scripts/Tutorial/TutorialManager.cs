@@ -40,7 +40,7 @@ public class TutorialManager : MonoBehaviour
         worldArrow.gameObject.SetActive(false);
         ShowPointer(null);
         tutorialClient.SetActive(false);
-        StartTutorial();
+        //StartTutorial();
     }
     
     private void Update()
@@ -58,7 +58,7 @@ public class TutorialManager : MonoBehaviour
         worldArrow.gameObject.SetActive(!isClose);
     }
     
-    private void StartTutorial()
+    public void StartTutorial()
     {
         _currentStep = TutorialStep.EnterCafe;
 

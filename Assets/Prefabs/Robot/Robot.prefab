@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4144152441233937814}
   - component: {fileID: 4324120507684275981}
   - component: {fileID: 2614864675232682283}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Model
-  m_TagString: Untagged
+  m_TagString: Cappu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,9 +101,9 @@ GameObject:
   - component: {fileID: 4487278940326588143}
   - component: {fileID: 5194389069182386886}
   - component: {fileID: 5990614647239428693}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Robot
-  m_TagString: Untagged
+  m_TagString: Cappu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,7 +143,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 12.182438
-  m_BaseOffset: 4
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!65 &5194389069182386886
@@ -166,7 +166,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2, y: 10, z: 2}
-  m_Center: {x: -0.24399142, y: 1.4367287, z: 0}
+  m_Center: {x: -0.24399142, y: 5, z: 0}
 --- !u!114 &5990614647239428693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,3 +179,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04d53e03dbceef846a89d904da487fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 5

@@ -12,6 +12,7 @@ TagManager:
   - ClientSpot
   - CoffeeCrate
   - DishCabinet
+  - Cappu
   layers:
   - Default
   - TransparentFX
@@ -30,7 +31,7 @@ TagManager:
   - Build
   - Wall
   - 
-  - 
+  - Cappu
   - 
   - 
   - 
