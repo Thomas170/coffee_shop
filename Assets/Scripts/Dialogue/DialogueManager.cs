@@ -41,6 +41,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(string[] lines)
     {
+        Debug.Log(1);
         PlayerIsDialogue(true);
         if (lines == null || lines.Length == 0) return;
 
@@ -95,6 +96,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialoguePanel.SetActive(false);
         OnDialogueEnd?.Invoke();
+        Debug.Log(2);
         PlayerIsDialogue(false);
     }
     

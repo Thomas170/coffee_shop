@@ -805,7 +805,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4144480234650336366}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -988,6 +988,8 @@ MonoBehaviour:
   playerAnimation: {fileID: 0}
   playerBuild: {fileID: 0}
   canMove: 1
+  isInDialogue: 0
+  isInPopup: 0
 --- !u!114 &7797342449163701615
 MonoBehaviour:
   m_ObjectHideFlags: 0

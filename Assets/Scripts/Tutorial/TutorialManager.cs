@@ -37,14 +37,15 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        return;
         worldArrow.gameObject.SetActive(false);
         ShowPointer(null);
         tutorialClient.SetActive(false);
-        //StartTutorial();
     }
     
     private void Update()
     {
+        return;
         if (!_currentTarget || !_currentPointer || !worldArrow) return;
 
         Transform player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId)?.transform;
@@ -66,7 +67,7 @@ public class TutorialManager : MonoBehaviour
             .playerBuild.enabled = false;
 
         ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
-        if (spawner != null) spawner.canSpawn = false;
+        if (spawner) spawner.canSpawn = false;
 
         string[] robotLines =
         {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1936076494293381523}
   - component: {fileID: 2898244566198939124}
   - component: {fileID: 2405838178605811708}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1058972163201255}
   - component: {fileID: 1345222448540453220}
   - component: {fileID: 7534904689194055145}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 7588749623770526193}
   - component: {fileID: 8578475746891253114}
   - component: {fileID: 3182860093454688975}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Ears
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,7 +503,7 @@ GameObject:
   - component: {fileID: 2538856489126743412}
   - component: {fileID: 6810671051477560432}
   - component: {fileID: 593090320882765895}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +667,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5331184664481533943}
-  m_Layer: 0
+  - component: {fileID: 7958516781005999089}
+  m_Layer: 13
   m_Name: ClientModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,6 +697,29 @@ Transform:
   - {fileID: 2272229054321633075}
   m_Father: {fileID: 1796784901707160537}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!136 &7958516781005999089
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807588858161976653}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Height: 5
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &5309613179659094014
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,7 +928,7 @@ GameObject:
   - component: {fileID: 2272229054321633075}
   - component: {fileID: 7648160609021934579}
   - component: {fileID: 4460163277449414986}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1223,7 +1247,7 @@ GameObject:
   - component: {fileID: 2347354481999197907}
   - component: {fileID: 7997762668453116083}
   - component: {fileID: 8064466607393806827}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Nose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1306,7 +1330,7 @@ GameObject:
   - component: {fileID: 2543253647331673503}
   - component: {fileID: 4446244325132914862}
   - component: {fileID: 5371519921639865456}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
