@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +10,7 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
 
-    public event System.Action OnDialogueEnd;
+    public event Action OnDialogueEnd;
 
     [Header("UI Elements")]
     [SerializeField] private GameObject dialoguePanel;

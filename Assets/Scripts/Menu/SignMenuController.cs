@@ -5,9 +5,10 @@ public class SignMenuController : BaseMenuController
     public GameObject openButton;
     public GameObject closeButton;
     
-    private void Awake()
+    new void Start()
     {
         HandleOpeningButtons();
+        base.Start();
     }
 
     public override void ExecuteMenuAction(string buttonName)

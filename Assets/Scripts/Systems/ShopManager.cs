@@ -2,20 +2,13 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-    public static ShopManager Instance { get; private set; }
+    public static ShopManager Instance;
     public bool shopOpened = true;
     public ClientSpawner clientSpawner;
     
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (Instance == null) Instance = this;
     }
 
     public void OpenShop()
