@@ -26,11 +26,5 @@ MonoBehaviour:
     position: {x: -85, y: 2, z: -5}
     rotationEuler: {x: 0, y: 90, z: 0}
   - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
-    position: {x: -35, y: 5.5, z: -25}
-    rotationEuler: {x: 0, y: -90, z: 0}
-  - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
     position: {x: -35, y: 5.5, z: -15}
-    rotationEuler: {x: 0, y: -90, z: 0}
-  - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
-    position: {x: -35, y: 5.5, z: -5}
     rotationEuler: {x: 0, y: -90, z: 0}
