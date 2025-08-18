@@ -53,6 +53,11 @@ public class ClientSpotManager : NetworkBehaviour
             }
         }
     }
+
+    public void ClearSpots()
+    {
+        _occupiedSpots.Clear();
+    }
     
     public GameObject RequestSpot(GameObject client)
     {
