@@ -951,7 +951,7 @@ MonoBehaviour:
   interactionDistance: 4
   interactionMask:
     serializedVersion: 2
-    m_Bits: 26624
+    m_Bits: 157696
   rayOrigin: {fileID: 2258968468618478914}
 --- !u!114 &5841634399247074232
 MonoBehaviour:
@@ -990,6 +990,7 @@ MonoBehaviour:
   canMove: 1
   isInDialogue: 0
   isInPopup: 0
+  isInCinematic: 0
 --- !u!114 &7797342449163701615
 MonoBehaviour:
   m_ObjectHideFlags: 0

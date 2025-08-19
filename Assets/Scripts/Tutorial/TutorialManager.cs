@@ -23,6 +23,7 @@ public class TutorialManager : MonoBehaviour
     public Sprite moveTuto;
     public Sprite coffeeTuto;
     public Sprite orderTuto;
+    public Sprite currentPopup;
 
     private TutorialStep _currentStep = TutorialStep.None;
     
@@ -93,8 +94,9 @@ public class TutorialManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0f);
         popupTips.OpenPopup(moveTuto);
+        currentPopup = moveTuto;
     }
-    
+
     private void ShowPointer(Transform target)
     {
         _currentTarget = target;
@@ -204,6 +206,7 @@ public class TutorialManager : MonoBehaviour
         if (popupSprite)
         {
             popupTips.OpenPopup(popupSprite);
+            currentPopup = popupSprite;
         }
 
         ShowPointer(pointerTarget);
@@ -239,5 +242,10 @@ public class TutorialManager : MonoBehaviour
 
         ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
         spawner.canSpawn = true;
+    }
+
+    public void ShowCurrentPopup()
+    {
+        popupTips.OpenPopup(currentPopup);
     }
 }
