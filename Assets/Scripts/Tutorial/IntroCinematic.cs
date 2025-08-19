@@ -87,7 +87,7 @@ public class IntroCinematic : MonoBehaviour
         }
 
         FindObjectOfType<CinematicBars>().HideBars();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         localPlayer.isInCinematic = false;
         
         // Lancer le tuto
