@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -37,7 +38,6 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        return;
         worldArrow.gameObject.SetActive(false);
         ShowPointer(null);
         tutorialClient.SetActive(false);
@@ -45,7 +45,6 @@ public class TutorialManager : MonoBehaviour
     
     private void Update()
     {
-        return;
         if (!_currentTarget || !_currentPointer || !worldArrow) return;
 
         Transform player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId)?.transform;
@@ -123,7 +122,7 @@ public class TutorialManager : MonoBehaviour
             case TutorialStep.TakeGrains:
                 StartStepWithDialogue(
                     new [] { "Maintenant, prends des grains de café." },
-                    grindTuto,
+                    coffeeTuto,
                     coffeeCrateTarget,
                     robotTarget
                 );
@@ -140,7 +139,7 @@ public class TutorialManager : MonoBehaviour
             case TutorialStep.UseCoffeeMachine1:
                 StartStepWithDialogue(
                     new [] { "Il est temps de préparer un café avec la machine." },
-                    coffeeTuto,
+                    null,
                     coffeeMachineTarget
                 );
                 break;
@@ -185,11 +184,14 @@ public class TutorialManager : MonoBehaviour
             RobotController.Instance.MoveTo(robotTargetPoint);
         }
         
-        DialogueManager.Instance.OnDialogueEnd += () =>
+        Action handler = null;
+        handler = () =>
         {
+            DialogueManager.Instance.OnDialogueEnd -= handler;
             StartCoroutine(WaitAndShowPopup(popupSprite, pointerTarget, spawnClient));
         };
 
+        DialogueManager.Instance.OnDialogueEnd += handler;
         DialogueManager.Instance.StartDialogue(dialogue);
     }
 

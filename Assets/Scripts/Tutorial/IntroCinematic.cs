@@ -24,9 +24,6 @@ public class IntroCinematic : MonoBehaviour
 
     private void Start()
     {
-        cinematicCam.Priority = -10;
-        return;
-        
         FindObjectOfType<CinematicBars>().ShowBars();
         coins.SetActive(false);
         level.SetActive(false);
