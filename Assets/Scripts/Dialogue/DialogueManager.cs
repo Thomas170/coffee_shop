@@ -19,6 +19,7 @@ public class DialogueManager : MonoBehaviour
 
     private Queue<string> _sentences;
     private bool _isTyping;
+    private string _currentSentence;
 
     private void Awake()
     {
@@ -42,7 +43,6 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(string[] lines)
     {
-        Debug.Log(1);
         PlayerIsDialogue(true);
         if (lines == null || lines.Length == 0) return;
 
@@ -58,7 +58,15 @@ public class DialogueManager : MonoBehaviour
 
     private void OnNext(InputAction.CallbackContext ctx)
     {
-        if (dialoguePanel.activeSelf)
+        if (!dialoguePanel.activeSelf) return;
+
+        if (_isTyping)
+        {
+            StopAllCoroutines();
+            dialogueText.text = _currentSentence;
+            _isTyping = false;
+        }
+        else
         {
             DisplayNextSentence();
         }
@@ -66,17 +74,15 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
-        if (_isTyping) return;
-
         if (_sentences.Count == 0)
         {
             EndDialogue();
             return;
         }
 
-        string sentence = _sentences.Dequeue();
+        _currentSentence = _sentences.Dequeue();
         StopAllCoroutines();
-        StartCoroutine(TypeSentence(sentence));
+        StartCoroutine(TypeSentence(_currentSentence));
     }
 
     IEnumerator TypeSentence(string sentence)
@@ -97,7 +103,6 @@ public class DialogueManager : MonoBehaviour
     {
         dialoguePanel.SetActive(false);
         OnDialogueEnd?.Invoke();
-        Debug.Log(2);
         PlayerIsDialogue(false);
     }
     

@@ -24,16 +24,28 @@ public class IntroCinematic : MonoBehaviour
 
     private void Start()
     {
-        FindObjectOfType<CinematicBars>().ShowBars();
-        coins.SetActive(false);
-        level.SetActive(false);
-        
-        cinematicCam.Priority = 10;
-        StartCoroutine(PlayCinematic());
+        if (FindObjectOfType<TutorialManager>().isTuto)
+        {
+            FindObjectOfType<CinematicBars>().ShowBars();
+            coins.SetActive(false);
+            level.SetActive(false);
+            
+            cinematicCam.Priority = 10;
+            StartCoroutine(PlayCinematic());
+        }
+        else
+        {
+            coins.SetActive(true);
+            level.SetActive(true);
+            cinematicCam.Priority = -10;
+        }
     }
 
     private IEnumerator PlayCinematic()
     {
+        PlayerController localPlayer = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
+        localPlayer.isInCinematic = true;
+        
         // Mettre la caméra au point de départ
         if (camStartPos && camEndPos)
         {
@@ -59,7 +71,6 @@ public class IntroCinematic : MonoBehaviour
         }
 
         // Récupérer la caméra du joueur local (elle doit être sur son prefab)
-        var localPlayer = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
         if (localPlayer)
         {
             _playerCam = localPlayer.GetComponentInChildren<CinemachineVirtualCamera>(true);
@@ -77,6 +88,7 @@ public class IntroCinematic : MonoBehaviour
 
         FindObjectOfType<CinematicBars>().HideBars();
         yield return new WaitForSeconds(2f);
+        localPlayer.isInCinematic = false;
         
         // Lancer le tuto
         TutorialManager.Instance.StartTutorial();

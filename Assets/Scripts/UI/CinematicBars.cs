@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using Unity.Netcode;
 
 public class CinematicBars : MonoBehaviour
 {

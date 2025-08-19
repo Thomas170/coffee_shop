@@ -21,7 +21,6 @@ public class TutorialManager : MonoBehaviour
     public Transform robotTarget;
 
     public Sprite moveTuto;
-    public Sprite grindTuto;
     public Sprite coffeeTuto;
     public Sprite orderTuto;
 
@@ -31,6 +30,8 @@ public class TutorialManager : MonoBehaviour
     private Transform _currentTarget;
     private TutoPointer _currentPointer;
 
+    public bool isTuto;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -38,6 +39,10 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        isTuto = true;
+        ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
+        spawner.canSpawn = !isTuto;
+        
         worldArrow.gameObject.SetActive(false);
         ShowPointer(null);
         tutorialClient.SetActive(false);
@@ -64,9 +69,6 @@ public class TutorialManager : MonoBehaviour
 
         PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId)
             .playerBuild.enabled = false;
-
-        ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
-        if (spawner) spawner.canSpawn = false;
 
         string[] robotLines =
         {
@@ -97,7 +99,7 @@ public class TutorialManager : MonoBehaviour
     {
         _currentTarget = target;
 
-        foreach (var pointer in FindObjectsOfType<TutoPointer>())
+        foreach (TutoPointer pointer in FindObjectsOfType<TutoPointer>())
         {
             pointer.gameObject.SetActive(false);
         }
@@ -236,6 +238,6 @@ public class TutorialManager : MonoBehaviour
             .playerBuild.enabled = true;
 
         ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
-        if (spawner != null) spawner.canSpawn = true;
+        spawner.canSpawn = true;
     }
 }

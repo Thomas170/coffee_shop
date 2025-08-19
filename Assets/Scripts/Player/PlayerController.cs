@@ -15,6 +15,7 @@ public class PlayerController : NetworkBehaviour
     public bool canMove = true;
     public bool isInDialogue;
     public bool isInPopup;
+    public bool isInCinematic;
     public bool CanInteract { get; private set; } = true;
     public bool CanOpenMenu { get; private set; } = true;
     public bool HasMenuOpen { get; private set; }
