@@ -95,6 +95,7 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(0f);
         popupTips.OpenPopup(moveTuto);
         currentPopup = moveTuto;
+        RobotController.Instance.MoveTo(entranceTarget);
     }
 
     private void ShowPointer(Transform target)
