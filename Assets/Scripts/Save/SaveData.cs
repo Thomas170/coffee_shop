@@ -7,12 +7,14 @@ public class SaveData
     public int level;
     public int experience;
     public int coins;
+    public bool tutoDone;
     public List<BuildSaveData> builds = new();
 
-    public SaveData(int level = 1, int experience = 0, int coins = 0)
+    public SaveData(int level = 1, int experience = 0, int coins = 0, bool tutoDone = false)
     {
         this.level = level;
         this.experience = experience;
         this.coins = coins;
+        this.tutoDone = tutoDone;
     }
 }

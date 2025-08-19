@@ -8,6 +8,7 @@ public class InGameManager : MonoBehaviour
         PlayerListManager.Instance.ActivateAllPlayerModelsFromHost();
         CurrencyManager.Instance.LoadCoinsServerRpc();
         LevelManager.Instance.LoadLevelServerRpc();
+        TutorialManager.Instance.LoadTutoServerRpc();
         CursorManager.Instance.InactiveCursor();
         SoundManager.Instance.PlayMusic(SoundManager.Instance.backgroundMusic);
 

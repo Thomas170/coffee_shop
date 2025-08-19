@@ -3,7 +3,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : NetworkBehaviour
 {
     public static TutorialManager Instance;
 
@@ -40,7 +40,6 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        isTuto = true;
         ClientSpawner spawner = FindObjectOfType<ClientSpawner>();
         spawner.canSpawn = !isTuto;
         
@@ -62,6 +61,24 @@ public class TutorialManager : MonoBehaviour
 
         _currentPointer.gameObject.SetActive(isClose);
         worldArrow.gameObject.SetActive(!isClose);
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void LoadTutoServerRpc()
+    {
+        SaveManager.Instance.RequestSaveData(data =>
+        {
+            if (data != null)
+            {
+                LoadTutoClientRpc(data.tutoDone);
+            }
+        });
+    }
+    
+    [ClientRpc]
+    private void LoadTutoClientRpc(bool tutoDone)
+    {
+        isTuto = !tutoDone;
     }
     
     public void StartTutorial()
@@ -236,7 +253,17 @@ public class TutorialManager : MonoBehaviour
 
     private void FinishTutorial()
     {
-        // Save
+        if (IsServer)
+        {
+            SaveManager.Instance.RequestSaveData(data =>
+            {
+                if (data != null)
+                {
+                    data.tutoDone = true;
+                    SaveManager.Instance.SaveData(data);
+                }
+            });
+        }
 
         PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId)
             .playerBuild.enabled = true;
