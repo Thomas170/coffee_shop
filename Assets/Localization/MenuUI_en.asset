@@ -199,6 +199,24 @@ MonoBehaviour:
     m_Localized: Level
     m_Metadata:
       m_Items: []
+  - m_Id: 40957052357808128
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40957397834240000
+    m_Localized: Open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40957576259932160
+    m_Localized: 'See
+
+      Recipe'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40958274238255104
+    m_Localized: 'Lock: lvl.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

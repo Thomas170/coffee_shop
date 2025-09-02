@@ -44,7 +44,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 110961458778112
-    m_Key: pause_title
+    m_Key: close
     m_Metadata:
       m_Items: []
   - m_Id: 1178385591406592
@@ -201,6 +201,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 20224796270104576
     m_Key: level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40957052357808128
+    m_Key: New Entry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40957397834240000
+    m_Key: open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40957576259932160
+    m_Key: see_recipe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40958274238255104
+    m_Key: lock
     m_Metadata:
       m_Items: []
   m_Metadata:

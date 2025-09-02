@@ -200,6 +200,24 @@ MonoBehaviour:
     m_Localized: Niveau
     m_Metadata:
       m_Items: []
+  - m_Id: 40957052357808128
+    m_Localized: "Ferm\xE9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40957397834240000
+    m_Localized: Ouvert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40957576259932160
+    m_Localized: 'Voir
+
+      Recette'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40958274238255104
+    m_Localized: "Bloqu\xE9 : niv."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
