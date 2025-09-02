@@ -48,7 +48,7 @@ public class PlayerBuild : MonoBehaviour
 
     private void OnShop(InputAction.CallbackContext ctx)
     {
-        if (!IsInBuildMode && !IsInEditMode && playerController.CanInteract)
+        if (!IsInBuildMode && !IsInEditMode && playerController.CanInteractAction())
         {
             buildMenuController.OpenMenu();
         }
@@ -91,7 +91,7 @@ public class PlayerBuild : MonoBehaviour
     
     private void OnEdit(InputAction.CallbackContext ctx)
     {
-        if (!playerController.CanInteract) return;
+        if (!playerController.CanInteractAction()) return;
         editManager.EnterMode();
     }
 

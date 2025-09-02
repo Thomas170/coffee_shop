@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -58,5 +59,10 @@ public class PlayerController : NetworkBehaviour
     private void DeviceChange(bool isGamepad)
     {
         CursorManager.Instance.UpdateCursorState(isGamepad, HasMenuOpen);
+    }
+
+    public bool CanInteractAction()
+    {
+        return CanInteract && !HasMenuOpen && !isInDialogue && !isInPopup && !isInCinematic;
     }
 }

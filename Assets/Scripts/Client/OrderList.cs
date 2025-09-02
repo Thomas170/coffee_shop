@@ -7,6 +7,14 @@ public class OrderList : ScriptableObject
 {
     public OrderType[] allOrders;
 
+    public OrderType[] GetAllRecipes()
+    {
+        return allOrders
+            .Where(order => order.hasRecipe)
+            .OrderBy(order => order.level)
+            .ToArray();
+    }
+
     public OrderType GetRandomOrder()
     {
         float totalWeight = 0f;

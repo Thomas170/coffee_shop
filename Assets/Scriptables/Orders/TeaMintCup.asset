@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bf26ef224290a4ba75155a3e1bbd69, type: 3}
   m_Name: TeaMintCup
   m_EditorClassIdentifier: 
+  orderName: 
   orderIcon: {fileID: 21300000, guid: 5abd1938381f64e45b9c1fe0d0574209, type: 3}
   price: 25
   experience: 25
-  level: 5
+  level: 10
+  hasRecipe: 0
   selectionWeight: 1
   requiredItemType: 27

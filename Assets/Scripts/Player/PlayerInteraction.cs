@@ -32,7 +32,7 @@ public class PlayerInteraction : MonoBehaviour
     
     private void Update()
     {
-        if (_isHoldingAction && playerController.CanInteract && _currentInteractable is ManualInteractableBase manual)
+        if (_isHoldingAction && playerController.CanInteractAction() && _currentInteractable is ManualInteractableBase manual)
         {
             manual.Action(true);
         }
@@ -68,7 +68,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (!playerController.CanInteract) return;
+        if (!playerController.CanInteractAction()) return;
         PlayerCarry playerCarry = GetComponent<PlayerCarry>();
 
         if (playerCarry.IsCarrying)

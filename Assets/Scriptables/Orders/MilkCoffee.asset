@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bf26ef224290a4ba75155a3e1bbd69, type: 3}
   m_Name: MilkCoffee
   m_EditorClassIdentifier: 
+  orderName: Coffee (milk, sugar)
   orderIcon: {fileID: 21300000, guid: 1e3ec25141db91141a4dccc517cb4392, type: 3}
   price: 15
   experience: 15
   level: 3
+  hasRecipe: 1
+  recipePopup: {fileID: 21300000, guid: 8964fe7818543ae4caadc57771a11ba3, type: 3}
   selectionWeight: 1
   requiredItemType: 9
