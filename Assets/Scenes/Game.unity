@@ -20695,6 +20695,14 @@ PrefabInstance:
       propertyPath: disappearDelay
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3135444667559991224, guid: ccf470fce4ba5034a84a14ba27ae0954, type: 3}
+      propertyPath: textPunchScale
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3135444667559991224, guid: ccf470fce4ba5034a84a14ba27ae0954, type: 3}
+      propertyPath: textPunchDuration
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 3629057759502323512, guid: ccf470fce4ba5034a84a14ba27ae0954, type: 3}
       propertyPath: m_Enabled
       value: 0

@@ -18,10 +18,13 @@ public class RewardManager : MonoBehaviour
     [SerializeField] private float travelTime = 0.5f;
     [SerializeField] private float startDelay = 0.3f;
     [SerializeField] private float coinInterval = 0.1f;
-    [SerializeField] private float disappearDelay = 1f;
+    [SerializeField] private float disappearDelay = 0f;
+    [SerializeField] private float textPunchScale = 1.2f;
+    [SerializeField] private float textPunchDuration = 0.2f;
 
     private Vector3[] _initialPos;
     private Quaternion[] _initialRotation;
+    private Vector3 _textInitialScale;
 
     private void Awake()
     {
@@ -38,14 +41,13 @@ public class RewardManager : MonoBehaviour
         int coinNo = pileOfCoins.transform.childCount;
         _initialPos = new Vector3[coinNo];
         _initialRotation = new Quaternion[coinNo];
+        _textInitialScale = coinsText.rectTransform.localScale;
 
         for (int i = 0; i < coinNo; i++)
         {
             _initialPos[i] = pileOfCoins.transform.GetChild(i).position;
             _initialRotation[i] = pileOfCoins.transform.GetChild(i).rotation;
         }
-        
-        RewardPileOfCoin(20);
     }
 
     private void Reset()
@@ -112,6 +114,19 @@ public class RewardManager : MonoBehaviour
         for (int i = 0; i < coins; i++)
         {
             coinsText.text = (currentCoins + i + 1).ToString();
+
+            // Effet DOTween sur le texte
+            coinsText.rectTransform.DOKill();
+            coinsText.rectTransform.localScale = _textInitialScale;
+            coinsText.rectTransform
+                .DOScale(_textInitialScale * textPunchScale, textPunchDuration)
+                .SetEase(Ease.OutBack)
+                .OnComplete(() =>
+                {
+                    coinsText.rectTransform.DOScale(_textInitialScale, textPunchDuration)
+                        .SetEase(Ease.InBack);
+                });
+
             yield return new WaitForSecondsRealtime(duration / coins);
         }
     }
