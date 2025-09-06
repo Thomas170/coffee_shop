@@ -795,6 +795,7 @@ Transform:
   - {fileID: 4574088814322712732}
   - {fileID: 220811139444796870}
   - {fileID: 1965495965754806615}
+  - {fileID: 5062566472749144267}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &9045892318244404772
@@ -1019,6 +1020,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 40
   playerController: {fileID: 8907663148894752108}
+  dustPrefab: {fileID: 4883099863605950888, guid: 0b3edd792666bbd47aa765bbec41ac3f, type: 3}
+  dustSpawnPoint: {fileID: 5062566472749144267}
 --- !u!114 &468512985716968647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1353,6 +1356,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0005576826, y: 0.0036155381, z: 0.0002194175}
     m_Extent: {x: 0.0043993955, y: 0.0056065083, z: 0.001957963}
   m_DirtyAABB: 0
+--- !u!1 &6235249690628726669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5062566472749144267}
+  m_Layer: 0
+  m_Name: DustPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5062566472749144267
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6235249690628726669}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: -6, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7846962033894390644}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6412743631927671227
 GameObject:
   m_ObjectHideFlags: 0

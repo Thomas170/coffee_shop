@@ -5,12 +5,16 @@ public class PlayerMovement : NetworkBehaviour
 {
     public float moveSpeed = 40f;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private GameObject dustPrefab;
+    [SerializeField] private Transform dustSpawnPoint;
 
     private PlayerControls _controls;
     private Rigidbody _rb;
 
     private Vector2 _keyboardInput;
     private Vector2 _gamepadInput;
+    private float dustCooldown = 0.1f;
+    private float dustTimer;
 
     private void Awake()
     {
@@ -69,11 +73,17 @@ public class PlayerMovement : NetworkBehaviour
                 targetRotation,
                 Time.fixedDeltaTime * 10f
             );
+            
+            dustTimer -= Time.fixedDeltaTime;
+            if (dustTimer <= 0f && dustPrefab)
+            {
+                Instantiate(dustPrefab, dustSpawnPoint.position, Quaternion.identity);
+                dustTimer = dustCooldown;
+            }
         }
         else
         {
             _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
         }
     }
-
 }
