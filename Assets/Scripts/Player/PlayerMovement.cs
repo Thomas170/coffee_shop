@@ -7,14 +7,16 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject dustPrefab;
     [SerializeField] private Transform dustSpawnPoint;
+    [SerializeField] private float dustCooldown = 0.12f;
+    [SerializeField] private int dustCount = 4;
+    [SerializeField] private float dustSpreadRadius = 2f;
 
     private PlayerControls _controls;
     private Rigidbody _rb;
 
     private Vector2 _keyboardInput;
     private Vector2 _gamepadInput;
-    private float dustCooldown = 0.1f;
-    private float dustTimer;
+    private float _dustTimer;
 
     private void Awake()
     {
@@ -74,16 +76,29 @@ public class PlayerMovement : NetworkBehaviour
                 Time.fixedDeltaTime * 10f
             );
             
-            dustTimer -= Time.fixedDeltaTime;
-            if (dustTimer <= 0f && dustPrefab)
+            _dustTimer -= Time.fixedDeltaTime;
+            if (_dustTimer <= 0f && dustPrefab)
             {
-                Instantiate(dustPrefab, dustSpawnPoint.position, Quaternion.identity);
-                dustTimer = dustCooldown;
+                SpawnDustBurst();
+                _dustTimer = dustCooldown;
             }
         }
         else
         {
             _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
+        }
+    }
+    
+    private void SpawnDustBurst()
+    {
+        for (int i = 0; i < dustCount; i++)
+        {
+            Vector2 randomOffset = Random.insideUnitCircle * dustSpreadRadius;
+            Vector3 spawnPos = dustSpawnPoint.position + new Vector3(randomOffset.x, 0f, randomOffset.y);
+
+            Quaternion randomRot = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+
+            Instantiate(dustPrefab, spawnPos, randomRot);
         }
     }
 }

@@ -37,7 +37,7 @@ public class CurrencyManager : NetworkBehaviour
     {
         if (amount < 0) return;
         
-        RewardManager.Instance.RewardPileOfCoin(coins);
+        RewardManager.Instance.RewardPileOfCoin(amount);
         coins += amount;
 
         if (IsServer)
