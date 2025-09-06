@@ -37,8 +37,8 @@ public class CurrencyManager : NetworkBehaviour
     {
         if (amount < 0) return;
         
+        RewardManager.Instance.RewardPileOfCoin(coins);
         coins += amount;
-        coinsText.text = coins.ToString();
 
         if (IsServer)
         {
