@@ -53,17 +53,6 @@ public class RewardManager : NetworkBehaviour
         {
             _initialPos[i] = pileOfCoins.transform.GetChild(i).position;
         }
-
-        StartCoroutine(Test());
-    }
-
-    private IEnumerator Test()
-    {
-        RewardPileOfCoin(10);
-        yield return new WaitForSeconds(3f);
-        RewardPileOfCoin(15);
-        yield return new WaitForSeconds(3f);
-        RewardPileOfCoin(20);
     }
 
     private void Reset()
@@ -92,8 +81,6 @@ public class RewardManager : NetworkBehaviour
             null,
             out var anchoredPos
         );
-
-        Debug.Log("anchoredPos " + anchoredPos);
 
         for (int i = 0; i < pileOfCoins.transform.childCount; i++)
         {

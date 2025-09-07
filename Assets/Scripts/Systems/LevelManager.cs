@@ -77,6 +77,7 @@ public class LevelManager : NetworkBehaviour
         
         //level += 1;
         levelText.text = level.ToString();
+        LevelUpManager.Instance.ShowLevelUpEffect(level);
     }
 
     private void UpdateXpGauge()
