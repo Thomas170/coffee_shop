@@ -75,7 +75,7 @@ public class LevelManager : NetworkBehaviour
     {
         if (level >= MaxLevel) return;
         
-        level += 1;
+        //level += 1;
         levelText.text = level.ToString();
     }
 

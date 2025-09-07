@@ -1,9 +1,10 @@
 using System.Collections;
 using DG.Tweening;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
-public class RewardManager : MonoBehaviour
+public class RewardManager : NetworkBehaviour
 {
     public static RewardManager Instance { get; private set; }
 
@@ -12,15 +13,22 @@ public class RewardManager : MonoBehaviour
     [SerializeField] private RectTransform canvas;
     [SerializeField] private Transform finalPos;
     [SerializeField] private TextMeshProUGUI coinsText;
+    [SerializeField] private TextMeshProUGUI floatingTextPrefab;
+    [SerializeField] private RectTransform floatingTextParent;
 
     [Header("Animation Settings")]
     [SerializeField] private float spawnScaleTime = 0.3f;
     [SerializeField] private float travelTime = 0.5f;
     [SerializeField] private float startDelay = 0.3f;
     [SerializeField] private float coinInterval = 0.1f;
-    [SerializeField] private float disappearDelay = 0f;
-    [SerializeField] private float textPunchScale = 1.2f;
-    [SerializeField] private float textPunchDuration = 0.2f;
+    [SerializeField] private float disappearDelay;
+    [SerializeField] private float textPunchScale = 1.7f;
+    [SerializeField] private float textPunchDuration = 0.4f;
+
+    [Header("Floating Text Settings")]
+    [SerializeField] private float floatTextFadeIn = 0.2f;
+    [SerializeField] private float floatTextStay = 0.8f;
+    [SerializeField] private float floatTextFadeOut = 0.3f;
 
     private Vector3[] _initialPos;
     private Quaternion[] _initialRotation;
@@ -70,7 +78,6 @@ public class RewardManager : MonoBehaviour
             Transform childCoin = pileOfCoins.transform.GetChild(i);
             RectTransform coinRect = childCoin.GetComponent<RectTransform>();
 
-            // Conversion monde -> local
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 canvas,
                 RectTransformUtility.WorldToScreenPoint(null, finalPos.position),
@@ -78,17 +85,14 @@ public class RewardManager : MonoBehaviour
                 out var anchoredPos
             );
 
-            // Spawn scale
             coinRect.DOScale(1f, spawnScaleTime)
                 .SetDelay(delay)
                 .SetEase(Ease.OutBack);
 
-            // Move vers finalPos
             coinRect.DOAnchorPos(anchoredPos, travelTime)
                 .SetDelay(delay + startDelay)
                 .SetEase(Ease.InBack);
 
-            // Disparition après arrivée
             coinRect.DOScale(0f, 0.3f)
                 .SetDelay(delay + disappearDelay)
                 .SetEase(Ease.OutBack);
@@ -97,16 +101,16 @@ public class RewardManager : MonoBehaviour
         }
 
         StartCoroutine(SetCoinsValue(coins));
+
+        ShowFloatingTextClientRpc(coins);
     }
 
     private IEnumerator SetCoinsValue(int coins)
     {
-        // Calcul du timing réel
         float firstCoinArrival = startDelay + travelTime;
         float lastCoinArrival = startDelay + (coinInterval * (pileOfCoins.transform.childCount - 1)) + travelTime;
         float duration = lastCoinArrival - firstCoinArrival;
 
-        // Attente avant la première incrémentation
         yield return new WaitForSecondsRealtime(firstCoinArrival);
 
         int currentCoins = CurrencyManager.Instance.coins;
@@ -115,7 +119,6 @@ public class RewardManager : MonoBehaviour
         {
             coinsText.text = (currentCoins + i + 1).ToString();
 
-            // Effet DOTween sur le texte
             coinsText.rectTransform.DOKill();
             coinsText.rectTransform.localScale = _textInitialScale;
             coinsText.rectTransform
@@ -129,5 +132,22 @@ public class RewardManager : MonoBehaviour
 
             yield return new WaitForSecondsRealtime(duration / coins);
         }
+    }
+
+    [ClientRpc]
+    private void ShowFloatingTextClientRpc(int amount)
+    {
+        var floatText = Instantiate(floatingTextPrefab, floatingTextParent);
+        floatText.text = $"+{amount}$";
+
+        CanvasGroup cg = floatText.GetComponent<CanvasGroup>();
+        if (!cg) cg = floatText.gameObject.AddComponent<CanvasGroup>();
+        cg.alpha = 0f;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(cg.DOFade(1f, floatTextFadeIn));
+        seq.AppendInterval(floatTextStay);
+        seq.Append(cg.DOFade(0f, floatTextFadeOut));
+        seq.OnComplete(() => Destroy(floatText.gameObject));
     }
 }
