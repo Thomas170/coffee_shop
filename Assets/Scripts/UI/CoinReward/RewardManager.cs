@@ -31,7 +31,6 @@ public class RewardManager : NetworkBehaviour
     [SerializeField] private float floatTextFadeOut = 0.3f;
 
     private Vector3[] _initialPos;
-    private Quaternion[] _initialRotation;
     private Vector3 _textInitialScale;
 
     private void Awake()
@@ -48,42 +47,58 @@ public class RewardManager : NetworkBehaviour
     {
         int coinNo = pileOfCoins.transform.childCount;
         _initialPos = new Vector3[coinNo];
-        _initialRotation = new Quaternion[coinNo];
         _textInitialScale = coinsText.rectTransform.localScale;
 
         for (int i = 0; i < coinNo; i++)
         {
             _initialPos[i] = pileOfCoins.transform.GetChild(i).position;
-            _initialRotation[i] = pileOfCoins.transform.GetChild(i).rotation;
         }
+
+        StartCoroutine(Test());
+    }
+
+    private IEnumerator Test()
+    {
+        RewardPileOfCoin(10);
+        yield return new WaitForSeconds(3f);
+        RewardPileOfCoin(15);
+        yield return new WaitForSeconds(3f);
+        RewardPileOfCoin(20);
     }
 
     private void Reset()
     {
         for (int i = 0; i < pileOfCoins.transform.childCount; i++)
         {
-            pileOfCoins.transform.GetChild(i).position = _initialPos[i];
-            pileOfCoins.transform.GetChild(i).rotation = _initialRotation[i];
+            var coin = pileOfCoins.transform.GetChild(i);
+            coin.localPosition = _initialPos[i];
+            coin.position = _initialPos[i];
+            coin.localRotation = Quaternion.identity;
+            coin.rotation = Quaternion.identity;
+            coin.localScale = Vector3.zero;
         }
     }
+
 
     public void RewardPileOfCoin(int coins)
     {
         Reset();
         float delay = 0f;
         pileOfCoins.SetActive(true);
+        
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas,
+            RectTransformUtility.WorldToScreenPoint(null, finalPos.position),
+            null,
+            out var anchoredPos
+        );
+
+        Debug.Log("anchoredPos " + anchoredPos);
 
         for (int i = 0; i < pileOfCoins.transform.childCount; i++)
         {
             Transform childCoin = pileOfCoins.transform.GetChild(i);
             RectTransform coinRect = childCoin.GetComponent<RectTransform>();
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvas,
-                RectTransformUtility.WorldToScreenPoint(null, finalPos.position),
-                null,
-                out var anchoredPos
-            );
 
             coinRect.DOScale(1f, spawnScaleTime)
                 .SetDelay(delay)
