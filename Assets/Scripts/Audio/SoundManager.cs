@@ -12,13 +12,21 @@ public class SoundManager : MonoBehaviour
     [Header("Audio Sources")]
     public AudioSource musicSource;
 
-    [Header("Clips")]
+    [Header("Musics")]
     public AudioClip homeMusic;
     public AudioClip backgroundMusic;
+    
+    [Header("Gameplay")]
     public AudioClip coffeeMachineLoop;
     public AudioClip coffeeMachineEnd;
     public AudioClip takeItem;
     public AudioClip dropItem;
+    
+    [Header("Global")]
+    public AudioClip gainCoins;
+    
+    [Header("UI")]
+    public AudioClip buttonClick;
 
     private void Awake()
     {
@@ -65,6 +73,23 @@ public class SoundManager : MonoBehaviour
 
         return aSource;
     }
+    
+    public void PlayGlobalSound(AudioClip clip)
+    {
+        if (!clip) return;
+
+        GameObject tempGo = new GameObject("UISound_" + clip.name);
+        tempGo.transform.parent = transform;
+
+        AudioSource aSource = tempGo.AddComponent<AudioSource>();
+        aSource.clip = clip;
+        aSource.outputAudioMixerGroup = sfxMixerGroup;
+        aSource.spatialBlend = 0f;
+        aSource.Play();
+
+        Destroy(tempGo, clip.length);
+    }
+
 
     public void StopSound(AudioSource source)
     {

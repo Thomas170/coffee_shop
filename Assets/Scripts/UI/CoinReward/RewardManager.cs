@@ -146,6 +146,8 @@ public class RewardManager : NetworkBehaviour
         if (!cg) cg = floatText.gameObject.AddComponent<CanvasGroup>();
         cg.alpha = 0f;
 
+        SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.gainCoins);
+        
         Sequence seq = DOTween.Sequence();
         seq.Append(cg.DOFade(1f, floatTextFadeIn));
         seq.AppendInterval(floatTextStay);
