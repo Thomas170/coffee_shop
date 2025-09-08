@@ -7,7 +7,7 @@ public class CoffeeMachine : AutoInteractableBase
     protected override void StartAction()
     {
         base.StartAction();
-        _coffeeLoopSource = SoundManager.Instance.Play3DSound(SoundManager.Instance.coffeeMachineLoop, transform.position, true);
+        _coffeeLoopSource = SoundManager.Instance.Play3DSound(SoundManager.Instance.coffeeMachineLoop, gameObject, true);
     }
 
     protected override void StopAction()
@@ -20,7 +20,7 @@ public class CoffeeMachine : AutoInteractableBase
             _coffeeLoopSource = null;
         }
 
-        SoundManager.Instance.Play3DSound(SoundManager.Instance.coffeeMachineEnd, transform.position);
+        SoundManager.Instance.Play3DSound(SoundManager.Instance.coffeeMachineEnd, gameObject);
     }
     
     protected override void AfterPutItem()

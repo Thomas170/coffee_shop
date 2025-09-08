@@ -10,18 +10,21 @@ public class StartScene : MonoBehaviour
     [SerializeField] private float carSpeed = 100f;
     [SerializeField] private float spawnInterval = 10f;
 
-    private int _currentCarIndex = 0;
+    private int _currentCarIndex;
+    private AudioSource _carAudioSource;
+    private Coroutine _spawnCoroutine;
 
     private void Start()
     {
-        StartCoroutine(SpawnCarsRoutine());
+        _spawnCoroutine = StartCoroutine(SpawnCarsRoutine());
     }
 
     private IEnumerator SpawnCarsRoutine()
     {
         while (true)
         {
-            SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.car);
+            _carAudioSource = SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.car);
+
             SpawnCar();
             yield return new WaitForSeconds(spawnInterval);
         }
@@ -35,7 +38,6 @@ public class StartScene : MonoBehaviour
         _currentCarIndex = (_currentCarIndex + 1) % carPrefabs.Length;
 
         GameObject car = Instantiate(carPrefab, pointA.position, pointA.rotation);
-
         StartCoroutine(MoveCar(car));
     }
 
@@ -54,5 +56,18 @@ public class StartScene : MonoBehaviour
 
         if (car)
             Destroy(car);
+    }
+
+    private void OnDestroy()
+    {
+        if (_carAudioSource)
+        {
+            SoundManager.Instance.StopSound(_carAudioSource);
+        }
+
+        if (_spawnCoroutine != null)
+        {
+            StopCoroutine(_spawnCoroutine);
+        }
     }
 }

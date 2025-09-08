@@ -19,6 +19,7 @@ public class PlayerMovement : NetworkBehaviour
     private Vector2 _keyboardInput;
     private Vector2 _gamepadInput;
     private float _dustTimer;
+    private AudioSource _footstepsLoopSource;
 
     private void Awake()
     {
@@ -77,6 +78,11 @@ public class PlayerMovement : NetworkBehaviour
                 targetRotation,
                 Time.fixedDeltaTime * 10f
             );
+
+            if (!_footstepsLoopSource)
+            {
+                _footstepsLoopSource = SoundManager.Instance.Play3DSound(SoundManager.Instance.footsteps, gameObject, true);
+            }
             
             _dustTimer -= Time.fixedDeltaTime;
             if (_dustTimer <= 0f && dustPrefab)
@@ -87,6 +93,11 @@ public class PlayerMovement : NetworkBehaviour
         }
         else
         {
+            if (_footstepsLoopSource)
+            {
+                SoundManager.Instance.StopSound(_footstepsLoopSource);
+                _footstepsLoopSource = null;
+            }
             _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
         }
     }
@@ -101,7 +112,7 @@ public class PlayerMovement : NetworkBehaviour
             Quaternion randomRot = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
 
             GameObject dust = Instantiate(dustPrefab, spawnPos, randomRot);
-            dust.GetComponent<NetworkObject>().Spawn(); // spawn sur le réseau
+            dust.GetComponent<NetworkObject>().Spawn();
             StartCoroutine(DestroyDustAfterTime(dust, dustLifetime));
         }
     }

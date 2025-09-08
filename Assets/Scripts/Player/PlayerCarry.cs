@@ -15,7 +15,7 @@ public class PlayerCarry : NetworkBehaviour
     public bool TryPickUp(ItemBase itemBase, bool withAnimation = true)
     {
         if (IsCarrying) return false;
-        SoundManager.Instance.Play3DSound(SoundManager.Instance.takeItem, transform.position);
+        SoundManager.Instance.Play3DSound(SoundManager.Instance.takeItem, gameObject);
         
         if (withAnimation) playerController.playerAnimation.PlayPickAnimationServerRpc();
         
@@ -28,7 +28,7 @@ public class PlayerCarry : NetworkBehaviour
     public bool TryDrop(bool withAnimation = true)
     {
         if (!IsCarrying) return false;
-        SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, transform.position);
+        SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, gameObject);
         
         if (withAnimation) playerController.playerAnimation.PlayDropAnimationServerRpc();
         

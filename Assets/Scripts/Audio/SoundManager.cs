@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip takeItem;
     public AudioClip dropItem;
     public AudioClip car;
+    public AudioClip footsteps;
     
     [Header("Global")]
     public AudioClip gainCoins;
@@ -52,19 +53,21 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public AudioSource Play3DSound(AudioClip clip, Vector3 position, bool loop = false)
+    public AudioSource Play3DSound(AudioClip clip, GameObject parentObject, bool loop = false)
     {
         if (!clip) return null;
 
         GameObject tempGo = new GameObject("3DSound_" + clip.name);
-        tempGo.transform.position = position;
-        tempGo.transform.parent = transform;
+        tempGo.transform.position = parentObject.transform.position;
+        tempGo.transform.parent = parentObject.transform;
 
         AudioSource aSource = tempGo.AddComponent<AudioSource>();
         aSource.clip = clip;
         aSource.spatialBlend = 1f;
         aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.loop = loop;
+        aSource = SetVolume(aSource);
+        
         aSource.Play();
 
         if (!loop)
@@ -75,21 +78,26 @@ public class SoundManager : MonoBehaviour
         return aSource;
     }
     
-    public void PlayGlobalSound(AudioClip clip, bool loop = false)
+    public AudioSource PlayGlobalSound(AudioClip clip, bool loop = false)
     {
-        if (!clip) return;
+        if (!clip) return null;
 
         GameObject tempGo = new GameObject("UISound_" + clip.name);
         tempGo.transform.parent = transform;
 
         AudioSource aSource = tempGo.AddComponent<AudioSource>();
         aSource.clip = clip;
-        aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.spatialBlend = 0f;
+        aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.loop = loop;
         aSource.Play();
 
-        Destroy(tempGo, clip.length);
+        if (!loop)
+        {
+            Destroy(tempGo, clip.length);
+        }
+        
+        return aSource;
     }
 
 
@@ -100,5 +108,13 @@ public class SoundManager : MonoBehaviour
             source.Stop();
             Destroy(source.gameObject);
         }
+    }
+
+    private AudioSource SetVolume(AudioSource audioSource)
+    {
+        if (audioSource.clip == footsteps) audioSource.volume = 0.5f;
+        else audioSource.volume = 1f;
+
+        return audioSource;
     }
 }
