@@ -56,6 +56,10 @@ public abstract class BaseMenuController : MonoBehaviour
 
             var highlight = entry.button.GetComponent<UIButtonHighlight>();
             highlight?.Init(this, i);
+            
+            var hover = entry.button.GetComponent<UIButtonHover>();
+            if (!hover) hover = entry.button.gameObject.AddComponent<UIButtonHover>();
+            hover.Init(this, i);
         }
 
         if (isOpen)
@@ -220,5 +224,35 @@ public abstract class BaseMenuController : MonoBehaviour
     public GameObject GetCurrentButton()
     {
         return menuButtons[SelectedIndex].button.gameObject;
+    }
+    
+    public void ClearSelection()
+    {
+        for (int i = 0; i < menuButtons.Length; i++)
+        {
+            var entry = menuButtons[i];
+
+            if (highlightMode == HighlightMode.UsingImages)
+            {
+                if (entry.defaultImage) entry.defaultImage.gameObject.SetActive(true);
+                if (entry.selectedImage) entry.selectedImage.gameObject.SetActive(false);
+            }
+            else
+            {
+                var background = entry.backgroundImage;
+                if (background)
+                {
+                    if (highlightMode == HighlightMode.SelectionOnly)
+                    {
+                        background.enabled = false;
+                    }
+                    else
+                    {
+                        background.enabled = true;
+                        background.color = notSelectedColor;
+                    }
+                }
+            }
+        }
     }
 }
