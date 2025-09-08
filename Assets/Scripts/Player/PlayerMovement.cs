@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float dustCooldown = 0.12f;
     [SerializeField] private int dustCount = 4;
     [SerializeField] private float dustSpreadRadius = 2f;
+    [SerializeField] private float dustLifetime = 1f;
 
     private PlayerControls _controls;
     private Rigidbody _rb;
@@ -79,7 +81,7 @@ public class PlayerMovement : NetworkBehaviour
             _dustTimer -= Time.fixedDeltaTime;
             if (_dustTimer <= 0f && dustPrefab)
             {
-                SpawnDustBurst();
+                SpawnDustBurstServerRpc();
                 _dustTimer = dustCooldown;
             }
         }
@@ -89,16 +91,27 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
     
-    private void SpawnDustBurst()
+    [ServerRpc]
+    private void SpawnDustBurstServerRpc()
     {
         for (int i = 0; i < dustCount; i++)
         {
             Vector2 randomOffset = Random.insideUnitCircle * dustSpreadRadius;
             Vector3 spawnPos = dustSpawnPoint.position + new Vector3(randomOffset.x, 0f, randomOffset.y);
-
             Quaternion randomRot = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
 
-            Instantiate(dustPrefab, spawnPos, randomRot);
+            GameObject dust = Instantiate(dustPrefab, spawnPos, randomRot);
+            dust.GetComponent<NetworkObject>().Spawn(); // spawn sur le réseau
+            StartCoroutine(DestroyDustAfterTime(dust, dustLifetime));
+        }
+    }
+
+    private IEnumerator DestroyDustAfterTime(GameObject dust, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (dust && dust.TryGetComponent(out NetworkObject netObj))
+        {
+            netObj.Despawn();
         }
     }
 }
