@@ -26,6 +26,7 @@ public class SoundManager : MonoBehaviour
     
     [Header("Global")]
     public AudioClip gainCoins;
+    public AudioClip gainLevel;
     
     [Header("UI")]
     public AudioClip buttonClick;
@@ -90,6 +91,7 @@ public class SoundManager : MonoBehaviour
         aSource.spatialBlend = 0f;
         aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.loop = loop;
+        aSource = SetVolume(aSource);
         aSource.Play();
 
         if (!loop)
@@ -112,7 +114,8 @@ public class SoundManager : MonoBehaviour
 
     private AudioSource SetVolume(AudioSource audioSource)
     {
-        if (audioSource.clip == footsteps) audioSource.volume = 0.5f;
+        if (audioSource.clip == footsteps) audioSource.volume = 0.4f;
+        if (audioSource.clip == car) audioSource.volume = 0.6f;
         else audioSource.volume = 1f;
 
         return audioSource;

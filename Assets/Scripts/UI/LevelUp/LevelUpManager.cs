@@ -40,15 +40,6 @@ public class LevelUpManager : MonoBehaviour
         _imageCanvasGroup.alpha = 0f;
 
         _textInitialScale = levelText.rectTransform.localScale;
-        //StartCoroutine(Test());
-    }
-
-    IEnumerator Test()
-    {
-        yield return new WaitForSeconds(5f);
-        ShowLevelUpEffect(3);
-        yield return new WaitForSeconds(10f);
-        ShowLevelUpEffect(12);
     }
 
     public void ShowLevelUpEffect(int newLevel)
@@ -63,14 +54,15 @@ public class LevelUpManager : MonoBehaviour
         seq.AppendInterval(imageStay);
         seq.Append(_imageCanvasGroup.DOFade(0f, imageFadeOut));
 
-        StartCoroutine(SetLevelValue(newLevel));
+        StartCoroutine(SetLevelValue());
     }
 
-    private IEnumerator SetLevelValue(int newLevel)
+    private IEnumerator SetLevelValue()
     {
         yield return new WaitForSeconds(0.5f);
         
-;        levelText.rectTransform
+        SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.gainLevel);
+;       levelText.rectTransform
             .DOScale(_textInitialScale * textPunchScale, textPunchDuration)
             .SetEase(Ease.OutBack)
             .OnComplete(() =>
