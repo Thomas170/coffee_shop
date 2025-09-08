@@ -40,17 +40,24 @@ public class LevelUpManager : MonoBehaviour
         _imageCanvasGroup.alpha = 0f;
 
         _textInitialScale = levelText.rectTransform.localScale;
+        //StartCoroutine(Test());
+    }
+
+    IEnumerator Test()
+    {
+        yield return new WaitForSeconds(5f);
+        ShowLevelUpEffect(3);
+        yield return new WaitForSeconds(10f);
+        ShowLevelUpEffect(12);
     }
 
     public void ShowLevelUpEffect(int newLevel)
     {
         levelText.text = newLevel.ToString();
 
-        // reset état
         levelText.rectTransform.localScale = _textInitialScale;
         _imageCanvasGroup.alpha = 0f;
 
-        // animation image
         Sequence seq = DOTween.Sequence();
         seq.Append(_imageCanvasGroup.DOFade(1f, imageFadeIn));
         seq.AppendInterval(imageStay);
@@ -63,7 +70,6 @@ public class LevelUpManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         
-        // animation texte (punch scale : grossit puis revient)
 ;        levelText.rectTransform
             .DOScale(_textInitialScale * textPunchScale, textPunchDuration)
             .SetEase(Ease.OutBack)

@@ -85,7 +85,13 @@ public class LevelManager : NetworkBehaviour
         if (xpFillImage && _experienceToNextLevel > 0)
         {
             float targetFill = Mathf.Clamp01((float)_experience / _experienceToNextLevel);
+
             xpFillImage.DOFillAmount(targetFill, 0.5f).SetEase(Ease.OutQuad);
+
+            RectTransform rt = xpFillImage.rectTransform;
+            rt.DOKill();
+            rt.localScale = Vector3.one;
+            rt.DOPunchScale(Vector3.one * 0.3f, 0.3f, 1, 0.5f);
         }
     }
     
