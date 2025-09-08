@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip coffeeMachineEnd;
     public AudioClip takeItem;
     public AudioClip dropItem;
+    public AudioClip car;
     
     [Header("Global")]
     public AudioClip gainCoins;
@@ -74,7 +75,7 @@ public class SoundManager : MonoBehaviour
         return aSource;
     }
     
-    public void PlayGlobalSound(AudioClip clip)
+    public void PlayGlobalSound(AudioClip clip, bool loop = false)
     {
         if (!clip) return;
 
@@ -85,6 +86,7 @@ public class SoundManager : MonoBehaviour
         aSource.clip = clip;
         aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.spatialBlend = 0f;
+        aSource.loop = loop;
         aSource.Play();
 
         Destroy(tempGo, clip.length);
