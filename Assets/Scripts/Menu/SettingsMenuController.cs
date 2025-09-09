@@ -76,6 +76,7 @@ public class SettingsMenuController : BaseMenuController
             if (move.x > 0.5f)
             {
                 GameObject currentButton = GetCurrentButton();
+                if (!currentButton) return;
                 ShowCategory(currentButton.name);
                 return;
             }

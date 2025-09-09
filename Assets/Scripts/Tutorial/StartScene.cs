@@ -8,7 +8,6 @@ public class StartScene : MonoBehaviour
     [SerializeField] private Transform pointA;
     [SerializeField] private Transform pointB;
     [SerializeField] private float carSpeed = 100f;
-    [SerializeField] private float spawnInterval = 10f;
 
     private int _currentCarIndex;
     private AudioSource _carAudioSource;
@@ -21,12 +20,13 @@ public class StartScene : MonoBehaviour
 
     private IEnumerator SpawnCarsRoutine()
     {
+        yield return new WaitForSeconds(1f);
+        _carAudioSource = SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.car, true);
+        
         while (true)
         {
-            _carAudioSource = SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.car);
-
             SpawnCar();
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(SoundManager.Instance.car.length);
         }
     }
 

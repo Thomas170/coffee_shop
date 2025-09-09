@@ -191,8 +191,8 @@ MonoBehaviour:
   musicMixerGroup: {fileID: -4465024791000656425, guid: 8cd8e69d115b21649a75945929ff9df5, type: 2}
   sfxMixerGroup: {fileID: 6861389968837674321, guid: 8cd8e69d115b21649a75945929ff9df5, type: 2}
   musicSource: {fileID: 2109357478}
-  homeMusic: {fileID: 8300000, guid: c3b601a8cc82ff24aa502b8dc89f945d, type: 3}
-  backgroundMusic: {fileID: 8300000, guid: 0667f6b778f761d41afc97a48f6f3b28, type: 3}
+  homeMusic: {fileID: 8300000, guid: d61ab193e28dbe3409771f36e4a07e1e, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: d61ab193e28dbe3409771f36e4a07e1e, type: 3}
   coffeeMachineLoop: {fileID: 8300000, guid: 08b60b5ac15918142b8a55de4db56078, type: 3}
   coffeeMachineEnd: {fileID: 8300000, guid: ce4929b51dd332e4c89b91a23ffa8bfe, type: 3}
   takeItem: {fileID: 8300000, guid: ed64ea02bd8aa7044bc2dd9568f18a8b, type: 3}
@@ -22614,7 +22614,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -4465024791000656425, guid: 8cd8e69d115b21649a75945929ff9df5, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.03
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0

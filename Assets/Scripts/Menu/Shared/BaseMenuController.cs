@@ -43,6 +43,8 @@ public abstract class BaseMenuController : MonoBehaviour
         SubmitCallback = _ => OnSubmit();
         BackCallback   = _ => HandleBack();
 
+        DefaultSelectedIndex = InputDeviceTracker.Instance.IsUsingGamepad ? 0 : -1;
+
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
@@ -154,7 +156,7 @@ public abstract class BaseMenuController : MonoBehaviour
             }
         }
 
-        if (menuButtons[SelectedIndex] != null)
+        if (SelectedIndex >= 0 && menuButtons[SelectedIndex] != null)
         {
             EventSystem.current.SetSelectedGameObject(menuButtons[SelectedIndex].button.gameObject);
         }
@@ -162,7 +164,7 @@ public abstract class BaseMenuController : MonoBehaviour
 
     public virtual void OnSubmit()
     {
-        if (!isOpen || MenuManager.Instance.IsLocked) return;
+        if (!isOpen || MenuManager.Instance.IsLocked || SelectedIndex < 0) return;
         EventSystem.current.SetSelectedGameObject(null);
         ExecuteMenuAction(menuButtons[SelectedIndex].button.name);
     }
@@ -181,54 +183,9 @@ public abstract class BaseMenuController : MonoBehaviour
 
     public abstract void ExecuteMenuAction(string name);
 
-    /*public virtual void OpenMenu()
-    {
-        if (isOpen || MenuManager.Instance.IsLocked) return;
-        
-        menuObject.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(null);
-        CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, true);
-        MenuManager.Instance.OpenMenu();
-
-        NavigateAction.Enable();
-        BackAction.Enable();
-        BackAction.performed += BackCallback;
-        
-        StartCoroutine(SubscribeSubmitNextFrame());
-    }
-    
-    private IEnumerator SubscribeSubmitNextFrame()
-    {
-        yield return null; 
-
-        SubmitAction.Enable();
-        SubmitAction.performed += SubmitCallback;
-        
-        isOpen = true;
-        SelectedIndex = DefaultSelectedIndex;
-        SelectButton(DefaultSelectedIndex);
-    }
-
-    public virtual void CloseMenu()
-    {
-        if (!isOpen || MenuManager.Instance.IsLocked) return;
-
-        SubmitAction.performed -= SubmitCallback;
-        BackAction.performed   -= BackCallback;
-        
-        NavigateAction.Disable();
-        SubmitAction.Disable();
-        BackAction.Disable();
-        
-        menuObject.SetActive(false);
-        isOpen = false;
-        EventSystem.current.SetSelectedGameObject(null);
-        CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
-        MenuManager.Instance.CloseMenu();
-    }*/
-
     public GameObject GetCurrentButton()
     {
+        if (SelectedIndex < 0) return null;
         return menuButtons[SelectedIndex].button.gameObject;
     }
     
