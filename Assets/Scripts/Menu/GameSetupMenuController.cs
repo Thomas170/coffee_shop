@@ -19,6 +19,7 @@ public class GameSetupMenuController : BaseMenuController
     [SerializeField] private TextMeshProUGUI codeToCopy;
     
     [SerializeField] private GameObject startButton;
+    [SerializeField] private GameObject loadGame;
     
     private void OnEnable()
     {
@@ -116,6 +117,7 @@ public class GameSetupMenuController : BaseMenuController
             case "Play":
                 if (NetworkManager.Singleton.IsHost)
                 {
+                    loadGame.SetActive(true);
                     NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
                 }
                 break;
