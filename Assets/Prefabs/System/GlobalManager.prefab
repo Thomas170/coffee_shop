@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3574293414476250387}
   - component: {fileID: 4919361541030810676}
   - component: {fileID: 8445585105165381373}
+  - component: {fileID: 210252189172863969}
   m_Layer: 0
   m_Name: GlobalManager
   m_TagString: Untagged
@@ -96,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8da7ccbbc03751e4cb0188b120a82009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentGameIndex: 0
+  currentGameIndex: 0
 --- !u!114 &8312540912648559751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4123609956
+  GlobalObjectIdHash: 2043298612
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -154,7 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cd77e0c53dba9b49a7cb2f9aa039527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingScreen: {fileID: 0}
   gameSetupMenuController: {fileID: 0}
 --- !u!114 &3574293414476250387
 MonoBehaviour:
@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6d6021e1f317142912cafb79737161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: []
 --- !u!114 &4919361541030810676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,3 +192,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58359ded1d732f642b1ee521e2f074bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &210252189172863969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5098934890468094036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8af4dc944a5fe4285836fbe192d0be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationDuration: 0.4
+  staggerDelay: 0.05
+  offscreenOffset: 800

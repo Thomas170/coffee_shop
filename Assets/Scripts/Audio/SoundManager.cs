@@ -30,17 +30,18 @@ public class SoundManager : MonoBehaviour
     
     [Header("UI")]
     public AudioClip buttonClick;
+    public AudioClip openMenuAnim;
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            Debug.LogWarning("Duplicate SoundManager destroyed");
+            DestroyImmediate(gameObject);
             return;
         }
 
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -68,7 +69,6 @@ public class SoundManager : MonoBehaviour
         aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.loop = loop;
         aSource = SetVolume(aSource);
-        
         aSource.Play();
 
         if (!loop)
@@ -115,7 +115,8 @@ public class SoundManager : MonoBehaviour
     private AudioSource SetVolume(AudioSource audioSource)
     {
         if (audioSource.clip == footsteps) audioSource.volume = 0.4f;
-        if (audioSource.clip == car) audioSource.volume = 0.6f;
+        if (audioSource.clip == car) audioSource.volume = 0.4f;
+        if (audioSource.clip == openMenuAnim) audioSource.volume = 0.6f;
         else audioSource.volume = 1f;
 
         return audioSource;

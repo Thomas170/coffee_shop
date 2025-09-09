@@ -19,15 +19,10 @@ public class UIButtonFeedback : MonoBehaviour, IPointerClickHandler, ISelectHand
     [SerializeField] private float scaleUp = 1.05f;
     [SerializeField] private float scaleDuration = 0.3f;
 
-    private Vector3 _originalButtonScale;
-    private Vector3 _originalTextScale;
-
     private Transform _targetToScale;
 
     private void Awake()
     {
-        _originalButtonScale = transform.localScale;
-
         if (scaleType == SelectType.TextScaleUp)
         {
             var tmp = GetComponentInChildren<TextMeshProUGUI>();
@@ -38,9 +33,6 @@ public class UIButtonFeedback : MonoBehaviour, IPointerClickHandler, ISelectHand
                 var uiText = GetComponentInChildren<Text>();
                 if (uiText) _targetToScale = uiText.transform;
             }
-
-            if (_targetToScale)
-                _originalTextScale = _targetToScale.localScale;
         }
         else
         {
@@ -57,14 +49,14 @@ public class UIButtonFeedback : MonoBehaviour, IPointerClickHandler, ISelectHand
     {
         if (scaleType == SelectType.NoScaleUp) return;
 
-        _targetToScale.DOScale(GetOriginalScale() * scaleUp, scaleDuration).SetEase(Ease.OutBack);
+        _targetToScale.DOScale(Vector3.one * scaleUp, scaleDuration).SetEase(Ease.OutBack);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
         if (scaleType == SelectType.NoScaleUp) return;
 
-        _targetToScale.DOScale(GetOriginalScale(), scaleDuration).SetEase(Ease.OutBack);
+        _targetToScale.DOScale(Vector3.one, scaleDuration).SetEase(Ease.OutBack);
     }
 
     private void PlayClickFeedback()
@@ -72,18 +64,13 @@ public class UIButtonFeedback : MonoBehaviour, IPointerClickHandler, ISelectHand
         if (scaleType != SelectType.NoScaleUp)
         {
             _targetToScale.DOKill();
-            _targetToScale.localScale = GetOriginalScale();
-            _targetToScale.DOScale(GetOriginalScale() * scaleUp, scaleDuration)
+            _targetToScale.localScale = Vector3.one;
+            _targetToScale.DOScale(Vector3.one * scaleUp, scaleDuration)
                 .SetEase(Ease.OutBack)
-                .OnComplete(() => _targetToScale.DOScale(GetOriginalScale(), scaleDuration));
+                .OnComplete(() => _targetToScale.DOScale(Vector3.one, scaleDuration));
         }
 
         // Son
         SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.buttonClick);
-    }
-
-    private Vector3 GetOriginalScale()
-    {
-        return scaleType == SelectType.TextScaleUp ? _originalTextScale : _originalButtonScale;
     }
 }

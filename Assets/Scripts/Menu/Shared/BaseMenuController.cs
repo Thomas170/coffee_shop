@@ -13,6 +13,8 @@ public abstract class BaseMenuController : MonoBehaviour
     public HighlightMode highlightMode = HighlightMode.SelectionOnly;
     public Color notSelectedColor = Color.yellow;
     public Color selectedColor = Color.red;
+    public bool hasOpenAnimation;
+    public bool hasCloseAnimation;
 
     [Header("Navigation")]
     public bool isHorizontal;
@@ -161,6 +163,7 @@ public abstract class BaseMenuController : MonoBehaviour
     public virtual void OnSubmit()
     {
         if (!isOpen || MenuManager.Instance.IsLocked) return;
+        EventSystem.current.SetSelectedGameObject(null);
         ExecuteMenuAction(menuButtons[SelectedIndex].button.name);
     }
 
@@ -168,14 +171,17 @@ public abstract class BaseMenuController : MonoBehaviour
     {
         if (backMenuController)
         {
+            ChangeMenu(backMenuController);
+        }
+        else
+        {
             CloseMenu();
-            backMenuController.OpenMenu();
         }
     }
 
     public abstract void ExecuteMenuAction(string name);
 
-    public virtual void OpenMenu()
+    /*public virtual void OpenMenu()
     {
         if (isOpen || MenuManager.Instance.IsLocked) return;
         
@@ -219,7 +225,7 @@ public abstract class BaseMenuController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
         MenuManager.Instance.CloseMenu();
-    }
+    }*/
 
     public GameObject GetCurrentButton()
     {
@@ -253,6 +259,91 @@ public abstract class BaseMenuController : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    
+    public virtual void OpenMenu()
+    {
+        if (isOpen || MenuManager.Instance.IsLocked) return;
+        
+        EventSystem.current.SetSelectedGameObject(null);
+        CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, true);
+        MenuManager.Instance.OpenMenu();
+
+        NavigateAction.Enable();
+        BackAction.Enable();
+        BackAction.performed += BackCallback;
+
+        StartCoroutine(OpenRoutine());
+    }
+
+    private IEnumerator OpenRoutine()
+    {
+        yield return null; // attendre 1 frame pour éviter bugs UI
+
+        SubmitAction.Enable();
+        SubmitAction.performed += SubmitCallback;
+        ClearSelection();
+
+        if (hasOpenAnimation)
+        {
+            yield return StartCoroutine(MenuAnimator.Instance.AnimateOpen(menuButtons, menuObject));
+        }
+        else
+        {
+            menuObject.SetActive(true);
+        }
+
+        isOpen = true;
+        SelectedIndex = DefaultSelectedIndex;
+        SelectButton(DefaultSelectedIndex);
+    }
+
+    public virtual void CloseMenu()
+    {
+        CloseMenuOperator(null);
+    }
+    
+    public virtual void ChangeMenu(BaseMenuController nextMenu)
+    {
+        CloseMenuOperator(nextMenu);
+    }
+    
+    private void CloseMenuOperator(BaseMenuController nextMenu)
+    {
+        if (!isOpen || MenuManager.Instance.IsLocked) return;
+
+        SubmitAction.performed -= SubmitCallback;
+        BackAction.performed   -= BackCallback;
+
+        NavigateAction.Disable();
+        SubmitAction.Disable();
+        BackAction.Disable();
+
+        if (!nextMenu)
+        {
+            CursorManager.Instance.UpdateCursorState(InputDeviceTracker.Instance.IsUsingGamepad, false);
+        }
+
+        StartCoroutine(CloseRoutine(nextMenu));
+    }
+
+    private IEnumerator CloseRoutine(BaseMenuController nextMenu)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+        
+        if (hasCloseAnimation)
+        {
+            yield return StartCoroutine(MenuAnimator.Instance.AnimateClose(menuButtons));
+        }
+
+        menuObject.SetActive(false);
+        isOpen = false;
+        MenuManager.Instance.CloseMenu();
+
+        if (nextMenu)
+        {
+            nextMenu.OpenMenu();
         }
     }
 }

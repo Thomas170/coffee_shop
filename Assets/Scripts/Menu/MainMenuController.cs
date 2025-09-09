@@ -11,16 +11,13 @@ public class MainMenuController : BaseMenuController
         switch (buttonName)
         {
             case "Play":
-                CloseMenu();
-                loadGameMenuController.OpenMenu();
+                ChangeMenu(loadGameMenuController);
                 break;
             case "Join":
-                CloseMenu();
-                joinMenuController.OpenMenu();
+                ChangeMenu(joinMenuController);
                 break;
             case "Options":
-                CloseMenu();
-                settingsMenuController.OpenMenu();
+                ChangeMenu(settingsMenuController);
                 break;
             case "Leave":
                 CloseApplication();

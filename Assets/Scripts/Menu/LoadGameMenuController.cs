@@ -52,15 +52,13 @@ public class LoadGameMenuController : BaseMenuController
         switch (buttonName)
         {
             case "NewGame":
-                CloseMenu();
-                newGameMenuController.OpenMenu();
+                ChangeMenu(newGameMenuController);
                 break;
             case "Continue":
                 Continue();
                 break;
             case "Load":
-                CloseMenu();
-                loadSaveMenuController.OpenMenu();
+                ChangeMenu(loadSaveMenuController);
                 break;
             case "Back":
                 HandleBack();
@@ -86,8 +84,7 @@ public class LoadGameMenuController : BaseMenuController
         if (firstValidIndex != -1)
         {
             GlobalManager.Instance.SetGameIndex(firstValidIndex);
-            CloseMenu();
-            gameSetupMenuController.OpenMenu();
+            ChangeMenu(gameSetupMenuController);
         }
     }
 
