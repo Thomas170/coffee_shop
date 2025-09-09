@@ -2661,6 +2661,8 @@ MonoBehaviour:
   highlightMode: 0
   notSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+  hasOpenAnimation: 0
+  hasCloseAnimation: 0
   isHorizontal: 0
   moveCooldown: 0.2
   isOpen: 0
@@ -2742,6 +2744,8 @@ MonoBehaviour:
   highlightMode: 1
   notSelectedColor: {r: 1, g: 1, b: 1, a: 1}
   selectedColor: {r: 1, g: 0.8863636, b: 0, a: 1}
+  hasOpenAnimation: 0
+  hasCloseAnimation: 0
   isHorizontal: 1
   moveCooldown: 0.2
   isOpen: 0
@@ -2849,6 +2853,8 @@ MonoBehaviour:
   highlightMode: 2
   notSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+  hasOpenAnimation: 0
+  hasCloseAnimation: 0
   isHorizontal: 0
   moveCooldown: 0.2
   isOpen: 0
@@ -11190,7 +11196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1229869815
 Transform:
   m_ObjectHideFlags: 0

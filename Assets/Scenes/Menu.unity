@@ -22613,7 +22613,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -4465024791000656425, guid: 8cd8e69d115b21649a75945929ff9df5, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -24943,7 +24943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8324255722074453313, guid: 985ee2f5db5ea5343bf49c3f0b83bafb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

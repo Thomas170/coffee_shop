@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
 using DG.Tweening;
@@ -25,7 +26,7 @@ public class RoofVisibility : NetworkBehaviour
     {
         if (IsLocalPlayerInside(other))
         {
-            FadeTo(0f);
+            StartCoroutine(FadeTo(0f));
         }
     }
 
@@ -33,7 +34,7 @@ public class RoofVisibility : NetworkBehaviour
     {
         if (IsLocalPlayerInside(other))
         {
-            FadeTo(1f);
+            StartCoroutine(FadeTo(1f));
         }
     }
 
@@ -45,9 +46,9 @@ public class RoofVisibility : NetworkBehaviour
         return networkObj != null && networkObj.IsOwner && IsClient;
     }
 
-    private void FadeTo(float targetAlpha)
+    private IEnumerator FadeTo(float targetAlpha)
     {
-        if (_roofMaterial == null) return;
+        if (_roofMaterial == null) yield return null;
 
         _currentTween?.Kill();
 
@@ -57,6 +58,9 @@ public class RoofVisibility : NetworkBehaviour
             targetAlpha,
             fadeDuration
         );
+
+        yield return new WaitForSeconds(fadeDuration);
+        roofRenderer.gameObject.SetActive(Mathf.Approximately(targetAlpha, 1));
     }
 
     private void SetAlpha(float alpha)

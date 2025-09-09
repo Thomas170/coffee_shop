@@ -51,6 +51,7 @@ public class SoundManager : MonoBehaviour
         {
             musicSource.clip = clip;
             musicSource.loop = true;
+            musicSource.volume = GetVolume(clip);
             musicSource.Play();
         }
     }
@@ -117,6 +118,8 @@ public class SoundManager : MonoBehaviour
         if (clip == footsteps) return 0.8f;
         if (clip == car) return 0.3f;
         if (clip == openMenuAnim) return 0.5f;
+        if (clip == homeMusic) return 0.4f;
+        if (clip == backgroundMusic) return 0.2f;
 
         return 1f;
     }
