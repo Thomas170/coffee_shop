@@ -3493,7 +3493,6 @@ MonoBehaviour:
   pointA: {fileID: 4323851732979979110}
   pointB: {fileID: 7926241757981444093}
   carSpeed: 100
-  spawnInterval: 18
 --- !u!1 &294252283 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 985366697696384284, guid: 40f70e2123fd44c47af3955ac965bf6a, type: 3}
@@ -12923,17 +12922,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113438437}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.06975647, w: 0.9975641}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1123222689}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 8}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 800, y: 550}
+  m_AnchoredPosition: {x: -9, y: -34}
+  m_SizeDelta: {x: 700, y: 450}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1113438439
 MonoBehaviour:
@@ -24944,7 +24943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8324255722074453313, guid: 985ee2f5db5ea5343bf49c3f0b83bafb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -114,7 +114,7 @@ public class SoundManager : MonoBehaviour
 
     private float GetVolume(AudioClip clip)
     {
-        if (clip == footsteps) return 0.4f;
+        if (clip == footsteps) return 0.8f;
         if (clip == car) return 0.3f;
         if (clip == openMenuAnim) return 0.5f;
 
