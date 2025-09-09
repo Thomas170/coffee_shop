@@ -68,7 +68,7 @@ public class SoundManager : MonoBehaviour
         aSource.spatialBlend = 1f;
         aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.loop = loop;
-        aSource = SetVolume(aSource);
+        aSource.volume = GetVolume(aSource.clip);
         aSource.Play();
 
         if (!loop)
@@ -91,7 +91,7 @@ public class SoundManager : MonoBehaviour
         aSource.spatialBlend = 0f;
         aSource.outputAudioMixerGroup = sfxMixerGroup;
         aSource.loop = loop;
-        aSource = SetVolume(aSource);
+        aSource.volume = GetVolume(aSource.clip);
         aSource.Play();
 
         if (!loop)
@@ -112,13 +112,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private AudioSource SetVolume(AudioSource audioSource)
+    private float GetVolume(AudioClip clip)
     {
-        if (audioSource.clip == footsteps) audioSource.volume = 0.4f;
-        if (audioSource.clip == car) audioSource.volume = 0.4f;
-        if (audioSource.clip == openMenuAnim) audioSource.volume = 0.6f;
-        else audioSource.volume = 1f;
+        if (clip == footsteps) return 0.4f;
+        if (clip == car) return 0.3f;
+        if (clip == openMenuAnim) return 0.5f;
 
-        return audioSource;
+        return 1f;
     }
 }

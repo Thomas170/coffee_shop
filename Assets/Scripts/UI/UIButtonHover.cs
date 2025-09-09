@@ -27,7 +27,7 @@ public class UIButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // Si on utilise la souris → on désélectionne tout
         if (!InputDeviceTracker.Instance.IsUsingGamepad)
         {
-            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current?.SetSelectedGameObject(null);
             _menuController.ClearSelection();
         }
     }
