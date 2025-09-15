@@ -11,6 +11,7 @@ public class MenuAnimator : MonoBehaviour
     public float animationDuration = 0.4f;
     public float staggerDelay = 0.1f;
     public float offscreenOffset = 800f;
+    public float backgroundFadeDuration = 0.3f;
 
     private void Awake()
     {
@@ -121,5 +122,29 @@ public class MenuAnimator : MonoBehaviour
         yield return new WaitForSeconds(animationDuration);
 
         rect.anchoredPosition = startPos;
+
+        yield return null;
+    }
+    
+    public IEnumerator AnimateBackground(GameObject background, bool show)
+    {
+        if (!background) yield break;
+
+        var canvasGroup = background.GetComponent<CanvasGroup>();
+        if (!canvasGroup) canvasGroup = background.AddComponent<CanvasGroup>();
+
+        background.SetActive(true);
+
+        float targetAlpha = show ? 1f : 0f;
+
+        canvasGroup.DOKill();
+        canvasGroup.DOFade(targetAlpha, backgroundFadeDuration)
+            .SetEase(Ease.OutSine);
+
+        if (!show)
+        {
+            yield return new WaitForSeconds(backgroundFadeDuration);
+            background.SetActive(false);
+        }
     }
 }

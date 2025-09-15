@@ -136,7 +136,6 @@ public class GameSetupMenuController : BaseMenuController
     public override async void HandleBack()
     {
         base.CloseMenu();
-        MenuManager.Instance.SetLoadingScreenActive(true);
 
         try
         {
