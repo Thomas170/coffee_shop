@@ -86,4 +86,40 @@ public class MenuAnimator : MonoBehaviour
         
         yield return new WaitForSeconds(animationDuration + 0.5f);
     }
+    
+    public IEnumerator AnimateMenuFall(GameObject menu)
+    {
+        menu.SetActive(true);
+
+        var rect = menu.GetComponent<RectTransform>();
+        if (!rect) yield break;
+
+        Vector2 targetPos = rect.anchoredPosition;
+        rect.anchoredPosition += Vector2.up * offscreenOffset;
+
+        SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.openMenuAnim);
+
+        rect.DOKill();
+        rect.DOAnchorPos(targetPos, animationDuration)
+            .SetEase(Ease.OutBack, overshoot: 1.2f);
+
+        yield return new WaitForSeconds(animationDuration);
+    }
+    
+    public IEnumerator AnimateMenuRise(GameObject menu)
+    {
+        var rect = menu.GetComponent<RectTransform>();
+        if (!rect) yield break;
+
+        Vector2 startPos = rect.anchoredPosition;
+        Vector2 targetPos = rect.anchoredPosition + Vector2.up * offscreenOffset;
+
+        rect.DOKill();
+        rect.DOAnchorPos(targetPos, animationDuration)
+            .SetEase(Ease.InBack);
+
+        yield return new WaitForSeconds(animationDuration);
+
+        rect.anchoredPosition = startPos;
+    }
 }

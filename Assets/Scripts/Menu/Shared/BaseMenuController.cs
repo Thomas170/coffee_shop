@@ -13,6 +13,9 @@ public abstract class BaseMenuController : MonoBehaviour
     public HighlightMode highlightMode = HighlightMode.SelectionOnly;
     public Color notSelectedColor = Color.yellow;
     public Color selectedColor = Color.red;
+    
+    [Header("Animations")]
+    public MenuAnimationType animationType;
     public bool hasOpenAnimation;
     public bool hasCloseAnimation;
 
@@ -241,15 +244,24 @@ public abstract class BaseMenuController : MonoBehaviour
         SubmitAction.Enable();
         SubmitAction.performed += SubmitCallback;
         ClearSelection();
-
+        
         if (hasOpenAnimation)
         {
-            yield return StartCoroutine(MenuAnimator.Instance.AnimateOpen(menuButtons, menuObject));
+            switch (animationType)
+            {
+                case MenuAnimationType.ButtonsSlide:
+                    yield return StartCoroutine(MenuAnimator.Instance.AnimateOpen(menuButtons, menuObject));
+                    break;
+                case MenuAnimationType.MenuFall:
+                    yield return StartCoroutine(MenuAnimator.Instance.AnimateMenuFall(menuObject));
+                    break;
+            }
         }
         else
         {
             menuObject.SetActive(true);
         }
+
 
         isOpen = true;
         SelectedIndex = DefaultSelectedIndex;
@@ -291,7 +303,15 @@ public abstract class BaseMenuController : MonoBehaviour
         
         if (hasCloseAnimation)
         {
-            yield return StartCoroutine(MenuAnimator.Instance.AnimateClose(menuButtons));
+            switch (animationType)
+            {
+                case MenuAnimationType.ButtonsSlide:
+                    yield return StartCoroutine(MenuAnimator.Instance.AnimateClose(menuButtons));
+                    break;
+                case MenuAnimationType.MenuFall:
+                    yield return StartCoroutine(MenuAnimator.Instance.AnimateMenuRise(menuObject));
+                    break;
+            }
         }
 
         menuObject.SetActive(false);
