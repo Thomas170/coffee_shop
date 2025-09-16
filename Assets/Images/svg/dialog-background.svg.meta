@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e58073bed15e9b944b01624a60f4d970
+guid: 185959abd630f184b9d3fe393066a968
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -17,18 +17,18 @@ ScriptedImporter:
   generatePhysicsShape: 0
   viewportOptions: 0
   preserveViewport: 0
-  advancedMode: 0
+  advancedMode: 1
   predefinedResolutionIndex: 1
   targetResolution: 1080
   resolutionMultiplier: 1
-  stepDistance: 10
+  stepDistance: 1
   samplingStepDistance: 100
   maxCordDeviationEnabled: 0
   maxCordDeviation: 1
   maxTangentAngleEnabled: 0
   maxTangentAngle: 5
   keepTextureAspectRatio: 1
-  textureSize: 1024
+  textureSize: 2048
   textureWidth: 256
   textureHeight: 256
   wrapMode: 0
@@ -50,5 +50,5 @@ ScriptedImporter:
         y: 0
         width: 0
         height: 0
-      spriteID: bccf92e8268a5584e885639b1a0eebfe
+      spriteID: ca7817f469b81dd40b8a4e826e3ac90f
     PhysicsOutlines: []

@@ -22,16 +22,23 @@ public class RobotController : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+
+        if (!TutorialManager.Instance.isTuto && TutorialManager.Instance.robotTarget != null)
+        {
+            transform.position = TutorialManager.Instance.robotTarget.position;
+            transform.rotation = TutorialManager.Instance.robotTarget.rotation;
+            _agent.Warp(TutorialManager.Instance.robotTarget.position);
+        }
     }
 
     public void MoveTo(Transform target)
     {
-        if (target == null || _agent == null) return;
+        if (!target || !_agent) return;
 
         _currentTarget = target;
         _agent.SetDestination(target.position);
 
-        if (_animator != null)
+        if (_animator)
         {
             _animator.SetBool(IsWalking, true);
         }
