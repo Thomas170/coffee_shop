@@ -13,6 +13,7 @@ TagManager:
   - CoffeeCrate
   - DishCabinet
   - Cappu
+  - TutoCoffeeCrate
   layers:
   - Default
   - TransparentFX
@@ -34,7 +35,7 @@ TagManager:
   - Cappu
   - 
   - 
-  - 
+  - PlayerSkin
   - 
   - 
   - 
