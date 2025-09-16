@@ -2949,6 +2949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 32335741}
   dialogueText: {fileID: 228360775}
+  passText: {fileID: 923300613}
   typingSpeed: 0.03
 --- !u!114 &272424063
 MonoBehaviour:
@@ -5346,7 +5347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &460337370
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8334,8 +8335,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 200}
-  m_SizeDelta: {x: 800, y: 200}
+  m_AnchoredPosition: {x: 0.000061035156, y: 200.00006}
+  m_SizeDelta: {x: 1000, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &766314350
 MonoBehaviour:
@@ -8357,10 +8358,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cosy Shop !
+  m_text: Too Much Coffee !
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0b86ef800d7fa7449a08e0f3ef044188, type: 2}
-  m_sharedMaterial: {fileID: -1179572220650608710, guid: 0b86ef800d7fa7449a08e0f3ef044188, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 86b599f888a785947a50c7aa3f4741fd, type: 2}
+  m_sharedMaterial: {fileID: -3690638014726218933, guid: 86b599f888a785947a50c7aa3f4741fd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8390,12 +8391,12 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_wordSpacing: 0
+  m_wordSpacing: 30
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -9787,7 +9788,7 @@ GameObject:
   - component: {fileID: 923300616}
   - component: {fileID: 923300615}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: PassDialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13739,11 +13740,12 @@ Transform:
   - {fileID: 596529424}
   - {fileID: 449295917}
   - {fileID: 1796784902856007468}
-  - {fileID: 460337370}
   - {fileID: 283422266}
   - {fileID: 203132946}
   - {fileID: 250476964}
   - {fileID: 160738962}
+  - {fileID: 4280130423497647477}
+  - {fileID: 460337370}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1479618415
@@ -13767,6 +13769,7 @@ MonoBehaviour:
   coffeeMachineTarget: {fileID: 596529424}
   dishCabinetTarget: {fileID: 449295917}
   tutorialClient: {fileID: 7510789238902515951}
+  robotSpawnTuto: {fileID: 4280130423497647477}
   robotTarget: {fileID: 250476964}
   moveTuto: {fileID: 21300000, guid: 8964fe7818543ae4caadc57771a11ba3, type: 3}
   coffeeTuto: {fileID: 21300000, guid: 51ff4af02994cc74489e4390a49b2b41, type: 3}
@@ -20824,6 +20827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Popup
       objectReference: {fileID: 0}
+    - target: {fileID: 355185365132798540, guid: 75e919f253615e5438fe17be453cd92c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 675794987980957594, guid: 75e919f253615e5438fe17be453cd92c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -22118,7 +22125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4280130423336607304, guid: de88742700c91834eb06a4755e955ea3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4280130423336607304, guid: de88742700c91834eb06a4755e955ea3, type: 3}
       propertyPath: m_LocalRotation.y
@@ -22370,6 +22377,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737626675057608201}
   m_CullTransparentMesh: 1
+--- !u!4 &4280130423497647477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5379057356841236922}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.9848078, z: -0, w: -0.17364809}
+  m_LocalPosition: {x: -3.95718, y: 23.5, z: -22.85006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1479618414}
+  m_LocalEulerAnglesHint: {x: 0, y: 200, z: 0}
 --- !u!1001 &4282741406494269572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22984,6 +23006,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5379057356841236922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4280130423497647477}
+  m_Layer: 17
+  m_Name: RobotTutoSpawn
+  m_TagString: Cappu
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!114 &5444573340731464036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26935,5 +26973,5 @@ SceneRoots:
   - {fileID: 80416361}
   - {fileID: 272424046}
   - {fileID: 772076018}
-  - {fileID: 3865641418986243917}
   - {fileID: 2029410866}
+  - {fileID: 3865641418986243917}

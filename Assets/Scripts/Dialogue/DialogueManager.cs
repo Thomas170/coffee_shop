@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -15,11 +16,14 @@ public class DialogueManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private GameObject passText;
     [SerializeField] private float typingSpeed = 0.03f;
 
     private Queue<string> _sentences;
     private bool _isTyping;
     private string _currentSentence;
+    
+    private Tween _passTween;
 
     private void Awake()
     {
@@ -53,6 +57,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         dialoguePanel.SetActive(true);
+        StartPassAnimation();
         DisplayNextSentence();
     }
 
@@ -102,6 +107,8 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         dialoguePanel.SetActive(false);
+        StopPassAnimation();
+        
         OnDialogueEnd?.Invoke();
         PlayerIsDialogue(false);
     }
@@ -113,5 +120,22 @@ public class DialogueManager : MonoBehaviour
         {
             player.isInDialogue = value;
         }
+    }
+    
+    private void StartPassAnimation()
+    {
+        if (!passText) return;
+
+        _passTween?.Kill();
+
+        _passTween = passText.transform.DOScale(1.1f, 0.8f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine);
+    }
+
+    private void StopPassAnimation()
+    {
+        _passTween?.Kill();
+        passText.transform.localScale = Vector3.one;
     }
 }

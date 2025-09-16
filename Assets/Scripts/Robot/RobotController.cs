@@ -22,12 +22,21 @@ public class RobotController : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+    }
 
-        if (!TutorialManager.Instance.isTuto && TutorialManager.Instance.robotTarget != null)
+    public void SetRobotSpawn()
+    {
+        if (!TutorialManager.Instance.isTuto)
         {
             transform.position = TutorialManager.Instance.robotTarget.position;
             transform.rotation = TutorialManager.Instance.robotTarget.rotation;
             _agent.Warp(TutorialManager.Instance.robotTarget.position);
+        }
+        else
+        {
+            transform.position = TutorialManager.Instance.robotSpawnTuto.position;
+            transform.rotation = TutorialManager.Instance.robotSpawnTuto.rotation;
+            _agent.Warp(TutorialManager.Instance.robotSpawnTuto.position);
         }
     }
 

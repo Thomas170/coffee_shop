@@ -18,6 +18,7 @@ public class TutorialManager : NetworkBehaviour
     public Transform coffeeMachineTarget;
     public Transform dishCabinetTarget;
     public GameObject tutorialClient;
+    public Transform robotSpawnTuto;
     public Transform robotTarget;
 
     public Sprite moveTuto;
@@ -79,6 +80,7 @@ public class TutorialManager : NetworkBehaviour
     private void LoadTutoClientRpc(bool tutoDone)
     {
         isTuto = !tutoDone;
+        RobotController.Instance.SetRobotSpawn();
     }
     
     public void StartTutorial()
