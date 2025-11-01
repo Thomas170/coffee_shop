@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 4919361541030810676}
   - component: {fileID: 8445585105165381373}
   - component: {fileID: 210252189172863969}
+  - component: {fileID: 2042973098575873304}
   m_Layer: 0
   m_Name: GlobalManager
   m_TagString: Untagged
@@ -207,3 +208,16 @@ MonoBehaviour:
   animationDuration: 0.4
   staggerDelay: 0.05
   offscreenOffset: 800
+  backgroundFadeDuration: 0.3
+--- !u!114 &2042973098575873304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5098934890468094036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e1e3268c26c33a43b0ff152b1a02acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
