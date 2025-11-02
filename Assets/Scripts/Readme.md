@@ -1,0 +1,3 @@
+﻿Aller dans le dossier ContentBuilder puis taper : ``builder/steamcmd.exe +login aziteck28 +run_app_build ../scripts/app_build_4086250.vdf +quit``
+
+Puis aller sur steamwork, steampipe, builds et aller dans le dernier build, choisir la branche default, visualiser les changements et mettre en ligne etc...
