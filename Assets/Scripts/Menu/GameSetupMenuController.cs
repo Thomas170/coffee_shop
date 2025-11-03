@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Steamworks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -24,6 +27,7 @@ public class GameSetupMenuController : BaseMenuController
     private void OnEnable()
     {
         PlayerListManager.OnPlayerListChanged += UpdatePlayerSlots;
+        
         for (int i = 0; i < playerSlots.Length; i++)
         {
             var pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
@@ -44,6 +48,9 @@ public class GameSetupMenuController : BaseMenuController
         {
             if (players != null)
             {
+                // Récupérer les noms de tous les joueurs
+                var playerNames = GetAllPlayerNames(players);
+                
                 for (int i = 0; i < playerSlots.Length; i++)
                 {
                     var pseudoText = playerSlots[i].transform.Find("Pseudo").GetComponent<TextMeshProUGUI>();
@@ -51,7 +58,8 @@ public class GameSetupMenuController : BaseMenuController
 
                     if (i < players.Count)
                     {
-                        pseudoText.text = $"Player {players[i]}";
+                        string playerName = i < playerNames.Count ? playerNames[i] : $"Player {players[i]}";
+                        pseudoText.text = playerName;
                         pseudoText.gameObject.SetActive(true);
                         inviteObject.SetActive(false);
                     }
@@ -63,6 +71,38 @@ public class GameSetupMenuController : BaseMenuController
                 }
             }
         });
+    }
+    
+    private List<string> GetAllPlayerNames(List<ulong> playerIds)
+    {
+        List<string> names = new List<string>();
+        
+        // Trouver tous les NetworkPlayerName dans la scène
+        var allPlayerNames = FindObjectsOfType<NetworkPlayerName>();
+        
+        foreach (ulong playerId in playerIds)
+        {
+            var playerNameComponent = allPlayerNames.FirstOrDefault(p => p.OwnerClientId == playerId);
+            
+            if (playerNameComponent)
+            {
+                names.Add(playerNameComponent.PlayerName);
+            }
+            else
+            {
+                // Fallback : si le composant n'existe pas encore, utiliser le nom Steam local si c'est nous
+                if (playerId == NetworkManager.Singleton.LocalClientId && SteamManager.Initialized)
+                {
+                    names.Add(SteamFriends.GetPersonaName());
+                }
+                else
+                {
+                    names.Add($"Player {playerId}");
+                }
+            }
+        }
+        
+        return names;
     }
     
     public void CopyCodeToClipboard()

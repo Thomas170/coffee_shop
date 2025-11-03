@@ -768,6 +768,7 @@ GameObject:
   - component: {fileID: 297584532149371174}
   - component: {fileID: 7808703266700210302}
   - component: {fileID: 5702082268860395788}
+  - component: {fileID: 5028432474670190462}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -1025,6 +1026,7 @@ MonoBehaviour:
   dustCooldown: 0.12
   dustCount: 4
   dustSpreadRadius: 2
+  dustLifetime: 1
 --- !u!114 &468512985716968647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1150,6 +1152,18 @@ MonoBehaviour:
   invalidMaterial: {fileID: 2100000, guid: d9dd016d65ec17744a90e272ee795f35, type: 2}
   buildPoint: {fileID: 1589991686520901281}
   playerController: {fileID: 8907663148894752108}
+--- !u!114 &5028432474670190462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4144480234650336366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea32a02aaf84a542924ae61dd3cf505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4189622039890550404
 GameObject:
   m_ObjectHideFlags: 0

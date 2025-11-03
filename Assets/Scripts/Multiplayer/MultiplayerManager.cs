@@ -19,6 +19,10 @@ public static class MultiplayerManager
     private static Callback<LobbyCreated_t> _lobbyCreated;
     private static Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;
     private static Callback<LobbyEnter_t> _lobbyEnter;
+    
+    // Stockage de la demande de connexion en attente
+    private static string _pendingJoinCode;
+    private static bool _hasPendingJoin;
 
     public static string LastJoinCode => _lastJoinCode;
     public static bool IsHost => NetworkManager.Singleton.IsHost;
@@ -46,6 +50,34 @@ public static class MultiplayerManager
         _lobbyEnter = Callback<LobbyEnter_t>.Create(OnLobbyEnter);
         
         Debug.Log("[Multiplayer] Steam callbacks initialized successfully");
+        
+        // S'abonner à la déconnexion de l'hôte
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectedCallback;
+        }
+        
+        // Vérifier s'il y a une connexion en attente
+        CheckForDelayedJoin();
+    }
+    
+    private static void OnClientDisconnectedCallback(ulong clientId)
+    {
+        // Si l'hôte se déconnecte (clientId 0) et qu'on n'est pas l'hôte
+        if (clientId == 0 && !IsHost)
+        {
+            Debug.Log("[Multiplayer] Host disconnected! Returning to main menu...");
+            HandleHostDisconnection();
+        }
+    }
+    
+    private static async void HandleHostDisconnection()
+    {
+        // Quitter proprement la session
+        await LeaveSessionAsync();
+        
+        // Retourner au menu principal
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
 
     public static async Task InitializeUnityServicesAsync()
@@ -145,6 +177,10 @@ public static class MultiplayerManager
     {
         if (!NetworkManager.Singleton) return;
 
+        // Désabonner les événements
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnPlayerConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerDisconnected;
+
         if (NetworkManager.Singleton.IsHost)
         {
             NetworkManager.Singleton.Shutdown();
@@ -152,11 +188,15 @@ public static class MultiplayerManager
             if (transport) transport.Shutdown();
             Debug.Log("[Multiplayer] Host a quitté, session fermée.");
             
-            // Quitter le lobby Steam
+            // Quitter le lobby Steam et nettoyer Rich Presence
             if (SteamManager.Initialized && _currentLobbyId != CSteamID.Nil)
             {
                 SteamMatchmaking.LeaveLobby(_currentLobbyId);
                 _currentLobbyId = CSteamID.Nil;
+                
+                // Nettoyer Rich Presence
+                SteamFriends.ClearRichPresence();
+                SteamFriends.SetRichPresence("status", "In Menu");
             }
         }
         else if (NetworkManager.Singleton.IsClient)
@@ -171,6 +211,10 @@ public static class MultiplayerManager
             {
                 SteamMatchmaking.LeaveLobby(_currentLobbyId);
                 _currentLobbyId = CSteamID.Nil;
+                
+                // Nettoyer Rich Presence
+                SteamFriends.ClearRichPresence();
+                SteamFriends.SetRichPresence("status", "In Menu");
             }
         }
 
@@ -245,7 +289,7 @@ public static class MultiplayerManager
 
         Debug.Log($"[Multiplayer] Entered Steam lobby: {_currentLobbyId}");
 
-        // Si on n'est pas l'hôte, récupérer le join code et rejoindre
+        // Si on n'est pas l'hôte, récupérer le join code
         if (!IsHost)
         {
             string joinCode = SteamMatchmaking.GetLobbyData(_currentLobbyId, "JoinCode");
@@ -253,11 +297,100 @@ public static class MultiplayerManager
             if (!string.IsNullOrEmpty(joinCode))
             {
                 Debug.Log($"[Multiplayer] Retrieved join code from Steam lobby: {joinCode}");
-                await JoinSessionAsync(joinCode);
+                
+                // Vérifier si NetworkManager est prêt
+                if (NetworkManager.Singleton == null)
+                {
+                    Debug.Log("[Multiplayer] NetworkManager not ready, storing join code for later");
+                    _pendingJoinCode = joinCode;
+                    _hasPendingJoin = true;
+                }
+                else
+                {
+                    // Rejoindre immédiatement
+                    bool success = await JoinSessionAsync(joinCode);
+                    if (success)
+                    {
+                        // Ouvrir le menu de setup de partie
+                        OpenGameSetupMenu(joinCode);
+                    }
+                }
             }
             else
             {
                 Debug.LogError("[Multiplayer] No join code found in Steam lobby metadata");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Ouvre le menu de setup de partie (pour les joueurs qui rejoignent via Steam)
+    /// </summary>
+    private static void OpenGameSetupMenu(string joinCode)
+    {
+        var gameSetupMenu = UnityEngine.Object.FindObjectOfType<GameSetupMenuController>();
+        if (gameSetupMenu)
+        {
+            gameSetupMenu.OpenMenuByJoin(joinCode);
+        }
+        else
+        {
+            Debug.LogWarning("[Multiplayer] GameSetupMenuController not found in scene");
+        }
+    }
+    
+    /// <summary>
+    /// À appeler depuis votre UI de menu quand elle est prête
+    /// </summary>
+    public static async void ProcessPendingJoin()
+    {
+        if (_hasPendingJoin && !string.IsNullOrEmpty(_pendingJoinCode))
+        {
+            Debug.Log($"[Multiplayer] Processing pending join with code: {_pendingJoinCode}");
+            _hasPendingJoin = false;
+            string code = _pendingJoinCode;
+            _pendingJoinCode = null;
+            
+            bool success = await JoinSessionAsync(code);
+            if (success)
+            {
+                OpenGameSetupMenu(code);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Vérifie s'il y a une connexion en attente
+    /// </summary>
+    public static bool HasPendingJoin()
+    {
+        return _hasPendingJoin;
+    }
+    
+    private static async void CheckForDelayedJoin()
+    {
+        // Attendre un peu que tout soit initialisé
+        await Task.Delay(1000);
+        
+        if (_hasPendingJoin && !string.IsNullOrEmpty(_pendingJoinCode))
+        {
+            Debug.Log($"[Multiplayer] Auto-processing delayed join with code: {_pendingJoinCode}");
+            
+            // Attendre que NetworkManager soit prêt
+            int maxWait = 10; // 10 secondes max
+            while (NetworkManager.Singleton == null && maxWait > 0)
+            {
+                await Task.Delay(1000);
+                maxWait--;
+            }
+            
+            if (NetworkManager.Singleton != null)
+            {
+                ProcessPendingJoin();
+            }
+            else
+            {
+                Debug.LogError("[Multiplayer] NetworkManager still not ready after 10 seconds");
             }
         }
     }

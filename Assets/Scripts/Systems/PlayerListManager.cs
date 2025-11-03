@@ -160,4 +160,9 @@ public class PlayerListManager : NetworkBehaviour
             player.UpdatePositionClientRpc(spawnPosition);
         }
     }
+    
+    public static void NotifyPlayerListChanged()
+    {
+        OnPlayerListChanged?.Invoke();
+    }
 }
