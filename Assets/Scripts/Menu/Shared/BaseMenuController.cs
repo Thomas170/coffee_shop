@@ -45,9 +45,9 @@ public abstract class BaseMenuController : MonoBehaviour
 
         SubmitCallback = _ => OnSubmit();
         BackCallback   = _ => HandleBack();
-
+        
         DefaultSelectedIndex = InputDeviceTracker.Instance.IsUsingGamepad ? 0 : -1;
-
+        
         for (int i = 0; i < menuButtons.Length; i++)
         {
             var entry = menuButtons[i];
