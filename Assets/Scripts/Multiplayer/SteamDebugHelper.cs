@@ -1,5 +1,6 @@
 using UnityEngine;
 using Steamworks;
+using Unity.Netcode;
 
 public class SteamDebugHelper : MonoBehaviour
 {
@@ -30,7 +31,8 @@ public class SteamDebugHelper : MonoBehaviour
         GUILayout.Space(10);
         GUILayout.Label("=== MULTIPLAYER INFO ===", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold });
         
-        GUILayout.Label($"En session: {MultiplayerManager.IsInSession}");
+        GUILayout.Label($"En session: {(NetworkManager.Singleton != null ? MultiplayerManager.IsInSession.ToString() : "No NetworkManager")}");
+        GUILayout.Label($"En lobby (Steam): {MultiplayerManager.IsSteamInLobby}");
         GUILayout.Label($"Est hôte: {MultiplayerManager.IsHost}");
         GUILayout.Label($"Est client: {MultiplayerManager.IsClient}");
         GUILayout.Label($"Code actuel: {MultiplayerManager.LastJoinCode}");

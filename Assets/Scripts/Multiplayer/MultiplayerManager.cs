@@ -25,11 +25,13 @@ public static class MultiplayerManager
     private static bool _hasPendingJoin;
 
     public static string LastJoinCode => _lastJoinCode;
-    public static bool IsHost => NetworkManager.Singleton.IsHost;
-    public static bool IsClient => NetworkManager.Singleton.IsClient;
-    public static bool IsServer => NetworkManager.Singleton.IsServer;
-    public static bool IsHostActive => NetworkManager.Singleton.IsServer && NetworkManager.Singleton.IsListening;
-    public static bool IsInSession => NetworkManager.Singleton.IsConnectedClient || NetworkManager.Singleton.IsServer;
+    public static bool IsInSession => NetworkManager.Singleton != null && (NetworkManager.Singleton.IsConnectedClient || NetworkManager.Singleton.IsServer);
+    public static bool IsHost => NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost;
+    public static bool IsClient => NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient;
+    public static bool IsServer => NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer;
+    public static bool IsHostActive => NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer && NetworkManager.Singleton.IsListening;
+    
+    public static bool IsSteamInLobby => SteamManager.Initialized && _currentLobbyId != CSteamID.Nil;
 
     public static void InitializeSteamCallbacks()
     {
@@ -311,8 +313,18 @@ public static class MultiplayerManager
                     bool success = await JoinSessionAsync(joinCode);
                     if (success)
                     {
-                        // Ouvrir le menu de setup de partie
-                        OpenGameSetupMenu(joinCode);
+                        // Attendre que le client soit réellement connecté
+                        float timeout = 5f;
+                        while (!NetworkManager.Singleton.IsConnectedClient && timeout > 0f)
+                        {
+                            await Task.Delay(100);
+                            timeout -= 0.1f;
+                        }
+
+                        if (NetworkManager.Singleton.IsConnectedClient)
+                            OpenGameSetupMenu(joinCode);
+                        else
+                            Debug.LogWarning("[Multiplayer] Join Relay timed out after lobby join");
                     }
                 }
             }
@@ -331,6 +343,7 @@ public static class MultiplayerManager
         var gameSetupMenu = UnityEngine.Object.FindObjectOfType<GameSetupMenuController>();
         if (gameSetupMenu)
         {
+            //ChangeMenu(newGameMenuController);
             gameSetupMenu.OpenMenuByJoin(joinCode);
         }
         else
