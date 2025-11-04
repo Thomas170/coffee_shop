@@ -23,6 +23,8 @@ public static class MultiplayerManager
     // Stockage de la demande de connexion en attente
     private static string _pendingJoinCode;
     private static bool _hasPendingJoin;
+    // Ajouter au début de la classe
+    private static bool _isJoiningFromColdStart;
 
     public static string LastJoinCode => _lastJoinCode;
     public static bool IsInSession => NetworkManager.Singleton != null && (NetworkManager.Singleton.IsConnectedClient || NetworkManager.Singleton.IsServer);
@@ -32,6 +34,7 @@ public static class MultiplayerManager
     public static bool IsHostActive => NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer && NetworkManager.Singleton.IsListening;
     
     public static bool IsSteamInLobby => SteamManager.Initialized && _currentLobbyId != CSteamID.Nil;
+    public static bool IsJoiningFromColdStart => _isJoiningFromColdStart;
 
     public static void InitializeSteamCallbacks()
     {
@@ -279,11 +282,12 @@ public static class MultiplayerManager
         SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
 
+    // Modifier OnLobbyEnter pour gérer le démarrage à froid
     private static async void OnLobbyEnter(LobbyEnter_t callback)
     {
         _currentLobbyId = new CSteamID(callback.m_ulSteamIDLobby);
 
-        if (callback.m_EChatRoomEnterResponse != 1) // 1 = Success
+        if (callback.m_EChatRoomEnterResponse != 1)
         {
             Debug.LogError($"[Multiplayer] Failed to enter Steam lobby: {callback.m_EChatRoomEnterResponse}");
             return;
@@ -291,17 +295,23 @@ public static class MultiplayerManager
 
         Debug.Log($"[Multiplayer] Entered Steam lobby: {_currentLobbyId}");
 
-        // Si on n'est pas l'hôte, récupérer le join code
         if (!IsHost)
         {
             string joinCode = SteamMatchmaking.GetLobbyData(_currentLobbyId, "JoinCode");
-            
+        
             if (!string.IsNullOrEmpty(joinCode))
             {
                 Debug.Log($"[Multiplayer] Retrieved join code from Steam lobby: {joinCode}");
-                
-                // Vérifier si NetworkManager est prêt
-                if (NetworkManager.Singleton == null)
+            
+                // Si on démarre le jeu à froid (pas encore dans le menu)
+                if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Bootstrap")
+                {
+                    Debug.Log("[Multiplayer] Cold start detected, storing join code");
+                    _pendingJoinCode = joinCode;
+                    _hasPendingJoin = true;
+                    _isJoiningFromColdStart = true;
+                }
+                else if (NetworkManager.Singleton == null)
                 {
                     Debug.Log("[Multiplayer] NetworkManager not ready, storing join code for later");
                     _pendingJoinCode = joinCode;
@@ -309,22 +319,10 @@ public static class MultiplayerManager
                 }
                 else
                 {
-                    // Rejoindre immédiatement
                     bool success = await JoinSessionAsync(joinCode);
                     if (success)
                     {
-                        // Attendre que le client soit réellement connecté
-                        float timeout = 5f;
-                        while (!NetworkManager.Singleton.IsConnectedClient && timeout > 0f)
-                        {
-                            await Task.Delay(100);
-                            timeout -= 0.1f;
-                        }
-
-                        if (NetworkManager.Singleton.IsConnectedClient)
-                            OpenGameSetupMenu(joinCode);
-                        else
-                            Debug.LogWarning("[Multiplayer] Join Relay timed out after lobby join");
+                        OpenGameSetupMenu(joinCode);
                     }
                 }
             }
