@@ -156,6 +156,12 @@ public class PlayerListManager : NetworkBehaviour
         for (int i = 0; i < players.Count; i++)
         {
             NetworkPlayer player = players[i];
+            
+            // Met à jour le skin
+            PlayerSkin playerSkin = player.GetComponent<PlayerSkin>();
+            playerSkin.UpdateSkin(i);
+            
+            // Met à jour l'emplacement
             Vector3 spawnPosition = _spawnsPoints[i];
             player.UpdatePositionClientRpc(spawnPosition);
         }
