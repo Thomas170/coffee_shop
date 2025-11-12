@@ -6,7 +6,7 @@ public class ClientSpawner : NetworkBehaviour
 {
     [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] private GameObject clientPrefab;
-    private const float SpawnInterval = 10f;
+    private const float SpawnInterval = 30f;
     public List<GameObject> spawnedClients = new();
     public bool canSpawn = true;
     
