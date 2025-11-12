@@ -21,6 +21,8 @@ public class IntroCinematic : MonoBehaviour
     [SerializeField] private Transform camStartPos;
     [SerializeField] private Transform camEndPos;
     [SerializeField] private float camMoveDuration = 6f;
+    
+    [SerializeField] private BirdTuto birdTuto;
 
     private void Start()
     {
@@ -52,7 +54,7 @@ public class IntroCinematic : MonoBehaviour
             cinematicCam.transform.position = camStartPos.position;
             cinematicCam.transform.rotation = camStartPos.rotation;
         }
-
+        
         // Fade in du titre
         yield return new WaitForSeconds(0.5f);
         gameTitle.DOFade(1, fadeDuration);
@@ -61,6 +63,13 @@ public class IntroCinematic : MonoBehaviour
         // Fade out
         gameTitle.DOFade(0, fadeDuration);
         yield return new WaitForSeconds(fadeDuration);
+        
+        if (NetworkManager.Singleton.IsServer)
+        {
+            birdTuto.PlayBirdTutoServerRpc();
+        }
+        
+        yield return new WaitForSeconds(birdTuto.animationDuration);
 
         // Mouvement de caméra
         if (camEndPos)
@@ -89,7 +98,7 @@ public class IntroCinematic : MonoBehaviour
         FindObjectOfType<CinematicBars>().HideBars();
         yield return new WaitForSeconds(1f);
         localPlayer.isInCinematic = false;
-        
+
         // Lancer le tuto
         TutorialManager.Instance.StartTutorial();
         coins.SetActive(true);

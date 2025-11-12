@@ -5,7 +5,7 @@ using Unity.Netcode;
 public class SteamDebugHelper : MonoBehaviour
 {
     [Header("Debug Info")]
-    [SerializeField] private bool showDebugInfo = true;
+    [SerializeField] private bool showDebugInfo;
     
     private void OnGUI()
     {
