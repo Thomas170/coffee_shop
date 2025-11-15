@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -50,6 +51,21 @@ public class BuildMenuManager : MonoBehaviour
 
         InitCategoriesButtons();
         InitCells(buildCategory);
+    
+        // Forcer la vérification après génération dynamique
+        if (!InputDeviceTracker.Instance.IsUsingGamepad)
+        {
+            StartCoroutine(ForceMouseCheckAfterDelay());
+        }
+    }
+
+    private IEnumerator ForceMouseCheckAfterDelay()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return null;
+    
+        // Déclencher manuellement la vérification sur le menu controller
+        buildSelectionMenuController.SendMessage("CheckMouseOverButtons", SendMessageOptions.DontRequireReceiver);
     }
 
     private void InitCategoriesButtons()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -262,10 +263,53 @@ public abstract class BaseMenuController : MonoBehaviour
             menuObject.SetActive(true);
         }
 
-
         isOpen = true;
         SelectedIndex = DefaultSelectedIndex;
         SelectButton(DefaultSelectedIndex);
+        
+        // Attendre que tout soit bien positionné
+        yield return new WaitForEndOfFrame();
+        yield return null;
+        
+        // Vérifier si la souris survole un bouton (souris uniquement)
+        if (!InputDeviceTracker.Instance.IsUsingGamepad)
+        {
+            CheckMouseOverButtons();
+        }
+    }
+
+    // Ajoutez cette nouvelle méthode dans BaseMenuController :
+    private void CheckMouseOverButtons()
+    {
+        if (menuButtons == null || menuButtons.Length == 0)
+            return;
+
+        Vector2 mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+        
+        for (int i = 0; i < menuButtons.Length; i++)
+        {
+            if (menuButtons[i].button == null || !menuButtons[i].button.interactable)
+                continue;
+
+            RectTransform rect = menuButtons[i].button.GetComponent<RectTransform>();
+            if (rect == null)
+                continue;
+
+            // Vérifier si la souris est dans les limites du bouton
+            if (RectTransformUtility.RectangleContainsScreenPoint(rect, mousePos, null))
+            {
+                SelectButton(i);
+                
+                // Important : simuler l'événement hover pour que EventSystem soit au courant
+                PointerEventData pointerData = new PointerEventData(EventSystem.current)
+                {
+                    position = mousePos
+                };
+                ExecuteEvents.Execute(menuButtons[i].button.gameObject, pointerData, ExecuteEvents.pointerEnterHandler);
+                
+                return; // On s'arrête au premier bouton trouvé
+            }
+        }
     }
 
     public virtual void CloseMenu()
