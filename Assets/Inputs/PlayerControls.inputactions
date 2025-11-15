@@ -246,34 +246,12 @@
                 },
                 {
                     "name": "",
-                    "id": "43d6afd5-2d48-4112-bfdc-96889e16146f",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotateRight",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "97f1875e-3dd9-4c5a-bd8e-901a951b0a87",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RotateRight",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dfd03ef2-45aa-4f92-9d44-08d3951a892e",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotateLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
