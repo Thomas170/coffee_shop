@@ -3166,7 +3166,6 @@ GameObject:
   m_Component:
   - component: {fileID: 174711753}
   - component: {fileID: 174711752}
-  - component: {fileID: 174711751}
   - component: {fileID: 174711750}
   m_Layer: 0
   m_Name: SkinCamera
@@ -3219,14 +3218,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &174711751
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174711749}
-  m_Enabled: 1
 --- !u!20 &174711752
 Camera:
   m_ObjectHideFlags: 0

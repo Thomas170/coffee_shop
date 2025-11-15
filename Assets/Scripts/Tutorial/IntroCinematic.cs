@@ -57,11 +57,11 @@ public class IntroCinematic : MonoBehaviour
         
         // Fade in du titre
         yield return new WaitForSeconds(0.5f);
-        gameTitle.DOFade(1, fadeDuration);
+        gameTitle.DOFade(1, fadeDuration).SetLink(gameObject);
         yield return new WaitForSeconds(titleStayTime);
 
         // Fade out
-        gameTitle.DOFade(0, fadeDuration);
+        gameTitle.DOFade(0, fadeDuration).SetLink(gameObject);
         yield return new WaitForSeconds(fadeDuration);
         
         if (NetworkManager.Singleton.IsServer)

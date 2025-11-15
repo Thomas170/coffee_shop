@@ -88,14 +88,17 @@ public class RewardManager : NetworkBehaviour
             RectTransform coinRect = childCoin.GetComponent<RectTransform>();
 
             coinRect.DOScale(1f, spawnScaleTime)
+                .SetLink(gameObject)
                 .SetDelay(delay)
                 .SetEase(Ease.OutBack);
 
             coinRect.DOAnchorPos(anchoredPos, travelTime)
+                .SetLink(gameObject)
                 .SetDelay(delay + startDelay)
                 .SetEase(Ease.InBack);
 
             coinRect.DOScale(0f, 0.3f)
+                .SetLink(gameObject)
                 .SetDelay(delay + disappearDelay)
                 .SetEase(Ease.OutBack);
 
@@ -125,10 +128,12 @@ public class RewardManager : NetworkBehaviour
             coinsText.rectTransform.localScale = _textInitialScale;
             coinsText.rectTransform
                 .DOScale(_textInitialScale * textPunchScale, textPunchDuration)
+                .SetLink(gameObject)
                 .SetEase(Ease.OutBack)
                 .OnComplete(() =>
                 {
                     coinsText.rectTransform.DOScale(_textInitialScale, textPunchDuration)
+                        .SetLink(gameObject)
                         .SetEase(Ease.InBack);
                 });
 
@@ -149,9 +154,9 @@ public class RewardManager : NetworkBehaviour
         SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.gainCoins);
         
         Sequence seq = DOTween.Sequence();
-        seq.Append(cg.DOFade(1f, floatTextFadeIn));
+        seq.Append(cg.DOFade(1f, floatTextFadeIn).SetLink(gameObject));
         seq.AppendInterval(floatTextStay);
-        seq.Append(cg.DOFade(0f, floatTextFadeOut));
+        seq.Append(cg.DOFade(0f, floatTextFadeOut).SetLink(gameObject));
         seq.OnComplete(() => Destroy(floatText.gameObject));
     }
 }

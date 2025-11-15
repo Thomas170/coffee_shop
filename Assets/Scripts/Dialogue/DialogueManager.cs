@@ -129,6 +129,7 @@ public class DialogueManager : MonoBehaviour
         _passTween?.Kill();
 
         _passTween = passText.transform.DOScale(1.1f, 0.8f)
+            .SetLink(gameObject)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
     }

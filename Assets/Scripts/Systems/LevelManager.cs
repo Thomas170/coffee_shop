@@ -86,7 +86,7 @@ public class LevelManager : NetworkBehaviour
         {
             float targetFill = Mathf.Clamp01((float)_experience / _experienceToNextLevel);
 
-            xpFillImage.DOFillAmount(targetFill, 0.5f).SetEase(Ease.OutQuad);
+            xpFillImage.DOFillAmount(targetFill, 0.5f).SetLink(gameObject).SetEase(Ease.OutQuad);
 
             RectTransform rt = xpFillImage.rectTransform;
             rt.DOKill();

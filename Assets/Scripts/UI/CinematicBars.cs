@@ -16,14 +16,14 @@ public class CinematicBars : MonoBehaviour
 
     public void ShowBars(bool noDuration = false)
     {
-        topBar.DOSizeDelta(new Vector2(topBar.sizeDelta.x, barHeight), noDuration ? 0 : animDuration);
-        bottomBar.DOSizeDelta(new Vector2(bottomBar.sizeDelta.x, barHeight), noDuration ? 0 : animDuration);
+        topBar.DOSizeDelta(new Vector2(topBar.sizeDelta.x, barHeight), noDuration ? 0 : animDuration).SetLink(gameObject);
+        bottomBar.DOSizeDelta(new Vector2(bottomBar.sizeDelta.x, barHeight), noDuration ? 0 : animDuration).SetLink(gameObject);
     }
 
     public void HideBars()
     {
-        topBar.DOSizeDelta(new Vector2(topBar.sizeDelta.x, 0f), animDuration);
-        bottomBar.DOSizeDelta(new Vector2(bottomBar.sizeDelta.x, 0f), animDuration);
+        topBar.DOSizeDelta(new Vector2(topBar.sizeDelta.x, 0f), animDuration).SetLink(gameObject);
+        bottomBar.DOSizeDelta(new Vector2(bottomBar.sizeDelta.x, 0f), animDuration).SetLink(gameObject);
     }
 
     private void HideBarsInstant()

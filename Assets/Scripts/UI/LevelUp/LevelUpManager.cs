@@ -50,9 +50,9 @@ public class LevelUpManager : MonoBehaviour
         _imageCanvasGroup.alpha = 0f;
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(_imageCanvasGroup.DOFade(1f, imageFadeIn));
+        seq.Append(_imageCanvasGroup.DOFade(1f, imageFadeIn).SetLink(gameObject));
         seq.AppendInterval(imageStay);
-        seq.Append(_imageCanvasGroup.DOFade(0f, imageFadeOut));
+        seq.Append(_imageCanvasGroup.DOFade(0f, imageFadeOut).SetLink(gameObject));
 
         StartCoroutine(SetLevelValue());
     }
@@ -64,10 +64,12 @@ public class LevelUpManager : MonoBehaviour
         SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.gainLevel);
 ;       levelText.rectTransform
             .DOScale(_textInitialScale * textPunchScale, textPunchDuration)
+            .SetLink(gameObject)
             .SetEase(Ease.OutBack)
             .OnComplete(() =>
             {
                 levelText.rectTransform.DOScale(_textInitialScale, textPunchDuration)
+                    .SetLink(gameObject)
                     .SetEase(Ease.InBack);
             });
     }

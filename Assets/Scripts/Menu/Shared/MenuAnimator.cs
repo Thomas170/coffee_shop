@@ -139,6 +139,7 @@ public class MenuAnimator : MonoBehaviour
 
         canvasGroup.DOKill();
         canvasGroup.DOFade(targetAlpha, backgroundFadeDuration)
+            .SetLink(gameObject)
             .SetEase(Ease.OutSine);
 
         if (!show)

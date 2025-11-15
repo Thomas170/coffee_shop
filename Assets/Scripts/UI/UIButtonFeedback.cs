@@ -49,14 +49,14 @@ public class UIButtonFeedback : MonoBehaviour, IPointerClickHandler, ISelectHand
     {
         if (scaleType == SelectType.NoScaleUp) return;
 
-        _targetToScale.DOScale(Vector3.one * scaleUp, scaleDuration).SetEase(Ease.OutBack);
+        _targetToScale.DOScale(Vector3.one * scaleUp, scaleDuration).SetLink(gameObject).SetEase(Ease.OutBack);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
         if (scaleType == SelectType.NoScaleUp) return;
 
-        _targetToScale.DOScale(Vector3.one, scaleDuration).SetEase(Ease.OutBack);
+        _targetToScale.DOScale(Vector3.one, scaleDuration).SetLink(gameObject).SetEase(Ease.OutBack);
     }
 
     private void PlayClickFeedback()
@@ -66,8 +66,9 @@ public class UIButtonFeedback : MonoBehaviour, IPointerClickHandler, ISelectHand
             _targetToScale.DOKill();
             _targetToScale.localScale = Vector3.one;
             _targetToScale.DOScale(Vector3.one * scaleUp, scaleDuration)
+                .SetLink(gameObject)
                 .SetEase(Ease.OutBack)
-                .OnComplete(() => _targetToScale.DOScale(Vector3.one, scaleDuration));
+                .OnComplete(() => _targetToScale.DOScale(Vector3.one, scaleDuration).SetLink(gameObject));
         }
 
         // Son
