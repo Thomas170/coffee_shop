@@ -22,7 +22,7 @@ public class PopupTips : MonoBehaviour
 
         if (_inputDelayTimer < InputDelay) return;
 
-        if (Keyboard.current.anyKey.wasPressedThisFrame || IsAnyGamepadButtonPressed())
+        if (Keyboard.current.anyKey.wasPressedThisFrame || PopupManager.IsAnyGamepadButtonPressed())
         {
             ClosePopup();
         }
@@ -33,7 +33,7 @@ public class PopupTips : MonoBehaviour
         gameObject.SetActive(true);
         _isPopupActive = true;
         _inputDelayTimer = 0f;
-        EnablePlayer(false);
+        PopupManager.EnablePlayer(false);
 
         Transform imageTransform = gameObject.transform.Find("PopupImage");
         if (imageTransform)
@@ -54,36 +54,6 @@ public class PopupTips : MonoBehaviour
     {
         gameObject.SetActive(false);
         _isPopupActive = false;
-        EnablePlayer(true);
-    }
-
-    private bool IsAnyGamepadButtonPressed()
-    {
-        if (Gamepad.current == null) return false;
-
-        var gp = Gamepad.current;
-        return gp.buttonSouth.wasPressedThisFrame ||
-               gp.buttonNorth.wasPressedThisFrame ||
-               gp.buttonWest.wasPressedThisFrame ||
-               gp.buttonEast.wasPressedThisFrame ||
-               gp.startButton.wasPressedThisFrame ||
-               gp.selectButton.wasPressedThisFrame ||
-               gp.leftShoulder.wasPressedThisFrame ||
-               gp.rightShoulder.wasPressedThisFrame ||
-               gp.leftStickButton.wasPressedThisFrame ||
-               gp.rightStickButton.wasPressedThisFrame ||
-               gp.dpad.up.wasPressedThisFrame ||
-               gp.dpad.down.wasPressedThisFrame ||
-               gp.dpad.left.wasPressedThisFrame ||
-               gp.dpad.right.wasPressedThisFrame;
-    }
-
-    public void EnablePlayer(bool value)
-    {
-        PlayerController player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId);
-        if (player)
-        {
-            player.isInPopup = !value;
-        }
+        PopupManager.EnablePlayer(true);
     }
 }
