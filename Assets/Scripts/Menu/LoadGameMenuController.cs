@@ -68,23 +68,58 @@ public class LoadGameMenuController : BaseMenuController
 
     private void Continue()
     {
+        // Essayer d'abord de charger le dernier slot joué
+        if (GlobalManager.Instance.HasLastPlayedSlot())
+        {
+            int lastPlayedSlot = GlobalManager.Instance.GetLastPlayedSlot();
+            
+            // Vérifier que ce slot existe toujours
+            SaveManager.Instance.RequestSlotHasData(exists =>
+            {
+                if (exists)
+                {
+                    // Le dernier slot joué existe, on le charge
+                    GlobalManager.Instance.SetGameIndex(lastPlayedSlot);
+                    ChangeMenu(gameSetupMenuController);
+                }
+                else
+                {
+                    // Le dernier slot n'existe plus, charger le premier slot valide
+                    LoadFirstValidSlot();
+                }
+            }, lastPlayedSlot);
+        }
+        else
+        {
+            // Pas de dernier slot sauvegardé, charger le premier slot valide
+            LoadFirstValidSlot();
+        }
+    }
+
+    private void LoadFirstValidSlot()
+    {
         int firstValidIndex = -1;
+        int slotsChecked = 0;
+        
         for (int i = 0; i < 3; i++)
         {
             int index = i;
             SaveManager.Instance.RequestSlotHasData(exists =>
             {
+                slotsChecked++;
+                
                 if (exists && firstValidIndex == -1)
                 {
                     firstValidIndex = index;
                 }
+                
+                // Une fois tous les slots vérifiés, charger le premier valide
+                if (slotsChecked == 3 && firstValidIndex != -1)
+                {
+                    GlobalManager.Instance.SetGameIndex(firstValidIndex);
+                    ChangeMenu(gameSetupMenuController);
+                }
             }, i);
-        }
-
-        if (firstValidIndex != -1)
-        {
-            GlobalManager.Instance.SetGameIndex(firstValidIndex);
-            ChangeMenu(gameSetupMenuController);
         }
     }
 
