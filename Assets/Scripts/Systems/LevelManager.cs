@@ -49,7 +49,10 @@ public class LevelManager : NetworkBehaviour
     {
         if (level >= MaxLevel) return;
 
-        _experience += amount;
+        float multiplier = GetXpMultiplier();
+        int finalAmount = Mathf.RoundToInt(amount * multiplier);
+
+        _experience += finalAmount;
 
         while (_experience >= _experienceToNextLevel && level < MaxLevel)
         {
@@ -110,4 +113,20 @@ public class LevelManager : NetworkBehaviour
             });
         }
     }
+    
+    private float GetXpMultiplier()
+    {
+        int playerCount = NetworkManager.Singleton ?
+            NetworkManager.Singleton.ConnectedClientsList.Count : 1;
+
+        return playerCount switch
+        {
+            4 => 1f,
+            3 => 1.25f,
+            2 => 1.6f,
+            1 => 2f,
+            _ => 1f
+        };
+    }
+
 }
