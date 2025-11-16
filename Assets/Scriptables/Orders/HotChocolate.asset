@@ -16,7 +16,7 @@ MonoBehaviour:
   orderIcon: {fileID: 21300000, guid: c80a84c8428ad78438908e637f4ff690, type: 3}
   price: 20
   experience: 20
-  level: 5
+  level: 4
   hasRecipe: 1
   recipePopup: {fileID: 21300000, guid: ea08e668a4087ce41be5d0b1be49d0eb, type: 3}
   selectionWeight: 1

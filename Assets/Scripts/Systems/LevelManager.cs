@@ -13,7 +13,7 @@ public class LevelManager : NetworkBehaviour
     private int _experience;
     private int _experienceToNextLevel;
 
-    private const int MaxLevel = 20;
+    private const int MaxLevel = 10;
     
     public Image xpFillImage;
 
@@ -68,14 +68,14 @@ public class LevelManager : NetworkBehaviour
     
     private int GetExperienceRequiredForLevel(int currentLevel)
     {
-        return 100 * currentLevel;
+        return 50 * currentLevel;
     }
     
     public void IncreaseLevel()
     {
         if (level >= MaxLevel) return;
         
-        //level += 1;
+        level += 1;
         levelText.text = level.ToString();
         LevelUpManager.Instance.ShowLevelUpEffect(level);
     }

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orderName: Tea (lemon, mint)
   orderIcon: {fileID: 21300000, guid: 5abd1938381f64e45b9c1fe0d0574209, type: 3}
-  price: 25
-  experience: 25
-  level: 10
+  price: 30
+  experience: 30
+  level: 7
   hasRecipe: 1
   recipePopup: {fileID: 21300000, guid: efd99d7c2ac39924fbf98d45251d1987, type: 3}
   selectionWeight: 1

@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orderName: 
   orderIcon: {fileID: 21300000, guid: 5abd1938381f64e45b9c1fe0d0574209, type: 3}
-  price: 25
-  experience: 25
-  level: 10
+  price: 30
+  experience: 30
+  level: 7
   hasRecipe: 0
+  recipePopup: {fileID: 0}
   selectionWeight: 1
   requiredItemType: 27

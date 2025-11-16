@@ -15,7 +15,7 @@ public class ClientCommands : NetworkBehaviour
     public ItemBase currentItem;
     public GameObject commandSpot;
     
-    private readonly float _patienceTime = 120f;
+    private readonly float _patienceTime = 200f;
     
     public OrderType currentOrder;
     [SerializeField] private OrderList possibleOrders;

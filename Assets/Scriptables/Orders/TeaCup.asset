@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orderName: Tea (classic)
   orderIcon: {fileID: 21300000, guid: 5abd1938381f64e45b9c1fe0d0574209, type: 3}
-  price: 20
-  experience: 20
-  level: 7
+  price: 25
+  experience: 25
+  level: 6
   hasRecipe: 1
   recipePopup: {fileID: 21300000, guid: ee3da8e5968f79f42816c16acf351e41, type: 3}
   selectionWeight: 1
