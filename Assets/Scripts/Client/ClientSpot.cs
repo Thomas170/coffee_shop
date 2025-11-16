@@ -42,6 +42,33 @@ public class ClientSpot : MonoBehaviour
 
         index = -1;
     }
+    
+    public GameObject FindSpotObject(Transform current)
+    {
+        while (current.parent != null)
+        {
+            if (current.parent.CompareTag("SpotObject"))
+            {
+                return current.parent.gameObject;
+            }
+
+            current = current.parent;
+        }
+
+        return null;
+    }
+
+    public void HandleSpotObjectColliders(bool value)
+    {
+        GameObject spotObject = FindSpotObject(transform);
+        
+        Collider[] spotColliders = spotObject.GetComponentsInChildren<Collider>(true);
+
+        foreach (var col in spotColliders)
+        {
+            col.enabled = value;
+        }
+    }
 
     private GameObject FindBuildParent(Transform current)
     {

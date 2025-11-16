@@ -66,4 +66,9 @@ public class ClientController : NetworkBehaviour
             hightlightRender.SetActive(value);
         }
     }
+
+    public ClientSpot GetClientSpot()
+    {
+        return commands.commandSpot.GetComponent<ClientSpot>();
+    }
 }

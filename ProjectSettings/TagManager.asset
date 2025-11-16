@@ -15,6 +15,7 @@ TagManager:
   - Cappu
   - TutoCoffeeCrate
   - CupSpot
+  - SpotObject
   layers:
   - Default
   - TransparentFX

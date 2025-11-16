@@ -222,6 +222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClassicStool2
       objectReference: {fileID: 0}
+    - target: {fileID: 5885264278863589567, guid: 439ef837d5ff8414aad1352cfef72ddb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7941310117539102757, guid: 439ef837d5ff8414aad1352cfef72ddb, type: 3}
       propertyPath: m_LocalPosition.y
       value: 3.2
