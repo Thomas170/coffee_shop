@@ -1,7 +1,9 @@
 using System.Collections;
 using DG.Tweening;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class LevelUpManager : MonoBehaviour
@@ -14,13 +16,15 @@ public class LevelUpManager : MonoBehaviour
 
     [Header("Durées & Animations")]
     [SerializeField] private float imageFadeIn = 0.3f;
-    private float imageStay = 3f;
     [SerializeField] private float imageFadeOut = 0.5f;
     [SerializeField] private float textPunchScale = 1.5f;
-    private float textPunchDuration = 0.8f;
+    private readonly float _textPunchDuration = 0.8f;
 
     private CanvasGroup _imageCanvasGroup;
     private Vector3 _textInitialScale;
+    private bool _isLevelUpActive;
+    private float _inputDelayTimer;
+    private const float InputDelay = 0.5f;
 
     private void Awake()
     {
@@ -41,6 +45,20 @@ public class LevelUpManager : MonoBehaviour
 
         _textInitialScale = levelText.rectTransform.localScale;
     }
+    
+    private void Update()
+    {
+        if (!_isLevelUpActive) return;
+
+        _inputDelayTimer += Time.unscaledDeltaTime;
+
+        if (_inputDelayTimer < InputDelay) return;
+
+        if (Keyboard.current.anyKey.wasPressedThisFrame || IsAnyGamepadButtonPressed())
+        {
+            ClosePopup();
+        }
+    }
 
     public void ShowLevelUpEffect(int newLevel)
     {
@@ -51,8 +69,6 @@ public class LevelUpManager : MonoBehaviour
 
         Sequence seq = DOTween.Sequence();
         seq.Append(_imageCanvasGroup.DOFade(1f, imageFadeIn).SetLink(gameObject));
-        seq.AppendInterval(imageStay);
-        seq.Append(_imageCanvasGroup.DOFade(0f, imageFadeOut).SetLink(gameObject));
 
         StartCoroutine(SetLevelValue());
     }
@@ -62,15 +78,56 @@ public class LevelUpManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         
         SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.gainLevel);
-;       levelText.rectTransform
-            .DOScale(_textInitialScale * textPunchScale, textPunchDuration)
+        levelText.rectTransform
+            .DOScale(_textInitialScale * textPunchScale, _textPunchDuration)
             .SetLink(gameObject)
             .SetEase(Ease.OutBack)
             .OnComplete(() =>
             {
-                levelText.rectTransform.DOScale(_textInitialScale, textPunchDuration)
+                levelText.rectTransform.DOScale(_textInitialScale, _textPunchDuration)
                     .SetLink(gameObject)
                     .SetEase(Ease.InBack);
             });
+        
+        _isLevelUpActive = true;
+        _inputDelayTimer = 0f;
+        EnablePlayer(false);
+    }
+    
+    private void ClosePopup()
+    {
+        _imageCanvasGroup.DOFade(0f, imageFadeOut).SetLink(gameObject);
+        _isLevelUpActive = false;
+        EnablePlayer(true);
+    }
+    
+    private bool IsAnyGamepadButtonPressed()
+    {
+        if (Gamepad.current == null) return false;
+
+        var gp = Gamepad.current;
+        return gp.buttonSouth.wasPressedThisFrame ||
+               gp.buttonNorth.wasPressedThisFrame ||
+               gp.buttonWest.wasPressedThisFrame ||
+               gp.buttonEast.wasPressedThisFrame ||
+               gp.startButton.wasPressedThisFrame ||
+               gp.selectButton.wasPressedThisFrame ||
+               gp.leftShoulder.wasPressedThisFrame ||
+               gp.rightShoulder.wasPressedThisFrame ||
+               gp.leftStickButton.wasPressedThisFrame ||
+               gp.rightStickButton.wasPressedThisFrame ||
+               gp.dpad.up.wasPressedThisFrame ||
+               gp.dpad.down.wasPressedThisFrame ||
+               gp.dpad.left.wasPressedThisFrame ||
+               gp.dpad.right.wasPressedThisFrame;
+    }
+    
+    public void EnablePlayer(bool value)
+    {
+        PlayerController player = PlayerListManager.Instance?.GetPlayer(NetworkManager.Singleton.LocalClientId);
+        if (player)
+        {
+            player.isInPopup = !value;
+        }
     }
 }
