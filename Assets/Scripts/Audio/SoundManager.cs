@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour
     [Header("Global")]
     public AudioClip gainCoins;
     public AudioClip gainLevel;
+    public AudioClip unlock;
     
     [Header("UI")]
     public AudioClip buttonClick;
@@ -116,6 +117,8 @@ public class SoundManager : MonoBehaviour
     private float GetVolume(AudioClip clip)
     {
         if (clip == footsteps) return 0.8f;
+        if (clip == coffeeMachineLoop) return 2f;
+        if (clip == coffeeMachineEnd) return 2f;
         if (clip == car) return 0.3f;
         if (clip == openMenuAnim) return 0.5f;
         if (clip == homeMusic) return 0.4f;

@@ -7764,7 +7764,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 120, y: 160}
-  m_Spacing: {x: 30, y: 0}
+  m_Spacing: {x: 40, y: 40}
   m_Constraint: 1
   m_ConstraintCount: 3
 --- !u!1 &711977215
@@ -9018,10 +9018,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelUpImage: {fileID: 1310510348}
+  levelUpIcon: {fileID: 1765416510}
   levelText: {fileID: 837679830}
+  unlocksPanel: {fileID: 711027951}
   imageFadeIn: 0.3
   imageFadeOut: 0.5
-  textPunchScale: 1.5
+  orderList: {fileID: 11400000, guid: 1e337b67526450e40ad1e33f8ed22ef2, type: 2}
+  unlockCellPrefab: {fileID: 8023760057443789062, guid: ed48de4997298c845837acf4f9fb1786, type: 3}
 --- !u!1 &832567231
 GameObject:
   m_ObjectHideFlags: 0
@@ -9630,7 +9633,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_TargetDisplay: 0
 --- !u!1001 &910562562
 PrefabInstance:

@@ -4,6 +4,7 @@ using UnityEngine;
 public class OrderType : ScriptableObject
 {
     public string orderName;
+    public string orderRecipeName;
     public Sprite orderIcon;
     public int price;
     public int experience;

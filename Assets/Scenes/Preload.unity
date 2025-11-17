@@ -1138,7 +1138,8 @@ MonoBehaviour:
   car: {fileID: 8300000, guid: c90cf9599cb2b7844a0fd8299bfd2c04, type: 3}
   footsteps: {fileID: 8300000, guid: 311e021fa36d67547952ebf6f360792b, type: 3}
   gainCoins: {fileID: 8300000, guid: 33713d31432863a4c8816d57af275124, type: 3}
-  gainLevel: {fileID: 8300000, guid: a73ed610fd4348445a10ab3dfdd4295b, type: 3}
+  gainLevel: {fileID: 8300000, guid: 28f444b22673e0b46a7daa8ead836725, type: 3}
+  unlock: {fileID: 8300000, guid: 8153703620b2b90418d3b0749283166a, type: 3}
   buttonClick: {fileID: 8300000, guid: a443a7258813b434d87bde43d326ed96, type: 3}
   openMenuAnim: {fileID: 8300000, guid: 5115ec3c6c6626d438ec90208c508e94, type: 3}
 --- !u!4 &2000336718

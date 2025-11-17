@@ -75,7 +75,7 @@ public class SignMenuController : BaseMenuController
             TextMeshProUGUI recipeName = recipeGameObject.transform.Find(prefix + "OrderName").GetComponent<TextMeshProUGUI>();
             recipeIcon.sprite = order.orderIcon;
             
-            recipeName.text = hasLevel ? order.orderName : "" + order.level;
+            recipeName.text = hasLevel ? order.orderRecipeName : "" + order.level;
 
             if (hasLevel)
             {
