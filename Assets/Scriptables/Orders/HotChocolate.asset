@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HotChocolate
   m_EditorClassIdentifier: 
   orderName: Hot chocolate
+  orderRecipeName: Hot chocolate
   orderIcon: {fileID: 21300000, guid: c80a84c8428ad78438908e637f4ff690, type: 3}
   price: 20
   experience: 20

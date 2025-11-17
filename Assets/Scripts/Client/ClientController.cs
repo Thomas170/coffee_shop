@@ -43,7 +43,7 @@ public class ClientController : NetworkBehaviour
             return;
         }
         
-        if (reachedTarget == commands.commandSpot.transform)
+        if (commands && commands.commandSpot && reachedTarget == commands.commandSpot.transform)
         {
             GetComponent<NavMeshAgent>().enabled = false;
             

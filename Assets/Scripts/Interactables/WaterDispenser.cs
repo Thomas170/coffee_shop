@@ -10,7 +10,7 @@ public class WaterDispenser : AutoInteractableBase
 
     public override void TryPutItem(ItemBase itemToUse)
     {
-        if (itemToUse == null) return;
+        if (itemToUse == null || itemToUse.itemType != ItemType.Kettle) return;
 
         RequestFillServerRpc(itemToUse.NetworkObject, NetworkManager.LocalClientId);
     }
