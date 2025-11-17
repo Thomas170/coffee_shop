@@ -86,7 +86,7 @@ public class LevelUpManager : MonoBehaviour
         SoundManager.Instance.PlayGlobalSound(SoundManager.Instance.gainLevel);
         yield return new WaitForSeconds(0.5f);
         
-        levelUpIcon.transform
+        /*levelUpIcon.transform
             .DOScale(_iconInitialScale * 1.2f, 0.5f)
             .SetLink(gameObject)
             .SetEase(Ease.OutBack)
@@ -95,7 +95,7 @@ public class LevelUpManager : MonoBehaviour
                 levelUpIcon.transform.DOScale(_iconInitialScale, 0.5f)
                     .SetLink(gameObject)
                     .SetEase(Ease.InBack);
-            });
+            });*/
         
         _isLevelUpActive = true;
         _inputDelayTimer = 0f;
