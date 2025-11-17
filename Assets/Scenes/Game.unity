@@ -2777,7 +2777,7 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   - tipsName: Shop
-    keyboardSprite: {fileID: 21300000, guid: fb78a042ee082a64d8c47581c6ee5cc4, type: 3}
+    keyboardSprite: {fileID: 3286163911610860551, guid: e95938016ef9d454a97ef582f8d37d24, type: 3}
     gamepadSprite: {fileID: 21300000, guid: 825103f557cbd3b43b404d58f6d0d88b, type: 3}
     localizedActionLabel:
       m_TableReference:
@@ -2789,7 +2789,7 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   - tipsName: Edit
-    keyboardSprite: {fileID: 21300000, guid: 1852471fe08135c4f9a1b3a1a9c9a6c1, type: 3}
+    keyboardSprite: {fileID: 21300000, guid: fb78a042ee082a64d8c47581c6ee5cc4, type: 3}
     gamepadSprite: {fileID: 21300000, guid: 1852471fe08135c4f9a1b3a1a9c9a6c1, type: 3}
     localizedActionLabel:
       m_TableReference:

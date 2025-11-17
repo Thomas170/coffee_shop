@@ -122,6 +122,7 @@ public class ControlsUIManager : MonoBehaviour
         if (controlsMode == ControlsMode.Default)
         {
             AddBindingUI("Interact");
+            AddBindingUI("Action");
             AddBindingUI("Shop");
             AddBindingUI("Edit");
         
@@ -130,6 +131,7 @@ public class ControlsUIManager : MonoBehaviour
         else if (controlsMode == ControlsMode.PickUp)
         {
             AddBindingUI("Drop");
+            AddBindingUI("Action");
             AddBindingUI("Shop");
             AddBindingUI("Edit");
         

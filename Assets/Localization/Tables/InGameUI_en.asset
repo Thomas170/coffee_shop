@@ -39,11 +39,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7478589126971392
-    m_Localized: Action
+    m_Localized: Interact
     m_Metadata:
       m_Items: []
   - m_Id: 15137854721462272
-    m_Localized: Interact / Pick
+    m_Localized: Pick / Drop
     m_Metadata:
       m_Items: []
   - m_Id: 15138273539493888

@@ -16,6 +16,7 @@ public class PlayerBuild : MonoBehaviour
     public bool IsInBuildMode => currentMode == BuildModeState.Building;
     public bool IsInEditMode => currentMode == BuildModeState.Edition;
     public bool IsInMoveMode => currentMode == BuildModeState.Moving;
+    public bool IsInPreviewMode => currentMode != BuildModeState.None;
     
     public void Init()
     {
@@ -48,6 +49,12 @@ public class PlayerBuild : MonoBehaviour
 
     private void OnShop(InputAction.CallbackContext ctx)
     {
+        if (IsInBuildMode)
+        {
+            buildManager.ExitMode();
+            return;
+        }
+        
         if (!IsInBuildMode && !IsInEditMode && playerController.CanInteractAction())
         {
             buildMenuController.OpenMenu();
@@ -91,6 +98,12 @@ public class PlayerBuild : MonoBehaviour
     
     private void OnEdit(InputAction.CallbackContext ctx)
     {
+        if (IsInEditMode)
+        {
+            editManager.ExitMode();
+            return;
+        }
+        
         if (!playerController.CanInteractAction()) return;
         editManager.EnterMode();
     }

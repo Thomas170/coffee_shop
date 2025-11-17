@@ -63,6 +63,6 @@ public class PlayerController : NetworkBehaviour
 
     public bool CanInteractAction()
     {
-        return CanInteract && !HasMenuOpen && !isInDialogue && !isInPopup && !isInCinematic;
+        return CanInteract && !HasMenuOpen && !isInDialogue && !isInPopup && !isInCinematic && !playerBuild.IsInPreviewMode;
     }
 }

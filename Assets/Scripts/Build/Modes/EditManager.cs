@@ -7,7 +7,7 @@ public class EditManager : BaseBuildMode
     public GameObject targetedBuild;
 
     private readonly Dictionary<MeshRenderer, Material[]> _originalMaterials = new();
-    private Vector3 boxHalfExtents = new(1f, 8f, 5f);
+    private Vector3 _boxHalfExtents = new(1f, 8f, 5f);
     [SerializeField] private float interactionDistance = 4f;
     [SerializeField] private LayerMask buildMask;
     [SerializeField] private Transform rayOrigin;
@@ -23,7 +23,7 @@ public class EditManager : BaseBuildMode
         Vector3 center = rayOrigin.position + rayOrigin.forward * (interactionDistance * 0.5f);
         Quaternion orientation = rayOrigin.rotation;
 
-        Collider[] hits = Physics.OverlapBox(center, boxHalfExtents, orientation, buildMask);
+        Collider[] hits = Physics.OverlapBox(center, _boxHalfExtents, orientation, buildMask);
 
         GameObject nearestBuild = null;
         float closestDistance = float.MaxValue;
