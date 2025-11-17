@@ -27,8 +27,6 @@ public class SettingsMenuController : BaseMenuController
 
     public override void ExecuteMenuAction(string buttonName)
     {
-        if (_isInOptions) return;
-
         switch (buttonName)
         {
             case "General":
