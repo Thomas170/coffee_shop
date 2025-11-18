@@ -68,8 +68,9 @@ public static class MultiplayerManager
     
     private static void OnClientDisconnectedCallback(ulong clientId)
     {
-        // Si l'hôte se déconnecte (clientId 0) et qu'on n'est pas l'hôte
-        if (clientId == 0 && !IsHost)
+        ulong hostId = NetworkManager.ServerClientId;
+
+        if (clientId == hostId && !IsHost)
         {
             Debug.Log("[Multiplayer] Host disconnected! Returning to main menu...");
             HandleHostDisconnection();
@@ -141,6 +142,7 @@ public static class MultiplayerManager
 
     private static void OnPlayerDisconnected(ulong clientId)
     {
+        PlayerListManager.Instance?.OnClientDisconnected(clientId);
         UpdateSteamPlayerGroupSize();
     }
 
@@ -189,8 +191,8 @@ public static class MultiplayerManager
         if (NetworkManager.Singleton.IsHost)
         {
             NetworkManager.Singleton.Shutdown();
-            UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-            if (transport) transport.Shutdown();
+            //UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            //if (transport) transport.Shutdown();
             Debug.Log("[Multiplayer] Host a quitté, session fermée.");
             
             // Quitter le lobby Steam et nettoyer Rich Presence
@@ -207,8 +209,8 @@ public static class MultiplayerManager
         else if (NetworkManager.Singleton.IsClient)
         {
             NetworkManager.Singleton.Shutdown();
-            UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-            if (transport) transport.Shutdown();
+            //UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            //if (transport) transport.Shutdown();
             Debug.Log("[Multiplayer] Client a quitté la session.");
             
             // Quitter le lobby Steam
@@ -223,14 +225,19 @@ public static class MultiplayerManager
             }
         }
 
+        await Task.Delay(100);
         ClearSession();
         await Task.Yield();
     }
-
+    
     public static void ClearSession()
     {
-        PlayerListManager.Instance.OnClientDisconnected(NetworkManager.Singleton.LocalClientId);
+        if (PlayerListManager.Instance && PlayerListManager.Instance.IsSpawned)
+        {
+            PlayerListManager.Instance.OnClientDisconnected(NetworkManager.Singleton.LocalClientId);
+        }
     }
+
 
     // ==================== STEAM METHODS ====================
 

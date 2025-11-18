@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Threading.Tasks;
@@ -53,10 +55,17 @@ public class JoinMenuController : BaseMenuController
         }
         finally
         {
-            MenuManager.Instance.SetLoadingScreenActive(false);
-            CloseMenu();
-            gameSetupMenuController.OpenMenuByJoin(code);
+            StartCoroutine(ChangeMenuAfterJoin(code));
         }
+    }
+
+    private IEnumerator ChangeMenuAfterJoin(string code)
+    {
+        //MenuManager.Instance.SetLoadingScreenActive(false);
+        yield return new WaitForSeconds(0.8f);
+        MenuManager.Instance.IsLocked = false;
+        CloseMenu();
+        gameSetupMenuController.OpenMenuByJoin(code);
     }
 
     public override void OpenMenu()

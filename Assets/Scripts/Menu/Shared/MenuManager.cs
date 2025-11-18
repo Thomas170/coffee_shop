@@ -16,7 +16,7 @@ public class MenuManager : MonoBehaviour
     private Vector2 _loadingOut;
     private bool _isWaitingActive;
     
-    public bool IsLocked { get; private set; }
+    public bool IsLocked { get; set; }
     
     private void Awake()
     {

@@ -44,6 +44,12 @@ public class GameSetupMenuController : BaseMenuController
     
     private void UpdatePlayerSlots()
     {
+        if (!PlayerListManager.Instance || !PlayerListManager.Instance.IsSpawned)
+        {
+            Debug.LogWarning("PlayerListManager not spawned");
+            return;
+        }
+        
         PlayerListManager.Instance?.RequestConnectedPlayerIds(players =>
         {
             if (players != null)
@@ -205,12 +211,35 @@ public class GameSetupMenuController : BaseMenuController
     {
         base.OpenMenu();
         MenuManager.Instance.SetLoadingScreenActive(true);
-        
+        MenuManager.Instance.IsLocked = true;
+    
         startButton.SetActive(false);
         codeToCopy.text = joinCode;
-        UpdatePlayerSlots();
-        MenuManager.Instance.SetLoadingScreenActive(false);
-        StartCoroutine(WaitForSaveManagerAndRequestData());
+    
+        // Attendre que PlayerListManager soit spawné avant de continuer
+        StartCoroutine(WaitForPlayerListManagerAndUpdateSlots());
+    }
+
+    private IEnumerator WaitForPlayerListManagerAndUpdateSlots()
+    {
+        float timeout = 10f;
+        while ((!PlayerListManager.Instance || !PlayerListManager.Instance.IsSpawned) && timeout > 0f)
+        {
+            timeout -= Time.deltaTime;
+            yield return null;
+        }
+
+        if (PlayerListManager.Instance && PlayerListManager.Instance.IsSpawned)
+        {
+            UpdatePlayerSlots();
+            MenuManager.Instance.SetLoadingScreenActive(false);
+            StartCoroutine(WaitForSaveManagerAndRequestData());
+        }
+        else
+        {
+            Debug.LogError("PlayerListManager was not spawned in time.");
+            MenuManager.Instance.SetLoadingScreenActive(false);
+        }
     }
     
     private IEnumerator WaitForSaveManagerAndRequestData()
