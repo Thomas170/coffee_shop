@@ -39,7 +39,7 @@ public class Crate : InteractableBase
                 playerCarry.TryPickUp(item);
             }
         }
-        
+
         if (playerCarry.carriedItem.itemType == ItemType.CoffeeBeans)
         {
             TutorialManager.Instance.ValidStep(TutorialStep.TakeGrains);

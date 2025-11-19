@@ -51,6 +51,7 @@ public class NetworkPlayer : NetworkBehaviour
                 if (script != this && !(script is NetworkBehaviour) && _typesToDisable.Contains(script.GetType()))
                 {
                     script.enabled = false;
+                    Destroy(script);
                 }
             }
             

@@ -22,7 +22,7 @@ public class PlayerInteraction : MonoBehaviour
         InputReader.Instance.ActionAction.canceled += OnActionCanceled;
         InputReader.Instance.ActionAction.started += OnActionStarted;
     }
-
+    
     private void OnDestroy()
     {
         InputReader.Instance.InteractAction.performed -= OnInteract;

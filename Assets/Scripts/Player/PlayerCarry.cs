@@ -43,15 +43,16 @@ public class PlayerCarry : NetworkBehaviour
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
         ulong newHolderId = rpcParams.Receive.SenderClientId;
+        ulong oldHolderId = itemBase.OwnerClientId;
         
         if (itemBase.CurrentHolderClientId.HasValue && itemBase.CurrentHolderClientId.Value != newHolderId)
         {
-            UpdateItemClientRpc(itemRef, false);
+            UpdateItemClientRpc(itemRef, false, oldHolderId);
         }
 
         itemBase.CurrentHolderClientId = newHolderId;
         itemBase.NetworkObject.ChangeOwnership(newHolderId);
-        UpdateItemClientRpc(itemRef, true);
+        UpdateItemClientRpc(itemRef, true, oldHolderId);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -59,33 +60,35 @@ public class PlayerCarry : NetworkBehaviour
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
-
+        ulong oldHolderId = itemBase.OwnerClientId;
+        
         itemBase.CurrentHolderClientId = null;
-        UpdateItemClientRpc(itemRef, false);
+        UpdateItemClientRpc(itemRef, false, oldHolderId);
     }
     
     [ClientRpc]
-    private void UpdateItemClientRpc(NetworkObjectReference itemRef, bool attach)
+    private void UpdateItemClientRpc(NetworkObjectReference itemRef, bool attach, ulong oldHolderId)
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
-        var localClientId = NetworkManager.Singleton.LocalClientId;
 
-        if (itemBase.OwnerClientId == localClientId)
+        ulong holderId = itemBase.OwnerClientId;
+
+        PlayerController player = PlayerListManager.Instance.GetPlayer(holderId);
+        PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
+
+        if (attach)
         {
-            PlayerController player = PlayerListManager.Instance.GetPlayer(localClientId);
-            PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
-
-            if (attach)
-            {
-                playerCarry.carriedItem = itemBase;
-                itemBase.AttachTo(playerCarry.carryPoint);
-            }
-            else
-            {
-                playerCarry.carriedItem = null;
-                itemBase.Detach();
-            }
+            playerCarry.carriedItem = itemBase;
+            itemBase.AttachTo(playerCarry.carryPoint);
+        }
+        else
+        {
+            PlayerController oldPlayer = PlayerListManager.Instance.GetPlayer(oldHolderId);
+            PlayerCarry oldPlayerCarry = oldPlayer.GetComponent<PlayerCarry>();
+            oldPlayerCarry.carriedItem = null;
+            itemBase.Detach();
+            oldPlayer.playerAnimation.PlayDropAnimationServerRpc();
         }
     }
 }
