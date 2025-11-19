@@ -47,12 +47,12 @@ public class PlayerCarry : NetworkBehaviour
         
         if (itemBase.CurrentHolderClientId.HasValue && itemBase.CurrentHolderClientId.Value != newHolderId)
         {
-            UpdateItemClientRpc(itemRef, false, oldHolderId);
+            UpdateItemClientRpc(itemRef, false, oldHolderId, true);
         }
 
         itemBase.CurrentHolderClientId = newHolderId;
         itemBase.NetworkObject.ChangeOwnership(newHolderId);
-        UpdateItemClientRpc(itemRef, true, oldHolderId);
+        UpdateItemClientRpc(itemRef, true, oldHolderId, false);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -63,11 +63,11 @@ public class PlayerCarry : NetworkBehaviour
         ulong oldHolderId = itemBase.OwnerClientId;
         
         itemBase.CurrentHolderClientId = null;
-        UpdateItemClientRpc(itemRef, false, oldHolderId);
+        UpdateItemClientRpc(itemRef, false, oldHolderId, false);
     }
     
     [ClientRpc]
-    private void UpdateItemClientRpc(NetworkObjectReference itemRef, bool attach, ulong oldHolderId)
+    private void UpdateItemClientRpc(NetworkObjectReference itemRef, bool attach, ulong oldHolderId, bool withAnimation = false)
     {
         if (!itemRef.TryGet(out var itemNetworkObject)) return;
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
@@ -86,9 +86,12 @@ public class PlayerCarry : NetworkBehaviour
         {
             PlayerController oldPlayer = PlayerListManager.Instance.GetPlayer(oldHolderId);
             PlayerCarry oldPlayerCarry = oldPlayer.GetComponent<PlayerCarry>();
+            if (NetworkManager.LocalClientId == oldHolderId && oldPlayerCarry.IsCarrying && withAnimation)
+            {
+                oldPlayer.playerAnimation.PlayDropAnimationServerRpc();
+            }
             oldPlayerCarry.carriedItem = null;
             itemBase.Detach();
-            oldPlayer.playerAnimation.PlayDropAnimationServerRpc();
         }
     }
 }
