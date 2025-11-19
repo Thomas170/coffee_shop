@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerSkin : MonoBehaviour
+public class PlayerSkin : NetworkBehaviour
 {
     [Header("References")]
     public Renderer circle;
@@ -11,7 +12,8 @@ public class PlayerSkin : MonoBehaviour
     public Material[] apron1Materials;
     public Material[] apron2Materials;
 
-    public void UpdateSkin(int index)
+    [ClientRpc]
+    public void UpdateSkinClientRpc(int index)
     {
         if (circle != null && circleMaterials.Length > index)
         {
