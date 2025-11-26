@@ -52,35 +52,46 @@ public abstract class InteractableBase : NetworkBehaviour
         
         return true;
     }
-    
+
     [ServerRpc(RequireOwnership = false)]
-    private void RequestPutItemServerRpc(NetworkObjectReference itemRef, ulong playerId) => RequestPutItemClientRpc(itemRef, playerId);
+    private void RequestPutItemServerRpc(NetworkObjectReference itemRef, ulong playerId) =>
+        RequestPutItemClientRpc(itemRef, playerId);
 
     [ClientRpc]
     protected void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
     {
+        Debug.Log("A");
         if (isInUse || !itemRef.TryGet(out var itemNetworkObject)) return;
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
+        Debug.Log("B");
         
         if (!TryStoreItem(itemBase)) return;
+        Debug.Log("C");
         
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
-        playerCarry.TryDrop();
+        SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, gameObject);
+        player.playerAnimation.PlayDropAnimationServerRpc();
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
+        itemBase.CurrentHolderClientId = null;
         playerCarry.carriedItem = null;
         
         if (ShouldDisplayItem(itemBase))
         {
             currentDisplayItem = itemBase;
+            currentDisplayItem.AttachTo(displayPoint, false, IsClient);
             currentDisplayItem.CurrentHolderClientId = null;
-            currentDisplayItem.AttachTo(displayPoint, false);
         }
         else
         {
-            itemBase.NetworkObject.Despawn();
+            if (IsServer)
+            {
+                itemBase.NetworkObject.Despawn();
+            }
             Destroy(itemBase.gameObject);
         }
 
+        Debug.Log("D");
         StartActionIfReady();
         AfterPutItem();
     }
@@ -191,12 +202,15 @@ public abstract class InteractableBase : NetworkBehaviour
     
     private void StartActionIfReady()
     {
+        Debug.Log("E");
         if (!HasAllRequiredIngredients() || !hasAction) return;
+        Debug.Log("F");
         StartAction();
     }
     
     protected virtual void OnActionComplete()
     {
+        Debug.Log("1");
         if (!HasAllRequiredIngredients()) return;
         
         if (resultItemIcon && currentDisplayItem && currentDisplayItem.itemImage)
@@ -206,8 +220,10 @@ public abstract class InteractableBase : NetworkBehaviour
             itemImage.sprite = currentDisplayItem.itemImage;
         }
 
+        Debug.Log("2");
         foreach (ItemStorage storage in storeItems)
         {
+            Debug.Log("3 " + storage.itemType);
             storage.Consume(1);
         }
 

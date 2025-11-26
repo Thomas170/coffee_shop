@@ -15,11 +15,11 @@ public class ItemBase : NetworkBehaviour
         HandlePhysics(true, true);
     }
 
-    public virtual void AttachTo(Transform carryPoint, bool withColliders = true)
+    public virtual void AttachTo(Transform carryPoint, bool withColliders = true, bool placeOnPoint = false)
     {
         HandlePhysics(false, withColliders);
         transform.SetParent(carryPoint, true);
-        StartCoroutine(ResetLocalTransformNextFrame());
+        StartCoroutine(ResetLocalTransformNextFrame(carryPoint, placeOnPoint));
     }
 
     public virtual void Detach()
@@ -49,11 +49,19 @@ public class ItemBase : NetworkBehaviour
         }
     }
     
-    private IEnumerator ResetLocalTransformNextFrame()
+    private IEnumerator ResetLocalTransformNextFrame(Transform carryPoint, bool placeOnPoint)
     {
         yield return new WaitForEndOfFrame();
 
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        if (placeOnPoint)
+        {
+            transform.position = carryPoint.position;
+            transform.rotation = carryPoint.rotation;
+        }
+        else
+        {
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+        }
     }
 }
