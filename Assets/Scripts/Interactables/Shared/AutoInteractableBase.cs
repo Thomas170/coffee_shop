@@ -30,7 +30,6 @@ public abstract class AutoInteractableBase : InteractableBase
     
     protected override void StopAction()
     {
-        Debug.Log("STOP");
         base.StopAction();
         
         if (_activeCoroutine != null)

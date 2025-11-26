@@ -60,13 +60,10 @@ public abstract class InteractableBase : NetworkBehaviour
     [ClientRpc]
     protected void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
     {
-        Debug.Log("A");
         if (isInUse || !itemRef.TryGet(out var itemNetworkObject)) return;
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
-        Debug.Log("B");
         
         if (!TryStoreItem(itemBase)) return;
-        Debug.Log("C");
         
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
@@ -91,7 +88,6 @@ public abstract class InteractableBase : NetworkBehaviour
             Destroy(itemBase.gameObject);
         }
 
-        Debug.Log("D");
         StartActionIfReady();
         AfterPutItem();
     }
@@ -202,15 +198,12 @@ public abstract class InteractableBase : NetworkBehaviour
     
     private void StartActionIfReady()
     {
-        Debug.Log("E");
         if (!HasAllRequiredIngredients() || !hasAction) return;
-        Debug.Log("F");
         StartAction();
     }
     
     protected virtual void OnActionComplete()
     {
-        Debug.Log("1");
         if (!HasAllRequiredIngredients()) return;
         
         if (resultItemIcon && currentDisplayItem && currentDisplayItem.itemImage)
@@ -220,10 +213,8 @@ public abstract class InteractableBase : NetworkBehaviour
             itemImage.sprite = currentDisplayItem.itemImage;
         }
 
-        Debug.Log("2");
         foreach (ItemStorage storage in storeItems)
         {
-            Debug.Log("3 " + storage.itemType);
             storage.Consume(1);
         }
 
