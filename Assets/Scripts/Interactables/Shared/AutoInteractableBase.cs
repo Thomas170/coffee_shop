@@ -12,7 +12,8 @@ public abstract class AutoInteractableBase : InteractableBase
     {
         base.StartAction();
         _activeCoroutine = StartCoroutine(HandleAction());
-        UpdateGaugeClientRpc(true, InteractionDuration);
+        gaugeUI.StartFillingServerRpc(InteractionDuration);
+        //UpdateGaugeClientRpc(true, InteractionDuration);
     }
 
     private IEnumerator HandleAction()
@@ -36,13 +37,13 @@ public abstract class AutoInteractableBase : InteractableBase
             StopCoroutine(_activeCoroutine);
         }
         _activeCoroutine = null;
-        gaugeUI.Hide();
+        gaugeUI.HideServerRpc();
     }
     
     [ClientRpc]
     private void UpdateGaugeClientRpc(bool active, float duration)
     {
-        if (active) gaugeUI.StartFilling(duration);
-        else gaugeUI.Hide();
+        if (active) gaugeUI.StartFillingServerRpc(duration);
+        else gaugeUI.HideServerRpc();
     }
 }

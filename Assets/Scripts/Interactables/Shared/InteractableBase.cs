@@ -18,9 +18,9 @@ public abstract class InteractableBase : NetworkBehaviour
     [SerializeField] protected List<ItemStorage> storeItems = new();
     private ItemType _itemStoreToDisplay = ItemType.None;
     
-    [HideInInspector] public ItemBase currentDisplayItem;
-    [HideInInspector] public bool isInUse;
-    [HideInInspector] public bool isReady;
+    public ItemBase currentDisplayItem;
+    public bool isInUse;
+    public bool isReady;
 
     protected void Start()
     {
@@ -33,23 +33,7 @@ public abstract class InteractableBase : NetworkBehaviour
 
     public virtual void TryPutItem(ItemBase itemToUse)
     {
-        if (TryStoreItem(itemToUse))
-        {
-            RequestPutItemServerRpc(itemToUse.NetworkObject, NetworkManager.LocalClientId);
-        }
-    }
-    
-    private bool TryStoreItem(ItemBase item)
-    {
-        if (hasMultipleCombinaisons && item.transformatedItem == null) return false;
-        if (hasMultipleCombinaisons && storeItems.Any(storeItem => storeItem.currentAmount > 0)) return false;
-        
-        ItemStorage storage = storeItems.Find(storeItem =>
-            item.itemType == storeItem.itemType || storeItem.itemType == ItemType.Any);
-        
-        if (storage is not { CanAdd: true }) return false;
-        storage.Add(1);
-        return true;
+        RequestPutItemServerRpc(itemToUse.NetworkObject, NetworkManager.LocalClientId);
     }
 
     private bool ShouldDisplayItem(ItemBase item)
@@ -65,6 +49,7 @@ public abstract class InteractableBase : NetworkBehaviour
         {
             if (storage.currentAmount < 1) return false;
         }
+        
         return true;
     }
     
@@ -75,8 +60,10 @@ public abstract class InteractableBase : NetworkBehaviour
     protected void RequestPutItemClientRpc(NetworkObjectReference itemRef, ulong playerId)
     {
         if (isInUse || !itemRef.TryGet(out var itemNetworkObject)) return;
-        
         ItemBase itemBase = itemNetworkObject.GetComponent<ItemBase>();
+        
+        if (!TryStoreItem(itemBase)) return;
+        
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
         playerCarry.TryDrop();
@@ -97,17 +84,26 @@ public abstract class InteractableBase : NetworkBehaviour
         StartActionIfReady();
         AfterPutItem();
     }
+    
+    private bool TryStoreItem(ItemBase item)
+    {
+        if (hasMultipleCombinaisons && item.transformatedItem == null) return false;
+        if (hasMultipleCombinaisons && storeItems.Any(storeItem => storeItem.currentAmount > 0)) return false;
+        
+        ItemStorage storage = storeItems.Find(storeItem =>
+            item.itemType == storeItem.itemType || storeItem.itemType == ItemType.Any);
+        
+        if (storage is not { CanAdd: true }) return false;
+        storage.Add(1);
+        
+        return true;
+    }
 
     protected virtual void AfterPutItem() { }
     
     public virtual void CollectCurrentItem()
     {
         if (!currentDisplayItem) return;
-        
-        if (isInUse)
-        {
-            StopAction();
-        }
         
         RequestCollectServerRpc(NetworkManager.LocalClientId);
     }
@@ -118,6 +114,11 @@ public abstract class InteractableBase : NetworkBehaviour
     [ClientRpc]
     private void RequestCollectClientRpc(ulong playerId)
     {
+        if (isInUse)
+        {
+            StopAction();
+        }
+        
         if (!currentDisplayItem) return;
 
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);

@@ -1,7 +1,8 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProgressGaugeUI : MonoBehaviour
+public class ProgressGaugeUI : NetworkBehaviour
 {
     public Image fillImage;
     public GameObject gaugeRoot;
@@ -27,7 +28,14 @@ public class ProgressGaugeUI : MonoBehaviour
             _active = false;
     }
 
-    public void StartFilling(float duration)
+    [ServerRpc(RequireOwnership = false)]
+    public void StartFillingServerRpc(float duration)
+    {
+        StartFillingClientRpc(duration);
+    }
+
+    [ClientRpc]
+    private void StartFillingClientRpc(float duration)
     {
         _duration = duration;
         _elapsed = 0f;
@@ -37,7 +45,14 @@ public class ProgressGaugeUI : MonoBehaviour
         _autoFill = true;
     }
 
-    public void ShowManualGauge(float duration)
+    [ServerRpc(RequireOwnership = false)]
+    public void ShowManualGaugeServerRpc(float duration)
+    {
+        ShowManualGaugeClientRpc(duration);
+    }
+
+    [ClientRpc]
+    private void ShowManualGaugeClientRpc(float duration)
     {
         _duration = duration;
         fillImage.fillAmount = 0f;
@@ -45,15 +60,39 @@ public class ProgressGaugeUI : MonoBehaviour
         _active = true;
         _autoFill = false;
     }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void UpdateProgressServerRpc(float progressRatio)
+    {
+        if (IsServer)
+        {
+            UpdateGaugeClientRpc(progressRatio);
+        }
+    }
 
-    public void UpdateGauge(float progressRatio)
+    [ClientRpc]
+    private void UpdateGaugeClientRpc(float progressRatio)
+    {
+        if (!_active || _autoFill) return;
+
+        fillImage.fillAmount = Mathf.Clamp01(progressRatio);
+    }
+    
+    public void UpdateGaugeLocal(float progressRatio)
     {
         if (!_active || _autoFill) return;
 
         fillImage.fillAmount = Mathf.Clamp01(progressRatio);
     }
 
-    public void Hide()
+    [ServerRpc(RequireOwnership = false)]
+    public void HideServerRpc()
+    {
+        HideClientRpc();
+    }
+
+    [ClientRpc]
+    private void HideClientRpc()
     {
         _active = false;
         gaugeRoot.SetActive(false);
