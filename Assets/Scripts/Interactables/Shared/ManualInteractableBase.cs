@@ -7,21 +7,15 @@ public abstract class ManualInteractableBase : InteractableBase
     [SerializeField] protected ProgressGaugeUI gaugeUI;
 
     private float _holdProgress;
-    private float _lastSyncTime;
-    private const float SyncInterval = 0.1f;
 
     public void Action(bool isHolding)
     {
         if (isHolding && isInUse)
         {
             _holdProgress += Time.deltaTime;
-            if (Time.time - _lastSyncTime >= SyncInterval)
-            {
-                SyncProgressServerRpc(_holdProgress, NetworkManager.LocalClientId);
-                _lastSyncTime = Time.time;
-            }
-            
             gaugeUI.UpdateGaugeLocal(_holdProgress / requiredHoldDuration);
+            
+            SyncProgressServerRpc(_holdProgress, NetworkManager.LocalClientId);
 
             if (_holdProgress >= requiredHoldDuration)
             {
@@ -40,6 +34,9 @@ public abstract class ManualInteractableBase : InteractableBase
     [ClientRpc]
     private void SyncProgressClientRpc(float progress, ulong clientId)
     {
+        if (NetworkManager.Singleton.LocalClientId == clientId)
+            return;
+        
         _holdProgress = progress;
         gaugeUI.UpdateGaugeLocal(progress / requiredHoldDuration);
     }
