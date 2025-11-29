@@ -102,7 +102,7 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
     
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void SpawnDustBurstServerRpc()
     {
         for (int i = 0; i < dustCount; i++)

@@ -116,8 +116,7 @@ public class LevelManager : NetworkBehaviour
     
     private float GetXpMultiplier()
     {
-        int playerCount = NetworkManager.Singleton ?
-            NetworkManager.Singleton.ConnectedClientsList.Count : 1;
+        int playerCount = PlayerListManager.Instance.connectedPlayerIds.Count;
 
         return playerCount switch
         {

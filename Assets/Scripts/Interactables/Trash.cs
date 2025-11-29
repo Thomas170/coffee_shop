@@ -28,7 +28,10 @@ public class Trash : InteractableBase
         playerCarry.TryDrop();
         playerCarry.carriedItem = null;
         
-        itemBase.NetworkObject.Despawn();
+        if (IsServer)
+        {
+            itemBase.NetworkObject.Despawn();
+        }
         Destroy(itemBase.gameObject);
     }
 }

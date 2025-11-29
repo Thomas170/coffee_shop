@@ -36,6 +36,15 @@ public class PlayerCarry : NetworkBehaviour
         ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
         return true;
     }
+    
+    public void DropWithoutRpc()
+    {
+        SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, gameObject);
+        playerController.playerAnimation.PlayDropAnimationServerRpc();
+        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
+        carriedItem.CurrentHolderClientId = null;
+        carriedItem = null;
+    }
 
     [ServerRpc(RequireOwnership = false)]
     private void RequestPickUpServerRpc(NetworkObjectReference itemRef, ServerRpcParams rpcParams = default)

@@ -59,7 +59,10 @@ public class Kettle : AutoInteractableBase
         playerCarry.TryDrop();
         playerCarry.carriedItem = null;
         
-        itemBase.NetworkObject.Despawn();
+        if (IsServer)
+        {
+            itemBase.NetworkObject.Despawn();
+        }
         Destroy(itemBase.gameObject);
         
         kettleObject.SetActive(true);
@@ -88,7 +91,10 @@ public class Kettle : AutoInteractableBase
         playerCarry.TryDrop(false);
         playerCarry.carriedItem = null;
         
-        itemToDeleteNetworkObject.Despawn();
+        if (IsServer)
+        {
+            itemToDeleteNetworkObject.Despawn();
+        }
         Destroy(itemToDeleteNetworkObject.gameObject);
         
         if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId)

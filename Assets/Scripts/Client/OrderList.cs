@@ -39,4 +39,9 @@ public class OrderList : ScriptableObject
 
         return possibleOrders[0];
     }
+
+    public OrderType GetOrderByName(string orderName)
+    {
+        return allOrders.FirstOrDefault(order => order.orderName == orderName);
+    }
 }

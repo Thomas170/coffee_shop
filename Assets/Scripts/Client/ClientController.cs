@@ -50,8 +50,11 @@ public class ClientController : NetworkBehaviour
             Transform spot = commands.commandSpot.transform;
             transform.position = new(spot.position.x, spot.position.y + 4f, spot.position.z);
             transform.rotation = spot.parent.rotation;
-            
-            commands.StartOrderServerRpc();
+
+            if (IsServer)
+            {
+                commands.StartOrderServerRpc();
+            }
         }
         else if (clientSpawner.IsExitPoint(reachedTarget))
         {

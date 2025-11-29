@@ -37,7 +37,10 @@ public class WaterDispenser : AutoInteractableBase
         playerCarry.TryDrop(false);
         playerCarry.carriedItem = null;
         
-        itemToDeleteNetworkObject.Despawn();
+        if (IsServer)
+        {
+            itemToDeleteNetworkObject.Despawn();
+        }
         Destroy(itemToDeleteNetworkObject.gameObject);
         
         if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId)

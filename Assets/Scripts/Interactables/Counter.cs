@@ -24,7 +24,7 @@ public class Counter : InteractableBase
         SpawnResultItemServerRpc(playerItem.NetworkObject, NetworkManager.LocalClientId);
     }
     
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void SpawnResultItemServerRpc(NetworkObjectReference playerItem, ulong playerId)
     {
         if (!playerItem.TryGet(out var playerItemNetworkObject)) return;
@@ -34,7 +34,7 @@ public class Counter : InteractableBase
         {
             GameObject resultItem = Instantiate(result, displayPoint.position, Quaternion.identity);
             NetworkObject networkObject = resultItem.GetComponent<NetworkObject>();
-            networkObject.GetComponent<NetworkObject>().Spawn();
+            networkObject.Spawn();
             
             SpawnResultItemClientRpc(playerItem, networkObject, !isDisplayPrimary, playerId);
         }
@@ -54,8 +54,11 @@ public class Counter : InteractableBase
         playerCarry.TryDrop(false);
         playerCarry.carriedItem = null;
         
-        playerItemNetworkObject.Despawn();
-        currentDisplayItem.NetworkObject.Despawn();
+        if (IsServer)
+        {
+            playerItemNetworkObject.Despawn();
+            currentDisplayItem.NetworkObject.Despawn();
+        }
         
         Destroy(playerItemNetworkObject.gameObject);
         Destroy(currentDisplayItem.gameObject);

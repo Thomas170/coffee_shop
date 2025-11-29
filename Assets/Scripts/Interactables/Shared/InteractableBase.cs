@@ -67,11 +67,7 @@ public abstract class InteractableBase : NetworkBehaviour
         
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
-        SoundManager.Instance.Play3DSound(SoundManager.Instance.dropItem, gameObject);
-        player.playerAnimation.PlayDropAnimationServerRpc();
-        ControlsUIManager.Instance.SetControlsTips(ControlsUIManager.ControlsMode.Default);
-        itemBase.CurrentHolderClientId = null;
-        playerCarry.carriedItem = null;
+        playerCarry.DropWithoutRpc();
         
         if (ShouldDisplayItem(itemBase))
         {
@@ -163,7 +159,7 @@ public abstract class InteractableBase : NetworkBehaviour
     
     protected virtual void AfterCollectItem() { }
     
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void SpawnResultItemServerRpc()
     {
         if (!resultItemPrefab && !currentDisplayItem?.transformatedItem) return;

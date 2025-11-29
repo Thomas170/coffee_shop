@@ -77,17 +77,21 @@ public class ClientCommands : NetworkBehaviour
             if (commandSpot == null) Debug.LogWarning($"ClientSpot with index {childIndex} not found on {build.name}");
         }
     }
-    
+
     [ServerRpc(RequireOwnership = false)]
-    public void StartOrderServerRpc() => StartOrderClientRpc();
+    public void StartOrderServerRpc()
+    {
+        OrderType order = possibleOrders.GetRandomOrder();
+        StartOrderClientRpc(order.orderName);
+    }
     
     [ClientRpc]
-    private void StartOrderClientRpc()
+    private void StartOrderClientRpc(string orderName)
     {
         clientController.canInteract = true;
         orderIcon.SetActive(true);
         
-        currentOrder = possibleOrders.GetRandomOrder();
+        currentOrder = possibleOrders.GetOrderByName(orderName);
         Image orderImage = orderIcon.transform.Find("OrderImage").GetComponent<Image>();
         orderImage.sprite = currentOrder.orderIcon;
 
@@ -118,15 +122,14 @@ public class ClientCommands : NetworkBehaviour
         
         PlayerController player = PlayerListManager.Instance.GetPlayer(playerId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
-        playerCarry.TryDrop();
-        playerCarry.carriedItem = null;
+        playerCarry.DropWithoutRpc();
         
         waitingGauge.StopGauge();
         orderIcon.SetActive(false);
         
         currentItem = itemBase;
         currentItem.CurrentHolderClientId = null;
-        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpot), false);
+        currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpot), false, IsClient);
         
         _drinkCoffeeCoroutine = StartCoroutine(DrinkCoffee());
         CurrencyManager.Instance.AddCoins(currentOrder.price);
