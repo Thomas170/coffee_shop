@@ -5,6 +5,7 @@ using System.Collections;
 public class PlayerMovement : NetworkBehaviour
 {
     public float moveSpeed = 40f;
+    
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject dustPrefab;
     [SerializeField] private Transform dustSpawnPoint;
@@ -87,7 +88,8 @@ public class PlayerMovement : NetworkBehaviour
             _dustTimer -= Time.fixedDeltaTime;
             if (_dustTimer <= 0f && dustPrefab)
             {
-                SpawnDustBurstServerRpc();
+                //SpawnDustBurstServerRpc();
+                SpawnDustBurst();
                 _dustTimer = dustCooldown;
             }
         }
@@ -102,8 +104,9 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
     
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnDustBurstServerRpc()
+    //[ServerRpc(RequireOwnership = false)]
+    //private void SpawnDustBurstServerRpc()
+    private void SpawnDustBurst()
     {
         for (int i = 0; i < dustCount; i++)
         {
@@ -112,7 +115,7 @@ public class PlayerMovement : NetworkBehaviour
             Quaternion randomRot = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
 
             GameObject dust = Instantiate(dustPrefab, spawnPos, randomRot);
-            dust.GetComponent<NetworkObject>().Spawn();
+            //dust.GetComponent<NetworkObject>().Spawn();
             StartCoroutine(DestroyDustAfterTime(dust, dustLifetime));
         }
     }
@@ -122,7 +125,8 @@ public class PlayerMovement : NetworkBehaviour
         yield return new WaitForSeconds(delay);
         if (dust && dust.TryGetComponent(out NetworkObject netObj))
         {
-            netObj.Despawn();
+            //netObj.Despawn();
+            Destroy(dust);
         }
     }
 }

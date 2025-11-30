@@ -98,7 +98,8 @@ GameObject:
   - component: {fileID: 7316360626437423279}
   - component: {fileID: 5786666247371334006}
   - component: {fileID: 1903034048941651043}
-  - component: {fileID: 6548302906081533324}
+  - component: {fileID: 9153892115677199389}
+  - component: {fileID: 302715488622272786}
   m_Layer: 16
   m_Name: Door
   m_TagString: Untagged
@@ -272,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 95582294
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -281,7 +282,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &6548302906081533324
+--- !u!114 &9153892115677199389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -290,7 +291,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3956617265836719475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 199b9f740c4af76449d0da0963430024, type: 3}
+  m_Script: {fileID: 11500000, guid: e947376834a7a1b429dd0e92fd69be9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   UseUnreliableDeltas: 0
@@ -312,6 +313,18 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &302715488622272786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3956617265836719475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 562fefbf28d09cf448de33b89fd6c4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8339430676057066163
 GameObject:
   m_ObjectHideFlags: 0
