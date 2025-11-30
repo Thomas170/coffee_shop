@@ -6,7 +6,7 @@ public class InGameManager : MonoBehaviour
     private void Start()
     {
         PlayerListManager.Instance.ActivateAllPlayerModelsFromHost();
-        CurrencyManager.Instance.LoadCoinsServerRpc();
+        //CurrencyManager.Instance.LoadCoinsServerRpc();
         LevelManager.Instance.LoadLevelServerRpc();
         TutorialManager.Instance.LoadTutoServerRpc();
         CursorManager.Instance.InactiveCursor();

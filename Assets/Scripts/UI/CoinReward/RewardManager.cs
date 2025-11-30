@@ -118,7 +118,7 @@ public class RewardManager : NetworkBehaviour
 
         yield return new WaitForSecondsRealtime(firstCoinArrival);
 
-        int currentCoins = CurrencyManager.Instance.coins;
+        int currentCoins = CurrencyManager.Instance.Coins;
 
         for (int i = 0; i < coins; i++)
         {

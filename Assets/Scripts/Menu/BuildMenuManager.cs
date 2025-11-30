@@ -110,7 +110,7 @@ public class BuildMenuManager : MonoBehaviour
 
             Button button = cellObject.GetComponentInChildren<Button>();
             button.onClick.AddListener(() => buildSelectionMenuController.ExecuteMenuAction(cellSelection.GetBuildable().name));
-            button.interactable = CurrencyManager.Instance.coins >= definition.cost;
+            button.interactable = CurrencyManager.Instance.HasEnoughCoins(definition.cost);
 
             buildSelectionMenuController.menuButtons[Enum.GetValues(typeof(BuildType)).Length + index] = new MenuEntry
             {
@@ -118,7 +118,7 @@ public class BuildMenuManager : MonoBehaviour
                 backgroundImage = cellObject.GetComponent<Image>()
             };
             
-            bool canAfford = CurrencyManager.Instance.coins >= definition.cost;
+            bool canAfford = CurrencyManager.Instance.HasEnoughCoins(definition.cost);
             cellSelection.UpdateState(canAfford, definition.level);
         }
     }
