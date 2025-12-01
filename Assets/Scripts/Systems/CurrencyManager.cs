@@ -7,9 +7,16 @@ public class CurrencyManager : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI coinsText;
     public static CurrencyManager Instance;
     
-    private NetworkVariable<int> _coins = new();
+    private NetworkVariable<int> _coins = new NetworkVariable<int>(
+        0,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server
+    );
     
     public int Coins => _coins.Value;
+    
+    // Événement pour notifier les changements (pour le BuildMenuManager)
+    public event System.Action OnCoinsChangedEvent;
 
     private void Awake()
     {
@@ -20,7 +27,10 @@ public class CurrencyManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        _coins.OnValueChanged += OnCoinsChanged;
+        
+        // CORRECTION : Utilise la bonne signature
+        _coins.OnValueChanged += OnCoinsValueChanged;
+        
         UpdateCoinsDisplay(_coins.Value);
         
         if (IsServer)
@@ -32,12 +42,18 @@ public class CurrencyManager : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
-        _coins.OnValueChanged -= OnCoinsChanged;
+        
+        // CORRECTION : Même signature que lors de l'abonnement
+        _coins.OnValueChanged -= OnCoinsValueChanged;
     }
 
-    private void OnCoinsChanged(int oldValue, int newValue)
+    // CORRECTION : Méthode avec la bonne signature (int, int)
+    private void OnCoinsValueChanged(int oldValue, int newValue)
     {
         UpdateCoinsDisplay(newValue);
+        
+        // Notifier les abonnés (comme BuildMenuManager)
+        OnCoinsChangedEvent?.Invoke();
         
         if (newValue > oldValue)
         {
@@ -77,6 +93,7 @@ public class CurrencyManager : NetworkBehaviour
     private void AddCoinsServerRpc(int amount)
     {
         if (amount <= 0) return;
+        
         _coins.Value += amount;
         SaveCoins();
     }
@@ -91,7 +108,8 @@ public class CurrencyManager : NetworkBehaviour
     private void RemoveCoinsServerRpc(int amount)
     {
         if (amount <= 0) return;
-        if (HasEnoughCoins(amount))
+        
+        if (_coins.Value >= amount)
         {
             _coins.Value -= amount;
             SaveCoins();
@@ -107,6 +125,11 @@ public class CurrencyManager : NetworkBehaviour
         return _coins.Value >= amount;
     }
 
+    // Stockage des callbacks en attente
+    private System.Action _pendingPurchaseSuccess;
+    private System.Action _pendingPurchaseFailure;
+    private ulong _pendingPurchaseClientId;
+
     public void TryPurchase(int cost, System.Action onSuccess = null, System.Action onFailure = null)
     {
         if (cost <= 0)
@@ -114,22 +137,47 @@ public class CurrencyManager : NetworkBehaviour
             onSuccess?.Invoke();
             return;
         }
+
+        // Stocker les callbacks
+        _pendingPurchaseSuccess = onSuccess;
+        _pendingPurchaseFailure = onFailure;
+        _pendingPurchaseClientId = NetworkManager.Singleton.LocalClientId;
         
-        TryPurchaseServerRpc(cost);
+        TryPurchaseServerRpc(cost, NetworkManager.Singleton.LocalClientId);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void TryPurchaseServerRpc(int cost)
+    private void TryPurchaseServerRpc(int cost, ulong clientId)
     {
-        if (HasEnoughCoins(cost))
+        if (_coins.Value >= cost)
         {
             _coins.Value -= cost;
             SaveCoins();
+            PurchaseResultClientRpc(true, clientId);
         }
         else
         {
-            Debug.LogWarning($"Tentative de retrait de {cost} coins, mais seulement {_coins.Value} disponibles");
+            PurchaseResultClientRpc(false, clientId);
         }
+    }
+
+    [ClientRpc]
+    private void PurchaseResultClientRpc(bool success, ulong targetClientId)
+    {
+        if (NetworkManager.Singleton.LocalClientId != targetClientId) return;
+        
+        if (success)
+        {
+            _pendingPurchaseSuccess?.Invoke();
+        }
+        else
+        {
+            _pendingPurchaseFailure?.Invoke();
+        }
+        
+        // Nettoyer les callbacks
+        _pendingPurchaseSuccess = null;
+        _pendingPurchaseFailure = null;
     }
 
     private void SaveCoins()

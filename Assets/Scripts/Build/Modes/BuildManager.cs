@@ -3,23 +3,73 @@ using UnityEngine;
 
 public class BuildManager : BaseBuildMode
 {
+    private bool _isWaitingForPurchase;
+
     public void ConfirmBuild()
     {
         if (previewManager.preview == null || !previewManager.preview.IsValid) return;
-
-        if (!playerController.playerBuild.IsInMoveMode)
-        {
-            CurrencyManager.Instance.TryPurchase(currentBuildable.cost);
-        }
+        if (_isWaitingForPurchase) return;
 
         Vector3 position = previewManager.preview.transform.position;
         Quaternion rotation = previewManager.preview.transform.rotation;
 
-        SpawnBuildableServerRpc(position, rotation);
+        if (!playerController.playerBuild.IsInMoveMode)
+        {
+            _isWaitingForPurchase = true;
+            
+            // Attendre la confirmation d'achat avant de construire
+            CurrencyManager.Instance.TryPurchase(
+                currentBuildable.cost,
+                onSuccess: () => {
+                    _isWaitingForPurchase = false;
+                    FinalizeBuild(position, rotation);
+                },
+                onFailure: () => {
+                    _isWaitingForPurchase = false;
+                    Debug.Log("Fonds insuffisants !");
+                    // Optionnel : afficher message d'erreur
+                }
+            );
+        }
+        else
+        {
+            FinalizeBuild(position, rotation);
+        }
+    }
 
+    private void FinalizeBuild(Vector3 position, Quaternion rotation)
+    {
+        // Envoyer au serveur pour spawn
+        SpawnBuildableServerRpc(
+            currentBuildable.resultPrefab.name,
+            position,
+            rotation,
+            NetworkManager.Singleton.LocalClientId
+        );
+        
+        ExitMode();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnBuildableServerRpc(string prefabName, Vector3 position, Quaternion rotation, ulong clientId)
+    {
+        // Trouver la définition sur le serveur
+        BuildableDefinition definition = BuildDatabase.Instance.Builds.Find(b => b.resultPrefab.name == prefabName);
+        if (definition == null)
+        {
+            Debug.LogError($"Prefab not found: {prefabName}");
+            return;
+        }
+
+        GameObject buildObject = Instantiate(definition.resultPrefab, position, rotation);
+        buildObject.GetComponent<NetworkObject>().Spawn();
+        
+        ClientSpotManager.Instance.AddSpotsFromBuild(buildObject);
+
+        // Sauvegarder côté SERVEUR seulement
         BuildSaveData data = new BuildSaveData
         {
-            prefabName = currentBuildable.resultPrefab.name,
+            prefabName = prefabName,
             position = position,
             rotation = rotation
         };
@@ -27,16 +77,5 @@ public class BuildManager : BaseBuildMode
         SaveData save = SaveManager.Instance.LoadCurrentSlot();
         save.builds.Add(data);
         SaveManager.Instance.SaveData(save);
-        
-        ExitMode();
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnBuildableServerRpc(Vector3 position, Quaternion rotation)
-    {
-        GameObject buildObject = Instantiate(currentBuildable.resultPrefab, position, rotation);
-        buildObject.GetComponent<NetworkObject>().Spawn();
-        
-        ClientSpotManager.Instance.AddSpotsFromBuild(buildObject);
     }
 }

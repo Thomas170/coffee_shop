@@ -16,6 +16,31 @@ public class BuildMenuManager : MonoBehaviour
     public BuildSelectionMenuController buildSelectionMenuController;
     public readonly List<BuildCategory> Categories = new();
     public BuildCategory CurrentBuildCategory;
+    
+    private void OnEnable()
+    {
+        // S'abonner aux changements de coins pour rafraîchir les boutons
+        if (CurrencyManager.Instance != null)
+        {
+            // CORRECTION : Utilise OnCoinsChangedEvent au lieu de OnCoinsChanged
+            CurrencyManager.Instance.OnCoinsChangedEvent += RefreshAffordability;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (CurrencyManager.Instance != null)
+        {
+            // CORRECTION : Même événement
+            CurrencyManager.Instance.OnCoinsChangedEvent -= RefreshAffordability;
+        }
+    }
+
+    private void RefreshAffordability()
+    {
+        if (CurrentBuildCategory == null) return;
+        DisplayCategory(CurrentBuildCategory.Category);
+    }
 
     public void InitCategories()
     {

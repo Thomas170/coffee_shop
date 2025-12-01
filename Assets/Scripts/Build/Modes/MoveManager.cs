@@ -6,9 +6,7 @@ public class MoveManager : MonoBehaviour
     public DeleteManager deleteManager;
     public BuildManager buildManager;
     private GameObject _toReplace;
-    private BuildSaveData _toReplaceData;
 
-    
     public void TryMove()
     {
         if (editManager.targetedBuild == null) return;
@@ -33,13 +31,20 @@ public class MoveManager : MonoBehaviour
     public void ConfirmBuildMove()
     {
         if (buildManager.previewManager.preview == null || !buildManager.previewManager.preview.IsValid) return;
+        if (_toReplace == null) return;
         
-        string prefabName = _toReplace.name.Replace("(Clone)", "").Trim();
-        Vector3 position = _toReplace.transform.position;
-        Quaternion rotation = _toReplace.transform.rotation;
+        // Sauvegarder les infos de l'ancien build avant de confirmer le nouveau
+        GameObject oldBuild = _toReplace;
         
+        // 1. Construire le nouveau
         buildManager.ConfirmBuild();
-        deleteManager.RemoveBuild(prefabName, position, rotation);
+        
+        // 2. Supprimer l'ancien (sans rembourser puisqu'on est en mode déplacement)
+        editManager.targetedBuild = oldBuild;
+        deleteManager.TryDelete();
+        
+        // 3. Nettoyer
+        _toReplace = null;
         editManager.targetedBuild = null;
     }
 }
