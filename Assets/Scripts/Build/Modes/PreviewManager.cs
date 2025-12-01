@@ -86,7 +86,7 @@ public class PreviewManager : MonoBehaviour
     {
         foreach (GameObject cell in _cachedGridCells)
         {
-            if (cell == null) continue;
+            if (!cell) continue;
 
             if (value)
             {
@@ -100,6 +100,7 @@ public class PreviewManager : MonoBehaviour
             }
             else
             {
+                cell.GetComponent<CellPreview>()?.UnSelectCell();
                 cell.SetActive(false);
             }
         }
