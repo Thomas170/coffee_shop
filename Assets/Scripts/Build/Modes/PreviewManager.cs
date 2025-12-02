@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 public class PreviewManager : MonoBehaviour
@@ -10,26 +9,37 @@ public class PreviewManager : MonoBehaviour
     public Material validMaterial;
     public Material invalidMaterial;
     public Transform buildPoint;
-    private List<GameObject> _cachedGridCells = new List<GameObject>();
+    public List<GameObject> _cachedGridCells = new List<GameObject>();
     public PlayerController playerController;
     
-    // AJOUT : Référence aux cells créées localement pour ce joueur
-    private List<GameObject> _localGridCells = new List<GameObject>();
+    public bool _isInitialized = false;
     
     public void Init()
     {
+        if (_isInitialized)
+        {
+            Debug.Log("[PreviewManager] Already initialized");
+            return;
+        }
+        
+        _isInitialized = true;
         _cachedGridCells.Clear();
         _cachedGridCells.AddRange(GameObject.FindGameObjectsWithTag("GridCell"));
         
-        // CORRECTION : Ne pas afficher la grid au démarrage
-        // Elle sera affichée seulement quand le joueur local entre en mode preview
-        DisplayPreviewGrid(false);
+        Debug.Log($"[PreviewManager] Found {_cachedGridCells.Count} grid cells");
+        
+        // Désactiver toutes les cells au démarrage
+        foreach (GameObject cell in _cachedGridCells)
+        {
+            if (cell != null)
+            {
+                cell.SetActive(false);
+            }
+        }
     }
     
     private void Update()
     {
-        // CORRECTION : Vérifier que c'est bien le owner local
-        if (!playerController.IsOwner) return;
         if (!preview || !buildPoint) return;
 
         Vector3 forwardOffset = buildPoint.forward.normalized * 1.5f;
@@ -42,28 +52,39 @@ public class PreviewManager : MonoBehaviour
 
     public void StartPreview(BuildableDefinition buildable = null, Quaternion rotation = default)
     {
-        // CORRECTION : Vérifier que c'est le owner
-        if (!playerController.IsOwner) return;
+        // S'assurer que Init a été appelé
+        if (!_isInitialized)
+        {
+            Debug.Log("[PreviewManager] Not initialized, calling Init()");
+            Init();
+        }
         
         if (rotation == default) rotation = Quaternion.identity;
         
         if (buildable)
         {
-            GameObject previewBuild = Instantiate(buildable.previewPrefab, buildable.resultPrefab.transform.position, rotation);
+            Debug.Log($"[PreviewManager] Instantiating preview prefab: {buildable.previewPrefab.name}");
+            GameObject previewBuild = Instantiate(buildable.previewPrefab, Vector3.zero, rotation);
             currentRotation = Mathf.RoundToInt(rotation.eulerAngles.y);
             preview = previewBuild.GetComponent<BuildablePreview>();
+            
+            if (preview == null)
+            {
+                Debug.LogError("[PreviewManager] Preview component not found on prefab!");
+                return;
+            }
+            
             preview.Init(validMaterial, invalidMaterial);
+            Debug.Log("[PreviewManager] Preview initialized successfully");
         }
         
+        Debug.Log("[PreviewManager] Displaying grid");
         DisplayPreviewGrid(true);
         playerController.playerMovement.moveSpeed = 40f;
     }
         
     public void StopPreview()
     {
-        // CORRECTION : Vérifier que c'est le owner
-        if (!playerController.IsOwner) return;
-        
         if (preview)
         {
             Destroy(preview.gameObject);
@@ -76,7 +97,6 @@ public class PreviewManager : MonoBehaviour
     
     public void RotateLeft()
     {
-        if (!playerController.IsOwner) return;
         if (preview == null) return;
         
         currentRotation -= 90;
@@ -85,7 +105,6 @@ public class PreviewManager : MonoBehaviour
 
     public void RotateRight()
     {
-        if (!playerController.IsOwner) return;
         if (preview == null) return;
         
         currentRotation += 90;
@@ -101,8 +120,8 @@ public class PreviewManager : MonoBehaviour
 
     private void DisplayPreviewGrid(bool value)
     {
-        // CORRECTION : Activer/désactiver les cells seulement pour ce joueur
-        // Utilise un layer ou un système de tag personnalisé
+        int activatedCount = 0;
+        
         foreach (GameObject cell in _cachedGridCells)
         {
             if (cell == null) continue;
@@ -115,24 +134,29 @@ public class PreviewManager : MonoBehaviour
                 Collider[] colliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, LayerMask.GetMask("Build"));
                 bool isOccupied = colliders.Length > 0;
 
-                // CORRECTION : Ne rendre visible que pour le joueur local
-                // On va utiliser un système de rendu local
                 MeshRenderer renderer = cell.GetComponent<MeshRenderer>();
                 if (renderer != null)
                 {
                     renderer.enabled = !isOccupied;
+                    if (!isOccupied) activatedCount++;
                 }
             }
             else
             {
-                // CORRECTION : Cacher seulement si c'est notre preview qui se ferme
                 MeshRenderer renderer = cell.GetComponent<MeshRenderer>();
                 if (renderer != null)
                 {
                     renderer.enabled = false;
                 }
             }
-            cell.GetComponent<CellPreview>().UnSelectCell();
+            
+            CellPreview cellPreview = cell.GetComponent<CellPreview>();
+            if (cellPreview != null)
+            {
+                cellPreview.UnSelectCell();
+            }
         }
+        
+        Debug.Log($"[PreviewManager] Grid display complete - Activated {activatedCount} cells");
     }
 }

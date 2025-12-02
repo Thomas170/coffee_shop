@@ -2913,7 +2913,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinsText: {fileID: 3097030044481512109}
-  coins: 0
 --- !u!114 &272424055
 MonoBehaviour:
   m_ObjectHideFlags: 0

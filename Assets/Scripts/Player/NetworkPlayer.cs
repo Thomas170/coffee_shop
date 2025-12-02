@@ -13,6 +13,12 @@ public class NetworkPlayer : NetworkBehaviour
         typeof(PlayerInteraction),
         typeof(PlayerUI),
         typeof(AudioListener),
+        typeof(PreviewManager),
+        typeof(BuildManager),
+        typeof(EditManager),
+        typeof(DeleteManager),
+        typeof(MoveManager),
+        typeof(PlayerBuild),
     };
     private Rigidbody _rb;
 

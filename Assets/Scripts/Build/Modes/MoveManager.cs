@@ -18,7 +18,6 @@ public class MoveManager : MonoBehaviour
     
     private void StartMoveBuild(BuildableDefinition buildableDefinition)
     {
-        // IMPORTANT : Passer en mode Moving AVANT tout
         editManager.playerController.playerBuild.currentMode = BuildModeState.Moving;
         
         GameObject targetOld = editManager.targetedBuild;
@@ -30,7 +29,6 @@ public class MoveManager : MonoBehaviour
         editManager.previewManager.StartPreview(buildableDefinition, _toReplace.transform.rotation);
     }
 
-    // Dans MoveManager.ConfirmBuildMove()
     public void ConfirmBuildMove()
     {
         Debug.Log($"[MoveManager] ConfirmBuildMove - IsInMoveMode: {editManager.playerController.playerBuild.IsInMoveMode}");
@@ -45,15 +43,41 @@ public class MoveManager : MonoBehaviour
         }
     
         GameObject oldBuild = _toReplace;
+        
+        // CORRECTION : Sauvegarder les infos AVANT de construire
+        string prefabName = oldBuild.name.Replace("(Clone)", "").Trim();
+        Vector3 oldPosition = oldBuild.transform.position;
+        Quaternion oldRotation = oldBuild.transform.rotation;
+        ulong networkId = oldBuild.GetComponent<Unity.Netcode.NetworkObject>().NetworkObjectId;
+        BuildableDefinition definition = oldBuild.GetComponent<BuildableReference>().definition;
+        int cost = definition.cost;
     
         Debug.Log("[MoveManager] Step 1: Building new");
-        buildManager.ConfirmBuild();
+        // Construire le nouveau (sans changer le mode car IsInMoveMode est vérifié dans ConfirmBuild)
+        Vector3 newPosition = buildManager.previewManager.preview.transform.position;
+        Quaternion newRotation = buildManager.previewManager.preview.transform.rotation;
+        
+        // CORRECTION : Appeler directement FinalizeBuild avec le mode Moving actif
+        buildManager.SpawnBuildableServerRpc(
+            buildManager.currentBuildable.resultPrefab.name,
+            newPosition,
+            newRotation,
+            Unity.Netcode.NetworkManager.Singleton.LocalClientId
+        );
     
-        Debug.Log("[MoveManager] Step 2: Deleting old");
-        editManager.targetedBuild = oldBuild;
-        deleteManager.TryDelete();
+        Debug.Log("[MoveManager] Step 2: Deleting old WITHOUT refund");
+        // Supprimer l'ancien SANS remboursement (passer isMoving = true)
+        deleteManager.DeleteBuildServerRpc(
+            networkId,
+            prefabName,
+            oldPosition,
+            oldRotation,
+            cost,
+            true  // IMPORTANT : Force isMoving à true
+        );
     
         Debug.Log("[MoveManager] Step 3: Cleanup");
+        buildManager.ExitMode();
         _toReplace = null;
         editManager.targetedBuild = null;
     }

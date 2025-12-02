@@ -15,8 +15,6 @@ public class EditManager : BaseBuildMode
 
     private void Update()
     {
-        // CORRECTION : Seulement le owner local détecte et highlight
-        if (!playerController.IsOwner) return;
         if (!playerController.playerBuild.IsInEditMode) return;
         
         DetectBuildInFront();

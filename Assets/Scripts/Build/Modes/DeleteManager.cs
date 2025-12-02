@@ -34,7 +34,7 @@ public class DeleteManager : MonoBehaviour
     }
     
     [ServerRpc(RequireOwnership = false)]
-    private void DeleteBuildServerRpc(
+    public void DeleteBuildServerRpc(
         ulong networkId, 
         string prefabName, 
         Vector3 position, 

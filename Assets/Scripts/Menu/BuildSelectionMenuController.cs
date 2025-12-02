@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,7 +19,14 @@ public class BuildSelectionMenuController : BaseMenuController
     protected override void Start()
     {
         base.Start();
-        _playerBuild = FindObjectOfType<PlayerBuild>();
+        PlayerController player = PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId);
+        _playerBuild = player.GetComponentInChildren<PlayerBuild>();
+        
+        if (_playerBuild == null)
+        {
+            Debug.LogError("[BuildSelectionMenuController] Could not find local PlayerBuild!");
+            return;
+        }
 
         _rotateLeftAction = InputReader.Instance.RotateLeftAction;
         _rotateRightAction = InputReader.Instance.RotateRightAction;

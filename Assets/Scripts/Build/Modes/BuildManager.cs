@@ -57,7 +57,7 @@ public class BuildManager : BaseBuildMode
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBuildableServerRpc(string prefabName, Vector3 position, Quaternion rotation, ulong clientId)
+    public void SpawnBuildableServerRpc(string prefabName, Vector3 position, Quaternion rotation, ulong clientId)
     {
         BuildableDefinition definition = BuildDatabase.Instance.Builds.Find(b => b.resultPrefab.name == prefabName);
         if (definition == null)

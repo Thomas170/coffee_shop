@@ -1,7 +1,8 @@
+using Unity.Netcode;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class PlayerBuild : MonoBehaviour
+public class PlayerBuild : NetworkBehaviour
 {
     [SerializeField] private BuildSelectionMenuController buildMenuController;
 
@@ -35,7 +36,7 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.InteractAction.performed += OnInteract;
     }
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
         InputReader.Instance.ShopAction.performed -= OnShop;
         InputReader.Instance.EditAction.performed -= OnEdit;
@@ -45,6 +46,7 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.ActionAction.performed -= OnMove;
         InputReader.Instance.CancelAction.performed -= OnCancel;
         InputReader.Instance.InteractAction.performed -= OnInteract;
+        base.OnDestroy();
     }
 
     private void OnShop(InputAction.CallbackContext ctx)
