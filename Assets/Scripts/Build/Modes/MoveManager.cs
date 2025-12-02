@@ -18,7 +18,9 @@ public class MoveManager : MonoBehaviour
     
     private void StartMoveBuild(BuildableDefinition buildableDefinition)
     {
+        // IMPORTANT : Passer en mode Moving AVANT tout
         editManager.playerController.playerBuild.currentMode = BuildModeState.Moving;
+        
         GameObject targetOld = editManager.targetedBuild;
         editManager.ClearPreviousHighlight();
         editManager.targetedBuild = targetOld;
@@ -28,22 +30,30 @@ public class MoveManager : MonoBehaviour
         editManager.previewManager.StartPreview(buildableDefinition, _toReplace.transform.rotation);
     }
 
+    // Dans MoveManager.ConfirmBuildMove()
     public void ConfirmBuildMove()
     {
+        Debug.Log($"[MoveManager] ConfirmBuildMove - IsInMoveMode: {editManager.playerController.playerBuild.IsInMoveMode}");
+    
         if (buildManager.previewManager.preview == null || !buildManager.previewManager.preview.IsValid) return;
         if (_toReplace == null) return;
-        
-        // Sauvegarder les infos de l'ancien build avant de confirmer le nouveau
+    
+        if (!editManager.playerController.playerBuild.IsInMoveMode)
+        {
+            Debug.LogWarning("[MoveManager] NOT in Moving mode!");
+            return;
+        }
+    
         GameObject oldBuild = _toReplace;
-        
-        // 1. Construire le nouveau
+    
+        Debug.Log("[MoveManager] Step 1: Building new");
         buildManager.ConfirmBuild();
-        
-        // 2. Supprimer l'ancien (sans rembourser puisqu'on est en mode déplacement)
+    
+        Debug.Log("[MoveManager] Step 2: Deleting old");
         editManager.targetedBuild = oldBuild;
         deleteManager.TryDelete();
-        
-        // 3. Nettoyer
+    
+        Debug.Log("[MoveManager] Step 3: Cleanup");
         _toReplace = null;
         editManager.targetedBuild = null;
     }

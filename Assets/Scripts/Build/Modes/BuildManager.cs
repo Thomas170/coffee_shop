@@ -17,29 +17,35 @@ public class BuildManager : BaseBuildMode
         {
             _isWaitingForPurchase = true;
             
-            // Attendre la confirmation d'achat avant de construire
+            // CORRECTION : Les callbacks doivent référencer correctement la méthode
             CurrencyManager.Instance.TryPurchase(
                 currentBuildable.cost,
-                onSuccess: () => {
-                    _isWaitingForPurchase = false;
-                    FinalizeBuild(position, rotation);
-                },
-                onFailure: () => {
-                    _isWaitingForPurchase = false;
-                    Debug.Log("Fonds insuffisants !");
-                    // Optionnel : afficher message d'erreur
-                }
+                onSuccess: () => OnPurchaseSuccess(position, rotation),
+                onFailure: OnPurchaseFailure
             );
         }
         else
         {
+            // En mode déplacement, pas d'achat nécessaire
             FinalizeBuild(position, rotation);
         }
     }
 
+    private void OnPurchaseSuccess(Vector3 position, Quaternion rotation)
+    {
+        _isWaitingForPurchase = false;
+        FinalizeBuild(position, rotation);
+    }
+
+    private void OnPurchaseFailure()
+    {
+        _isWaitingForPurchase = false;
+        Debug.Log("Fonds insuffisants !");
+        // Ne pas sortir du mode pour que le joueur puisse réessayer
+    }
+
     private void FinalizeBuild(Vector3 position, Quaternion rotation)
     {
-        // Envoyer au serveur pour spawn
         SpawnBuildableServerRpc(
             currentBuildable.resultPrefab.name,
             position,
@@ -53,7 +59,6 @@ public class BuildManager : BaseBuildMode
     [ServerRpc(RequireOwnership = false)]
     private void SpawnBuildableServerRpc(string prefabName, Vector3 position, Quaternion rotation, ulong clientId)
     {
-        // Trouver la définition sur le serveur
         BuildableDefinition definition = BuildDatabase.Instance.Builds.Find(b => b.resultPrefab.name == prefabName);
         if (definition == null)
         {

@@ -15,8 +15,9 @@ public class DeleteManager : MonoBehaviour
         Quaternion rotation = editManager.targetedBuild.transform.rotation;
         ulong networkId = editManager.targetedBuild.GetComponent<NetworkObject>().NetworkObjectId;
 
-        // Demander au serveur de supprimer ET de gérer l'argent
         BuildableDefinition definition = editManager.targetedBuild.GetComponent<BuildableReference>().definition;
+        
+        // CORRECTION : Vérifier le mode ICI, pas dans le ServerRpc
         bool isMoving = editManager.playerController.playerBuild.IsInMoveMode;
         
         DeleteBuildServerRpc(
@@ -25,8 +26,7 @@ public class DeleteManager : MonoBehaviour
             position, 
             rotation, 
             definition.cost,
-            isMoving,
-            NetworkManager.Singleton.LocalClientId
+            isMoving  // Passer l'info au serveur
         );
         
         editManager.ClearPreviousHighlight();
@@ -40,8 +40,7 @@ public class DeleteManager : MonoBehaviour
         Vector3 position, 
         Quaternion rotation,
         int originalCost,
-        bool isMoving,
-        ulong clientId)
+        bool isMoving)  // Recevoir l'info du client
     {
         // Supprimer l'objet
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var netObj))
@@ -51,15 +50,11 @@ public class DeleteManager : MonoBehaviour
             Destroy(netObj.gameObject);
         }
 
-        // Rembourser (côté serveur uniquement)
+        // CORRECTION : Rembourser SEULEMENT si pas en mode déplacement
         if (!isMoving)
         {
             int returnMoney = (int)Math.Floor(originalCost * 0.75f);
-            // Utilise directement la NetworkVariable côté serveur
-            if (CurrencyManager.Instance.IsServer)
-            {
-                CurrencyManager.Instance.AddCoins(returnMoney);
-            }
+            CurrencyManager.Instance.AddCoinsServerRpc(returnMoney);
         }
 
         // Sauvegarder (côté serveur uniquement)

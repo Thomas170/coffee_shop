@@ -9,20 +9,25 @@ public abstract class BaseBuildMode : MonoBehaviour
     public bool isPreviewMode;
     public BuildableDefinition currentBuildable;
     
+    // Dans BaseBuildMode.cs
     public virtual void EnterMode(BuildableDefinition buildableDefinition = null)
     {
+        Debug.Log($"[BaseBuildMode] EnterMode called - State: {buildModeState}, IsPreviewMode: {isPreviewMode}");
+    
         playerController.playerBuild.currentMode = buildModeState;
         ControlsUIManager.Instance.SetControlsTips(controlsMode);
         currentBuildable = buildableDefinition;
-        
+    
         if (isPreviewMode)
         {
             if (currentBuildable)
             {
+                Debug.Log($"[BaseBuildMode] Starting preview with buildable: {currentBuildable.name}");
                 previewManager.StartPreview(currentBuildable, currentBuildable.previewPrefab.transform.rotation);
             }
             else
             {
+                Debug.Log("[BaseBuildMode] Starting preview without buildable");
                 previewManager.StartPreview();
             }
         }

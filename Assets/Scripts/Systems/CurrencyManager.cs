@@ -90,7 +90,7 @@ public class CurrencyManager : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void AddCoinsServerRpc(int amount)
+    public void AddCoinsServerRpc(int amount)
     {
         if (amount <= 0) return;
         

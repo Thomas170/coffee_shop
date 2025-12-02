@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PreviewManager : MonoBehaviour
 {
@@ -11,18 +10,26 @@ public class PreviewManager : MonoBehaviour
     public Material validMaterial;
     public Material invalidMaterial;
     public Transform buildPoint;
-    private readonly List<GameObject> _cachedGridCells = new();
+    private List<GameObject> _cachedGridCells = new List<GameObject>();
     public PlayerController playerController;
+    
+    // AJOUT : Référence aux cells créées localement pour ce joueur
+    private List<GameObject> _localGridCells = new List<GameObject>();
     
     public void Init()
     {
         _cachedGridCells.Clear();
         _cachedGridCells.AddRange(GameObject.FindGameObjectsWithTag("GridCell"));
+        
+        // CORRECTION : Ne pas afficher la grid au démarrage
+        // Elle sera affichée seulement quand le joueur local entre en mode preview
         DisplayPreviewGrid(false);
     }
     
     private void Update()
     {
+        // CORRECTION : Vérifier que c'est bien le owner local
+        if (!playerController.IsOwner) return;
         if (!preview || !buildPoint) return;
 
         Vector3 forwardOffset = buildPoint.forward.normalized * 1.5f;
@@ -35,6 +42,9 @@ public class PreviewManager : MonoBehaviour
 
     public void StartPreview(BuildableDefinition buildable = null, Quaternion rotation = default)
     {
+        // CORRECTION : Vérifier que c'est le owner
+        if (!playerController.IsOwner) return;
+        
         if (rotation == default) rotation = Quaternion.identity;
         
         if (buildable)
@@ -51,6 +61,9 @@ public class PreviewManager : MonoBehaviour
         
     public void StopPreview()
     {
+        // CORRECTION : Vérifier que c'est le owner
+        if (!playerController.IsOwner) return;
+        
         if (preview)
         {
             Destroy(preview.gameObject);
@@ -63,14 +76,18 @@ public class PreviewManager : MonoBehaviour
     
     public void RotateLeft()
     {
+        if (!playerController.IsOwner) return;
         if (preview == null) return;
+        
         currentRotation -= 90;
         preview.SetRotation(Quaternion.Euler(0, currentRotation, 0));
     }
 
     public void RotateRight()
     {
+        if (!playerController.IsOwner) return;
         if (preview == null) return;
+        
         currentRotation += 90;
         preview.SetRotation(Quaternion.Euler(0, currentRotation, 0));
     }
@@ -84,9 +101,11 @@ public class PreviewManager : MonoBehaviour
 
     private void DisplayPreviewGrid(bool value)
     {
+        // CORRECTION : Activer/désactiver les cells seulement pour ce joueur
+        // Utilise un layer ou un système de tag personnalisé
         foreach (GameObject cell in _cachedGridCells)
         {
-            if (!cell) continue;
+            if (cell == null) continue;
 
             if (value)
             {
@@ -96,13 +115,24 @@ public class PreviewManager : MonoBehaviour
                 Collider[] colliders = Physics.OverlapBox(center, halfExtents, Quaternion.identity, LayerMask.GetMask("Build"));
                 bool isOccupied = colliders.Length > 0;
 
-                cell.SetActive(!isOccupied);
+                // CORRECTION : Ne rendre visible que pour le joueur local
+                // On va utiliser un système de rendu local
+                MeshRenderer renderer = cell.GetComponent<MeshRenderer>();
+                if (renderer != null)
+                {
+                    renderer.enabled = !isOccupied;
+                }
             }
             else
             {
-                cell.GetComponent<CellPreview>()?.UnSelectCell();
-                cell.SetActive(false);
+                // CORRECTION : Cacher seulement si c'est notre preview qui se ferme
+                MeshRenderer renderer = cell.GetComponent<MeshRenderer>();
+                if (renderer != null)
+                {
+                    renderer.enabled = false;
+                }
             }
+            cell.GetComponent<CellPreview>().UnSelectCell();
         }
     }
 }
