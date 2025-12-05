@@ -54,7 +54,6 @@ public class NetworkPlayer : NetworkBehaviour
         {
             foreach (var script in GetComponentsInChildren<MonoBehaviour>())
             {
-                //if (script != this && !(script is NetworkBehaviour) && _typesToDisable.Contains(script.GetType()))
                 if (script != this && _typesToDisable.Contains(script.GetType()))
                 {
                     if (script is NetworkBehaviour)
