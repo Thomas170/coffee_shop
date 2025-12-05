@@ -49,15 +49,18 @@ public class PreviewManager : MonoBehaviour
         preview.CheckIfValid(buildBlockMask);
     }
 
-    public void StartPreview(BuildableDefinition buildable = null, Quaternion rotation = default)
+    public void StartPreview(BuildableDefinition buildable = null, bool isDefaultRotation = true, Quaternion rotation = default)
     {
         if (!_isInitialized)
         {
             Debug.Log("[PreviewManager] Not initialized, calling Init()");
             Init();
         }
-        
-        if (rotation == default) rotation = Quaternion.identity;
+
+        if (isDefaultRotation)
+        {
+            rotation = Quaternion.Euler(0f, 180f, 0f);
+        }
         
         if (buildable)
         {

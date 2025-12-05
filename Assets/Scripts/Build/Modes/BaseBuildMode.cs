@@ -23,7 +23,7 @@ public abstract class BaseBuildMode : NetworkBehaviour
             if (currentBuildable)
             {
                 Debug.Log($"[BaseBuildMode] Starting preview with buildable: {currentBuildable.name}");
-                previewManager.StartPreview(currentBuildable, currentBuildable.previewPrefab.transform.rotation);
+                previewManager.StartPreview(currentBuildable);
             }
             else
             {
