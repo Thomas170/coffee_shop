@@ -15,7 +15,7 @@ public class EditManager : BaseBuildMode
 
     private void Update()
     {
-        if (!playerController.playerBuild.IsInEditMode) return;
+        if (IsOwner && playerController && !playerController.playerBuild.IsInEditMode) return;
         
         DetectBuildInFront();
     }

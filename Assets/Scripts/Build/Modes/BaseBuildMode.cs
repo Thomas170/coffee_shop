@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class BaseBuildMode : MonoBehaviour
+public abstract class BaseBuildMode : NetworkBehaviour
 {
     public PlayerController playerController;
     public PreviewManager previewManager;

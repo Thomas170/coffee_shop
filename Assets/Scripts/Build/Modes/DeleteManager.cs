@@ -2,7 +2,7 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 
-public class DeleteManager : MonoBehaviour
+public class DeleteManager : NetworkBehaviour
 {
     public EditManager editManager;
     

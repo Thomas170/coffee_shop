@@ -9,7 +9,7 @@ public class NetworkPlayer : NetworkBehaviour
     [SerializeField] private GameObject playerModel;
 
     private readonly List<Type> _typesToDisable = new() {
-        typeof(PlayerMovement),
+        //typeof(PlayerMovement),
         typeof(PlayerInteraction),
         typeof(PlayerUI),
         typeof(AudioListener),
@@ -54,10 +54,17 @@ public class NetworkPlayer : NetworkBehaviour
         {
             foreach (var script in GetComponentsInChildren<MonoBehaviour>())
             {
-                if (script != this && !(script is NetworkBehaviour) && _typesToDisable.Contains(script.GetType()))
+                //if (script != this && !(script is NetworkBehaviour) && _typesToDisable.Contains(script.GetType()))
+                if (script != this && _typesToDisable.Contains(script.GetType()))
                 {
-                    script.enabled = false;
-                    Destroy(script);
+                    if (script is NetworkBehaviour)
+                    {
+                        script.enabled = false;
+                    }
+                    else
+                    {
+                        Destroy(script);
+                    }
                 }
             }
             
