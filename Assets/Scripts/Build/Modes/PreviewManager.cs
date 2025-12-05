@@ -9,10 +9,10 @@ public class PreviewManager : MonoBehaviour
     public Material validMaterial;
     public Material invalidMaterial;
     public Transform buildPoint;
-    public List<GameObject> _cachedGridCells = new List<GameObject>();
+    public List<GameObject> _cachedGridCells = new();
     public PlayerController playerController;
     
-    public bool _isInitialized = false;
+    public bool _isInitialized;
     
     public void Init()
     {
@@ -128,6 +128,7 @@ public class PreviewManager : MonoBehaviour
 
             if (value)
             {
+                cell.SetActive(true);
                 Vector3 center = cell.transform.position;
                 Vector3 halfExtents = new Vector3(4f, 1f, 4f);
 
@@ -143,6 +144,7 @@ public class PreviewManager : MonoBehaviour
             }
             else
             {
+                cell.SetActive(false);
                 MeshRenderer renderer = cell.GetComponent<MeshRenderer>();
                 if (renderer != null)
                 {
