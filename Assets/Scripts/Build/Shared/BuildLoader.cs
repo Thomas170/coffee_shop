@@ -5,7 +5,6 @@ public class BuildLoader : NetworkBehaviour
 {
     private void Start()
     {
-        // Seulement l'hôte charge et spawn les constructions
         if (IsServer)
         {
             LoadBuilds();
@@ -36,7 +35,6 @@ public class BuildLoader : NetworkBehaviour
 
             GameObject go = Instantiate(definition.resultPrefab, build.position, build.rotation);
             
-            // L'hôte spawn, Netcode synchronise automatiquement avec les clients
             if (go.TryGetComponent(out NetworkObject netObj))
             {
                 netObj.Spawn();

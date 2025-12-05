@@ -10,7 +10,6 @@ public abstract class BaseBuildMode : NetworkBehaviour
     public bool isPreviewMode;
     public BuildableDefinition currentBuildable;
     
-    // Dans BaseBuildMode.cs
     public virtual void EnterMode(BuildableDefinition buildableDefinition = null)
     {
         Debug.Log($"[BaseBuildMode] EnterMode called - State: {buildModeState}, IsPreviewMode: {isPreviewMode}");

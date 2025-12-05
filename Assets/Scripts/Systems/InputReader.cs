@@ -11,7 +11,8 @@ public class InputReader : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(gameObject); return;
+            Destroy(gameObject); 
+            return;
         }
         
         Instance = this;
@@ -27,6 +28,7 @@ public class InputReader : MonoBehaviour
     public InputAction RotateRightAction => Controls.Gameplay.RotateRight;
     public InputAction RotateLeftAction => Controls.Gameplay.RotateLeft;
     public InputAction CancelAction => Controls.Gameplay.Cancel;
+    public InputAction MouseScrollAction => Controls.Gameplay.MouseScroll;
     public InputAction NavigateAction => Controls.UI.Navigate;
     public InputAction SubmitAction => Controls.UI.Submit;
     public InputAction BackAction => Controls.UI.Back;

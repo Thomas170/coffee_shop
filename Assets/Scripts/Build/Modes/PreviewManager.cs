@@ -28,7 +28,6 @@ public class PreviewManager : MonoBehaviour
         
         Debug.Log($"[PreviewManager] Found {_cachedGridCells.Count} grid cells");
         
-        // Désactiver toutes les cells au démarrage
         foreach (GameObject cell in _cachedGridCells)
         {
             if (cell != null)
@@ -52,7 +51,6 @@ public class PreviewManager : MonoBehaviour
 
     public void StartPreview(BuildableDefinition buildable = null, Quaternion rotation = default)
     {
-        // S'assurer que Init a été appelé
         if (!_isInitialized)
         {
             Debug.Log("[PreviewManager] Not initialized, calling Init()");

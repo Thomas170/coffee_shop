@@ -44,7 +44,6 @@ public class MoveManager : MonoBehaviour
     
         GameObject oldBuild = _toReplace;
         
-        // CORRECTION : Sauvegarder les infos AVANT de construire
         string prefabName = oldBuild.name.Replace("(Clone)", "").Trim();
         Vector3 oldPosition = oldBuild.transform.position;
         Quaternion oldRotation = oldBuild.transform.rotation;
@@ -53,11 +52,9 @@ public class MoveManager : MonoBehaviour
         int cost = definition.cost;
     
         Debug.Log("[MoveManager] Step 1: Building new");
-        // Construire le nouveau (sans changer le mode car IsInMoveMode est vérifié dans ConfirmBuild)
         Vector3 newPosition = buildManager.previewManager.preview.transform.position;
         Quaternion newRotation = buildManager.previewManager.preview.transform.rotation;
         
-        // CORRECTION : Appeler directement FinalizeBuild avec le mode Moving actif
         buildManager.SpawnBuildableServerRpc(
             buildManager.currentBuildable.resultPrefab.name,
             newPosition,
@@ -66,14 +63,13 @@ public class MoveManager : MonoBehaviour
         );
     
         Debug.Log("[MoveManager] Step 2: Deleting old WITHOUT refund");
-        // Supprimer l'ancien SANS remboursement (passer isMoving = true)
         deleteManager.DeleteBuildServerRpc(
             networkId,
             prefabName,
             oldPosition,
             oldRotation,
             cost,
-            true  // IMPORTANT : Force isMoving à true
+            true
         );
     
         Debug.Log("[MoveManager] Step 3: Cleanup");

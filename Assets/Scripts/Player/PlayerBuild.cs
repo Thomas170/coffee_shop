@@ -13,10 +13,15 @@ public class PlayerBuild : MonoBehaviour
     public PreviewManager previewManager;
     public BuildModeState currentMode = BuildModeState.None;
 
+    [SerializeField] private float mouseScrollThreshold = 0.1f;
+    [SerializeField] private float scrollCooldown = 0.15f;
+
     public bool IsInBuildMode => currentMode == BuildModeState.Building;
     public bool IsInEditMode => currentMode == BuildModeState.Edition;
     public bool IsInMoveMode => currentMode == BuildModeState.Moving;
     public bool IsInPreviewMode => currentMode != BuildModeState.None;
+    
+    private float _lastScrollTime;
     
     public void Init()
     {
@@ -33,6 +38,38 @@ public class PlayerBuild : MonoBehaviour
         InputReader.Instance.ActionAction.performed += OnMove;
         InputReader.Instance.CancelAction.performed += OnCancel;
         InputReader.Instance.InteractAction.performed += OnInteract;
+    }
+
+    private void Update()
+    {
+        if (IsInPreviewMode && playerController.IsOwner)
+        {
+            HandleMouseScrollRotation();
+        }
+    }
+
+    private void HandleMouseScrollRotation()
+    {
+        if (Time.time - _lastScrollTime < scrollCooldown) return;
+
+        float scrollValue = InputReader.Instance.MouseScrollAction.ReadValue<float>();
+    
+        // Normaliser
+        scrollValue /= 120f;
+
+        if (Mathf.Abs(scrollValue) > mouseScrollThreshold)
+        {
+            if (scrollValue > 0)
+            {
+                previewManager.RotateRight();
+                _lastScrollTime = Time.time;
+            }
+            else if (scrollValue < 0)
+            {
+                previewManager.RotateLeft();
+                _lastScrollTime = Time.time;
+            }
+        }
     }
 
     private void OnDestroy()

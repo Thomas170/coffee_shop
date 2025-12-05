@@ -17,7 +17,6 @@ public class BuildManager : BaseBuildMode
         {
             _isWaitingForPurchase = true;
             
-            // CORRECTION : Les callbacks doivent référencer correctement la méthode
             CurrencyManager.Instance.TryPurchase(
                 currentBuildable.cost,
                 onSuccess: () => OnPurchaseSuccess(position, rotation),
@@ -41,7 +40,6 @@ public class BuildManager : BaseBuildMode
     {
         _isWaitingForPurchase = false;
         Debug.Log("Fonds insuffisants !");
-        // Ne pas sortir du mode pour que le joueur puisse réessayer
     }
 
     private void FinalizeBuild(Vector3 position, Quaternion rotation)
@@ -71,7 +69,6 @@ public class BuildManager : BaseBuildMode
         
         ClientSpotManager.Instance.AddSpotsFromBuild(buildObject);
 
-        // Sauvegarder côté SERVEUR seulement
         BuildSaveData data = new BuildSaveData
         {
             prefabName = prefabName,

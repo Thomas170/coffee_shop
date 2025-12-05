@@ -17,7 +17,6 @@ public class DeleteManager : NetworkBehaviour
 
         BuildableDefinition definition = editManager.targetedBuild.GetComponent<BuildableReference>().definition;
         
-        // CORRECTION : Vérifier le mode ICI, pas dans le ServerRpc
         bool isMoving = editManager.playerController.playerBuild.IsInMoveMode;
         
         DeleteBuildServerRpc(
@@ -26,7 +25,7 @@ public class DeleteManager : NetworkBehaviour
             position, 
             rotation, 
             definition.cost,
-            isMoving  // Passer l'info au serveur
+            isMoving
         );
         
         editManager.ClearPreviousHighlight();
@@ -40,9 +39,8 @@ public class DeleteManager : NetworkBehaviour
         Vector3 position, 
         Quaternion rotation,
         int originalCost,
-        bool isMoving)  // Recevoir l'info du client
+        bool isMoving)
     {
-        // Supprimer l'objet
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var netObj))
         {
             ClientSpotManager.Instance.RemoveSpotsFromBuild(netObj.gameObject);
@@ -50,14 +48,12 @@ public class DeleteManager : NetworkBehaviour
             Destroy(netObj.gameObject);
         }
 
-        // CORRECTION : Rembourser SEULEMENT si pas en mode déplacement
         if (!isMoving)
         {
             int returnMoney = (int)Math.Floor(originalCost * 0.75f);
             CurrencyManager.Instance.AddCoinsServerRpc(returnMoney);
         }
 
-        // Sauvegarder (côté serveur uniquement)
         BuildSaveData data = new BuildSaveData
         {
             prefabName = prefabName,
