@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class LevelManager : BaseManager<LevelManager>
 {
-    private NetworkVariable<int> _level = new(1);
-    private NetworkVariable<int> _experience = new();
-    
     public int Level => _level.Value;
+    private readonly NetworkVariable<int> _level = new(1);
+    
     public int Experience => _experience.Value;
+    private readonly NetworkVariable<int> _experience = new();
     
     private TextMeshProUGUI _levelText;
     private Image _xpFillImage;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CurrencyManager : BaseManager<CurrencyManager>
 {
     private int _coinsLocal;
-    private NetworkVariable<int> _coins = new();
+    private readonly NetworkVariable<int> _coins = new();
     public int Coins => _coins.Value;
     
     private TextMeshProUGUI _coinsText;

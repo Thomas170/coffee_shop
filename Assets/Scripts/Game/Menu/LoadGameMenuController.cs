@@ -43,6 +43,7 @@ public class LoadGameMenuController : BaseMenuController
         {
             if (exists)
             {
+                GameProperties.Instance.LoadGameIndex(GameProperties.Instance.lastPlayedSlot);
                 ChangeMenu(gameSetupMenuController);
             }
             else

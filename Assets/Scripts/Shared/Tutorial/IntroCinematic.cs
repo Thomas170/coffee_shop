@@ -31,6 +31,7 @@ public class IntroCinematic : MonoBehaviour
             FindObjectOfType<CinematicBars>().ShowBars();
             coins.SetActive(false);
             level.SetActive(false);
+            ControlsUIManager.Instance.bindingsContainer.gameObject.SetActive(false);
             
             cinematicCam.Priority = 10;
             StartCoroutine(PlayCinematic());
@@ -39,6 +40,7 @@ public class IntroCinematic : MonoBehaviour
         {
             coins.SetActive(true);
             level.SetActive(true);
+            ControlsUIManager.Instance.bindingsContainer.gameObject.SetActive(true);
             cinematicCam.Priority = -10;
         }
     }
@@ -103,5 +105,6 @@ public class IntroCinematic : MonoBehaviour
         TutorialManager.Instance.StartTutorial();
         coins.SetActive(true);
         level.SetActive(true);
+        ControlsUIManager.Instance.bindingsContainer.gameObject.SetActive(true);
     }
 }

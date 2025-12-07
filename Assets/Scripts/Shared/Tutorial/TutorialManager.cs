@@ -3,7 +3,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : NetworkBehaviour
 {
     public static TutorialManager Instance;
 
@@ -26,9 +26,10 @@ public class TutorialManager : MonoBehaviour
     public Sprite orderTuto;
     public Sprite currentPopup;
 
-    private TutorialStep _currentStep = TutorialStep.None;
+    public TutorialStep CurrentStep => _currentStep.Value;
+    private readonly NetworkVariable<TutorialStep> _currentStep = new();
     
-    [SerializeField] private float targetDistanceThreshold = 3f;
+    [SerializeField] private float targetDistanceThreshold = 40;
     private Transform _currentTarget;
     private TutoPointer _currentPointer;
 
@@ -66,7 +67,7 @@ public class TutorialManager : MonoBehaviour
     
     public void StartTutorial()
     {
-        _currentStep = TutorialStep.EnterCafe;
+        SetCurrentStep(TutorialStep.EnterCafe);
 
         PlayerListManager.Instance.GetPlayer(NetworkManager.Singleton.LocalClientId)
             .playerBuild.enabled = false;
@@ -120,9 +121,9 @@ public class TutorialManager : MonoBehaviour
     
     private void AdvanceStep()
     {
-        _currentStep++;
-
-        switch (_currentStep)
+        SetCurrentStep(CurrentStep + 1);
+        
+        switch (CurrentStep)
         {
             case TutorialStep.TakeGrains:
                 StartStepWithDialogue(
@@ -220,7 +221,7 @@ public class TutorialManager : MonoBehaviour
     
     public void ValidStep(TutorialStep step)
     {
-        if (_currentStep == step) AdvanceStep();
+        if (CurrentStep == step) AdvanceStep();
     }
     
     private void SpawnTutorialClient()
@@ -258,5 +259,10 @@ public class TutorialManager : MonoBehaviour
     public void ShowCurrentPopup()
     {
         popupTips.OpenPopup(currentPopup);
+    }
+
+    private void SetCurrentStep(TutorialStep step)
+    {
+        if (NetworkManager.Singleton.IsServer) _currentStep.Value = step;
     }
 }

@@ -46,6 +46,7 @@ public class GameProperties : NetworkBehaviour
     {
         PlayerPrefs.SetInt(LastPlayedSlotKey, _gameIndex.Value);
         PlayerPrefs.Save();
+        lastPlayedSlot = _gameIndex.Value;
     }
     
     public void SetGameIndex(int gameIndex)
