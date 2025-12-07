@@ -46,7 +46,7 @@ public class TutorialManager : NetworkBehaviour
         spawner.canSpawn = !IsTuto;
         
         worldArrow.gameObject.SetActive(false);
-        ShowPointer(null);
+        //ShowPointerServerRpc();
         tutorialClient.SetActive(false);
     }
     
@@ -63,6 +63,18 @@ public class TutorialManager : NetworkBehaviour
 
         _currentPointer.gameObject.SetActive(isClose);
         worldArrow.gameObject.SetActive(!isClose);
+    }
+    
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        _currentStep.OnValueChanged += OnCurrentStepChanged;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        _currentStep.OnValueChanged -= OnCurrentStepChanged;
+        base.OnNetworkDespawn();
     }
     
     public void StartTutorial()
@@ -88,7 +100,7 @@ public class TutorialManager : NetworkBehaviour
     {
         DialogueManager.Instance.OnDialogueEnd -= OnIntroDialogueFinished;
         StartCoroutine(ShowFirstPopupAfterDelay());
-        ShowPointer(entranceTarget);
+        //ShowPointerServerRpc();
     }
 
     private IEnumerator ShowFirstPopupAfterDelay()
@@ -99,27 +111,32 @@ public class TutorialManager : NetworkBehaviour
         RobotController.Instance.MoveTo(entranceTarget);
     }
 
-    private void ShowPointer(Transform target)
+    /*[ServerRpc(RequireOwnership = false)]
+    private void ShowPointerServerRpc() => ShowPointerClientRpc();
+
+    [ClientRpc]
+    private void ShowPointerClientRpc()
     {
-        _currentTarget = target;
+        _currentTarget = GetTargetTransform(CurrentStep);
 
         foreach (TutoPointer pointer in FindObjectsOfType<TutoPointer>())
         {
             pointer.gameObject.SetActive(false);
         }
 
-        if (!target) return;
+        if (!_currentTarget) return;
 
-        _currentPointer = target.GetComponentInChildren<TutoPointer>(true);
+        _currentPointer = _currentTarget.GetComponentInChildren<TutoPointer>(true);
 
         if (_currentPointer)
             _currentPointer.gameObject.SetActive(false);
 
-        worldArrow.target = target;
+        worldArrow.target = _currentTarget;
         worldArrow.gameObject.SetActive(true);
-    }
-    
-    private void AdvanceStep()
+    }*/
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AdvanceStepServerRpc()
     {
         SetCurrentStep(CurrentStep + 1);
         
@@ -177,7 +194,7 @@ public class TutorialManager : NetworkBehaviour
                 break;
 
             case TutorialStep.Done:
-                ShowPointer(null);
+                //ShowPointerServerRpc();
                 FinishTutorial();
                 break;
         }
@@ -185,9 +202,12 @@ public class TutorialManager : NetworkBehaviour
     
     private void StartStepWithDialogue(string[] dialogue, Sprite popupSprite, Transform pointerTarget, Transform robotTargetPoint = null, bool spawnClient = false)
     {
-        if (robotTargetPoint && RobotController.Instance)
+        if (IsServer)
         {
-            RobotController.Instance.MoveTo(robotTargetPoint);
+            if (robotTargetPoint && RobotController.Instance)
+            {
+                RobotController.Instance.MoveTo(robotTargetPoint);
+            }
         }
         
         Action handler = null;
@@ -211,7 +231,7 @@ public class TutorialManager : NetworkBehaviour
             currentPopup = popupSprite;
         }
 
-        ShowPointer(pointerTarget);
+        //ShowPointerServerRpc();
 
         if (spawnClient)
         {
@@ -221,7 +241,7 @@ public class TutorialManager : NetworkBehaviour
     
     public void ValidStep(TutorialStep step)
     {
-        if (CurrentStep == step) AdvanceStep();
+        if (CurrentStep == step) AdvanceStepServerRpc();
     }
     
     private void SpawnTutorialClient()
@@ -264,5 +284,48 @@ public class TutorialManager : NetworkBehaviour
     private void SetCurrentStep(TutorialStep step)
     {
         if (NetworkManager.Singleton.IsServer) _currentStep.Value = step;
+    }
+    
+    private void OnCurrentStepChanged(TutorialStep oldValue, TutorialStep newValue)
+    {
+        _currentTarget = GetTargetTransform(CurrentStep);
+
+        foreach (TutoPointer pointer in FindObjectsOfType<TutoPointer>())
+        {
+            pointer.gameObject.SetActive(false);
+        }
+
+        if (!_currentTarget) return;
+
+        _currentPointer = _currentTarget.GetComponentInChildren<TutoPointer>(true);
+
+        if (_currentPointer)
+            _currentPointer.gameObject.SetActive(false);
+
+        worldArrow.target = _currentTarget;
+        worldArrow.gameObject.SetActive(true);
+    }
+
+    private Transform GetTargetTransform(TutorialStep step)
+    {
+        switch (step)
+        {
+            case TutorialStep.EnterCafe:
+                return entranceTarget;
+            case TutorialStep.TakeGrains:
+                return coffeeCrateTarget;
+            case TutorialStep.GrindGrains:
+                return grinderTarget;
+            case TutorialStep.UseCoffeeMachine1:
+                return coffeeMachineTarget;
+            case TutorialStep.TakeCup:
+                return dishCabinetTarget;
+            case TutorialStep.UseCoffeeMachine2:
+                return coffeeMachineTarget;
+            case TutorialStep.GiveCupClient:
+                return tutorialClient.transform;
+            default:
+                return null;
+        }
     }
 }
