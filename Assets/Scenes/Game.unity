@@ -2672,9 +2672,6 @@ GameObject:
   - component: {fileID: 272424049}
   - component: {fileID: 272424051}
   - component: {fileID: 272424053}
-  - component: {fileID: 272424054}
-  - component: {fileID: 272424060}
-  - component: {fileID: 272424055}
   - component: {fileID: 272424057}
   - component: {fileID: 272424058}
   - component: {fileID: 272424059}
@@ -2900,31 +2897,6 @@ MonoBehaviour:
   isOpen: 0
   backMenuController: {fileID: 0}
   settingsMenuController: {fileID: 9205411870796411501}
---- !u!114 &272424054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272424044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eed404d188505494395cfc3a88b98954, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinsText: {fileID: 3097030044481512109}
---- !u!114 &272424055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272424044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 037b2c9474f12f046a221caf7b515511, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &272424056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3002,21 +2974,6 @@ MonoBehaviour:
   categoryPrefab: {fileID: 7340482340327568849, guid: 41c324aafdb17824aa8b48a1d13beac7, type: 3}
   categoryParent: {fileID: 911502921}
   buildSelectionMenuController: {fileID: 272424058}
---- !u!114 &272424060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272424044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61ce0bdb4dee40d6a195dff684de4e41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelText: {fileID: 1961328284}
-  level: 0
-  xpFillImage: {fileID: 7196011014401378903}
 --- !u!114 &272424061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19901,7 +19858,7 @@ GameObject:
   - component: {fileID: 1961328285}
   - component: {fileID: 1961328284}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LevelDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21915,7 +21872,7 @@ GameObject:
   - component: {fileID: 5539301807482440028}
   - component: {fileID: 7196011014401378903}
   m_Layer: 0
-  m_Name: Fill
+  m_Name: ExperienceDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21959,7 +21916,7 @@ GameObject:
   - component: {fileID: 8985284833279113977}
   - component: {fileID: 3097030044481512109}
   m_Layer: 5
-  m_Name: Value
+  m_Name: CoinsDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

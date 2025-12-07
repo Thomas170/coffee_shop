@@ -6963,6 +6963,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5314989585337951986, guid: b10e811645751fc4f9648661249775af, type: 3}
+      propertyPath: mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5447597060064631548, guid: b10e811645751fc4f9648661249775af, type: 3}
       propertyPath: NetworkConfig.PlayerPrefab
       value: 
@@ -16169,6 +16173,10 @@ PrefabInstance:
     - target: {fileID: 451020326867861488, guid: fbcaa2e73ea31b34abbdd35c96507e28, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1903034048941651043, guid: fbcaa2e73ea31b34abbdd35c96507e28, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2933834365
       objectReference: {fileID: 0}
     - target: {fileID: 5105743241118398983, guid: fbcaa2e73ea31b34abbdd35c96507e28, type: 3}
       propertyPath: m_LocalScale.y
