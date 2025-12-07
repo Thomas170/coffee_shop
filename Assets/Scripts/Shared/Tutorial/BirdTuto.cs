@@ -24,6 +24,8 @@ public class BirdTuto : NetworkBehaviour
     {
         transform.position = startPosition;
         _phaseDuration = animationDuration / waveAmplitudes.Length;
+        
+        if (GameProperties.Instance.TutoDone) gameObject.SetActive(false);
     }
 
     private void Update()
@@ -49,7 +51,7 @@ public class BirdTuto : NetworkBehaviour
         {
             _isFlying = false;
             gameObject.SetActive(false);
-        }
+        } 
     }
 
     // Lancer le vol depuis le serveur pour tout le monde

@@ -9,7 +9,6 @@ public class NetworkPlayer : NetworkBehaviour
     [SerializeField] private GameObject playerModel;
 
     private readonly List<Type> _typesToDisable = new() {
-        //typeof(PlayerMovement),
         typeof(PlayerInteraction),
         typeof(PlayerUI),
         typeof(AudioListener),
@@ -32,7 +31,7 @@ public class NetworkPlayer : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         
         Invoke(nameof(EnablePhysicsSafely), 1f);
-        transform.position = new Vector3(0, 100, 0);
+        transform.position = new Vector3(0, 300, 0);
         playerModel.SetActive(false);
 
         AudioListener audioListener = transform.GetComponentInChildren<AudioListener>();
