@@ -14,6 +14,15 @@ public class DebugHelper : MonoBehaviour
     public DebugMode mode = DebugMode.None;
 
     private bool _isInGameScene;
+    
+    private void Awake()
+    {
+        #if !UNITY_EDITOR
+            // En build : debug désactivé
+            enabled = false;
+            return;
+        #endif
+    }
 
     private void OnEnable()
     {

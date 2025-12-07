@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -51,7 +50,17 @@ public class LevelUpManager : MonoBehaviour
 
         _iconInitialScale = levelUpIcon.transform.localScale;
     }
-    
+
+    private void OnEnable()
+    {
+        LevelManager.Instance.OnLevelUpEvent += ShowLevelUpEffect;
+    }
+
+    private void OnDisable()
+    {
+        LevelManager.Instance.OnLevelUpEvent -= ShowLevelUpEffect;
+    }
+
     private void Update()
     {
         if (!_isLevelUpActive || !_unlockAnimationFinished) return;
@@ -66,8 +75,9 @@ public class LevelUpManager : MonoBehaviour
         }
     }
 
-    public void ShowLevelUpEffect(int newLevel)
+    public void ShowLevelUpEffect()
     {
+        int newLevel = LevelManager.Instance.Level;
         levelText.text = newLevel.ToString();
 
         levelUpIcon.transform.localScale = _iconInitialScale;
