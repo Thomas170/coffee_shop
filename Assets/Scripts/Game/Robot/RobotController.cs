@@ -4,6 +4,8 @@ using UnityEngine.AI;
 public class RobotController : MonoBehaviour
 {
     public static RobotController Instance;
+    
+    public BubbleDialogue bubbleDialogue;
 
     private NavMeshAgent _agent;
     private Animator _animator;

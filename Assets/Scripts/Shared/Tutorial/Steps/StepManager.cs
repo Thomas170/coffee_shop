@@ -35,19 +35,38 @@ public class StepManager : NetworkBehaviour
     {
         if (oldValue == newValue) return;
         
+        TutorialManager.Instance.SetPointer(null);
+        
         StepScenario stepScenario = TutorialScenario.Instance.Scenario
             .Find(s => s.Step == newValue);
 
         if (stepScenario == null) return;
+
+        if (stepScenario.StepDialogues != null)
+        {
+            RobotController.Instance.bubbleDialogue.StartDialogue(stepScenario.StepDialogues, 4f, () =>
+            {
+                TriggerStep(stepScenario);
+            });
+        }
+        else
+        {
+            TriggerStep(stepScenario);
+        }
         
-        if (stepScenario.StepDialogs != null)
-            DialogueManager.Instance.StartDialogue(stepScenario.StepDialogs);
-        
+        stepScenario.StepAction?.Invoke();
+    }
+
+    private void TriggerStep(StepScenario stepScenario)
+    {
         if (stepScenario.PointerStepTarget)
             TutorialManager.Instance.SetPointer(stepScenario.PointerStepTarget);
-        
+
         if (stepScenario.StepPopup)
+        {
             PopupTips.Instance.OpenPopup(stepScenario.StepPopup);
+            TutorialManager.Instance.currentPopup = stepScenario.StepPopup;
+        }
 
         if (stepScenario.RobotStepTarget)
             RobotController.Instance.MoveTo(stepScenario.RobotStepTarget);
@@ -55,7 +74,6 @@ public class StepManager : NetworkBehaviour
     
     public void ValidStep(TutorialStep step)
     {
-        Debug.Log("Step " + CurrentStep + " " + step);
         if (step == CurrentStep)
         {
             SetCurrentStep(CurrentStep + 1);

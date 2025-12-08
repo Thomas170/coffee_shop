@@ -4,7 +4,7 @@ using UnityEngine;
 public class StepScenario
 {
     public TutorialStep Step;
-    public string[] StepDialogs;
+    public string[] StepDialogues;
     public Transform PointerStepTarget;
     public Sprite StepPopup;
     public Transform RobotStepTarget;
