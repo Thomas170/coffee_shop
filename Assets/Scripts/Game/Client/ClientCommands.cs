@@ -136,7 +136,7 @@ public class ClientCommands : NetworkBehaviour
         LevelManager.Instance.GainExperience(currentOrder.experience);
         clientController.canInteract = false;
 
-        if (clientController.isTuto) TutorialManager.Instance.ValidStep(TutorialStep.GiveCupClient);
+        if (clientController.isTuto) StepManager.Instance.ValidStep(TutorialStep.GiveCupClient);
     }
 
     private IEnumerator DrinkCoffee()

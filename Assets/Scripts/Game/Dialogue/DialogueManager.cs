@@ -45,8 +45,17 @@ public class DialogueManager : MonoBehaviour
             InputReader.Instance.ActionAction.performed -= OnNext;
     }
 
-    public void StartDialogue(string[] lines)
+    public void StartDialogue(string[] lines, Action onAfter = null)
     {
+        Action handler = null;
+        handler = () =>
+        {
+            OnDialogueEnd -= handler;
+            onAfter?.Invoke();
+        };
+
+        OnDialogueEnd += handler;
+        
         PlayerIsDialogue(true);
         if (lines == null || lines.Length == 0) return;
 

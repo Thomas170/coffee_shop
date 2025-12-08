@@ -1,16 +1,20 @@
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PopupTips : MonoBehaviour
 {
+    public static PopupTips Instance;
+    
     private float _inputDelayTimer;
     private bool _isPopupActive;
     private const float InputDelay = 0.5f;
 
-    private void Start()
+    protected virtual void Awake()
     {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+        
         ClosePopup();
     }
 

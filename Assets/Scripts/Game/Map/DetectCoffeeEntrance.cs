@@ -9,7 +9,7 @@ public class DetectCoffeeEntrance : MonoBehaviour
             var playerController = other.GetComponentInParent<PlayerController>();
             if (playerController != null && playerController.IsOwner)
             {
-                TutorialManager.Instance.ValidStep(TutorialStep.EnterCafe);
+                StepManager.Instance.ValidStep(TutorialStep.EnterCafe);
             }
         }
     }

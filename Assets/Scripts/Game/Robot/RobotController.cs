@@ -29,15 +29,15 @@ public class RobotController : MonoBehaviour
     {
         if (!TutorialManager.Instance.IsTuto)
         {
-            transform.position = TutorialManager.Instance.robotTarget.position;
-            transform.rotation = TutorialManager.Instance.robotTarget.rotation;
-            _agent.Warp(TutorialManager.Instance.robotTarget.position);
+            transform.position = TutorialScenario.Instance.robotTarget.position;
+            transform.rotation = TutorialScenario.Instance.robotTarget.rotation;
+            _agent.Warp(TutorialScenario.Instance.robotTarget.position);
         }
         else
         {
-            transform.position = TutorialManager.Instance.robotSpawnTuto.position;
-            transform.rotation = TutorialManager.Instance.robotSpawnTuto.rotation;
-            _agent.Warp(TutorialManager.Instance.robotSpawnTuto.position);
+            transform.position = TutorialScenario.Instance.robotSpawnTuto.position;
+            transform.rotation = TutorialScenario.Instance.robotSpawnTuto.rotation;
+            _agent.Warp(TutorialScenario.Instance.robotSpawnTuto.position);
         }
     }
 

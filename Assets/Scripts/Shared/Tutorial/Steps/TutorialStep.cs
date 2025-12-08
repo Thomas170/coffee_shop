@@ -1,6 +1,6 @@
 public enum TutorialStep
 {
-    None,
+    Init,
     EnterCafe,
     TakeGrains,
     GrindGrains,

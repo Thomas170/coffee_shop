@@ -9,7 +9,7 @@ public class CoffeeGrinder : ManualInteractableBase
 
         if (playerCarry.carriedItem.itemType == ItemType.CoffeePowder)
         {
-            TutorialManager.Instance.ValidStep(TutorialStep.GrindGrains);
+            StepManager.Instance.ValidStep(TutorialStep.GrindGrains);
         }
         
         base.AfterCollectItem();

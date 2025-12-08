@@ -27,7 +27,7 @@ public class CoffeeMachine : AutoInteractableBase
     {
         if (storeItems.Exists(item => item.itemType == ItemType.CoffeePowder && item.currentAmount > 0))
         {
-            TutorialManager.Instance.ValidStep(TutorialStep.UseCoffeeMachine1);
+            StepManager.Instance.ValidStep(TutorialStep.UseCoffeeMachine1);
         }
         
         base.AfterPutItem();
@@ -40,7 +40,7 @@ public class CoffeeMachine : AutoInteractableBase
 
         if (playerCarry.carriedItem.itemType == ItemType.CupCoffee)
         {
-            TutorialManager.Instance.ValidStep(TutorialStep.UseCoffeeMachine2);
+            StepManager.Instance.ValidStep(TutorialStep.UseCoffeeMachine2);
         }
         
         base.AfterCollectItem();

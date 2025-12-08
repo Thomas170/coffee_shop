@@ -6,10 +6,10 @@ public class RobotInteraction : InteractableBase
 
     public override void CollectCurrentItem()
     {
-        TutorialManager tutorialManager = FindObjectOfType<TutorialManager>();
         if (!GameProperties.Instance.TutoDone)
         {
-            tutorialManager.ShowCurrentPopup();
+            Sprite popup = TutorialManager.Instance.currentPopup;
+            TutorialManager.Instance.popupTips.OpenPopup(popup);
         }
     }
 }

@@ -40,14 +40,14 @@ public class Crate : InteractableBase
             }
         }
 
-        if (playerCarry.carriedItem.itemType == ItemType.CoffeeBeans)
+        if (item.itemType == ItemType.CoffeeBeans)
         {
-            TutorialManager.Instance.ValidStep(TutorialStep.TakeGrains);
+            StepManager.Instance.ValidStep(TutorialStep.TakeGrains);
         }
         
-        if (playerCarry.carriedItem.itemType == ItemType.CupEmpty)
+        if (item.itemType == ItemType.CupEmpty)
         {
-            TutorialManager.Instance.ValidStep(TutorialStep.TakeCup);
+            StepManager.Instance.ValidStep(TutorialStep.TakeCup);
         }
     }
 }
