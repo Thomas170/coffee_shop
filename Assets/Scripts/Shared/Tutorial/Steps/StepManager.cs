@@ -47,7 +47,7 @@ public class StepManager : NetworkBehaviour
         {
             RobotController.Instance.bubbleDialogue.StartDialogue(stepScenario.StepDialogues, 4f, () =>
             {
-                TriggerStep(stepScenario);
+                if (newValue == CurrentStep) TriggerStep(stepScenario);
                 stepScenario.EndStepAction?.Invoke();
             });
         }

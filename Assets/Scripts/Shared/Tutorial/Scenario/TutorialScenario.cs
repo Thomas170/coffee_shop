@@ -104,7 +104,7 @@ public class TutorialScenario : MonoBehaviour
             StepDialogues = new[]
             {
                 "Bravo tu as fini le tutoriel !",
-                "Maintenant tu peux t'occuper du café et servir les clients."
+                "Maintenant tu peux préparer cafés et servir les clients."
             },
             StartStepAction = () =>
             {

@@ -33,16 +33,16 @@ public class CoffeeMachine : AutoInteractableBase
         base.AfterPutItem();
     }
     
-    protected override void AfterCollectItem()
+    protected override void AfterCollectItem(ItemBase item)
     {
         PlayerController player = PlayerListManager.Instance.GetPlayer(NetworkManager.LocalClientId);
         PlayerCarry playerCarry = player.GetComponent<PlayerCarry>();
 
-        if (playerCarry.carriedItem.itemType == ItemType.CupCoffee)
+        if (item.itemType == ItemType.CupCoffee)
         {
             StepManager.Instance.ValidStep(TutorialStep.UseCoffeeMachine2);
         }
         
-        base.AfterCollectItem();
+        base.AfterCollectItem(item);
     }
 }

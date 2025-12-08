@@ -132,8 +132,12 @@ public class ClientCommands : NetworkBehaviour
         currentItem.AttachTo(ClientSpotManager.Instance.GetItemSpotLocation(commandSpot), false, IsClient);
         
         _drinkCoffeeCoroutine = StartCoroutine(DrinkCoffee());
-        CurrencyManager.Instance.AddCoins(currentOrder.price);
-        LevelManager.Instance.GainExperience(currentOrder.experience);
+
+        if (IsServer)
+        {
+            CurrencyManager.Instance.AddCoins(currentOrder.price);
+            LevelManager.Instance.GainExperience(currentOrder.experience);
+        }
         clientController.canInteract = false;
 
         if (clientController.isTuto) StepManager.Instance.ValidStep(TutorialStep.GiveCupClient);

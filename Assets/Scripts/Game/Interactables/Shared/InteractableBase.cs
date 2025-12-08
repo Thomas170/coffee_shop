@@ -152,12 +152,12 @@ public abstract class InteractableBase : NetworkBehaviour
             }
             
             if (resultItemIcon) resultItemIcon.SetActive(false);
+            AfterCollectItem(currentDisplayItem);
             currentDisplayItem = null;
-            AfterCollectItem();
         }
     }
     
-    protected virtual void AfterCollectItem() { }
+    protected virtual void AfterCollectItem(ItemBase item) { }
     
     [ServerRpc(RequireOwnership = false)]
     private void SpawnResultItemServerRpc()
