@@ -30,6 +30,7 @@ public class TutorialManager : MonoBehaviour
         
         worldArrow.gameObject.SetActive(false);
         tutorialClient.SetActive(false);
+        TutorialScenario.Instance.invisibleWallEntrance.SetActive(IsTuto);
     }
     
     private void Update()

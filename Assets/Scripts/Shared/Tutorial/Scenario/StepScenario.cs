@@ -8,5 +8,6 @@ public class StepScenario
     public Transform PointerStepTarget;
     public Sprite StepPopup;
     public Transform RobotStepTarget;
-    public Action StepAction;
+    public Action StartStepAction;
+    public Action EndStepAction;
 }

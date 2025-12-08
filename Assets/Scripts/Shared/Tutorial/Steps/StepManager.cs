@@ -1,5 +1,4 @@
 using Unity.Netcode;
-using UnityEngine;
 
 public class StepManager : NetworkBehaviour
 {
@@ -41,20 +40,22 @@ public class StepManager : NetworkBehaviour
             .Find(s => s.Step == newValue);
 
         if (stepScenario == null) return;
+        
+        stepScenario.StartStepAction?.Invoke();
 
         if (stepScenario.StepDialogues != null)
         {
             RobotController.Instance.bubbleDialogue.StartDialogue(stepScenario.StepDialogues, 4f, () =>
             {
                 TriggerStep(stepScenario);
+                stepScenario.EndStepAction?.Invoke();
             });
         }
         else
         {
             TriggerStep(stepScenario);
+            stepScenario.EndStepAction?.Invoke();
         }
-        
-        stepScenario.StepAction?.Invoke();
     }
 
     private void TriggerStep(StepScenario stepScenario)

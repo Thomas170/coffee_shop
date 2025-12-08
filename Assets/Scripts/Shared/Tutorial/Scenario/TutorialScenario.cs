@@ -13,6 +13,8 @@ public class TutorialScenario : MonoBehaviour
     public Transform robotTarget;
     public Transform robotSpawnTuto;
     
+    public GameObject invisibleWallEntrance;
+    
     public Sprite moveTuto;
     public Sprite coffeeTuto;
     public Sprite orderTuto;
@@ -41,6 +43,10 @@ public class TutorialScenario : MonoBehaviour
             PointerStepTarget = entranceTarget,
             StepPopup = moveTuto,
             RobotStepTarget = entranceTarget,
+            EndStepAction = () =>
+            {
+                invisibleWallEntrance.SetActive(false);
+            }
         });
         
         Scenario.Add(new StepScenario
@@ -86,7 +92,7 @@ public class TutorialScenario : MonoBehaviour
             StepDialogues = new[]{ "Apporte la tasse au client." },
             PointerStepTarget = TutorialManager.Instance.tutorialClient.transform,
             StepPopup = orderTuto,
-            StepAction = () =>
+            StartStepAction = () =>
             {
                 TutorialManager.Instance.SpawnTutorialClient();
             }
@@ -100,7 +106,7 @@ public class TutorialScenario : MonoBehaviour
                 "Bravo tu as fini le tutoriel !",
                 "Maintenant tu peux t'occuper du café et servir les clients."
             },
-            StepAction = () =>
+            StartStepAction = () =>
             {
                 TutorialManager.Instance.FinishTutorial();
             }

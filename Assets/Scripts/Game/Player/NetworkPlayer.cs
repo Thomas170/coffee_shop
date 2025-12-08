@@ -31,7 +31,7 @@ public class NetworkPlayer : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         
         Invoke(nameof(EnablePhysicsSafely), 1f);
-        transform.position = new Vector3(0, 300, 0);
+        transform.position = new Vector3(0, -100, 0);
         playerModel.SetActive(false);
 
         AudioListener audioListener = transform.GetComponentInChildren<AudioListener>();
