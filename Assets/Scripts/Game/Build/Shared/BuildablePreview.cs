@@ -78,6 +78,9 @@ public class BuildablePreview : MonoBehaviour
                 cell.SelectCell();
             }
         }
+        
+        if (_touchedCells.Count == 0)
+            IsValid = false;
 
         CellPreview[] allCells = FindObjectsOfType<CellPreview>();
         foreach (CellPreview cell in allCells)

@@ -1,74 +1,85 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using DG.Tweening;
 
 public class RoofVisibility : NetworkBehaviour
 {
-    [SerializeField] private Renderer roofRenderer;
+    [SerializeField] private Renderer[] roofRenderers;
     [SerializeField] private float fadeDuration = 0.5f;
 
-    private Material _roofMaterial;
+    private List<Material> _materials = new List<Material>();
     private Tween _currentTween;
+    private int _roomsInsideCount = 0;
 
     private void Start()
     {
-        roofRenderer.gameObject.SetActive(true);
-            
-        if (roofRenderer != null)
+        foreach (var r in roofRenderers)
         {
-            _roofMaterial = roofRenderer.material;
-            SetAlpha(1f);
+            r.gameObject.SetActive(true);
+
+            // Instance du material (sinon sharedMaterial = fade pour tous les joueurs !)
+            Material mat = r.material;  
+
+            _materials.Add(mat);
+
+            SetAlpha(mat, 1f);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void PlayerEnteredRoom(Collider other)
     {
-        if (IsLocalPlayerInside(other))
-        {
+        if (!IsLocalPlayer(other)) return;
+
+        _roomsInsideCount++;
+        if (_roomsInsideCount == 1)
             StartCoroutine(FadeTo(0f));
-        }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void PlayerExitedRoom(Collider other)
     {
-        if (IsLocalPlayerInside(other))
+        if (!IsLocalPlayer(other)) return;
+
+        _roomsInsideCount--;
+        if (_roomsInsideCount <= 0)
         {
+            _roomsInsideCount = 0;
             StartCoroutine(FadeTo(1f));
         }
     }
 
-    private bool IsLocalPlayerInside(Collider other)
+    private bool IsLocalPlayer(Collider other)
     {
         if (!other.CompareTag("Player")) return false;
 
-        var networkObj = other.GetComponent<NetworkObject>();
-        return networkObj != null && networkObj.IsOwner && IsClient;
+        var netObj = other.GetComponent<NetworkObject>();
+        return netObj && netObj.IsOwner && IsClient;
     }
 
     private IEnumerator FadeTo(float targetAlpha)
     {
-        if (_roofMaterial == null) yield return null;
-
         _currentTween?.Kill();
 
+        // Tween sur TOUS les matériaux
         _currentTween = DOTween.To(
-            () => _roofMaterial.color.a,
-            a => SetAlpha(a),
+            () => _materials[0].color.a,
+            a => { foreach (var m in _materials) SetAlpha(m, a); },
             targetAlpha,
             fadeDuration
         );
 
         yield return new WaitForSeconds(fadeDuration);
-        roofRenderer.gameObject.SetActive(Mathf.Approximately(targetAlpha, 1));
+
+        bool active = targetAlpha > 0.99f;
+        foreach (var r in roofRenderers)
+            r.gameObject.SetActive(active);
     }
 
-    private void SetAlpha(float alpha)
+    private void SetAlpha(Material mat, float alpha)
     {
-        if (_roofMaterial == null) return;
-
-        Color c = _roofMaterial.color;
+        Color c = mat.color;
         c.a = alpha;
-        _roofMaterial.color = c;
+        mat.color = c;
     }
 }

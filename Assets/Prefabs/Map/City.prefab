@@ -9578,7 +9578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 425009169745424583, guid: a764455bb60cccf4bb7f085f65af3118, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 201.9
+      value: 226.2
       objectReference: {fileID: 0}
     - target: {fileID: 425009169745424583, guid: a764455bb60cccf4bb7f085f65af3118, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11751,6 +11751,10 @@ PrefabInstance:
     - target: {fileID: 947648598719888838, guid: a036e5d547ef071409b172154b01318d, type: 3}
       propertyPath: m_Name
       value: catholic temple with environment
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086154851587881225, guid: a036e5d547ef071409b172154b01318d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
