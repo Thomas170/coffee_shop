@@ -6,6 +6,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -16,7 +17,8 @@ public class DialogueManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TMP_Text dialogueText;
-    [SerializeField] private GameObject passText;
+    [SerializeField] private TMP_Text dialogueName;
+    [SerializeField] private GameObject passDialog;
     [SerializeField] private float typingSpeed = 0.03f;
 
     private Queue<string> _sentences;
@@ -37,15 +39,17 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         InputReader.Instance.ActionAction.performed += OnNext;
+        InputDeviceTracker.Instance.OnDeviceChanged += UpdateDialogueControls;
+        UpdateDialogueControls(InputDeviceTracker.Instance.IsUsingGamepad);
     }
 
     private void OnDestroy()
     {
-        if (InputReader.Instance != null)
-            InputReader.Instance.ActionAction.performed -= OnNext;
+        InputReader.Instance.ActionAction.performed -= OnNext;
+        InputDeviceTracker.Instance.OnDeviceChanged -= UpdateDialogueControls;
     }
 
-    public void StartDialogue(string[] lines, Action onAfter = null)
+    public void StartDialogue(string[] lines, string nameValue, Action onAfter = null)
     {
         Action handler = null;
         handler = () =>
@@ -65,6 +69,7 @@ public class DialogueManager : MonoBehaviour
             _sentences.Enqueue(sentence);
         }
 
+        dialogueName.text = nameValue;
         dialoguePanel.SetActive(true);
         StartPassAnimation();
         DisplayNextSentence();
@@ -133,11 +138,11 @@ public class DialogueManager : MonoBehaviour
     
     private void StartPassAnimation()
     {
-        if (!passText) return;
+        if (!passDialog) return;
 
         _passTween?.Kill();
 
-        _passTween = passText.transform.DOScale(1.1f, 0.8f)
+        _passTween = passDialog.transform.DOScale(1.1f, 0.8f)
             .SetLink(gameObject)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
@@ -146,6 +151,23 @@ public class DialogueManager : MonoBehaviour
     private void StopPassAnimation()
     {
         _passTween?.Kill();
-        passText.transform.localScale = Vector3.one;
+        passDialog.transform.localScale = Vector3.one;
+    }
+
+    public void UpdateDialogueControls(bool isGamepad)
+    {
+        GameObject passDialogImage = passDialog.transform.Find("Image").gameObject;
+        TextMeshProUGUI passDialogText = passDialog.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        
+        if (isGamepad)
+        {
+            passDialogImage.SetActive(true);
+            passDialogText.text = "Passer";
+        }
+        else
+        {
+            passDialogImage.SetActive(false);
+            passDialogText.text = "Passer (A)";
+        }
     }
 }

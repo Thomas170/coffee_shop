@@ -7,6 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     
     private InteractableBase _currentInteractable;
     private ClientController _currentClient;
+    private InteractElement _currentElement;
     private ItemBase _currentPickable;
     private bool _isHoldingAction;
     
@@ -91,6 +92,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             _currentClient.Interact(playerCarry.GetCarriedObject);
         }
+        else if (_currentElement)
+        {
+            _currentElement.Interact();
+        }
         else
         {
             playerCarry.TryDrop();
@@ -110,6 +115,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             _currentInteractable.CollectCurrentItem();
         }
+        else if (_currentElement)
+        {
+            _currentElement.Interact();
+        }
     }
 
     private void DetectInteractableInFront()
@@ -121,10 +130,12 @@ public class PlayerInteraction : MonoBehaviour
 
         if (_currentInteractable) _currentInteractable.SetHightlight(false);
         if (_currentClient) _currentClient.SetHightlight(false);
+        if (_currentElement) _currentElement.SetHightlight(false);
         
         _currentInteractable = null;
         _currentPickable = null;
         _currentClient = null;
+        _currentElement = null;
 
         float closestDistance = float.MaxValue;
 
@@ -145,6 +156,11 @@ public class PlayerInteraction : MonoBehaviour
                 else if (hit.TryGetComponent(out ItemBase item) && !GetComponent<PlayerCarry>().IsCarrying)
                 {
                     _currentPickable = item;
+                }
+                else if (hit.TryGetComponent(out InteractElement element))
+                {
+                    _currentElement = element;
+                    _currentElement.SetHightlight(true);
                 }
                 else if (hit.TryGetComponent(out ClientController client))
                 {

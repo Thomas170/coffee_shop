@@ -1206,7 +1206,7 @@ GameObject:
   - component: {fileID: 96251514}
   - component: {fileID: 96251513}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1251,7 +1251,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pass
+  m_text: Pass (A)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86b599f888a785947a50c7aa3f4741fd, type: 2}
   m_sharedMaterial: {fileID: -3690638014726218933, guid: 86b599f888a785947a50c7aa3f4741fd, type: 2}
@@ -3741,7 +3741,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 32335741}
   dialogueText: {fileID: 228360775}
-  passText: {fileID: 923300613}
+  dialogueName: {fileID: 1553348051}
+  passDialog: {fileID: 923300613}
   typingSpeed: 0.03
 --- !u!114 &272424063
 MonoBehaviour:
@@ -4642,7 +4643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &348333575
 Transform:
   m_ObjectHideFlags: 0
@@ -13495,6 +13496,14 @@ PrefabInstance:
     - target: {fileID: 1871912321076153815, guid: 6d8dbc615d761534cb5351672a3cda9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2088855825744104578, guid: 6d8dbc615d761534cb5351672a3cda9e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 88.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2088855825744104578, guid: 6d8dbc615d761534cb5351672a3cda9e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -89.2
       objectReference: {fileID: 0}
     - target: {fileID: 8324774396096902201, guid: 6d8dbc615d761534cb5351672a3cda9e, type: 3}
       propertyPath: m_Name
@@ -24196,7 +24205,7 @@ Transform:
   m_GameObject: {fileID: 2029410865}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 61.14961, y: -33.655186, z: -43.8114}
+  m_LocalPosition: {x: 61.14961, y: -33.655186, z: -41.6}
   m_LocalScale: {x: 180, y: 100, z: 120}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -31622,6 +31631,14 @@ PrefabInstance:
     - target: {fileID: 7101836103234159101, guid: ac0556dfa1342064caf7b782b2ad90ec, type: 3}
       propertyPath: m_Name
       value: Sign2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170121101362433256, guid: ac0556dfa1342064caf7b782b2ad90ec, type: 3}
+      propertyPath: dialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170121101362433256, guid: ac0556dfa1342064caf7b782b2ad90ec, type: 3}
+      propertyPath: dialogues.Array.data[0]
+      value: "Salle des employ\xE9s (\xE0 venir...)"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
