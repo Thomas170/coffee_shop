@@ -55,19 +55,19 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.4
   contrast:
     m_OverrideState: 1
-    m_Value: -20
+    m_Value: -5
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 0
-    m_Value: -56
+    m_Value: 84
   saturation:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: -5
 --- !u!114 &-1394859962454524165
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -357,8 +357,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.20242915
-          value: 0.49557525
+          time: 0.17204301
+          value: 0.44578314
           inSlope: 0.32869327
           outSlope: 0.32869327
           tangentMode: 0
@@ -366,8 +366,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.7004049
-          value: 0.63716817
+          time: 0.68817204
+          value: 0.57831323
           inSlope: -1.7295324
           outSlope: -1.7295324
           tangentMode: 0
@@ -466,10 +466,10 @@ MonoBehaviour:
     m_Value: {x: 0.9809984, y: 0.9706217, z: 1, w: 0.014641288}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 0.97799283, y: 1, z: 0.98132485, w: -0.014641178}
+    m_Value: {x: 0.97799283, y: 1, z: 0.98132485, w: -0.055127013}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.98087096, z: 0.95637584, w: 0.42640513}
+    m_Value: {x: 1, y: 0.9736469, z: 0.94954664, w: 0.5073768}
 --- !u!114 &8216245428561387383
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   skipIterations:
     m_OverrideState: 0
     m_Value: 1
@@ -490,8 +490,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.5
   intensity:
-    m_OverrideState: 1
-    m_Value: 0.5
+    m_OverrideState: 0
+    m_Value: 0.2
   scatter:
     m_OverrideState: 0
     m_Value: 0.5

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2384237169986118905}
   - component: {fileID: 1918581070638184569}
   - component: {fileID: 123417970881327838}
-  m_Layer: 14
+  m_Layer: 15
   m_Name: WallModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5812632744819689076}
   - component: {fileID: -3360095171000440910}
-  m_Layer: 14
+  m_Layer: 15
   m_Name: WallCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3867138079
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 7252463967763137037}
   - component: {fileID: 1922227468842077015}
   - component: {fileID: 1897947721371608008}
-  m_Layer: 14
+  m_Layer: 15
   m_Name: WallModel (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

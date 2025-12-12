@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1073617038447536677}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: WallsMultiple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6652041448334903541, guid: dc910cb78e6c58741b11be7e15cd2282, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2915485714
+      value: 402086553
       objectReference: {fileID: 0}
     - target: {fileID: -6652041448334903541, guid: dc910cb78e6c58741b11be7e15cd2282, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -114,7 +114,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6652041448334903541, guid: dc910cb78e6c58741b11be7e15cd2282, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2283797610
+      value: 3002408179
       objectReference: {fileID: 0}
     - target: {fileID: -6652041448334903541, guid: dc910cb78e6c58741b11be7e15cd2282, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -184,7 +184,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6652041448334903541, guid: dc910cb78e6c58741b11be7e15cd2282, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 186331639
+      value: 489108
       objectReference: {fileID: 0}
     - target: {fileID: -6652041448334903541, guid: dc910cb78e6c58741b11be7e15cd2282, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash

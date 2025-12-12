@@ -315,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1172572520
+  GlobalObjectIdHash: 4067343997
   InScenePlacedSourceGlobalObjectIdHash: 1172572520
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -401,7 +401,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1444460858095362738, guid: ddae4c76aa1215a4d8d2b942221111f2, type: 3}
+  - {fileID: 2100000, guid: b805e7c590f229342ac50a0c4c7426ff, type: 2}
   - {fileID: 32396384187188763, guid: ddae4c76aa1215a4d8d2b942221111f2, type: 3}
   - {fileID: 2100000, guid: a28f9fc5d412f074e8fcb7ff47bc173c, type: 2}
   - {fileID: -905690159841262435, guid: ddae4c76aa1215a4d8d2b942221111f2, type: 3}

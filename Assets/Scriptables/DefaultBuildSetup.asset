@@ -13,33 +13,33 @@ MonoBehaviour:
   m_Name: DefaultBuildSetup
   m_EditorClassIdentifier: 
   defaultBuilds:
-  - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
-    position: {x: -85, y: 0, z: -35}
-    rotationEuler: {x: 0, y: 0, z: 0}
-  - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
-    position: {x: -85, y: 0, z: -25}
-    rotationEuler: {x: 0, y: 0, z: 0}
-  - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
-    position: {x: -85, y: 0, z: -15}
-    rotationEuler: {x: 0, y: 0, z: 0}
-  - definition: {fileID: 11400000, guid: daf4663551a45e94098e5deb29189717, type: 2}
-    position: {x: -85, y: 0, z: -5}
-    rotationEuler: {x: 0, y: 90, z: 0}
-  - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
-    position: {x: -35, y: 0, z: -15}
-    rotationEuler: {x: 0, y: -90, z: 0}
-  - definition: {fileID: 11400000, guid: 1a4ca94fad9732840ba0619bb7639355, type: 2}
-    position: {x: -85, y: 0, z: -45}
-    rotationEuler: {x: 0, y: 180, z: 0}
   - definition: {fileID: 11400000, guid: c631ae1ac0579b849af55c6c25fa4c54, type: 2}
-    position: {x: -85, y: 0, z: 5}
-    rotationEuler: {x: 0, y: 0, z: 0}
+    position: {x: 5, y: 0, z: 115}
+    rotationEuler: {x: -0, y: 90, z: -0}
+  - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
+    position: {x: 25, y: 0, z: 115}
+    rotationEuler: {x: -0, y: 90, z: -0}
+  - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
+    position: {x: 15, y: 0, z: 115}
+    rotationEuler: {x: -0, y: 90, z: -0}
+  - definition: {fileID: 11400000, guid: 4e8450c463929ff40856f9e54df4b078, type: 2}
+    position: {x: 35, y: 0, z: 115}
+    rotationEuler: {x: -0, y: 90, z: -0}
   - definition: {fileID: 11400000, guid: d14555dbeaec2d34cb5f56a79bf39fb1, type: 2}
-    position: {x: -85, y: 0, z: 15}
-    rotationEuler: {x: 0, y: -90, z: 0}
+    position: {x: -25, y: 0, z: 95}
+    rotationEuler: {x: -0, y: 270, z: 0}
+  - definition: {fileID: 11400000, guid: 1a4ca94fad9732840ba0619bb7639355, type: 2}
+    position: {x: -25, y: 0, z: 85}
+    rotationEuler: {x: -0, y: 180, z: -0}
   - definition: {fileID: 11400000, guid: 0ddab86c5b6cf81418ba165dba468c0a, type: 2}
-    position: {x: -75, y: 0, z: 55}
-    rotationEuler: {x: 0, y: -90, z: 0}
+    position: {x: -35, y: 0, z: 55}
+    rotationEuler: {x: -0, y: 270, z: 0}
+  - definition: {fileID: 11400000, guid: daf4663551a45e94098e5deb29189717, type: 2}
+    position: {x: -15, y: 0, z: 55}
+    rotationEuler: {x: -0, y: 180, z: -0}
   - definition: {fileID: 11400000, guid: b4f1fac88c5966b4688e9090ffc86820, type: 2}
-    position: {x: -55, y: 0, z: 55}
-    rotationEuler: {x: 0, y: 0, z: 0}
+    position: {x: 85, y: 0, z: 95}
+    rotationEuler: {x: -0, y: 0, z: 0}
+  - definition: {fileID: 11400000, guid: 04ccf3cf081a5b64b913178fb84f28db, type: 2}
+    position: {x: -15, y: 0, z: 25}
+    rotationEuler: {x: -0, y: 0, z: 0}
