@@ -30,7 +30,7 @@ public class RoofVisibility : NetworkBehaviour
 
     public void PlayerEnteredRoom(Collider other)
     {
-        if (!IsLocalPlayer(other)) return;
+        if (!IsPlayerLocal(other)) return;
 
         _roomsInsideCount++;
         if (_roomsInsideCount == 1)
@@ -39,7 +39,7 @@ public class RoofVisibility : NetworkBehaviour
 
     public void PlayerExitedRoom(Collider other)
     {
-        if (!IsLocalPlayer(other)) return;
+        if (!IsPlayerLocal(other)) return;
 
         _roomsInsideCount--;
         if (_roomsInsideCount <= 0)
@@ -49,7 +49,7 @@ public class RoofVisibility : NetworkBehaviour
         }
     }
 
-    private bool IsLocalPlayer(Collider other)
+    private bool IsPlayerLocal(Collider other)
     {
         if (!other.CompareTag("Player")) return false;
 
