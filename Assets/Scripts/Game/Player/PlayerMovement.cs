@@ -25,6 +25,11 @@ public class PlayerMovement : NetworkBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        
+        if (!IsOwner && _rb)
+        {
+            _rb.isKinematic = true;
+        }
     }
 
     private void OnEnable()
@@ -104,8 +109,6 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
     
-    //[ServerRpc(RequireOwnership = false)]
-    //private void SpawnDustBurstServerRpc()
     private void SpawnDustBurst()
     {
         for (int i = 0; i < dustCount; i++)
@@ -115,7 +118,6 @@ public class PlayerMovement : NetworkBehaviour
             Quaternion randomRot = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
 
             GameObject dust = Instantiate(dustPrefab, spawnPos, randomRot);
-            //dust.GetComponent<NetworkObject>().Spawn();
             StartCoroutine(DestroyDustAfterTime(dust, dustLifetime));
         }
     }
@@ -123,9 +125,8 @@ public class PlayerMovement : NetworkBehaviour
     private IEnumerator DestroyDustAfterTime(GameObject dust, float delay)
     {
         yield return new WaitForSeconds(delay);
-        if (dust && dust.TryGetComponent(out NetworkObject netObj))
+        if (dust)
         {
-            //netObj.Despawn();
             Destroy(dust);
         }
     }

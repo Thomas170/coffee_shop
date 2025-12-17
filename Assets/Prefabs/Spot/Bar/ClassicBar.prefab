@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5986107762191373001}
   - component: {fileID: 2922011421339865228}
   - component: {fileID: 4057730832867143012}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ClassicBarV2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -16,6 +16,10 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private LayerMask interactionMask;
     [SerializeField] private Transform rayOrigin;
 
+    // OPTIMIZATION: Réduire fréquence de détection
+    private float _detectionTimer = 0f;
+    private const float DetectionInterval = 0.1f; // 10x par seconde au lieu de 60x
+
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
@@ -38,7 +42,13 @@ public class PlayerInteraction : MonoBehaviour
             manual.Action(true);
         }
 
-        DetectInteractableInFront();
+        // OPTIMIZATION: Détection moins fréquente
+        _detectionTimer += Time.deltaTime;
+        if (_detectionTimer >= DetectionInterval)
+        {
+            _detectionTimer = 0f;
+            DetectInteractableInFront();
+        }
     }
     
     private void OnActionStarted(InputAction.CallbackContext ctx)
@@ -121,12 +131,16 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    // OPTIMIZATION: Cache pour éviter allocations répétées
+    private Collider[] _hitCache = new Collider[20];
+    
     private void DetectInteractableInFront()
     {
         Vector3 center = rayOrigin.position + rayOrigin.forward * (interactionDistance * 0.5f);
         Quaternion orientation = rayOrigin.rotation;
 
-        Collider[] hits = Physics.OverlapBox(center, boxHalfExtents, orientation, interactionMask);
+        // Utiliser NonAlloc pour éviter allocations
+        int hitCount = Physics.OverlapBoxNonAlloc(center, boxHalfExtents, _hitCache, orientation, interactionMask);
 
         if (_currentInteractable) _currentInteractable.SetHightlight(false);
         if (_currentClient) _currentClient.SetHightlight(false);
@@ -139,8 +153,9 @@ public class PlayerInteraction : MonoBehaviour
 
         float closestDistance = float.MaxValue;
 
-        foreach (var hit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            var hit = _hitCache[i];
             float dist = Vector3.Distance(transform.position, hit.transform.position);
 
             if (dist < closestDistance)
